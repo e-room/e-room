@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
 
 @Data
 @Entity
@@ -12,7 +14,11 @@ public class Room {
     @Id @GeneratedValue
     private Long id;
 
-    // 연관관계 설정하기
+    @OneToMany(mappedBy = "room")
+    private List<Review> reviewList = new LinkedList<>();
+
+    @OneToMany(mappedBy = "room")
+    private List<MemberRoom> memberList = new LinkedList<>();
 
     /**
      * 전용면적
