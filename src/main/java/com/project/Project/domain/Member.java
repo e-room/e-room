@@ -1,6 +1,5 @@
 package com.project.Project.domain;
 
-import com.project.Project.domain.enums.MemberRole;
 import lombok.Data;
 
 import javax.persistence.*;
