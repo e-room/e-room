@@ -22,13 +22,9 @@ public class ChatRoom {
     private Member guest;
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<ChatContent> chatContentList = new LinkedList<>();
+    private List<ChatMessage> chatMessageList = new LinkedList<>();
 
-    @Enumerated(EnumType.STRING)
-    private ReadStatus hostReadStatus;
-
-    @Enumerated(EnumType.STRING)
-    private ReadStatus guestReadStatus;
-
-    private String latestMessage;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "latest_message_id")
+    private ChatMessage latestMessage;
 }

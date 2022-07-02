@@ -20,5 +20,4 @@ public abstract class BaseEntity {
 
     private LocalDateTime deletedAt;
 
-    private Boolean deleted = Boolean.FALSE;
 }

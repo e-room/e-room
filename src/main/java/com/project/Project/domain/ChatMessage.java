@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class ChatContent {
+public class ChatMessage {
 
     @Id @GeneratedValue
     private Long id;
@@ -24,4 +24,7 @@ public class ChatContent {
     private Member to;
 
     private String message;
+
+    @Enumerated(EnumType.STRING)
+    private ReadStatus readStatus;
 }
