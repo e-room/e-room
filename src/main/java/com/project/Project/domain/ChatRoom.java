@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class ChatRoom {
+public class ChatRoom extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

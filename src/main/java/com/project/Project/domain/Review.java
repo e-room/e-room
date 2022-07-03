@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Review {
+public class Review extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class ReviewForm {
+public class ReviewForm extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

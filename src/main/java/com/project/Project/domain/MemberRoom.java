@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class MemberRoom {
+public class MemberRoom extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;

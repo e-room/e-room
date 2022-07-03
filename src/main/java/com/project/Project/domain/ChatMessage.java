@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class ChatMessage {
+public class ChatMessage extends BaseEntity{
 
     @Id @GeneratedValue
     private Long id;
