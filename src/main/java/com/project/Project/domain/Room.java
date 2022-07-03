@@ -20,6 +20,9 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<MemberRoom> memberList = new LinkedList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Building building;
+
     /**
      * 전용면적
      * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
@@ -27,17 +30,12 @@ public class Room {
     @Column(precision = 10, scale = 3)
     private BigDecimal netLeasableArea;
 
-    @Embedded
-    private Address address;
-
     /**
      * 빛 방향
      * 남향/동향 등
      */
     @Enumerated(EnumType.STRING)
     private LightDirection lightDirection;
-
-    private Boolean hasElevator;
 
     private Integer managementFee;
 
