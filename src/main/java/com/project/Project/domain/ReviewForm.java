@@ -1,12 +1,17 @@
 package com.project.Project.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PreRemove;
 
 @Data
+@SQLDelete(sql = "UPDATE review_form SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity
 public class ReviewForm extends BaseEntity {
 
@@ -33,5 +38,8 @@ public class ReviewForm extends BaseEntity {
                         단열 반려동물 키우기 벌레 층간소음 엘레베이터 동네소음 언덕 마트/편의점 상가 학교/학원
         해당 거주지 만족도 : 별1개부터 5개까지 선택
      */
-
+    @PreRemove
+    public void deleteHandler(){
+        super.setDeleted(true);
+    }
 }

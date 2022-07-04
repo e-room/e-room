@@ -1,10 +1,14 @@
 package com.project.Project.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Data
+@SQLDelete(sql = "UPDATE review SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity
 public class Review extends BaseEntity {
 
@@ -24,4 +28,9 @@ public class Review extends BaseEntity {
 
     @Embedded
     private AnonymousStatus anonymousStatus;
+
+    @PreRemove
+    public void deleteHandler(){
+        super.setDeleted(true);
+    }
 }

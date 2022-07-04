@@ -1,6 +1,8 @@
 package com.project.Project.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,6 +10,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Data
+@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity
 public class Member extends BaseEntity {
 
@@ -31,4 +35,9 @@ public class Member extends BaseEntity {
     private MemberRole memberRole;
 
     private String profileImageUrl;
+
+    @PreRemove
+    public void deleteHandler(){
+        super.setDeleted(true);
+    }
 }

@@ -1,10 +1,14 @@
 package com.project.Project.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Data
+@SQLDelete(sql = "UPDATE chat_message SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity
 public class ChatMessage extends BaseEntity{
 
@@ -27,4 +31,9 @@ public class ChatMessage extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private ReadStatus readStatus;
+
+    @PreRemove
+    public void deleteHandler(){
+        super.setDeleted(true);
+    }
 }
