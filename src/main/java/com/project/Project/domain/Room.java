@@ -6,6 +6,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,10 +20,10 @@ public class Room extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "room")
-    private List<Review> reviewList = new LinkedList<>();
+    private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "room")
-    private List<MemberRoom> memberList = new LinkedList<>();
+    private List<MemberRoom> memberList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Building building;

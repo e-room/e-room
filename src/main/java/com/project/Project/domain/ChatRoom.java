@@ -5,7 +5,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -26,7 +26,7 @@ public class ChatRoom extends BaseEntity {
     private Member guest;
 
     @OneToMany(mappedBy = "chatRoom")
-    private List<ChatMessage> chatMessageList = new LinkedList<>();
+    private List<ChatMessage> chatMessageList = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "latest_message_id")

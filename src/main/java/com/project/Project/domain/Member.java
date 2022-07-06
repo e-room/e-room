@@ -19,10 +19,10 @@ public class Member extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "member")
-    private List<Review> reviewList = new LinkedList<>();
+    private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<MemberRoom> favoriteRoomList = new LinkedList<>();
+    private List<MemberRoom> favoriteRoomList = new ArrayList<>();
 
     // Oauth 회원번호
     private Long userId;
