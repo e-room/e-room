@@ -10,6 +10,11 @@ import javax.persistence.*;
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
+    }
+)
 public class Review extends BaseEntity {
 
     @Id @GeneratedValue

@@ -14,6 +14,11 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE room SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UniqueBuildingAndRoomNumber", columnNames = {"building_id", "roomNumber"})
+        }
+)
 public class Room extends BaseEntity {
 
     @Id @GeneratedValue
@@ -27,6 +32,12 @@ public class Room extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Building building;
+
+    /**
+     * 호실
+     * 몇 호실인지
+     */
+    private Integer roomNumber;
 
     /**
      * 전용면적
