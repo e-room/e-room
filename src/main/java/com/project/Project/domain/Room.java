@@ -60,5 +60,5 @@ public class Room extends BaseEntity {
         super.setDeleted(true);
     }
 
-    // TODO : 건물사진, 주변 상권(동영상) 관련 필드 추가 여부 질문
+    // TODO : 주변 상권(동영상) 관련 필드 추가 여부 질문
 }

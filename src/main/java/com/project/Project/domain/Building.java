@@ -42,6 +42,9 @@ public class Building extends BaseEntity{
     @OneToMany(mappedBy = "building")
     private List<Room> roomList = new ArrayList<>();
 
+    // TODO : 이미지 업로드 방법에 따라 추후 필드 추가. ex) S3업로드 or ec2 서버내에 업로드 등
+
+
     @PreRemove
     public void deleteHandler(){
         super.setDeleted(true);
