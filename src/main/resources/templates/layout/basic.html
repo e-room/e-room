@@ -83,10 +83,10 @@
 
   <!-- Menu Toggle Script -->
   <script>
-    $("#menu-toggle").click(function(e) {
+    document.getElementById('menu-toggle').onclick = function(e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
-    });
+    };
   </script>
   </div>
 </body>
