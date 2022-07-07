@@ -1,5 +1,6 @@
 package com.project.Project.domain;
 
+import com.project.Project.domain.embedded.AnonymousStatus;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

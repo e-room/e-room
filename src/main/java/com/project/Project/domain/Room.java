@@ -1,5 +1,6 @@
 package com.project.Project.domain;
 
+import com.project.Project.domain.enums.LightDirection;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -7,7 +8,6 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Data

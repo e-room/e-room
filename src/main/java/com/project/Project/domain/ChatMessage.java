@@ -1,5 +1,6 @@
 package com.project.Project.domain;
 
+import com.project.Project.domain.enums.MessageStatus;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -30,7 +31,7 @@ public class ChatMessage extends BaseEntity{
     private String message;
 
     @Enumerated(EnumType.STRING)
-    private ReadStatus readStatus;
+    private MessageStatus readStatus;
 
     @PreRemove
     public void deleteHandler(){

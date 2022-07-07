@@ -1,4 +1,4 @@
-package com.project.Project.domain;
+package com.project.Project.domain.embedded;
 
 import javax.persistence.Embeddable;
 

@@ -1,12 +1,12 @@
 package com.project.Project.domain;
 
+import com.project.Project.domain.enums.MemberRole;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Data
