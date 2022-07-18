@@ -1,4 +1,4 @@
-package com.project.Project.service;
+package com.project.Project.service.impl;
 
 import com.project.Project.config.auth.dto.OAuthAttributes;
 import com.project.Project.config.auth.dto.SessionUser;
@@ -35,7 +35,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         Member user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),

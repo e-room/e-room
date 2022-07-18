@@ -16,17 +16,9 @@ public class OauthTestController {
     private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String oauthTest(Model model, @LoginUser SessionUser user) {
-
-        if (user != null) {
-            model.addAttribute("loginUserName", user.getName());
-        }
-
+    public String oauthTest(Model model) {
         return "oauth-test";
     }
 
-//    @GetMapping("/login/oauth/google")
-//    public String oauthRedirect(Model model) {
-//        return "google-success";
-//    }
+
 }

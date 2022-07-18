@@ -1,13 +1,16 @@
 package com.project.Project.config.auth;
 
-import com.project.Project.domain.enums.MemberRole;
-import com.project.Project.service.CustomOAuth2UserService;
+import com.project.Project.filter.JwtAuthFilter;
+import com.project.Project.service.MemberService;
+import com.project.Project.service.impl.CustomOAuth2UserService;
+import com.project.Project.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -15,24 +18,27 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final TokenService tokenService;
+    private final MemberService memberService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.httpBasic().disable()
+                    .csrf().disable()
+                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .authorizeRequests()
-                        .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
-                        .antMatchers("/api/v1/**").hasRole(MemberRole.USER.name())
-                        .anyRequest().authenticated()
-                .and()
-                    .logout()
-                    .logoutSuccessUrl("/")
+                    .antMatchers("/token/**").permitAll()
+                    .antMatchers("/").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                     .oauth2Login()
-                    .loginPage("/")
-                    .userInfoEndpoint()
-                    .userService(customOAuth2UserService);
+                        .loginPage("/token/expired")
+                        .successHandler(oAuth2SuccessHandler) // 성공시
+                        .userInfoEndpoint().userService(customOAuth2UserService);
+
+        // 인증을 처리하는 기본필터 대신 별도의 인증로직을 가진 JwtAuthFilter 추가
+        http.addFilterBefore(new JwtAuthFilter(tokenService, memberService), UsernamePasswordAuthenticationFilter.class);
     }
 }

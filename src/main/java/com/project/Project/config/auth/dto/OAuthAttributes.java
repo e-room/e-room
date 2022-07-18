@@ -75,7 +75,7 @@ public class OAuthAttributes {
                 .name(name)
                 .email(email)
                 .profileImageUrl(picture)
-                .memberRole(MemberRole.GUEST)
+                .memberRole(MemberRole.USER)
                 .build();
     }
 }
