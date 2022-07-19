@@ -37,21 +37,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private void writeTokenResponse(HttpServletResponse response, Token token) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        /**
-         * 토큰을 응답헤더에 추가해서 보내준다.
-         */
-
-//        response.addHeader("Refresh", token.getRefreshToken());
         response.setContentType("application/json;charset=UTF-8");
-
 
         Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getToken());
         response.addCookie(accessTokenCookie);
 
         Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());
         response.addCookie(refreshTokenCookie);
-
 
         response.sendRedirect("/");
         var writer = response.getWriter();

@@ -12,8 +12,8 @@ import java.util.List;
 @Data @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access =  AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
+//@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
+//@Where(clause = "deleted=false")
 @Entity
 public class Member extends BaseEntity {
 
@@ -49,8 +49,8 @@ public class Member extends BaseEntity {
         return this.memberRole.getKey();
     }
 
-    @PreRemove
-    public void deleteHandler(){
-        super.setDeleted(true);
-    }
+//    @PreRemove
+//    public void deleteHandler(){
+//        super.setDeleted(true);
+//    }
 }
