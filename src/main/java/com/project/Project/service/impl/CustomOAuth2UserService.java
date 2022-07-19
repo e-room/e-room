@@ -1,7 +1,7 @@
 package com.project.Project.service.impl;
 
 import com.project.Project.config.auth.dto.OAuthAttributes;
-import com.project.Project.config.auth.dto.SessionUser;
+
 import com.project.Project.domain.Member;
 import com.project.Project.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +14,12 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
-    private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

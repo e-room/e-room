@@ -1,7 +1,5 @@
 package com.project.Project.controller;
 
-import com.project.Project.config.auth.dto.LoginUser;
-import com.project.Project.config.auth.dto.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

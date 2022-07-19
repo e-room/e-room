@@ -22,8 +22,8 @@ public class TokenService {
 
 //    @Override
     public Token generateToken(String uid, String role) {
-        long tokenPeriod = 1000L * 60L * 10L; // 10분
-        long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 3L; // 3주
+        long tokenPeriod = 1000L * 60L * 30L; // 30분
+        long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 1L; // 1개월
 
         Claims claims = Jwts.claims().setSubject(uid);
         claims.put("role", role);

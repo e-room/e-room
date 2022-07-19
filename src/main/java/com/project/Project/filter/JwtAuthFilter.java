@@ -10,11 +10,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
@@ -27,9 +29,20 @@ public class JwtAuthFilter extends GenericFilterBean {
     private final TokenService tokenService;
     private final MemberService memberService;
 
+    private String getCookieValue(HttpServletRequest req, String cookieName) {
+        if(req.getCookies() == null) return null;
+        return Arrays.stream(req.getCookies())
+                .filter(c -> c.getName().equals(cookieName))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+    }
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = ((HttpServletRequest)request).getHeader("Auth");
+//        String token = ((HttpServletRequest)request).getHeader("Auth");
+
+        String token = getCookieValue((HttpServletRequest) request, "accessToken");
 
         if (token != null && tokenService.verifyToken(token)) {
             String email = tokenService.getUid(token);
