@@ -1,5 +1,6 @@
 spring:
   profiles:
+    include: oauth
     active: local
   jpa:
     properties:
@@ -101,8 +102,8 @@ spring:
       on-profile: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${USERNAME}
-    password: ${PASSWORD}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
     url: ${LOCAL_DB_URL}
   jpa:
     properties:

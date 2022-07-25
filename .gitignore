@@ -37,3 +37,4 @@ out/
 .vscode/
 
 application-datasource.properties
+application-oauth.properties
