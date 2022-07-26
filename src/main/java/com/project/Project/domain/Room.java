@@ -53,6 +53,8 @@ public class Room extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private LightDirection lightDirection;
 
+    private Integer rentFee;
+
     private Integer managementFee;
 
     @PreRemove

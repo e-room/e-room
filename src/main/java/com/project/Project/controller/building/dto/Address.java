@@ -1,7 +1,8 @@
-package com.project.Project.controller.building.buildingDto;
+package com.project.Project.controller.building.dto;
 
-import javax.persistence.Column;
+import lombok.Builder;
 
+@Builder
 public class Address {
 
     /**

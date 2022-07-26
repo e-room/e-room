@@ -1,16 +1,13 @@
-package com.project.Project.controller.building.buildingDto;
+package com.project.Project.controller.building.dto;
 
 
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.Review;
-import com.project.Project.domain.Room;
-import com.project.Project.domain.embedded.Address;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 
 public class BuildingResponseDto {
 
@@ -36,7 +33,8 @@ public class BuildingResponseDto {
     @Getter
     @Setter
     public static class BuildingCountResponse{
-        private Map<Coordinate, Integer> buildingMarker;
+        private Coordinate coordinate;
+        private Integer buildingId;
     }
 
 
@@ -50,7 +48,12 @@ public class BuildingResponseDto {
         private Integer buildingId;
         private String name;
         private String address;
-        private List<Room> rooms;
-        private List<Review> reviews;
+        private Coordinate coordinate;
+        private List<RoomResponseDto.RoomListResponse> rooms;
+        private List<ReviewDto> reviews;
+        /* todo
+        private List<BuildingSummary> buildingSummaries;
+         */
+        private Integer initalReviewCount;
     }
 }

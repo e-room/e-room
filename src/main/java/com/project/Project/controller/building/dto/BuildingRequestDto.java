@@ -1,12 +1,11 @@
-package com.project.Project.controller.building.buildingDto;
+package com.project.Project.controller.building.dto;
 
 import com.project.Project.domain.embedded.Address;
 
 public class BuildingRequestDto {
 
-    public static class BuildingCountRequest{
-        private Coordinate leftTop;
-        private Coordinate rightBottom;
+    public static class BuildingListRequest{
+        private Integer buildingId;
     }
 
     public static class AddressSearchParamRequest{

@@ -1,9 +1,8 @@
 package com.project.Project.controller.building;
 
-import com.project.Project.controller.building.buildingDto.BuildingRequestDto;
-import com.project.Project.controller.building.buildingDto.BuildingResponseDto;
+import com.project.Project.controller.building.dto.BuildingRequestDto;
+import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.controller.building.enums.SearchCode;
-import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,21 +12,22 @@ import java.util.List;
 public class BuildingRestController {
 
     @GetMapping("/marking")
-    public List<BuildingResponseDto.BuildingCountResponse> getBuildingMarker(@RequestBody BuildingRequestDto.BuildingCountRequest request){
+    public List<BuildingResponseDto.BuildingCountResponse> getBuildingMarker(){
         /*
-        request: leftTop, rightBottom으로 좌표 범위
+        request: none
         service
             - 좌표 범위 내에 있는 건물 list를 뽑음(Model)
             - 건물 list를 바탕으로 response 객체를 만들어서 전달.
-        return: marking 위치와 개수를 Map으로
+        return: marking poistion과 buildingId를 가지는 객체 List으로
          */
     }
 
     @GetMapping("/")
-    public List<BuildingResponseDto.BuildingListResponse> getBuildingList(@RequestBody BuildingRequestDto.BuildingCountRequest request){
+    public List<BuildingResponseDto.BuildingListResponse> getBuildingList(@RequestBody List<BuildingRequestDto.BuildingListRequest> request){
         /*
-        request: leftTop, rightBottom으로 이루어진 좌표 범위
-        return: 해당하는 범위 내에 건물 list
+        when: 리스트 뷰로 볼 때
+        request: 좌표값 list
+        return: 해당하는 건물 list
          */
     }
 
@@ -40,7 +40,7 @@ public class BuildingRestController {
     }
 
     @GetMapping("/search/{code}")
-    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@PathVariable("code") SearchCode searchCode, @RequestParam("params") String search){
+    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@PathVariable("code") SearchCode searchCode, @RequestParam("params") String params){
         /*
         request: 검색 코드(Enum), searchParams(주소,단일 Or 복수, 집 주소 등등)
         service:

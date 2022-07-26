@@ -1,6 +1,7 @@
 package com.project.Project.domain;
 
 import com.project.Project.domain.embedded.Address;
+import com.project.Project.domain.embedded.Coordinate;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -36,6 +37,9 @@ public class Building extends BaseEntity{
 
     @Embedded
     private Address address;
+
+    @Embedded
+    private Coordinate coordinate;
 
     private Boolean hasElevator;
 
