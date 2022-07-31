@@ -6,6 +6,7 @@ import com.project.Project.config.auth.SecurityConfig;
 import com.project.Project.controller.building.BuildingRestController;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.BuildingRepository;
 import com.project.Project.validator.BuildingExistValidator;
 import org.junit.jupiter.api.Test;
@@ -42,64 +43,86 @@ public class BuildingRequestValidationTest {
     @MockBean
     private BuildingRepository repository;
 
+    private static BuildingRequestDto.BuildingListRequest getBuildingListRequest(Long id) {
+        BuildingRequestDto.BuildingListRequest request1 = BuildingRequestDto.BuildingListRequest.builder()
+                .buildingId(id)
+                .build();
+        return request1;
+    }
     @Test
-    @WithMockCustomOAuth2Account(role = "ROLE_USER", restrationId = "google")
+    @WithMockCustomOAuth2Account(role = "ROLE_USER", registrationId = "google")
     void BuildingExistsTest() throws Exception {
-        Building testBuilding = Building.builder()
-                .id(1L).hasElevator(true).build();
-
         //given
         given(repository.existsById(1L)).willReturn(true);
         given(repository.existsById(2L)).willReturn(true);
         given(repository.existsById(3L)).willReturn(true);
 
-        BuildingRequestDto.BuildingListRequest request1 = BuildingRequestDto.BuildingListRequest.builder()
-                .buildingId(5L)
-                .build();
+        BuildingRequestDto.BuildingListRequest request1 = getBuildingListRequest(5L);
+        BuildingRequestDto.BuildingListRequest request2 = getBuildingListRequest(6L);
 
-        BuildingRequestDto.BuildingListRequest request2 = BuildingRequestDto.BuildingListRequest.builder()
-                .buildingId(6L)
-                .build();
+        BuildingRequestDto.BuildingListRequest request3 = getBuildingListRequest(1L);
+        BuildingRequestDto.BuildingListRequest request4 = getBuildingListRequest(2L);
 
-        String content = objectMapper.writeValueAsString(List.of(request1, request2));
+
+        String badRequestContent = objectMapper.writeValueAsString(List.of(request1, request2));
+        String goodRequestContent = objectMapper.writeValueAsString(List.of(request3, request4));
+
 
         //when
-        final ResultActions actions = mockMvc.perform(
+        final ResultActions action1 = mockMvc.perform(
                         get("/building/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(content)
+                                .content(badRequestContent)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isBadRequest())
+                .andDo(print());
+
+        final ResultActions action2 = mockMvc.perform(
+                        get("/building/")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(goodRequestContent)
+                                .accept(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
                 .andDo(print());
     }
 
     @Test
-    @WithMockCustomOAuth2Account(role = "ROLE_USER", restrationId = "google")
+    @WithMockCustomOAuth2Account(role = "ROLE_USER", registrationId = "google")
     void BuildingMarkerTest() throws Exception {
-        Building testBuilding = Building.builder()
-                .id(1L).hasElevator(true).build();
+
+        Building testBuilding1 = Building.builder()
+                .id(1L).hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").siGunGu("유성구").eupMyeonDong("어은동").roadName("대학로 291").build()).build();
+        Building testBuilding2 = Building.builder().id(2L).hasElevator(false).address(Address.builder().metropolitanGovernment("서울 특별시").siGunGu("관악구").eupMyeonDong("신림동").roadName("관천로 47").build()).build();
+
 
         //given
         given(repository.existsById(1L)).willReturn(true);
         given(repository.existsById(2L)).willReturn(true);
         given(repository.existsById(3L)).willReturn(true);
 
-        BuildingRequestDto.BuildingListRequest request1 = BuildingRequestDto.BuildingListRequest.builder()
-                .buildingId(5L)
-                .build();
-
-        BuildingRequestDto.BuildingListRequest request2 = BuildingRequestDto.BuildingListRequest.builder()
-                .buildingId(6L)
-                .build();
-
-        String content = objectMapper.writeValueAsString(List.of(request1, request2));
-
         //when
         final ResultActions actions = mockMvc.perform(
                         get("/building/marking")
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .content(content)
-//                                .accept(MediaType.APPLICATION_JSON)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @WithMockCustomOAuth2Account(role = "ROLE_USER", registrationId = "google")
+    void BuildingSearchTest() throws Exception {
+        //given
+        given(repository.existsById(1L)).willReturn(true);
+        given(repository.existsById(2L)).willReturn(true);
+        given(repository.existsById(3L)).willReturn(true);
+
+        //when
+        final ResultActions action1 = mockMvc.perform(
+                        get("/building/search")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("params","대덕")
+                                .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print());
     }
