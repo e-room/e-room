@@ -15,7 +15,7 @@ public enum AdvantageKeywordEnum {
     MOISTURE_PROOF("방습"), INSULATION("단열"), PET_RAISING("반려동물 키우기"),
     INSECT_PROOF("방충"), SOUND_PROOF("방음"), ELEVATOR("엘리베이터"),
     QUIET_TOWN("조용한 동네"), FLAT_GROUND("평지"), MART_CONVENIENCE_STORE("마트/편의점"),
-    STORE("상가"), SCHOOL_ACADEMY("학교/학원");
+    STORE("상가"), SCHOOL_ACADEMY("학교/학원"),DAY_LIGHTING("채광");
 
     private String description;
 
