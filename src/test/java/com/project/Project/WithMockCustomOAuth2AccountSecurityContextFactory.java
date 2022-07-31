@@ -37,7 +37,7 @@ public class WithMockCustomOAuth2AccountSecurityContextFactory
         OAuth2AuthenticationToken token = new OAuth2AuthenticationToken(
                 principal,
                 principal.getAuthorities(),
-                customOAuth2Account.restrationId());
+                customOAuth2Account.registrationId());
 
         // 5
         context.setAuthentication(token);

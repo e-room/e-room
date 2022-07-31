@@ -18,6 +18,6 @@ public @interface WithMockCustomOAuth2Account {
 
     String role() default "ROLE_USER";
 
-    String restrationId() default "testAuthentication";
+    String registrationId() default "testAuthentication";
 
 }
