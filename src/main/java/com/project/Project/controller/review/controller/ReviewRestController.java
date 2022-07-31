@@ -12,6 +12,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,13 +25,13 @@ public class ReviewRestController {
      */
 
     @GetMapping("/buildig/{buildingId}/room/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Integer buildingId){
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId){
 
         return null;
     }
 
     @GetMapping("/building/room/{roomId}/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Integer roomId){
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId){
         return null;
     }
     /* todo
@@ -45,7 +47,7 @@ public class ReviewRestController {
      */
 
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewID") @ExistReview Integer reviewId){
+    public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId){
         return null;
     }
 }
