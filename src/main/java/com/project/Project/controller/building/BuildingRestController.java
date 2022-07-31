@@ -58,8 +58,8 @@ public class BuildingRestController {
         - 검색 코드를 바탕으로 동적으로 각자 다른 클래스를 호출하도록 동적으로 처리
     return: 건물 정보
      */
-    @GetMapping("/search/{code}")
-    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@PathVariable("code") SearchCode searchCode, @RequestParam("params") String params) {
+    @GetMapping("/search")
+    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params) {
         return null;
     }
 }
