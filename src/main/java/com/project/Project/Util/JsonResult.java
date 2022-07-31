@@ -1,13 +1,10 @@
 package com.project.Project.Util;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@Builder
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class JsonResult {
@@ -17,4 +14,9 @@ public class JsonResult {
     private String message;
 
     private Object data;
+
+    @Override
+    public String toString(){
+        return "JSONResult [code = " + code + ", message= " + message + ", data= " + data + "]";
+    }
 }
