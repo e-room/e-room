@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 
 @Documented
-@Constraint(validatedBy = BuildingExistValidator.class)
+@Constraint(validatedBy = RoomExistValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExistRoom {
