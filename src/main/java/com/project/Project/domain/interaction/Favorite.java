@@ -1,16 +1,22 @@
-package com.project.Project.domain;
+package com.project.Project.domain.interaction;
 
-import lombok.Data;
+import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.Member;
+import com.project.Project.domain.building.Building;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
-@Data
+/*
+찜기능용 연결 테이블
+ */
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE member_room SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
-public class MemberRoom extends BaseEntity {
+public class Favorite extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;
@@ -21,7 +27,7 @@ public class MemberRoom extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-    private Room room;
+    private Building building;
 
     @PreRemove
     public void deleteHandler(){
