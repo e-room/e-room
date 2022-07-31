@@ -1,8 +1,14 @@
 package com.project.Project.domain.embedded;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @Embeddable
 public class Address {
     /**
@@ -24,10 +30,10 @@ public class Address {
     private String siGunGu;
 
     /**
-     * 읍면
+     * 읍면동
      */
     @Column(length = 20)
-    private String eupMyeon;
+    private String eupMyeonDong;
 
     /**
      * 도로명
@@ -51,6 +57,6 @@ public class Address {
 
     @Override
     public String toString() {
-        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeon +  " " +  roadName;
+        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeonDong +  " " +  roadName;
     }
 }
