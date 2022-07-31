@@ -1,10 +1,11 @@
-package com.project.Project.domain;
+package com.project.Project.domain.review;
 
+import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.enums.FloorHeight;
 import com.project.Project.domain.enums.ResidencePeriod;
 import com.project.Project.domain.enums.ResidenceType;
 import com.project.Project.domain.enums.ScoreOption;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -12,13 +13,15 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE review_form SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
 public class ReviewForm extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     /**
@@ -46,7 +49,7 @@ public class ReviewForm extends BaseEntity {
 
     /**
      * 월세 : 00만원
-      */
+     */
     private Integer monthlyRent;
 
     /**
@@ -86,17 +89,19 @@ public class ReviewForm extends BaseEntity {
 
     /**
      * 장점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
-     *                단열 반려동물 키우기 방충 방음 엘레베이터 조용한동네 평지 마트/편의점 상가
+     * 단열 반려동물 키우기 방충 방음 엘레베이터 조용한동네 평지 마트/편의점 상가
      * (여러개 선택 가능)
      */
     @OneToMany(mappedBy = "reviewForm")
+    @Builder.Default
     private List<AdvantageKeyword> advantageKeywordList = new ArrayList<>();
 
     /**
      * 단점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
-     *                단열 반려동물 키우기 벌레 층간소음 엘레베이터 동네소음 언덕 마트/편의점 상가 학교/학원
+     * 단열 반려동물 키우기 벌레 층간소음 엘레베이터 동네소음 언덕 마트/편의점 상가 학교/학원
      */
     @OneToMany(mappedBy = "reviewForm")
+    @Builder.Default
     private List<DisadvantageKeyword> disadvantageKeywordList = new ArrayList<>();
 
     /**
@@ -105,7 +110,7 @@ public class ReviewForm extends BaseEntity {
     private ScoreOption residenceSatisfaction;
 
     @PreRemove
-    public void deleteHandler(){
+    public void deleteHandler() {
         super.setDeleted(true);
     }
 }

@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 public class Coordinate {
     private Double longitude;

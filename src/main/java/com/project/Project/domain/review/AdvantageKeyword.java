@@ -1,20 +1,21 @@
-package com.project.Project.domain;
+package com.project.Project.domain.review;
 
+import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.enums.AdvantageKeywordEnum;
-import lombok.Data;
+import com.project.Project.domain.review.ReviewForm;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
-@Data
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE review_form SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
-public class DisadvantageKeyword extends BaseEntity{
+public class AdvantageKeyword extends BaseEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private Long id;
 
     @Enumerated(EnumType.STRING)
