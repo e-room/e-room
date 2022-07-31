@@ -1,15 +1,17 @@
 package com.project.Project.domain;
 
 import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.domain.interaction.Favorite;
+import com.project.Project.domain.interaction.Like;
+import com.project.Project.domain.review.Review;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data @Builder
+@Builder
+@Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access =  AccessLevel.PROTECTED)
 //@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
@@ -21,10 +23,16 @@ public class Member extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "member")
+    @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<MemberRoom> favoriteRoomList = new ArrayList<>();
+    @Builder.Default
+    private List<Favorite> favoriteBuildingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Like> likeReviewList = new ArrayList<>();
 
 //    // Oauth 회원번호
 //    private Long userId;
