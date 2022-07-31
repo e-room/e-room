@@ -1,18 +1,14 @@
 package com.project.Project.controller.room.dto;
 
 import com.project.Project.domain.enums.LightDirection;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class RoomResponseDto {
 
-    @Builder
-    @Getter
-    @Setter
+    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class RoomResponse{
         private Integer roomId;
         private Integer roomNumber;
@@ -22,21 +18,17 @@ public class RoomResponseDto {
         private Integer managementFee;
     }
 
-    @Builder
-    @Getter
-    @Setter
+    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class RoomListResponse{
         private Integer roomId;
         private Integer roomNumber;
     }
 
-    @Builder
-    @Getter
-    @Setter
+    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class RoomCreateResponse{
         private Integer roomId;
         private Integer buildingId;
         private LocalDateTime createdAt;
-        private
+        private Integer roomNumber;
     }
 }
