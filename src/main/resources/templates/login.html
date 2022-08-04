@@ -2,14 +2,14 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:include="common/include/include-meta"/>
-    <title>Ero</title>
+    <title>로그인 페이지</title>
     <th:block th:include="common/include/include-link"/>
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
+    <th:block th:insert="common/fragments :: appBar"/>
     <div class="login-wrapper">
-        <th:block th:insert="common/fragments :: appBar"/>
-        <div class="container">
+                <div class="container">
             <div class="login-intro">
                 <div class="title-1 text-black" style="margin-bottom: 12px;">
                     꿈의 자취방,<br>
@@ -54,9 +54,7 @@
                 <span class="body-bold-2 text-white">네이버 아이디로 로그인</span>
             </button>
         </div>
-
-        <th:block th:insert="common/fragments :: navBar"/>
-
     </div>
+    <th:block th:insert="common/fragments :: navBar"/>
   </body>
 </html>

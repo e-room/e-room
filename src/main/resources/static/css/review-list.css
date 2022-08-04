@@ -1,0 +1,11 @@
+.review-list-wrapper {
+    width: 100%;
+    height: 100%;
+    padding-top: 56px;
+    padding-bottom: 56px;
+}
+
+.banner {
+    height: 84px;
+    background-color: var(--gray-3);
+}

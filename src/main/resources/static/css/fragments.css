@@ -9,10 +9,19 @@
 .app-bar-wrapper {
     width: 100%;
     height: 56px;
-    position:fixed;
-    top: 0;
+    position: fixed;
+    top: 0px;
+    z-index: 998;
 }
 
+.app-bar {
+    display: flex;
+    height: 56px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0;
+}
 
 /* navBar */
 .nav-bar-wrapper {
@@ -20,6 +29,7 @@
     height: 56px;
     position: fixed;
     bottom: 0;
+    z-index: 999;
 }
 
 .nav-bar {
@@ -28,7 +38,7 @@
     justify-content: center;
     align-items: flex-start;
     padding: 0px;
-    gap: 24px;
+    gap: 12px;
 }
 
 .nav-content {
@@ -40,4 +50,8 @@
 
     width: 72px;
     height: 56px;
+}
+
+.nav-content div {
+    word-break: keep-all !important;
 }

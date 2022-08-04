@@ -3,7 +3,7 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: #53AC8E;
+    background-color: var(--primary-1);
 }
 
 .error-intro {
@@ -16,8 +16,8 @@
     padding: 12px 24px;
     width: 104px;
     height: 48px;
-    background-color: #FFFFFF;
-    border: 1px solid #E9E9E9;
+    background-color: var(--white);
+    border: 1px solid var(--gray-4);
     border-radius: 12px;
     margin: 0 auto;
 }

@@ -13,8 +13,8 @@
     min-width: 335px;
     height: 52px;
 
-    background-color: #FFFFFF;
-    border: 1px solid #E9E9E9;
+    background-color: var(--white);
+    border: 1px solid var(--gray-4);
     border-radius: 12px;
     cursor: pointer;
 

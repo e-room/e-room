@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/include/include-meta"/>
+    <title>리뷰맵임~~</title>
+    <th:block th:include="common/include/include-link"/>
+    <link rel="stylesheet" href="/css/review-map.css">
+</head>
+<body>
+    <th:block th:insert="common/fragments :: appBar(iconType='search')"/>
+    <div class="review-map-wrapper">
+        <div id="map-container">
+            <!--     filter icon       -->
+            <div class="btn-map-icon bg-translucent translucent-effect" style="top: 12px;">
+                <svg class="btn-map-icon-img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M2.25 2.25C2.25 1.83579 2.58579 1.5 3 1.5H21C21.4142 1.5 21.75 1.83579 21.75 2.25V5.25C21.75 5.43528 21.6814 5.61401 21.5575 5.75172L15 13.0378V20.25C15 20.5728 14.7934 20.8594 14.4872 20.9615L9.98717 22.4615C9.75846 22.5377 9.50704 22.4994 9.31147 22.3584C9.11589 22.2175 9 21.9911 9 21.75V13.0378L2.44253 5.75172C2.31858 5.61401 2.25 5.43528 2.25 5.25V2.25ZM3.75 3V4.9622L10.3075 12.2483C10.4314 12.386 10.5 12.5647 10.5 12.75V20.7094L13.5 19.7094V12.75C13.5 12.5647 13.5686 12.386 13.6925 12.2483L20.25 4.9622V3H3.75Z" fill="#212121"/>
+                </svg>
+            </div>
+
+            <!--     plus and minus button     -->
+            <div class="btn-pnm translucent-effect">
+                <!-- plus -->
+                <div class="btn-pnm-higher bg-translucent">
+                    <svg class="btn-pnm-icon-img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 3C12.4142 3 12.75 3.33579 12.75 3.75V11.25H20.25C20.6642 11.25 21 11.5858 21 12C21 12.4142 20.6642 12.75 20.25 12.75H12.75V20.25C12.75 20.6642 12.4142 21 12 21C11.5858 21 11.25 20.6642 11.25 20.25V12.75H3.75C3.33579 12.75 3 12.4142 3 12C3 11.5858 3.33579 11.25 3.75 11.25H11.25V3.75C11.25 3.33579 11.5858 3 12 3Z" fill="#212121"/>
+                    </svg>
+                </div>
+
+                <!-- minus -->
+                <div class="btn-pnm-lower bg-translucent">
+                    <svg class="btn-pnm-icon-img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3 12C3 11.5858 3.33579 11.25 3.75 11.25H20.25C20.6642 11.25 21 11.5858 21 12C21 12.4142 20.6642 12.75 20.25 12.75H3.75C3.33579 12.75 3 12.4142 3 12Z" fill="#212121"/>
+                    </svg>
+                </div>
+
+            </div>
+
+            <!--     location icon       -->
+            <div class="btn-map-icon bg-translucent translucent-effect" style="top: calc(50% - 44px/2 + 35px);">
+                <svg class="btn-map-icon-img" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12Z" fill="#212121"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M22.5 12C22.5 17.799 17.799 22.5 12 22.5C6.20101 22.5 1.5 17.799 1.5 12C1.5 6.20101 6.20101 1.5 12 1.5C17.799 1.5 22.5 6.20101 22.5 12ZM11.25 20.9692V18C11.25 17.5858 11.5858 17.25 12 17.25C12.4142 17.25 12.75 17.5858 12.75 18V20.9692C17.1223 20.6085 20.6085 17.1223 20.9692 12.75H18C17.5858 12.75 17.25 12.4142 17.25 12C17.25 11.5858 17.5858 11.25 18 11.25H20.9692C20.6085 6.87765 17.1223 3.39152 12.75 3.03081V6C12.75 6.41421 12.4142 6.75 12 6.75C11.5858 6.75 11.25 6.41421 11.25 6V3.03081C6.87765 3.39152 3.39152 6.87765 3.03081 11.25H6C6.41421 11.25 6.75 11.5858 6.75 12C6.75 12.4142 6.41421 12.75 6 12.75H3.03081C3.39152 17.1223 6.87765 20.6085 11.25 20.9692Z" fill="#212121"/>
+                </svg>
+            </div>
+
+            <!--     리뷰보기 버튼       -->
+            <button class="btn-primary btn-sm"
+                    style="
+                        position: fixed;
+                        left: 0;
+                        right: 0;
+                        width: 202px;
+                        bottom: 64px;
+                        margin: 0 auto;">
+                <div class="body-bold-2 text-white" style="width: 154px;">이 지역 자취방 리뷰보기</div>
+            </button>
+        </div>
+    </div>
+    <th:block th:insert="common/fragments :: navBar"/>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84671e3c07cbab858c6ad23726ccfbda"></script>
+    <script>
+
+        const cooords = [
+            {
+                latitude: 37.2478769221667,
+                longitude: 127.07550559569184
+            },
+            {
+                latitude: 37.24884939824333,
+                longitude: 127.0765209845588
+            },
+            {
+                latitude: 37.248335371720295,
+                longitude: 127.07718546797088
+            },
+            {
+                latitude: 37.24879622341413,
+                longitude: 127.07513455974404
+            },
+            {
+                latitude: 37.2483361733972 ,
+                longitude: 127.07594563230883
+            }
+        ]
+
+        var mapContainer = document.getElementById('map-container'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(37.2478769221667, 127.07550559569184), // 지도의 중심좌표
+                level: 3 // 지도의 확대 레벨
+            };
+
+        // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+
+        cooords.forEach((coord) => {
+            var imageSrc = '/img/pin.png', // 마커이미지의 주소입니다
+                imageSize = new kakao.maps.Size(54, 67), // 마커이미지의 크기입니다
+                imageOption = {offset: new kakao.maps.Point(26, 49)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption),
+                markerPosition = new kakao.maps.LatLng(coord.latitude, coord.longitude); // 마커가 표시될 위치입니다
+
+
+            // 마커를 생성합니다
+            var marker = new kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage // 마커이미지 설정
+            });
+
+            // 마커가 지도 위에 표시되도록 설정합니다
+            marker.setMap(map);
+        })
+
+
+
+    </script>
+</body>
+</html>

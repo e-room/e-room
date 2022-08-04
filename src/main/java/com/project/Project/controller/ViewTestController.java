@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpSession;
 
 
+// 아래의 접속 url들 같은 경우 다시 재설계 예정
 @RequiredArgsConstructor
 @Controller
 public class ViewTestController {
@@ -24,6 +25,14 @@ public class ViewTestController {
         return "error";
     }
 
+    @GetMapping("/review/map")
+    public String reviewMap() {
+        return "review-map";
+    }
 
+    @GetMapping("/review/list")
+    public String reviewList() {
+        return "review-list";
+    }
 
 }
