@@ -35,4 +35,6 @@ public class ViewTestController {
         return "review-list";
     }
 
+    @GetMapping("/favorite/list")
+    public String favoriteList() { return "favorite-list"; }
 }
