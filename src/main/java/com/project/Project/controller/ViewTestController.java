@@ -37,4 +37,7 @@ public class ViewTestController {
 
     @GetMapping("/favorite/list")
     public String favoriteList() { return "favorite-list"; }
+
+    @GetMapping("/mypage")
+    public String mypage() { return "mypage"; }
 }

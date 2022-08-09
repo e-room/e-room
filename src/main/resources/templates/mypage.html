@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="common/include/include-meta"/>
+    <title>마이페이지~~</title>
+    <th:block th:include="common/include/include-link"/>
+    <link rel="stylesheet" href="/css/mypage.css">
+</head>
+<body>
+<th:block th:insert="common/fragments :: appBar(location='내정보')"/>
+<div class="mypage-wrapper bg-gray">
+    <div class="container" style="padding: 0;">
+        <div class="container" style="padding: 0;">
+            <div class="my-info">
+                <div class="my-info-avatar"></div>
+                <div class="my-info-id-email">
+                    <div class="id body-bold-1 text-black">하품하는 망아지</div>
+                    <div class="email caption-2 text-black">hbnhb@kakao.com</div>
+                </div>
+            </div>
+
+            <div class="mypage-list-area">
+                <div class="mypage-area-title caption-2 text-gray-1">알림설정</div>
+                <div class="mypage-list-card">
+                    <div class="label body-bold-2 text-black">쪽지 알림</div>
+                    <!--         토글 스위치 포함하기          -->
+                </div>
+                <div class="mypage-list-card">
+                    <div class="label body-bold-2 text-black">광고성 정보 수신동의</div>
+                    <!--         토글 스위치 포함하기          -->
+                </div>
+            </div>
+
+            <div class="mypage-list-area">
+                <div class="mypage-area-title caption-2 text-gray-1">서비스 정보</div>
+                <div class="mypage-list-card">
+                    <div class="label body-bold-2 text-black">카카오톡 공식 채널</div>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.96967 2.46967C10.2626 2.17678 10.7374 2.17678 11.0303 2.46967L20.0303 11.4697C20.3232 11.7626 20.3232 12.2374 20.0303 12.5303L11.0303 21.5303C10.7374 21.8232 10.2626 21.8232 9.96967 21.5303C9.67678 21.2374 9.67678 20.7626 9.96967 20.4697L18.4393 12L9.96967 3.53033C9.67678 3.23744 9.67678 2.76256 9.96967 2.46967Z" fill="#BDBDBD"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mypage-list-card">
+                    <div class="label body-bold-2 text-black">이용약관</div>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.96967 2.46967C10.2626 2.17678 10.7374 2.17678 11.0303 2.46967L20.0303 11.4697C20.3232 11.7626 20.3232 12.2374 20.0303 12.5303L11.0303 21.5303C10.7374 21.8232 10.2626 21.8232 9.96967 21.5303C9.67678 21.2374 9.67678 20.7626 9.96967 20.4697L18.4393 12L9.96967 3.53033C9.67678 3.23744 9.67678 2.76256 9.96967 2.46967Z" fill="#BDBDBD"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mypage-list-card">
+                    <div class="label body-bold-2 text-black">개인정보 처리 방침</div>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.96967 2.46967C10.2626 2.17678 10.7374 2.17678 11.0303 2.46967L20.0303 11.4697C20.3232 11.7626 20.3232 12.2374 20.0303 12.5303L11.0303 21.5303C10.7374 21.8232 10.2626 21.8232 9.96967 21.5303C9.67678 21.2374 9.67678 20.7626 9.96967 20.4697L18.4393 12L9.96967 3.53033C9.67678 3.23744 9.67678 2.76256 9.96967 2.46967Z" fill="#BDBDBD"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="mypage-list-card">
+                    <div class="label body-bold-2 text-black">서비스 운영정책</div>
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.96967 2.46967C10.2626 2.17678 10.7374 2.17678 11.0303 2.46967L20.0303 11.4697C20.3232 11.7626 20.3232 12.2374 20.0303 12.5303L11.0303 21.5303C10.7374 21.8232 10.2626 21.8232 9.96967 21.5303C9.67678 21.2374 9.67678 20.7626 9.96967 20.4697L18.4393 12L9.96967 3.53033C9.67678 3.23744 9.67678 2.76256 9.96967 2.46967Z" fill="#BDBDBD"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <a class="logout caption-bold-1 text-black" href="/logout">로그아웃</a>
+            <a class="withdraw caption-bold-1 text-black" href="/withdraw">탈퇴하기</a>
+        </div>
+    </div>
+</div>
+<th:block th:insert="common/fragments :: navBar"/>
+</body>
+</html>
