@@ -72,7 +72,8 @@ public class BuildingRequestValidationTest {
         final ResultActions action1 = mockMvc.perform(
                         get("/building/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(badRequestContent)
+                                .param("buildingId","5,6")
+//                                .content(badRequestContent)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isBadRequest())
                 .andDo(print());
@@ -80,7 +81,8 @@ public class BuildingRequestValidationTest {
         final ResultActions action2 = mockMvc.perform(
                         get("/building/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(goodRequestContent)
+                                .param("buildingId","1,2")
+//                                .content(goodRequestContent)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print());
