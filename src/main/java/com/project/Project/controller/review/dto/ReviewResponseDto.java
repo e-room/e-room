@@ -29,7 +29,7 @@ public class ReviewResponseDto {
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class ReviewCreateResponse{
-        private List<Integer> reviewId;
+        private Integer reviewId;
         private LocalDateTime createdAt;
         private Integer affectedRowCnt;
     }

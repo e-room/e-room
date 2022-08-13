@@ -55,7 +55,7 @@ public class ReviewForm extends BaseEntity {
     /**
      * 관리비 : 몇호기준 얼마정도에요. 여름에는 에어컨을 틀면 추가적으로 ....
      */
-    private String managementFeeDescription;
+    private Integer managementFee;
 
     /**
      * 교통점수 : 5단계 선택
