@@ -1,17 +1,16 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.enums.FloorHeight;
-import com.project.Project.domain.enums.ResidencePeriod;
-import com.project.Project.domain.enums.ResidenceType;
-import com.project.Project.domain.enums.ScoreOption;
+import com.project.Project.domain.enums.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -58,6 +57,13 @@ public class ReviewForm extends BaseEntity {
     private Integer managementFee;
 
     /**
+     * 전용면적
+     * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
+     */
+    @Column(precision = 10, scale = 3)
+    private BigDecimal netLeasableArea;
+
+    /**
      * 교통점수 : 5단계 선택
      */
     @Enumerated(EnumType.STRING)
@@ -96,6 +102,8 @@ public class ReviewForm extends BaseEntity {
     @Builder.Default
     private List<AdvantageKeyword> advantageKeywordList = new ArrayList<>();
 
+    private String advantageDescription;
+
     /**
      * 단점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
      * 단열 반려동물 키우기 벌레 층간소음 엘레베이터 동네소음 언덕 마트/편의점 상가 학교/학원
@@ -103,6 +111,8 @@ public class ReviewForm extends BaseEntity {
     @OneToMany(mappedBy = "reviewForm")
     @Builder.Default
     private List<DisadvantageKeyword> disadvantageKeywordList = new ArrayList<>();
+
+    private String disadvantageDescription;
 
     /**
      * 해당 거주지 만족도 : 별 1개부터 5개까지 선택
@@ -113,4 +123,17 @@ public class ReviewForm extends BaseEntity {
     public void deleteHandler() {
         super.setDeleted(true);
     }
+
+    public List<AdvantageKeywordEnum> getAdvantageKeywordEnumList() {
+        return this.advantageKeywordList.stream()
+                .map(AdvantageKeyword::getAdvantageKeywordEnum)
+                .collect(Collectors.toList());
+    }
+
+    public List<DisadvantageKeywordEnum> getDisadvantageKeywordEnumList() {
+        return this.disadvantageKeywordList.stream()
+                .map(DisadvantageKeyword::getDisadvantageKeywordEnum)
+                .collect(Collectors.toList());
+    }
+
 }

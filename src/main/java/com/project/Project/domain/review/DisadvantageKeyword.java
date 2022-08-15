@@ -1,8 +1,7 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.enums.AdvantageKeywordEnum;
-import com.project.Project.domain.review.ReviewForm;
+import com.project.Project.domain.enums.DisadvantageKeywordEnum;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -11,7 +10,7 @@ import javax.persistence.*;
 
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-@SQLDelete(sql = "UPDATE review_form SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE disadvantage_keyword SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
 public class DisadvantageKeyword extends BaseEntity {
@@ -21,7 +20,7 @@ public class DisadvantageKeyword extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private AdvantageKeywordEnum advantageKeywordEnum;
+    private DisadvantageKeywordEnum disadvantageKeywordEnum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_form_id")

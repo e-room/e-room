@@ -3,9 +3,14 @@ package com.project.Project.controller.review.controller;
 import com.project.Project.Util.JsonResult;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
+import com.project.Project.domain.building.Building;
+import com.project.Project.domain.review.Review;
+import com.project.Project.domain.room.Room;
+import com.project.Project.service.ReviewService;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,10 +21,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
+@RequiredArgsConstructor
 public class ReviewRestController {
+
+    private final ReviewService reviewService;
+
     /* todo
         @GetMapping("/building/room/review")
      */
@@ -33,8 +43,12 @@ public class ReviewRestController {
      */
     @GetMapping("/buildig/{buildingId}/room/review")
     public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId){
-
-        return null;
+        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId);
+        List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
+                reviewList.stream()
+                        .map(Review::toReviewListResponse)
+                        .collect(Collectors.toList());
+        return reviewListResponseList;
     }
 
     /**
@@ -46,7 +60,12 @@ public class ReviewRestController {
      */
     @GetMapping("/building/room/{roomId}/review")
     public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId){
-        return null;
+        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId);
+        List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
+                reviewList.stream()
+                        .map(Review::toReviewListResponse)
+                        .collect(Collectors.toList());
+        return reviewListResponseList;
     }
     /* todo
         @GetMapping("/building/room/review/{reviewId}")

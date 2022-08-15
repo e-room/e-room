@@ -10,7 +10,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-@SQLDelete(sql = "UPDATE review_form SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE advantage_keyword SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
 public class AdvantageKeyword extends BaseEntity {
