@@ -8,4 +8,8 @@ import java.util.List;
 public interface ReviewService {
     List<Review> getReviewListByBuildingId(Long buildingId);
     List<Review> getReviewListByRoomId(Long roomId);
+
+    Long deleteById(Long reviewId);
+
+    Long save(Review review);
 }

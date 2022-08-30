@@ -9,11 +9,13 @@ import com.project.Project.repository.RoomRepository;
 import com.project.Project.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
     private final BuildingRepository buildingRepository;
@@ -37,7 +39,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     public List<Review> getReviewListByRoomId(Long roomId) {
         /*
-            1. roomId로 room 조회 -> review 리스트 조회
+            roomId로 room 조회 -> review 리스트 조회
          */
         // 컨트롤러에서 존재하는 룸으로 검증되고 넘어왔으므로 바로 get
         Room room = roomRepository.findById(roomId).get();
@@ -45,4 +47,14 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewList;
     }
 
+    @Transactional
+    public Long deleteById(Long reviewId) {
+        reviewRepository.deleteById(reviewId);
+        return reviewId;
+    }
+
+    @Transactional
+    public Long save(Review review) {
+        return reviewRepository.save(review).getId();
+    }
 }

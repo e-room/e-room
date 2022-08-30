@@ -16,11 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Validated
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 public class ReviewRestController {
 
     private final ReviewService reviewService;
+
 
     /* todo
         @GetMapping("/building/room/review")
@@ -86,7 +90,28 @@ public class ReviewRestController {
      */
     @PostMapping("/building/room/review")
     public ReviewResponseDto.ReviewCreateResponse createReview(@RequestBody @Valid ReviewRequestDto.ReviewCreateDto request){
-        return null;
+        /*
+            1. address로 빌딩 조회
+            2. 빌딩의 room 조회
+            3. room을 toReview로 넘겨서 review 생성
+            4. 저장 후 응답
+         */
+        Optional<Building> building = buildingService.findByAddress(request.getAddress());
+        if(building.isPresent()) { // building이 존재할 때
+            // room이 존재하는 경우 : 존재하는 room연관관계 맺은 review 저장
+
+            // room이 존재하지 않는 경우 : room을 생성해준 후 review 저장
+        } else { // building이 없을 때
+            // building을 & room 생성 및 저장 -> review 저장
+        }
+
+        Review review = request.toReview();
+        Long savedReviewId = reviewService.save(review);
+        return ReviewResponseDto.ReviewCreateResponse.builder()
+                .reviewId(savedReviewId)
+                .createdAt(LocalDateTime.now())
+                .affectedRowCnt(3) // todo: 어캐앎??
+                .build();
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -100,6 +125,11 @@ public class ReviewRestController {
      */
     @DeleteMapping("/building/room/review/{reviewId}")
     public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId){
-        return null;
+        Long deletedReviewId = reviewService.deleteById(reviewId);
+        return ReviewResponseDto.ReviewDeleteResponse.builder()
+                .reviewId(deletedReviewId)
+                .deletedAt(LocalDateTime.now())
+                .affectedRowCnt(3) // 어캐앎 ??
+                .build();
     }
 }

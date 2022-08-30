@@ -57,6 +57,6 @@ public class Address {
 
     @Override
     public String toString() {
-        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeonDong +  " " +  roadName;
+        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeonDong +  " " +  roadName + " " + buildingNumber;
     }
 }

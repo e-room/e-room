@@ -1,6 +1,7 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.domain.enums.*;
+import com.project.Project.domain.review.Review;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
 
@@ -142,5 +143,17 @@ public class ReviewRequestDto {
          */
         @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
         private String residenceSatisfaction;
+
+        public Review toReview() { // todo: 하드코딩 부분 해결
+            Review.builder()
+                    .member()
+                    .room()
+                    .likeMemberList()
+                    .likeCnt()
+                    .reviewForm()
+                    .reviewSummaryList()
+                    .anonymousStatus()
+                    .build();
+        }
     }
 }

@@ -31,14 +31,14 @@ public class ReviewResponseDto {
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class ReviewCreateResponse{
-        private Integer reviewId;
+        private Long reviewId;
         private LocalDateTime createdAt;
         private Integer affectedRowCnt;
     }
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class ReviewDeleteResponse{
-        private Integer reviewId;
-        private LocalDateTime createdAt;
+        private Long reviewId;
+        private LocalDateTime deletedAt;
         private Integer affectedRowCnt;
     }
 }
