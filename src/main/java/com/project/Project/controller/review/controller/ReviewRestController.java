@@ -3,10 +3,14 @@ package com.project.Project.controller.review.controller;
 import com.project.Project.Util.JsonResult;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
+import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
+import com.project.Project.service.BuildingService;
 import com.project.Project.service.ReviewService;
+import com.project.Project.service.RoomService;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
@@ -32,7 +36,8 @@ import java.util.stream.Collectors;
 public class ReviewRestController {
 
     private final ReviewService reviewService;
-
+    private final BuildingService buildingService;
+    private final RoomService roomService;
 
     /* todo
         @GetMapping("/building/room/review")
@@ -96,17 +101,42 @@ public class ReviewRestController {
             3. room을 toReview로 넘겨서 review 생성
             4. 저장 후 응답
          */
+        Member member = Member.builder() // temp user
+                .reviewList(new ArrayList<>())
+                .favoriteBuildingList(new ArrayList<>())
+                .likeReviewList(new ArrayList<>())
+                .name("하품하는 망아지")
+                .email("swa07016@khu.ac.kr")
+                .memberRole(MemberRole.USER)
+                .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
+                .build();
+        Long savedReviewId = 0L;
         Optional<Building> building = buildingService.findByAddress(request.getAddress());
+
         if(building.isPresent()) { // building이 존재할 때
             // room이 존재하는 경우 : 존재하는 room연관관계 맺은 review 저장
-
+            Optional<Room> room = roomService.findByBuildingAndLineNumberAndRoomNumber(
+                    building.get(), request.getRoomNumber(), request.getLineNumber());
+            if(room.isPresent()) {
+                Review review = request.toReview(member, room.get());
+                savedReviewId = reviewService.save(review);
+                // todo : 정상 응답
+            }
             // room이 존재하지 않는 경우 : room을 생성해준 후 review 저장
-        } else { // building이 없을 때
-            // building을 & room 생성 및 저장 -> review 저장
+            else {
+                Room newRoom = roomService.createRoom(building.get(), request.getLineNumber(), request.getRoomNumber());
+                Review review = request.toReview(member, newRoom);
+                savedReviewId = reviewService.save(review);
+            }
+        } else { // building이 없을 때 : 해당하는 주소에 집이 없다고 알려줌
+            /*
+             TODO
+             여기서 어떻게 처리해야하지?
+             ReviewResponseDto.ReviewCreateResponse 반환할 수는 없으니까
+             BuildingNotFoundException 같은 걸 만들어서 던지고 컨트롤러 어드바이스로 핸들링 해야하나?
+            * */
         }
 
-        Review review = request.toReview();
-        Long savedReviewId = reviewService.save(review);
         return ReviewResponseDto.ReviewCreateResponse.builder()
                 .reviewId(savedReviewId)
                 .createdAt(LocalDateTime.now())

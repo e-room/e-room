@@ -3,8 +3,10 @@ package com.project.Project.repository;
 import com.project.Project.domain.building.Building;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BuildingRepository extends JpaRepository<Building,Long> {
     @Query("select distinct b from Building b join fetch b.roomList where b.id = :buildingId")
@@ -19,4 +21,6 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     List<Building> findByAddressDetailedAddressContaining(String params);
 
     List<Building> findByAddress_RoadNameContaining(String params);
+    @Query("select distinct b from Building b where b.address = :address")
+    Optional<Building> findByAddress(@Param("address") String address);
 }

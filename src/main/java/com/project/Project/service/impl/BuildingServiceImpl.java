@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,5 +32,10 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<Building> getBuildingBySearch(String params) {
         return buildingRepository.findBuildingsByAddress(params);
+    }
+
+    @Override
+    public Optional<Building> findByAddress(String address) {
+        return buildingRepository.findByAddress(address);
     }
 }

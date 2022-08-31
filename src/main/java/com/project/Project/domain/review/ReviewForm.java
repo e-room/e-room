@@ -91,7 +91,7 @@ public class ReviewForm extends BaseEntity {
      * 생활 및 입지 점수 : 5단계 선택
      */
     @Enumerated(EnumType.STRING)
-    private ScoreOption LivingLocationScore;
+    private ScoreOption livingLocationScore;
 
     /**
      * 장점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습

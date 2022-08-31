@@ -52,6 +52,10 @@ public class Room extends BaseEntity {
      * 전용면적
      * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
      */
+
+
+    // TODO : 여기있는 평수, 월세, 관리비는 필요없는 것 아닌가 이제??
+
     @Column(precision = 10, scale = 3)
     private BigDecimal netLeasableArea;
 
@@ -72,4 +76,12 @@ public class Room extends BaseEntity {
     }
 
     // TODO : 주변 상권(동영상) 관련 필드 추가 여부 질문
+
+    public void setBuilding(Building building) {
+        if (this.building != null) { // 기존에 이미 팀이 존재한다면
+            this.building.getRoomList().remove(this); // 관계를 끊는다.
+        }
+        this.building = building;
+        building.getRoomList().add(this);
+    }
 }

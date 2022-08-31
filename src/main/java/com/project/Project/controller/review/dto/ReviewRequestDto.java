@@ -1,7 +1,11 @@
 package com.project.Project.controller.review.dto;
 
+import com.project.Project.domain.Member;
+import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.*;
 import com.project.Project.domain.review.Review;
+import com.project.Project.domain.review.ReviewForm;
+import com.project.Project.domain.room.Room;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
 
@@ -112,7 +116,7 @@ public class ReviewRequestDto {
          * 생활 및 입지 점수 : 5단계 선택
          */
         @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
-        private String LivingLocationScore;
+        private String livingLocationScore;
 
         /**
          * 장점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
@@ -144,16 +148,37 @@ public class ReviewRequestDto {
         @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
         private String residenceSatisfaction;
 
-        public Review toReview() { // todo: 하드코딩 부분 해결
-            Review.builder()
-                    .member()
-                    .room()
-                    .likeMemberList()
-                    .likeCnt()
-                    .reviewForm()
-                    .reviewSummaryList()
-                    .anonymousStatus()
+        public Review toReview(Member member, Room room) { // todo: 하드코딩 부분 & 연관관계 부분 해결
+            ReviewForm reviewForm = ReviewForm.builder()
+                    .residenceType(ResidenceType.valueOf(residenceType))
+                    .residencePeriod(ResidencePeriod.valueOf(residencePeriod))
+                    .floorHeight(FloorHeight.valueOf(floorHeight))
+                    .deposit(deposit)
+                    .monthlyRent(monthlyRent)
+                    .managementFee(managementFee)
+                    .netLeasableArea(netLeasableArea)
+                    .trafficScore(ScoreOption.valueOf(trafficScore))
+                    .buildingComplexScore(ScoreOption.valueOf(buildingComplexScore))
+                    .surroundingScore(ScoreOption.valueOf(surroundingScore))
+                    .internalScore(ScoreOption.valueOf(internalScore))
+                    .livingLocationScore(ScoreOption.valueOf(livingLocationScore))
+                    .advantageKeywordList(new ArrayList<>())
+                    .advantageDescription("장점 설명 Lorem ipsum")
+                    .disadvantageKeywordList(new ArrayList<>())
+                    .disadvantageDescription("단점 설명 Lorem ipsum")
+                    .residenceSatisfaction(ScoreOption.valueOf(residenceSatisfaction))
                     .build();
+
+            return Review.builder()
+                    .member(member)
+                    .room(room)
+                    .likeMemberList(new ArrayList<>())
+                    .likeCnt(0)
+                    .reviewForm(reviewForm)
+                    .reviewSummaryList(new ArrayList<>())
+                    .anonymousStatus(AnonymousStatus.generateAnonymousStatus())
+                    .build();
+
         }
     }
 }
