@@ -2,7 +2,7 @@ package com.project.Project.domain;
 
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
-import com.project.Project.domain.interaction.Like;
+import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import lombok.*;
 
@@ -32,7 +32,7 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<Like> likeReviewList = new ArrayList<>();
+    private List<ReviewLike> likeReviewList = new ArrayList<>();
 
 //    // Oauth 회원번호
 //    private Long userId;

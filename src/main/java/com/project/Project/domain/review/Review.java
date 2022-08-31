@@ -3,7 +3,7 @@ package com.project.Project.domain.review;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
-import com.project.Project.domain.interaction.Like;
+import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import lombok.*;
@@ -40,7 +40,7 @@ public class Review extends BaseEntity {
 
     @OneToMany(mappedBy = "review")
     @Builder.Default
-    private List<Like> likeMemberList = new ArrayList<>();
+    private List<ReviewLike> likeMemberList = new ArrayList<>();
 
     private Integer likeCnt;
 
@@ -67,7 +67,7 @@ public class Review extends BaseEntity {
                 .score(new BigDecimal(4.5))
                 .residencePeriod(reviewForm.getResidencePeriod())
                 .floorHeight(reviewForm.getFloorHeight())
-                .netLeasableArea(room.getNetLeasableArea())
+                .netLeasableArea(reviewForm.getNetLeasableArea())
                 .deposit(reviewForm.getDeposit())
                 .monthlyRent(reviewForm.getMonthlyRent())
                 .managementFee(reviewForm.getManagementFee())

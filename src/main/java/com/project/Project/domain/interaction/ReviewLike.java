@@ -2,7 +2,6 @@ package com.project.Project.domain.interaction;
 
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
-import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +27,7 @@ import javax.persistence.*;
                 )
         }
 )
-public class Like extends BaseEntity {
+public class ReviewLike extends BaseEntity {
 
     @Id
     @GeneratedValue

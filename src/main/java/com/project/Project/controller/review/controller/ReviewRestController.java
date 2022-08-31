@@ -128,19 +128,13 @@ public class ReviewRestController {
                 Review review = request.toReview(member, newRoom);
                 savedReviewId = reviewService.save(review);
             }
-        } else { // building이 없을 때 : 해당하는 주소에 집이 없다고 알려줌
-            /*
-             TODO
-             여기서 어떻게 처리해야하지?
-             ReviewResponseDto.ReviewCreateResponse 반환할 수는 없으니까
-             BuildingNotFoundException 같은 걸 만들어서 던지고 컨트롤러 어드바이스로 핸들링 해야하나?
-            * */
+        } else { // building이 없을 때 : building insert -> room 생성 -> 연관관계 후 리뷰 저장
+
         }
 
         return ReviewResponseDto.ReviewCreateResponse.builder()
                 .reviewId(savedReviewId)
                 .createdAt(LocalDateTime.now())
-                .affectedRowCnt(3) // todo: 어캐앎??
                 .build();
     }
     /* todo

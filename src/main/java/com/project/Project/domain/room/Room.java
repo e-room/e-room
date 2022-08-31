@@ -53,23 +53,6 @@ public class Room extends BaseEntity {
      * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
      */
 
-
-    // TODO : 여기있는 평수, 월세, 관리비는 필요없는 것 아닌가 이제??
-
-    @Column(precision = 10, scale = 3)
-    private BigDecimal netLeasableArea;
-
-//    /**
-//     * 빛 방향
-//     * 남향/동향 등
-//     */
-//    @Enumerated(EnumType.STRING)
-//    private LightDirection lightDirection;
-
-    private Integer rentFee;
-
-    private Integer managementFee;
-
     @PreRemove
     public void deleteHandler(){
         super.setDeleted(true);

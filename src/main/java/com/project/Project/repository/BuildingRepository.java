@@ -21,6 +21,6 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     List<Building> findByAddressDetailedAddressContaining(String params);
 
     List<Building> findByAddress_RoadNameContaining(String params);
-    @Query("select distinct b from Building b where b.address = :address")
+    @Query("select distinct b from Building b where b.address = :address") // todo : 이게 동작할까?..
     Optional<Building> findByAddress(@Param("address") String address);
 }

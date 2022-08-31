@@ -27,13 +27,13 @@ public class ReviewResponseDto {
         private String advantageDescription;
         private List<DisadvantageKeywordEnum> disadvantage;
         private String disadvantageDescription;
+        private Integer reviewLikeCnt;
     }
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class ReviewCreateResponse{
         private Long reviewId;
         private LocalDateTime createdAt;
-        private Integer affectedRowCnt;
     }
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class ReviewDeleteResponse{

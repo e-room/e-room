@@ -18,10 +18,10 @@ public class BuildingResponseDto {
     @Builder
     @Getter
     public static class BuildingListResponse{
-        private Integer buildingId;
+        private Long buildingId;
         private String name;
         private String address;
-        private Integer reviewCnt;
+        private Long reviewCnt;
         private Float scoreAvg;
         private ReviewCategoryEnum bestCategory;
         private boolean isDirectDeal;
@@ -34,7 +34,7 @@ public class BuildingResponseDto {
     @Getter
     public static class BuildingCountResponse{
         private Coordinate coordinate;
-        private Integer buildingId;
+        private Long buildingId;
     }
 
 
@@ -44,13 +44,11 @@ public class BuildingResponseDto {
     @Builder
     @Getter
     public static class BuildingResponse{
-        private Integer buildingId;
+        private Long buildingId;
         private String name;
         private String address;
         private Coordinate coordinate;
         private List<RoomResponseDto.RoomListResponse> rooms;
-        private List<ReviewResponseDto.ReviewListResponse> reviews;
         private List<Map<ReviewCategoryEnum, Double>> buildingSummaries;
-        private Integer initalReviewCount;
     }
 }
