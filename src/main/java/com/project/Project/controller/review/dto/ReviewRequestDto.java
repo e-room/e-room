@@ -124,20 +124,18 @@ public class ReviewRequestDto {
          * (여러개 선택 가능)
          */
         @Builder.Default
-        @Valid
-        @ValidEnum(enumClass = AdvantageKeywordEnum.class, ignoreCase = true)
-        private List<String> advantageKeywordList = new ArrayList<>();
+//        @Valid
+        private List<@ValidEnum(enumClass = AdvantageKeywordEnum.class, ignoreCase = true) String> advantageKeywordList = new ArrayList<>();
 
-                private String advantageDescription;
+        private String advantageDescription;
 
         /**
          * 단점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
          * 단열 반려동물 키우기 벌레 층간소음 엘레베이터 동네소음 언덕 마트/편의점 상가 학교/학원
          */
         @Builder.Default
-        @Valid
-        @ValidEnum(enumClass = DisadvantageKeywordEnum.class, ignoreCase = true)
-        private List<String> disadvantageKeywordList = new ArrayList<>();
+//        @Valid
+        private List<@ValidEnum(enumClass = DisadvantageKeywordEnum.class, ignoreCase = true) String> disadvantageKeywordList = new ArrayList<>();
 
         // todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         private String disadvantageDescription;

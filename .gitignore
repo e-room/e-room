@@ -38,3 +38,6 @@ out/
 
 application-datasource.properties
 application-oauth.properties
+
+###docker###
+db
