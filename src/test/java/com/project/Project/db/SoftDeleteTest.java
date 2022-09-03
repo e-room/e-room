@@ -1,7 +1,7 @@
 package com.project.Project.db;
 
 import com.project.Project.repository.ReviewFormRepository;
-import com.project.Project.domain.ReviewForm;
+import com.project.Project.domain.review.ReviewForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

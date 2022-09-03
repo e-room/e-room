@@ -116,5 +116,5 @@ spring:
           auto: create
 logging:
   level:
-    root: debug
+    root: info
     sql: debug

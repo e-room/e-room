@@ -1,6 +1,8 @@
-package com.project.Project.domain;
+package com.project.Project.domain.chat;
 
-import lombok.Data;
+import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.Member;
+import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -8,7 +10,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
+@Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE chat_room SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
@@ -26,6 +29,7 @@ public class ChatRoom extends BaseEntity {
     private Member guest;
 
     @OneToMany(mappedBy = "chatRoom")
+    @Builder.Default
     private List<ChatMessage> chatMessageList = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
