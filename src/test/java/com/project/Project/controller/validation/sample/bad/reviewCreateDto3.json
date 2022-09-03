@@ -1,0 +1,21 @@
+{
+  "address": "경기도 수원시 ~~~",
+  "lineNumber": 101,
+  "roomNumber": 201,
+  "residenceType": "APARTMENT",
+  "residencePeriod": "UNTIL_NINETEEN",
+  "floorHeight": "VERY_LOW",
+  "deposit": 800,
+  "monthlyRent": 50,
+  "managementFee": 10,
+  "netLeasableArea": 13,
+  "managementFeeDescription": "관리비에 대한 설명, 여름에 전기세 얼마 정도 나온다.",
+  "trafficScore": "VERY_SATISFIED",
+  "buildingComplexScore": "very_dissatisfied",
+  "surroundingScore": "dissatisfied",
+  "internalScore": "SATISFIED",
+  "livingLocationScore": "SATISFIED",
+  "advantageKeywordList" : ["PARKING","elevator","day_lighting"],
+  "disadvantageKeywordList": ["insulation","DAY_LIGHTING"],
+  "residenceSatisfaction": "VERY_SATISFIED"
+}

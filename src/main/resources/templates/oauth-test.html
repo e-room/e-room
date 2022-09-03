@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div th:text="${loginUserName}"></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
