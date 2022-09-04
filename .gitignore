@@ -37,7 +37,7 @@ out/
 .vscode/
 
 application-datasource.properties
-application-oauth.properties
+#application-oauth.properties
 
 ###docker###
 db
