@@ -14,7 +14,11 @@ spring:
   devtools:
     livereload:
       enabled: true
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 server:
   port: 8080
@@ -29,9 +33,9 @@ spring:
       on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${AWS_USERNAME}
-    password: ${AWS_PASSWORD}
-    url: ${AWS_DEV_DB_URL}
+    username: admin
+    password: qlalfqjsgh1!
+    url: jdbc:mysql://project.c5ukj6j3krdj.us-west-1.rds.amazonaws.com:3306/PROJECT_DEV
   jpa:
     properties:
       hibernate:
@@ -43,7 +47,7 @@ spring:
           auto: update
 logging:
   level:
-    root: debug
+    root: info
     sql: info
 
 
