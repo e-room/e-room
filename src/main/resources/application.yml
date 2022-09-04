@@ -43,8 +43,8 @@ spring:
           auto: update
 logging:
   level:
-    root: info
-    sql: debug
+    root: debug
+    sql: info
 
 
 ---
