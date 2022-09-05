@@ -93,8 +93,8 @@ public class BuildingRequestValidationTest {
     void BuildingMarkerTest() throws Exception {
 
         Building testBuilding1 = Building.builder()
-                .id(1L).hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").siGunGu("유성구").eupMyeonDong("어은동").roadName("대학로 291").build()).build();
-        Building testBuilding2 = Building.builder().id(2L).hasElevator(false).address(Address.builder().metropolitanGovernment("서울 특별시").siGunGu("관악구").eupMyeonDong("신림동").roadName("관천로 47").build()).build();
+                .id(1L).hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").siGunGu("유성구").eupMyeon("어은동").roadName("대학로 291").build()).build();
+        Building testBuilding2 = Building.builder().id(2L).hasElevator(false).address(Address.builder().metropolitanGovernment("서울 특별시").siGunGu("관악구").eupMyeon("신림동").roadName("관천로 47").build()).build();
 
 
         //given

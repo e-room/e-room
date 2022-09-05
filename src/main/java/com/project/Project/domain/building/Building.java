@@ -25,7 +25,7 @@ import java.util.List;
                             "metropolitanGovernment",
                             "basicLocalGovernment",
                             "siGunGu",
-                            "eupMyeonDong",
+                            "eupMyeon",
                             "roadName",
                             "buildingNumber"
                             // 상세주소와 참고항목은 같은 건물내에서도 다르므로 제외

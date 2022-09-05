@@ -1,6 +1,7 @@
 package com.project.Project.repository;
 
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.embedded.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +23,5 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
 
     List<Building> findByAddress_RoadNameContaining(String params);
     @Query("select distinct b from Building b where b.address = :address") // todo : 이게 동작할까?..
-    Optional<Building> findByAddress(@Param("address") String address);
+    Optional<Building> findByAddress(Address address);
 }

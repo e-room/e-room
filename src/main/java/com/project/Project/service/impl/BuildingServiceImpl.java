@@ -1,6 +1,7 @@
 package com.project.Project.service.impl;
 
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.BuildingRepository;
 import com.project.Project.repository.ReviewRepository;
 import com.project.Project.repository.RoomRepository;
@@ -35,7 +36,9 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public Optional<Building> findByAddress(String address) {
+    public Optional<Building> findByAddress(String stringAddress) {
+        // String to Address Type
+        Address address = Address.valueOf(stringAddress);
         return buildingRepository.findByAddress(address);
     }
 }
