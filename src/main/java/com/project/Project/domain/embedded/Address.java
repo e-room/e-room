@@ -46,7 +46,7 @@ public class Address {
     private String siGunGu;
 
     /**
-     * 읍면동
+     * 읍면
      */
     @Column(length = 20)
     private String eupMyeon;

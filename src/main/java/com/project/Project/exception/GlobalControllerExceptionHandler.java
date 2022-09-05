@@ -5,6 +5,7 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.invocation.MethodArgumentResolutionException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -29,6 +30,16 @@ public class GlobalControllerExceptionHandler {
 
         String message = "파라미터가 " + ex.getParameter() + " 타입이 아닙니다.";
         JsonResult jsonResult = new JsonResult(HttpStatus.BAD_REQUEST,message,ex.getClass().toString());
+
+        return ResponseEntity.badRequest()
+                .body(jsonResult);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<JsonResult> MethodArgumentType(MethodArgumentNotValidException ex){
+
+        String message = "파라미터가 유효하지 않습니다.";
+        JsonResult jsonResult = new JsonResult(HttpStatus.BAD_REQUEST,ex.getMessage(),ex.getClass().toString());
 
         return ResponseEntity.badRequest()
                 .body(jsonResult);

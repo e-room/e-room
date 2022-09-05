@@ -44,6 +44,7 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test") // 권한 관련
 	implementation 'javax.xml.bind:jaxb-api'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
 
 }
