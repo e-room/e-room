@@ -8,6 +8,7 @@ import com.project.Project.domain.review.ReviewForm;
 import com.project.Project.domain.room.Room;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -141,6 +142,8 @@ public class ReviewRequestDto {
 
         // todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         private String disadvantageDescription;
+
+        private List<MultipartFile> roomImageList = new ArrayList<>();
 
         /**
          * 해당 거주지 만족도 : 별 1개부터 5개까지 선택
