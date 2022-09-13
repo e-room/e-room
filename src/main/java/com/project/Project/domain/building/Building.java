@@ -25,7 +25,7 @@ import java.util.List;
                             "metropolitanGovernment",
                             "basicLocalGovernment",
                             "siGunGu",
-                            "eupMyeonDong",
+                            "eupMyeon",
                             "roadName",
                             "buildingNumber"
                             // 상세주소와 참고항목은 같은 건물내에서도 다르므로 제외
@@ -41,12 +41,15 @@ public class Building extends BaseEntity {
     @Embedded
     private Address address;
 
+    @Column
+    private String buildingName;
+
     @Embedded
     private Coordinate coordinate;
 
     private Boolean hasElevator;
 
-    @OneToMany(mappedBy = "building")
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Room> roomList = new ArrayList<>();
 
@@ -60,5 +63,17 @@ public class Building extends BaseEntity {
     @PreRemove
     public void deleteHandler(){
         super.setDeleted(true);
+    }
+
+    public void addRoom(Room room){
+        this.roomList.add(room);
+        room.setBuilding(this);
+    }
+
+    public void addRooms(List<Room> rooms){
+        this.roomList.addAll(rooms);
+        for (Room room : rooms) {
+            room.setBuilding(this);
+        }
     }
 }

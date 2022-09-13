@@ -33,7 +33,7 @@ public class Address {
      * 읍면동
      */
     @Column(length = 20)
-    private String eupMyeonDong;
+    private String eupMyeon;
 
     /**
      * 도로명
@@ -45,18 +45,18 @@ public class Address {
      */
     private String buildingNumber;
 
-    /**
-     * 상세주소
-     */
-    private String detailedAddress;
-
-    /**
-     * 참고항목
-     */
-    private String referenceItem;
+//    /**
+//     * 상세주소
+//     */
+//    private String detailedAddress;
+//
+//    /**
+//     * 참고항목
+//     */
+//    private String referenceItem;
 
     @Override
     public String toString() {
-        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeonDong +  " " +  roadName + " " + buildingNumber;
+        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " + buildingNumber;
     }
 }
