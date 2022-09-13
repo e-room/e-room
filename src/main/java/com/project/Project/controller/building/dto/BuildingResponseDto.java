@@ -7,6 +7,7 @@ import com.project.Project.domain.enums.ReviewCategoryEnum;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class BuildingResponseDto {
         private String name;
         private String address;
         private Long reviewCnt;
-        private Float scoreAvg;
+        private BigDecimal scoreAvg;
         private ReviewCategoryEnum bestCategory;
         private boolean isDirectDeal;
     }
@@ -48,6 +49,7 @@ public class BuildingResponseDto {
         private String name;
         private String address;
         private Coordinate coordinate;
+        private Boolean isDirectDeal;
         private List<RoomResponseDto.RoomListResponse> rooms;
         private List<Map<ReviewCategoryEnum, Double>> buildingSummaries;
     }
