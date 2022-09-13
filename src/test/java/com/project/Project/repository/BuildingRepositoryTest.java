@@ -34,8 +34,6 @@ public class BuildingRepositoryTest {
                 .eupMyeon("")
                 .roadName("매영로425번길")
                 .buildingNumber("4")
-                .detailedAddress("302호")
-                .referenceItem("")
                 .build();
 
         Coordinate coordinate = Coordinate.builder()

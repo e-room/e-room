@@ -16,12 +16,12 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     @Query("select distinct b from Building  b join fetch b.roomList where b.id in :ids ")
     List<Building> findBuildingsByIdIn(List<Long> ids);
 
-    @Query("select distinct b from Building b where b.address.detailedAddress like %:params% or b.address.roadName like %:params%")
-    List<Building> findBuildingsByAddress(String params);
+//    @Query("select distinct b from Building b where b.address.detailedAddress like %:params% or b.address.roadName like %:params%")
+//    List<Building> findBuildingsByAddress(String params);
 
-    List<Building> findByAddressDetailedAddressContaining(String params);
+//    List<Building> findByAddressDetailedAddressContaining(String params);
 
     List<Building> findByAddress_RoadNameContaining(String params);
-    @Query("select distinct b from Building b where b.address = :address") // todo : 이게 동작할까?..
+    @Query("select distinct b from Building b where b.address = :address")
     Optional<Building> findByAddress(Address address);
 }

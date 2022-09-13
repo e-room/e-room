@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface BuildingService {
     List<Building> getBuildingListByBuildingIds(List<Long> buildingIds);
     Building getBuildingByBuildingId(Long buildingId);
-    List<Building> getBuildingBySearch(String params);
+//    List<Building> getBuildingBySearch(String params);
     Optional<Building> findByAddress(String address);
 }

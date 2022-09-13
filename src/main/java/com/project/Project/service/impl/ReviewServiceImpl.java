@@ -8,6 +8,7 @@ import com.project.Project.repository.ReviewRepository;
 import com.project.Project.repository.RoomRepository;
 import com.project.Project.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
 
-    public List<Review> getReviewListByBuildingId(Long buildingId) {
+    public List<Review> getReviewListByBuildingId(Long buildingId, Long cursorId, Pageable page) {
+
         /*
             1. buildingId로 building 조회 -> room 리스트 조회
             2. room 리스트의 reviewList들을 연결하여 반환
@@ -30,22 +32,42 @@ public class ReviewServiceImpl implements ReviewService {
         // 컨트롤러에서 존재하는 빌딩으로 검증되고 넘어왔으므로 바로 get
         Building building = buildingRepository.findById(buildingId).get();
         List<Room> roomList = roomRepository.findByBuilding(building);
-        List<Review> reviewList = new ArrayList<>();
-        for(Room room : roomList) {
-            reviewList.addAll(room.getReviewList());
+
+        List<Long> reviewIdList = new ArrayList<>();
+        for(Room room : roomList) { // todo : id 추출 코드 개선하기
+            for(Review review : room.getReviewList()) {
+                reviewIdList.add(review.getId());
+            }
         }
-        return reviewList;
+
+        return cursorId == null ?
+                reviewRepository.findByIdInOrderByCreatedAtDesc(reviewIdList, page) :
+                reviewRepository.findByIdInAndIdLessThanOrderByCreatedAtDesc(reviewIdList, cursorId, page);
     }
 
-    public List<Review> getReviewListByRoomId(Long roomId) {
+    public List<Review> getReviewListByRoomId(Long roomId, Long cursorId, Pageable page) {
         /*
             roomId로 room 조회 -> review 리스트 조회
          */
         // 컨트롤러에서 존재하는 룸으로 검증되고 넘어왔으므로 바로 get
         Room room = roomRepository.findById(roomId).get();
-        List<Review> reviewList = reviewRepository.findByRoom(room);
-        return reviewList;
+
+        List<Long> reviewIdList = new ArrayList<>();
+        for(Review review : room.getReviewList()) {
+            reviewIdList.add(review.getId());
+        }
+
+        return cursorId == null ?
+                reviewRepository.findByIdInOrderByCreatedAtDesc(reviewIdList, page) :
+                reviewRepository.findByIdInAndIdLessThanOrderByCreatedAtDesc(reviewIdList, cursorId, page);
     }
+
+//    private List<Review> getReviews(Long cursorId, Pageable page) {
+//        return cursorId == null ?
+//                reviewRepository.findAllByOrderByCreatedAtDesc(page) :
+//                reviewRepository.findByIdLessThanOrderByCreatedAtDesc(cursorId, page);
+//
+//    }
 
     @Transactional
     public Long deleteById(Long reviewId) {

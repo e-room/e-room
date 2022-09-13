@@ -30,13 +30,4 @@ public class Address {
      */
     private String roadName;
 
-    /**
-     * 상세주소
-     */
-    private String detailedAddress;
-
-    /**
-     * 참고항목
-     */
-    private String referenceItem;
 }

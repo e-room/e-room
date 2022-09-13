@@ -30,10 +30,10 @@ public class BuildingServiceImpl implements BuildingService {
         return buildingRepository.findBuildingById(buildingId);
     }
 
-    @Override
-    public List<Building> getBuildingBySearch(String params) {
-        return buildingRepository.findBuildingsByAddress(params);
-    }
+//    @Override
+//    public List<Building> getBuildingBySearch(String params) {
+//        return buildingRepository.findBuildingsByAddress(params);
+//    }
 
     @Override
     public Optional<Building> findByAddress(String stringAddress) {

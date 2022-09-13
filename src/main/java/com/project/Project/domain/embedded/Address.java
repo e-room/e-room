@@ -62,16 +62,6 @@ public class Address {
     private String buildingNumber;
 
     /**
-     * 상세주소
-     */
-    private String detailedAddress;
-
-    /**
-     * 참고항목
-     */
-    private String referenceItem;
-
-    /**
      * 문자열로 된 주소를 Address 객체로 변환
      * @param stringAddress 문자열로 된 주소
      * @return Address 객체 반환
@@ -96,8 +86,6 @@ public class Address {
                 .eupMyeon("")
                 .roadName("매영로425번길")
                 .buildingNumber("4")
-                .detailedAddress("302호")
-                .referenceItem("")
                 .build();
     }
 

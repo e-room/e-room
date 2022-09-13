@@ -15,6 +15,8 @@ import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -51,8 +53,8 @@ public class ReviewRestController {
      * @return 건물 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/buildig/{buildingId}/room/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId){
-        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId);
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @RequestParam(value = "cursorId") Long cursorId, @RequestParam("size") Integer size){
+        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorId, PageRequest.of(0, size));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(Review::toReviewListResponse)
@@ -61,6 +63,7 @@ public class ReviewRestController {
     }
 
     /**
+     *
      * 3.2 리뷰_상세페이지<br>
      * - 특정 방에 대한 리뷰 리스트를 반환<br>
      * - 3.2 리뷰_상세페이지에서 <strong>방(ex.102호)</strong>버튼을 눌렀을 때 사용
@@ -68,8 +71,8 @@ public class ReviewRestController {
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId){
-        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId);
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @RequestParam(value = "cursorId") Long cursorId, @RequestParam("size") Integer size){
+        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorId, PageRequest.of(0, size));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(Review::toReviewListResponse)
@@ -94,7 +97,7 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review")
-    public ReviewResponseDto.ReviewCreateResponse createReview(@RequestBody @Valid ReviewRequestDto.ReviewCreateDto request){
+    public synchronized ReviewResponseDto.ReviewCreateResponse createReview(@RequestBody @Valid ReviewRequestDto.ReviewCreateDto request){
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회
@@ -153,7 +156,7 @@ public class ReviewRestController {
         return ReviewResponseDto.ReviewDeleteResponse.builder()
                 .reviewId(deletedReviewId)
                 .deletedAt(LocalDateTime.now())
-                .affectedRowCnt(3) // 어캐앎 ??
+                .affectedRowCnt(3) // 어캐앎 ?? todo : affected row 하드코딩 해결 및 review API 전부 테스트
                 .build();
     }
 }

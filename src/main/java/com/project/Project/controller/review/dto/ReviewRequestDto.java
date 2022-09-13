@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ReviewRequestDto {
     // todo : 사진 관련 필드 추가 (이미지 업로드 방식 결정 후)
-    /* todo : 글자수제한, not null 등은 정책을 물어본 후 validation
+/* todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         필드 : address, advantageDescription, disadvantageDescription
               집크기, 사진관련
     */
@@ -141,7 +141,7 @@ public class ReviewRequestDto {
         // todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         private String disadvantageDescription;
 
-        private List<MultipartFile> roomImageList = new ArrayList<>();
+//        private List<MultipartFile> roomImageList = new ArrayList<>();
 
         /**
          * 해당 거주지 만족도 : 별 1개부터 5개까지 선택
