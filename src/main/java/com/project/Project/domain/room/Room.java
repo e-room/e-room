@@ -65,6 +65,6 @@ public class Room extends BaseEntity {
             this.building.getRoomList().remove(this); // 관계를 끊는다.
         }
         this.building = building;
-        building.getRoomList().add(this);
+//        building.getRoomList().add(this);
     }
 }
