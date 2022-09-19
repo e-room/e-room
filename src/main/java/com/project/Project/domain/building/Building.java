@@ -1,6 +1,9 @@
 package com.project.Project.domain.building;
 
+import com.project.Project.controller.building.dto.BuildingResponseDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.Address;
@@ -10,8 +13,12 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE building SET deleted = true WHERE id=?")
@@ -49,6 +56,10 @@ public class Building extends BaseEntity {
 
     private Boolean hasElevator;
 
+    @OneToOne
+    @JoinColumn(name = "building_summary_id")
+    private BuildingSummary buildingSummary;
+
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Room> roomList = new ArrayList<>();
@@ -80,5 +91,35 @@ public class Building extends BaseEntity {
         for (Room room : rooms) {
             room.setBuilding(this);
         }
+    }
+
+    public BuildingResponseDto.BuildingResponse toBuildingResponse(){
+
+        Building building = this;
+
+        return BuildingResponseDto.BuildingResponse.builder()
+                .buildingId(building.getId())
+                .name(building.getBuildingName())
+                .address(Address.toAddressDto(building.getAddress()).toString())
+                .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
+                .isDirectDeal(false)
+                .rooms(building.getRoomList().stream().map((room)-> RoomResponseDto.RoomListResponse.builder()
+                        .roomId(room.getId())
+                        .roomNumber(room.getRoomNumber())
+                        .build()
+                ).collect(Collectors.toList()))
+                .buildingSummaries(buildingSummaryTranslate(building.getBuildingSummary()))
+                .build();
+    }
+
+    private Map<ReviewCategoryEnum, BigDecimal> buildingSummaryTranslate(BuildingSummary buildingSummary){
+        Map<ReviewCategoryEnum,BigDecimal> response = new HashMap<>();
+        response.put(ReviewCategoryEnum.TRAFFIC, buildingSummary.getAvgTrafficScore());
+        response.put(ReviewCategoryEnum.INTERNAL, buildingSummary.getAvgInternalScore());
+        response.put(ReviewCategoryEnum.BUILDINGCOMPLEX, buildingSummary.getAvgBuildingComplexScore());
+        response.put(ReviewCategoryEnum.SURROUNDING, buildingSummary.getAvgSurroundingScore());
+        response.put(ReviewCategoryEnum.LIVINGLOCATION, buildingSummary.getAvgLivingLocationScore());
+
+        return response;
     }
 }
