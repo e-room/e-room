@@ -10,7 +10,7 @@ public class RoomResponseDto {
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class RoomResponse{
-        private Integer roomId;
+        private Long roomId;
         private Integer roomNumber;
         private BigDecimal netLeasableArea;
         private LightDirection lightDirection;
@@ -20,14 +20,14 @@ public class RoomResponseDto {
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class RoomListResponse{
-        private Integer roomId;
+        private Long roomId;
         private Integer roomNumber;
     }
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
     public static class RoomCreateResponse{
-        private Integer roomId;
-        private Integer buildingId;
+        private Long roomId;
+        private Long buildingId;
         private LocalDateTime createdAt;
         private Integer roomNumber;
     }
