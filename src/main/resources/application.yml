@@ -1,6 +1,8 @@
 spring:
   profiles:
-    include: oauth
+    include:
+      - oauth
+      - aws
     active: local
   jpa:
     properties:

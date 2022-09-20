@@ -45,8 +45,7 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
-
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.1.RELEASE'
 }
 
 

@@ -2,6 +2,7 @@ package com.project.Project.service.impl;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
+import com.project.Project.domain.review.RoomImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.BuildingRepository;
 import com.project.Project.repository.ReviewRepository;
@@ -22,6 +23,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final BuildingRepository buildingRepository;
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
+    private final FileProcessService fileProcessService;
 
     public List<Review> getReviewListByBuildingId(Long buildingId, Long cursorId, Pageable page) {
 
@@ -71,6 +73,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     public Long deleteById(Long reviewId) {
+        List<RoomImage> roomImageList = reviewRepository.findById(reviewId).get().getReviewForm().getRoomImageList();
+        for(RoomImage roomImage : roomImageList) {
+            fileProcessService.deleteImage(roomImage.getUrl());
+        }
         reviewRepository.deleteById(reviewId);
         return reviewId;
     }

@@ -1,9 +1,12 @@
 package com.project.Project.controller;
 
 import com.project.Project.Util.CookieUtil;
+import com.project.Project.Util.JsonResult;
 import com.project.Project.config.auth.dto.Token;
 import com.project.Project.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +24,12 @@ public class TokenController {
 
     // 토큰이 만료되었을 경우 사용자에게 안내해주기
     @GetMapping("/token/expired")
-    public String auth() {
-        throw new RuntimeException();
+    public ResponseEntity<JsonResult> auth() {
+        String message = "토큰이 만료되었습니다.";
+        JsonResult jsonResult = new JsonResult(HttpStatus.UNAUTHORIZED, message, "/token/refresh");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(jsonResult);
     }
 
     @GetMapping("/token/refresh")

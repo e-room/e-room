@@ -10,6 +10,7 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.service.BuildingService;
 import com.project.Project.service.ReviewService;
+import com.project.Project.service.RoomImageService;
 import com.project.Project.service.RoomService;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
@@ -40,6 +41,7 @@ public class ReviewRestController {
     private final ReviewService reviewService;
     private final BuildingService buildingService;
     private final RoomService roomService;
+    private final RoomImageService roomImageService;
 
     /* todo
         @GetMapping("/building/room/review")
@@ -96,8 +98,8 @@ public class ReviewRestController {
      * @param request 등록할 리뷰
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
-    @PostMapping("/building/room/review")
-    public synchronized ReviewResponseDto.ReviewCreateResponse createReview(@RequestBody @Valid ReviewRequestDto.ReviewCreateDto request){
+    @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
+    public synchronized ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request){
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회
@@ -123,13 +125,14 @@ public class ReviewRestController {
             if(room.isPresent()) {
                 Review review = request.toReview(member, room.get());
                 savedReviewId = reviewService.save(review);
-                // todo : 정상 응답
+                roomImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
             }
             // room이 존재하지 않는 경우 : room을 생성해준 후 review 저장
             else {
                 Room newRoom = roomService.createRoom(building.get(), request.getLineNumber(), request.getRoomNumber());
                 Review review = request.toReview(member, newRoom);
                 savedReviewId = reviewService.save(review);
+                roomImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
             }
         } else { // building이 없을 때 : building insert -> room 생성 -> 연관관계 후 리뷰 저장
 
@@ -153,6 +156,7 @@ public class ReviewRestController {
     @DeleteMapping("/building/room/review/{reviewId}")
     public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId){
         Long deletedReviewId = reviewService.deleteById(reviewId);
+        // todo : 지울 때 이미지도 함께 지워줘야함.
         return ReviewResponseDto.ReviewDeleteResponse.builder()
                 .reviewId(deletedReviewId)
                 .deletedAt(LocalDateTime.now())
