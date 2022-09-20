@@ -55,8 +55,8 @@ public class BuildingRepositoryTest {
 
     @BeforeEach
     void setup(){
-        testBuilding1 = Building.builder().hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").siGunGu("유성구").roadName("대학로 291").build()).buildingName("덕영빌").build();
-        testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().metropolitanGovernment("서울특별시").siGunGu("관악구").roadName("덕영대로 47").build()).buildingName("휴먼라이트 빌").build();
+        testBuilding1 = Building.builder().hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").basicLocalGovernment("유성구").roadName("대학로").buildingNumber("291").build()).buildingName("덕영빌").build();
+        testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().metropolitanGovernment("서울특별시").basicLocalGovernment("관악구").roadName("덕영대로").buildingNumber("47").build()).buildingName("휴먼라이트 빌").build();
         buildingRepository.save(testBuilding1);
         buildingRepository.save(testBuilding2);
         testRoom1 = Room.builder()
