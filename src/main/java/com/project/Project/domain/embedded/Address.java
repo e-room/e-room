@@ -1,5 +1,6 @@
 package com.project.Project.domain.embedded;
 
+import com.project.Project.controller.building.dto.AddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -92,5 +93,15 @@ public class Address {
     @Override
     public String toString() {
         return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " + buildingNumber;
+
+    public static AddressDto toAddressDto(Address address){
+        return AddressDto.builder()
+                .metropolitanGovernment(address.getMetropolitanGovernment())
+                .basicLocalGovernment(address.getBasicLocalGovernment())
+                .siGunGu(address.getSiGunGu())
+                .eupMyeon(address.getEupMyeon())
+                .roadName(address.getRoadName())
+                .buildingNumber(address.getBuildingNumber())
+                .build();
     }
 }

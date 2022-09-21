@@ -1,7 +1,6 @@
 package com.project.Project.repository;
 
 import com.project.Project.domain.building.Building;
-import com.project.Project.domain.embedded.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,12 +15,11 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     @Query("select distinct b from Building  b join fetch b.roomList where b.id in :ids ")
     List<Building> findBuildingsByIdIn(List<Long> ids);
 
-//    @Query("select distinct b from Building b where b.address.detailedAddress like %:params% or b.address.roadName like %:params%")
-//    List<Building> findBuildingsByAddress(String params);
+    @Query("select distinct b from Building b where b.address.metropolitanGovernment like %:params% or b.address.basicLocalGovernment like %:params% or b.address.siGunGu like %:params% or b.address.eupMyeon like %:params% or b.address.roadName like %:params% or b.address.buildingNumber like %:params% or b.buildingName like %:params%")
+    List<Building> searchBuildings (String params);
 
-//    List<Building> findByAddressDetailedAddressContaining(String params);
+    @Query("select distinct b from Building b where b.address = :address") // todo : 이게 동작할까?..
+    Optional<Building> findByAddress(@Param("address") String address);
 
-    List<Building> findByAddress_RoadNameContaining(String params);
-    @Query("select distinct b from Building b where b.address = :address")
-    Optional<Building> findByAddress(Address address);
+    <T> List<T> findBy(Class<T> projection);
 }

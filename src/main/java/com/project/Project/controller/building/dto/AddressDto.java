@@ -3,7 +3,7 @@ package com.project.Project.controller.building.dto;
 import lombok.Builder;
 
 @Builder
-public class Address {
+public class AddressDto {
 
     /**
      * 광역지방자치단체
@@ -30,4 +30,21 @@ public class Address {
      */
     private String roadName;
 
+    private String buildingNumber;
+
+
+    @Override
+    public String toString() {
+        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " ;
+    }
+
+//    /**
+//     * 상세주소
+//     */
+//    private String detailedAddress;
+//
+//    /**
+//     * 참고항목
+//     */
+//    private String referenceItem;
 }
