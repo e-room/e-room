@@ -1,29 +1,18 @@
 package com.project.Project.repository;
 
-import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.room.Room;
-import org.junit.Before;
+import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,8 +45,8 @@ public class BuildingRepositoryTest {
 
     @BeforeEach
     void setup(){
-        testBuilding1 = Building.builder().hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").basicLocalGovernment("유성구").roadName("대학로").buildingNumber("291").build()).buildingName("덕영빌").build();
-        testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().metropolitanGovernment("서울특별시").basicLocalGovernment("관악구").roadName("덕영대로").buildingNumber("47").build()).buildingName("휴먼라이트 빌").build();
+        testBuilding1 = Building.builder().hasElevator(true).address(Address.builder().metropolitanGovernment("대전광역시").basicLocalGovernment("유성구").roadName("대학로").buildingNumber("291").build()).buildingName("덕영빌").coordinate(new Coordinate(34.2321,40.1)).build();
+        testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().metropolitanGovernment("서울특별시").basicLocalGovernment("관악구").roadName("덕영대로").buildingNumber("47").build()).buildingName("휴먼라이트 빌").coordinate(new Coordinate(45.2321,50.1)).build();
         buildingRepository.save(testBuilding1);
         buildingRepository.save(testBuilding2);
         testRoom1 = Room.builder()
@@ -103,15 +92,15 @@ public class BuildingRepositoryTest {
     @Test
     void searchBuildingTest() {
         List<Building> expectedList = Arrays.asList(saveBuilding1, saveBuilding2);
-        List<Building> resultList = this.buildingRepository.searchBuilding("덕영");
+        List<Building> resultList = this.buildingRepository.searchBuildings("덕영");
         assertThat(resultList).usingRecursiveComparison().isEqualTo(expectedList);
     }
 
     @Test
     void findProjectedByTest(){
-        List<BuildingResponseDto.BuildingCountResponse> expectedList = Arrays.asList(saveBuilding1, saveBuilding2).stream().map((elem)-> BuildingResponseDto.BuildingCountResponse.builder().buildingId(elem.getId()).coordinateDto(Coordinate.toCoordinateDto(elem.getCoordinate())).build()).collect(Collectors.toList());
-        List<BuildingResponseDto.BuildingCountResponse> resultList = this.buildingRepository.findBy(BuildingResponseDto.BuildingCountResponse.class);
+        List<OnlyBuildingIdAndCoord> expectedList = Arrays.asList(saveBuilding1, saveBuilding2).stream().map((elem)-> OnlyBuildingIdAndCoord.builder().id(elem.getId()).coordinate(elem.getCoordinate()).build()).collect(Collectors.toList());
+        List<OnlyBuildingIdAndCoord> resultList = this.buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
 
-        assertThat(resultList).containsOnly(expectedList.get(0), expectedList.get(1));
+        assertThat(resultList).usingRecursiveComparison().isEqualTo(expectedList);
     }
 }

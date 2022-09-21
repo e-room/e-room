@@ -1,6 +1,5 @@
 package com.project.Project.repository;
 
-import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +16,7 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     List<Building> findBuildingsByIdIn(List<Long> ids);
 
     @Query("select distinct b from Building b where b.address.metropolitanGovernment like %:params% or b.address.basicLocalGovernment like %:params% or b.address.siGunGu like %:params% or b.address.eupMyeon like %:params% or b.address.roadName like %:params% or b.address.buildingNumber like %:params% or b.buildingName like %:params%")
-    List<Building> searchBuilding(String params);
+    List<Building> searchBuildings (String params);
 
     @Query("select distinct b from Building b where b.address = :address") // todo : 이게 동작할까?..
     Optional<Building> findByAddress(@Param("address") String address);
