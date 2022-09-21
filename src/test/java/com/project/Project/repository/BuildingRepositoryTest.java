@@ -1,5 +1,6 @@
 package com.project.Project.repository;
 
+import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
@@ -104,5 +105,13 @@ public class BuildingRepositoryTest {
         List<Building> expectedList = Arrays.asList(saveBuilding1, saveBuilding2);
         List<Building> resultList = this.buildingRepository.searchBuilding("덕영");
         assertThat(resultList).usingRecursiveComparison().isEqualTo(expectedList);
+    }
+
+    @Test
+    void findProjectedByTest(){
+        List<BuildingResponseDto.BuildingCountResponse> expectedList = Arrays.asList(saveBuilding1, saveBuilding2).stream().map((elem)-> BuildingResponseDto.BuildingCountResponse.builder().buildingId(elem.getId()).coordinateDto(Coordinate.toCoordinateDto(elem.getCoordinate())).build()).collect(Collectors.toList());
+        List<BuildingResponseDto.BuildingCountResponse> resultList = this.buildingRepository.findBy(BuildingResponseDto.BuildingCountResponse.class);
+
+        assertThat(resultList).containsOnly(expectedList.get(0), expectedList.get(1));
     }
 }
