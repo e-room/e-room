@@ -1,5 +1,6 @@
 package com.project.Project.domain.embedded;
 
+import com.project.Project.controller.building.dto.AddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class Address {
      * 읍면동
      */
     @Column(length = 20)
-    private String eupMyeonDong;
+    private String eupMyeon;
 
     /**
      * 도로명
@@ -45,18 +46,24 @@ public class Address {
      */
     private String buildingNumber;
 
-    /**
-     * 상세주소
-     */
-    private String detailedAddress;
+//    /**
+//     * 상세주소
+//     */
+//    private String detailedAddress;
+//
+//    /**
+//     * 참고항목
+//     */
+//    private String referenceItem;
 
-    /**
-     * 참고항목
-     */
-    private String referenceItem;
-
-    @Override
-    public String toString() {
-        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeonDong +  " " +  roadName + " " + buildingNumber;
+    public static AddressDto toAddressDto(Address address){
+        return AddressDto.builder()
+                .metropolitanGovernment(address.getMetropolitanGovernment())
+                .basicLocalGovernment(address.getBasicLocalGovernment())
+                .siGunGu(address.getSiGunGu())
+                .eupMyeon(address.getEupMyeon())
+                .roadName(address.getRoadName())
+                .buildingNumber(address.getBuildingNumber())
+                .build();
     }
 }
