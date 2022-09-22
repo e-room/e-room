@@ -29,7 +29,7 @@ public class Address {
 
     /**
      * 광역지방자치단체
-      */
+     */
     @Column(length = 20)
     private String metropolitanGovernment;
 
@@ -64,6 +64,7 @@ public class Address {
 
     /**
      * 문자열로 된 주소를 Address 객체로 변환
+     *
      * @param stringAddress 문자열로 된 주소
      * @return Address 객체 반환
      */
@@ -92,9 +93,10 @@ public class Address {
 
     @Override
     public String toString() {
-        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " + buildingNumber;
+        return metropolitanGovernment + " " + basicLocalGovernment + " " + siGunGu + " " + eupMyeon + " " + roadName + " " + buildingNumber;
+    }
 
-    public static AddressDto toAddressDto(Address address){
+    public static AddressDto toAddressDto(Address address) {
         return AddressDto.builder()
                 .metropolitanGovernment(address.getMetropolitanGovernment())
                 .basicLocalGovernment(address.getBasicLocalGovernment())
