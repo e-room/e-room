@@ -4,6 +4,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.repository.BuildingRepository;
 import com.project.Project.repository.ReviewRepository;
 import com.project.Project.repository.RoomRepository;
+import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.service.BuildingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,10 @@ public class BuildingServiceImpl implements BuildingService {
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
 
+
+    public List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord(){
+        return buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
+    }
 
     @Override
     public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds) {
