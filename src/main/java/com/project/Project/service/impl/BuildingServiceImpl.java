@@ -38,4 +38,9 @@ public class BuildingServiceImpl implements BuildingService {
     public Optional<Building> findByAddress(String address) {
         return buildingRepository.findByAddress(address);
     }
+
+    @Override
+    public Building createBuilding(String address) { // todo : 구현
+        return null;
+    }
 }

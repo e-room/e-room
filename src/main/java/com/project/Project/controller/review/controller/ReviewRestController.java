@@ -111,28 +111,18 @@ public class ReviewRestController {
                 .memberRole(MemberRole.USER)
                 .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
+
         Long savedReviewId = 0L;
-        Optional<Building> building = buildingService.findByAddress(request.getAddress());
+        Building building = buildingService.findByAddress(request.getAddress())
+                .orElse(buildingService.createBuilding(request.getAddress())); // 빌딩이 없는 경우 생성
 
-        if(building.isPresent()) { // building이 존재할 때
-            // room이 존재하는 경우 : 존재하는 room연관관계 맺은 review 저장
-            Optional<Room> room = roomService.findByBuildingAndLineNumberAndRoomNumber(
-                    building.get(), request.getRoomNumber(), request.getLineNumber());
-            if(room.isPresent()) {
-                Review review = request.toReview(member, room.get());
-                savedReviewId = reviewService.save(review);
-                reviewImageService.saveImageList(request.getReviewImageList(), review.getReviewForm());
-            }
-            // room이 존재하지 않는 경우 : room을 생성해준 후 review 저장
-            else {
-                Room newRoom = roomService.createRoom(building.get(), request.getLineNumber(), request.getRoomNumber());
-                Review review = request.toReview(member, newRoom);
-                savedReviewId = reviewService.save(review);
-                reviewImageService.saveImageList(request.getReviewImageList(), review.getReviewForm());
-            }
-        } else { // building이 없을 때 : building insert -> room 생성 -> 연관관계 후 리뷰 저장
+        Room room = roomService.findByBuildingAndLineNumberAndRoomNumber(building, request.getRoomNumber(), request.getLineNumber())
+                .orElse(roomService.createRoom(building, request.getLineNumber(), request.getRoomNumber())); // 방이 없는 경우 생성해줌.
 
-        }
+        Review review = request.toReview(member, room);
+        savedReviewId = reviewService.save(review);
+        reviewImageService.saveImageList(request.getReviewImageList(), review.getReviewForm());
+
 
         return ReviewResponseDto.ReviewCreateResponse.builder()
                 .reviewId(savedReviewId)
@@ -152,7 +142,6 @@ public class ReviewRestController {
     @DeleteMapping("/building/room/review/{reviewId}")
     public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId){
         Long deletedReviewId = reviewService.deleteById(reviewId);
-        // todo : 지울 때 이미지도 함께 지워줘야함.
         return ReviewResponseDto.ReviewDeleteResponse.builder()
                 .reviewId(deletedReviewId)
                 .deletedAt(LocalDateTime.now())
