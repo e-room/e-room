@@ -1,5 +1,6 @@
 package com.project.Project.controller.review.controller;
 
+import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
@@ -45,11 +46,12 @@ public class ReviewRestController {
      * - 특정 건물에 대한 리뷰 리스트를 반환<br>
      * - 3.2 리뷰_상세페이지에서 <strong>전체</strong>버튼을 눌렀을 때 사용
      * @param buildingId 건물의 id
+     * @param cursorDto cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/buildig/{buildingId}/room/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @RequestParam(value = "cursorId") Long cursorId, @RequestParam("size") Integer size){
-        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorId, PageRequest.of(0, size));
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @ModelAttribute CursorDto cursorDto){
+        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(Review::toReviewListResponse)
@@ -63,11 +65,12 @@ public class ReviewRestController {
      * - 특정 방에 대한 리뷰 리스트를 반환<br>
      * - 3.2 리뷰_상세페이지에서 <strong>방(ex.102호)</strong>버튼을 눌렀을 때 사용
      * @param roomId 방의 id
+     * @param cursorDto cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @RequestParam(value = "cursorId") Long cursorId, @RequestParam("size") Integer size){
-        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorId, PageRequest.of(0, size));
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @ModelAttribute CursorDto cursorDto){
+        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(Review::toReviewListResponse)
@@ -118,14 +121,14 @@ public class ReviewRestController {
             if(room.isPresent()) {
                 Review review = request.toReview(member, room.get());
                 savedReviewId = reviewService.save(review);
-                reviewImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
+                reviewImageService.saveImageList(request.getReviewImageList(), review.getReviewForm());
             }
             // room이 존재하지 않는 경우 : room을 생성해준 후 review 저장
             else {
                 Room newRoom = roomService.createRoom(building.get(), request.getLineNumber(), request.getRoomNumber());
                 Review review = request.toReview(member, newRoom);
                 savedReviewId = reviewService.save(review);
-                reviewImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
+                reviewImageService.saveImageList(request.getReviewImageList(), review.getReviewForm());
             }
         } else { // building이 없을 때 : building insert -> room 생성 -> 연관관계 후 리뷰 저장
 
