@@ -1,7 +1,6 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.building.Building;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import javax.persistence.*;
 @SQLDelete(sql = "UPDATE review_image SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
-public class RoomImage extends BaseEntity {
+public class ReviewImage extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
@@ -36,9 +35,9 @@ public class RoomImage extends BaseEntity {
 
     public void setReviewForm(ReviewForm reviewForm) {
         if (this.reviewForm != null) { // 기존에 이미 팀이 존재한다면
-            this.reviewForm.getRoomImageList().remove(this); // 관계를 끊는다.
+            this.reviewForm.getReviewImageList().remove(this); // 관계를 끊는다.
         }
         this.reviewForm = reviewForm;
-        reviewForm.getRoomImageList().add(this);
+        reviewForm.getReviewImageList().add(this);
     }
 }

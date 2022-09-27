@@ -1,6 +1,5 @@
 package com.project.Project.controller.review.controller;
 
-import com.project.Project.Util.JsonResult;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
@@ -10,23 +9,17 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.service.BuildingService;
 import com.project.Project.service.ReviewService;
-import com.project.Project.service.RoomImageService;
+import com.project.Project.service.ReviewImageService;
 import com.project.Project.service.RoomService;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +34,7 @@ public class ReviewRestController {
     private final ReviewService reviewService;
     private final BuildingService buildingService;
     private final RoomService roomService;
-    private final RoomImageService roomImageService;
+    private final ReviewImageService reviewImageService;
 
     /* todo
         @GetMapping("/building/room/review")
@@ -125,14 +118,14 @@ public class ReviewRestController {
             if(room.isPresent()) {
                 Review review = request.toReview(member, room.get());
                 savedReviewId = reviewService.save(review);
-                roomImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
+                reviewImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
             }
             // room이 존재하지 않는 경우 : room을 생성해준 후 review 저장
             else {
                 Room newRoom = roomService.createRoom(building.get(), request.getLineNumber(), request.getRoomNumber());
                 Review review = request.toReview(member, newRoom);
                 savedReviewId = reviewService.save(review);
-                roomImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
+                reviewImageService.saveImageList(request.getRoomImageList(), review.getReviewForm());
             }
         } else { // building이 없을 때 : building insert -> room 생성 -> 연관관계 후 리뷰 저장
 

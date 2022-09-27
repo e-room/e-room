@@ -2,7 +2,7 @@ package com.project.Project.service.impl;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.RoomImage;
+import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.BuildingRepository;
 import com.project.Project.repository.ReviewRepository;
@@ -73,9 +73,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     public Long deleteById(Long reviewId) {
-        List<RoomImage> roomImageList = reviewRepository.findById(reviewId).get().getReviewForm().getRoomImageList();
-        for(RoomImage roomImage : roomImageList) {
-            fileProcessService.deleteImage(roomImage.getUrl());
+        List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewForm().getReviewImageList();
+        for(ReviewImage reviewImage : reviewImageList) {
+            fileProcessService.deleteImage(reviewImage.getUrl());
         }
         reviewRepository.deleteById(reviewId);
         return reviewId;

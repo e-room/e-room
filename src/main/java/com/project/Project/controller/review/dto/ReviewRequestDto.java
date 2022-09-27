@@ -10,9 +10,7 @@ import com.project.Project.validator.ValidEnum;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -141,7 +139,7 @@ public class ReviewRequestDto {
         // todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         private String disadvantageDescription;
 
-        private List<MultipartFile> roomImageList = new ArrayList<>();
+        private List<MultipartFile> reviewImageList = new ArrayList<>();
 
         /**
          * 해당 거주지 만족도 : 별 1개부터 5개까지 선택
@@ -168,7 +166,7 @@ public class ReviewRequestDto {
                     .disadvantageKeywordList(new ArrayList<>())
                     .disadvantageDescription("단점 설명 Lorem ipsum")
                     .residenceSatisfaction(ScoreOption.valueOf(residenceSatisfaction))
-                    .roomImageList(new ArrayList<>())
+                    .reviewImageList(new ArrayList<>())
                     .build();
 
             return Review.builder()

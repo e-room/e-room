@@ -120,7 +120,7 @@ public class ReviewForm extends BaseEntity {
     private ScoreOption residenceSatisfaction;
 
     @OneToMany(mappedBy = "reviewForm")
-    private List<RoomImage> roomImageList = new ArrayList<>();
+    private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @PreRemove
     public void deleteHandler() {
