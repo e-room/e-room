@@ -1,7 +1,6 @@
 package com.project.Project.controller.review.dto;
 
-import com.project.Project.domain.enums.DisadvantageKeywordEnum;
-import com.project.Project.domain.enums.AdvantageKeywordEnum;
+import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.FloorHeight;
 import com.project.Project.domain.enums.ResidencePeriod;
 import lombok.*;
@@ -23,9 +22,9 @@ public class ReviewResponseDto {
         private Integer deposit;
         private Integer monthlyRent;
         private Integer managementFee;
-        private List<AdvantageKeywordEnum> advantage;
+        private List<KeywordEnum> advantage;
         private String advantageDescription;
-        private List<DisadvantageKeywordEnum> disadvantage;
+        private List<KeywordEnum> disadvantage;
         private String disadvantageDescription;
         private Integer reviewLikeCnt;
     }

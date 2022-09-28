@@ -3,7 +3,6 @@ package com.project.Project.repository;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewForm;
 import com.project.Project.domain.room.Room;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;

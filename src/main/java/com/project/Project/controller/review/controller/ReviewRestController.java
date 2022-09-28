@@ -8,6 +8,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
+import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.BuildingService;
 import com.project.Project.service.ReviewService;
 import com.project.Project.service.ReviewImageService;
@@ -95,7 +96,7 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public synchronized ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request){
+    public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request){
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회
@@ -119,9 +120,9 @@ public class ReviewRestController {
         Room room = roomService.findByBuildingAndLineNumberAndRoomNumber(building, request.getRoomNumber(), request.getLineNumber())
                 .orElse(roomService.createRoom(building, request.getLineNumber(), request.getRoomNumber())); // 방이 없는 경우 생성해줌.
 
-        Review review = request.toReview(member, room);
+        Review review = ReviewSerializer.toReview(request, member, room);
         savedReviewId = reviewService.save(review);
-        reviewImageService.saveImageList(request.getReviewImageList(), review.getReviewForm());
+//        reviewImageService.saveImageList(request.getReviewImageList(), review);
 
 
         return ReviewResponseDto.ReviewCreateResponse.builder()

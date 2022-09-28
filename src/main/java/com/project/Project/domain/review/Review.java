@@ -3,6 +3,10 @@ package com.project.Project.domain.review;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.enums.FloorHeight;
+import com.project.Project.domain.enums.KeywordEnum;
+import com.project.Project.domain.enums.ResidencePeriod;
+import com.project.Project.domain.enums.ResidenceType;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.AnonymousStatus;
@@ -14,6 +18,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
@@ -42,17 +47,68 @@ public class Review extends BaseEntity {
     @Builder.Default
     private List<ReviewLike> likeMemberList = new ArrayList<>();
 
-    private Integer likeCnt;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private ReviewForm reviewForm;
-
-    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<ReviewToReviewCategory> reviewSummaryList = new ArrayList<>();
+    private List<ReviewToReviewCategory> reviewToReviewCategoryList = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<ReviewToReviewKeyword> reviewToReviewKeywordList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "review")
+    private ReviewSummary reviewSummary;
 
     @Embedded
     private AnonymousStatus anonymousStatus;
+
+    /**
+     * 거주 유형(아파트 / 오피스텔 또는 원룸 빌라 주택)
+     */
+    @Enumerated(EnumType.STRING)
+    private ResidenceType residenceType;
+
+    /**
+     * 거주 기간 : 2018년 이전, 2018년까지, 2019년까지, ..., 2022년까지
+     */
+    @Enumerated(EnumType.STRING)
+    private ResidencePeriod residencePeriod;
+
+    /**
+     * 거주층 : 저층, 중층, 고층
+     */
+    @Enumerated(EnumType.STRING)
+    private FloorHeight floorHeight;
+
+    /**
+     * 보증금 : 000만원
+     */
+    private Integer deposit;
+
+    /**
+     * 월세 : 00만원
+     */
+    private Integer monthlyRent;
+
+    /**
+     * 관리비 : 몇호기준 얼마정도에요. 여름에는 에어컨을 틀면 추가적으로 ....
+     */
+    private Integer managementFee;
+
+    /**
+     * 전용면적
+     * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
+     */
+    @Column(precision = 10, scale = 3)
+    private BigDecimal netLeasableArea;
+
+    private String advantageDescription;
+
+    private String disadvantageDescription;
+
+    @OneToMany(mappedBy = "review")
+    private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @PreRemove
     public void deleteHandler(){
@@ -65,16 +121,23 @@ public class Review extends BaseEntity {
                 .profilePictureUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .nickName("하품하는 망아지")
                 .score(new BigDecimal(4.5))
-                .residencePeriod(reviewForm.getResidencePeriod())
-                .floorHeight(reviewForm.getFloorHeight())
-                .netLeasableArea(reviewForm.getNetLeasableArea())
-                .deposit(reviewForm.getDeposit())
-                .monthlyRent(reviewForm.getMonthlyRent())
-                .managementFee(reviewForm.getManagementFee())
-                .advantage(reviewForm.getAdvantageKeywordEnumList())
-                .advantageDescription(reviewForm.getAdvantageDescription())
-                .disadvantage(reviewForm.getDisadvantageKeywordEnumList())
-                .disadvantageDescription(reviewForm.getDisadvantageDescription())
+                .residencePeriod(getResidencePeriod())
+                .floorHeight(getFloorHeight())
+                .netLeasableArea(getNetLeasableArea())
+                .deposit(getDeposit())
+                .monthlyRent(getMonthlyRent())
+                .managementFee(getManagementFee())
+                .advantage(getAdvantageKeywordEnumList())
+                .advantageDescription(getAdvantageDescription())
+                .disadvantage(getDisadvantageKeywordEnumList())
+                .disadvantageDescription(getDisadvantageDescription())
                 .build();
+    }
+    public List<KeywordEnum> getAdvantageKeywordEnumList() {
+        return new ArrayList<>();
+    }
+
+    public List<KeywordEnum> getDisadvantageKeywordEnumList() {
+        return new ArrayList<>();
     }
 }

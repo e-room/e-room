@@ -6,6 +6,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
@@ -29,8 +30,26 @@ public class ReviewToReviewCategory extends BaseEntity {
     @JoinColumn(name = "review_category_id")
     private ReviewCategory reviewCategory;
 
+    private BigDecimal score;
+
     @PreRemove
     public void deleteHandler(){
         super.setDeleted(true);
+    }
+
+    public void setReview(Review review) {
+        if (this.review != null) { // 기존에 이미 팀이 존재한다면
+            this.review.getReviewToReviewCategoryList().remove(this); // 관계를 끊는다.
+        }
+        this.review = review;
+        review.getReviewToReviewCategoryList().add(this);
+    }
+
+    public void setReviewCategory(ReviewCategory reviewCategory) {
+        if (this.reviewCategory != null) { // 기존에 이미 팀이 존재한다면
+            this.reviewCategory.getReviewToReviewCategoryList().remove(this); // 관계를 끊는다.
+        }
+        this.reviewCategory = reviewCategory;
+        reviewCategory.getReviewToReviewCategoryList().add(this);
     }
 }

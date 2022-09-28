@@ -25,19 +25,19 @@ public class ReviewImage extends BaseEntity {
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_form_id")
-    private ReviewForm reviewForm;
+    @JoinColumn(name = "review")
+    private Review review;
 
     @PreRemove
     public void deleteHandler() {
         super.setDeleted(true);
     }
 
-    public void setReviewForm(ReviewForm reviewForm) {
-        if (this.reviewForm != null) { // 기존에 이미 팀이 존재한다면
-            this.reviewForm.getReviewImageList().remove(this); // 관계를 끊는다.
+    public void setReview(Review review) {
+        if (this.review != null) { // 기존에 이미 팀이 존재한다면
+            this.review.getReviewImageList().remove(this); // 관계를 끊는다.
         }
-        this.reviewForm = reviewForm;
-        reviewForm.getReviewImageList().add(this);
+        this.review = review;
+        review.getReviewImageList().add(this);
     }
 }

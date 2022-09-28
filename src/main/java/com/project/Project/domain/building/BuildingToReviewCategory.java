@@ -5,22 +5,20 @@ import com.project.Project.domain.review.ReviewCategory;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
-public class BuildingSummary extends BaseEntity {
+public class BuildingToReviewCategory extends BaseEntity {
 
     @Id @GeneratedValue
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Building building;
 
-    @OneToMany()
-    @Builder.Default
-    private List<ReviewCategory> reviewCategory = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ReviewCategory reviewCategory;
 
-    private Double avgScore;
+    private BigDecimal avgScore;
 }

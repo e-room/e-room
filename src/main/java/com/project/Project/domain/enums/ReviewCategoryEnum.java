@@ -16,4 +16,14 @@ public enum ReviewCategoryEnum {
     ReviewCategoryEnum(String description){
         this.description = description;
     }
+
+    public static boolean contains(String test) {
+
+        for (ReviewCategoryEnum r : ReviewCategoryEnum.values()) {
+            if (r.name().equalsIgnoreCase(test)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
