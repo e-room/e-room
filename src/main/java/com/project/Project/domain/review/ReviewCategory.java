@@ -1,6 +1,7 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -20,7 +21,11 @@ public class ReviewCategory extends BaseEntity {
 
     @OneToMany(mappedBy = "reviewCategory", cascade = CascadeType.REMOVE)
     @Builder.Default
-    private List<ReviewToReviewCategory> reviewList = new ArrayList<>();
+    private List<ReviewToReviewCategory> reviewToReviewCategoryList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reviewCategory", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ReviewCategoryEnum type;

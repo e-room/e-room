@@ -53,3 +53,4 @@ public class BuildingResponseDto {
         private Map<ReviewCategoryEnum, BigDecimal> buildingSummaries;
     }
 }
+

@@ -4,14 +4,12 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.*;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewForm;
 import com.project.Project.domain.room.Room;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,13 +17,16 @@ import java.util.List;
 
 public class ReviewRequestDto {
     // todo : 사진 관련 필드 추가 (이미지 업로드 방식 결정 후)
-    /* todo : 글자수제한, not null 등은 정책을 물어본 후 validation
+/* todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         필드 : address, advantageDescription, disadvantageDescription
               집크기, 사진관련
     */
 
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewCreateDto{
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewCreateDto {
 
         /**
          * 건물주소 : 경기도 수원시 ~~
@@ -59,7 +60,7 @@ public class ReviewRequestDto {
         /**
          * 거주층 : 저층, 중층, 고층
          */
-        @ValidEnum(enumClass = FloorHeight.class,ignoreCase = true)
+        @ValidEnum(enumClass = FloorHeight.class, ignoreCase = true)
         private String floorHeight;
 
         /**
@@ -89,34 +90,29 @@ public class ReviewRequestDto {
         private BigDecimal netLeasableArea;
 
         /**
-         * 교통점수 : 5단계 선택
+         * 교통점수
          */
-        @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
-        private String trafficScore;
+        private BigDecimal traffic;
 
         /**
-         * 건물 및 단지 점수 : 5단계 선택
+         * 건물 및 단지 점수
          */
-        @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
-        private String  buildingComplexScore;
+        private BigDecimal buildingComplex;
 
         /**
-         * 주변 및 환경 점수 : 5단계 선택
+         * 주변 및 환경 점수
          */
-        @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
-        private String surroundingScore;
+        private BigDecimal surrounding;
 
         /**
-         * 내부 점수 : 5단계 선택
+         * 내부 점수
          */
-        @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
-        private String internalScore;
+        private BigDecimal internal;
 
         /**
-         * 생활 및 입지 점수 : 5단계 선택
+         * 생활 및 입지 점수
          */
-        @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
-        private String livingLocationScore;
+        private BigDecimal livingLocation;
 
         /**
          * 장점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
@@ -125,7 +121,7 @@ public class ReviewRequestDto {
          */
         @Builder.Default
 //        @Valid
-        private List<@ValidEnum(enumClass = AdvantageKeywordEnum.class, ignoreCase = true) String> advantageKeywordList = new ArrayList<>();
+        private List<@ValidEnum(enumClass = KeywordEnum.class, ignoreCase = true) String> advantageKeywordList = new ArrayList<>();
 
         private String advantageDescription;
 
@@ -135,48 +131,17 @@ public class ReviewRequestDto {
          */
         @Builder.Default
 //        @Valid
-        private List<@ValidEnum(enumClass = DisadvantageKeywordEnum.class, ignoreCase = true) String> disadvantageKeywordList = new ArrayList<>();
+        private List<@ValidEnum(enumClass = KeywordEnum.class, ignoreCase = true) String> disadvantageKeywordList = new ArrayList<>();
 
         // todo : 글자수제한, not null 등은 정책을 물어본 후 validation
         private String disadvantageDescription;
+
+        private List<MultipartFile> reviewImageList = new ArrayList<>();
 
         /**
          * 해당 거주지 만족도 : 별 1개부터 5개까지 선택
          */
         @ValidEnum(enumClass = ScoreOption.class, ignoreCase = true)
         private String residenceSatisfaction;
-
-        public Review toReview(Member member, Room room) { // todo: 하드코딩 부분 & 연관관계 부분 해결
-            ReviewForm reviewForm = ReviewForm.builder()
-                    .residenceType(ResidenceType.valueOf(residenceType))
-                    .residencePeriod(ResidencePeriod.valueOf(residencePeriod))
-                    .floorHeight(FloorHeight.valueOf(floorHeight))
-                    .deposit(deposit)
-                    .monthlyRent(monthlyRent)
-                    .managementFee(managementFee)
-                    .netLeasableArea(netLeasableArea)
-                    .trafficScore(ScoreOption.valueOf(trafficScore))
-                    .buildingComplexScore(ScoreOption.valueOf(buildingComplexScore))
-                    .surroundingScore(ScoreOption.valueOf(surroundingScore))
-                    .internalScore(ScoreOption.valueOf(internalScore))
-                    .livingLocationScore(ScoreOption.valueOf(livingLocationScore))
-                    .advantageKeywordList(new ArrayList<>())
-                    .advantageDescription("장점 설명 Lorem ipsum")
-                    .disadvantageKeywordList(new ArrayList<>())
-                    .disadvantageDescription("단점 설명 Lorem ipsum")
-                    .residenceSatisfaction(ScoreOption.valueOf(residenceSatisfaction))
-                    .build();
-
-            return Review.builder()
-                    .member(member)
-                    .room(room)
-                    .likeMemberList(new ArrayList<>())
-                    .likeCnt(0)
-                    .reviewForm(reviewForm)
-                    .reviewSummaryList(new ArrayList<>())
-                    .anonymousStatus(AnonymousStatus.generateAnonymousStatus())
-                    .build();
-
-        }
     }
 }

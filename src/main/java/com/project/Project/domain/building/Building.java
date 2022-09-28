@@ -57,6 +57,11 @@ public class Building extends BaseEntity {
     @Builder.Default
     private List<Favorite> memberList = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "building")
+    @Builder.Default
+    private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
+
     // TODO : 이미지 업로드 방법에 따라 추후 필드 추가. ex) S3업로드 or ec2 서버내에 업로드 등
 
 

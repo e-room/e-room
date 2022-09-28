@@ -10,4 +10,6 @@ public interface BuildingService {
     Building getBuildingByBuildingId(Long buildingId);
     List<Building> getBuildingBySearch(String params);
     Optional<Building> findByAddress(String address);
+
+    Building createBuilding(String address);
 }
