@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
@@ -56,7 +57,7 @@ public class BuildingRestController {
      */
     @GetMapping("/")
     public List<BuildingResponseDto.BuildingListResponse> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestBody CursorDto cursorDto) {
-        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds);
+        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorDto.getCursorId(), PageRequest.of(0,cursorDto.getSize()));
 
         return buildingList.stream().map(
                 (building) -> {
@@ -98,8 +99,8 @@ public class BuildingRestController {
     return: 건물 정보
      */
     @GetMapping("/search")
-    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params) {
-        List<Building> buildingList = this.buildingService.getBuildingBySearch(params);
+    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params, @RequestBody CursorDto cursorDto) {
+        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
         return buildingList.stream().parallel()
                 .map(BuildingSerializer::toBuildingResponse).collect(Collectors.toList());
     }
