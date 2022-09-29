@@ -50,12 +50,25 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     }
 
     @ExceptionHandler
-    public ResponseEntity<JsonResult> handle (ConstraintViolationException e){
-        JsonResult jsonResult = new JsonResult();
-        jsonResult.setCode(HttpStatus.BAD_REQUEST);
-        jsonResult.setMessage(e.getMessage());
-        jsonResult.setData(e.getClass().toString());
-        return ResponseEntity.badRequest().body(jsonResult);
+    public ResponseEntity<ApiErrorResult> ConstraintViolationExceptionHandler (ConstraintViolationException e){
+        String message = "request가 Validate 하지 않습니다.";
+        String cause = e.getClass().getName();
+        return ResponseEntity.badRequest()
+                .body(ApiErrorResult.builder().message(message).cause(cause).build());
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String message = ((ErrorCode) body).getMessage();
+        String cause = ex.getClass().getName();
+        ApiErrorResult apiErrorResult = ApiErrorResult.builder().message(message).cause(cause).build();
+        return super.handleExceptionInternal(ex, apiErrorResult, headers, status, request);
+    }
+
+    @ExceptionHandler(CustomException.class)
+    private <T extends ApiErrorResult> ResponseEntity<T> CustomExceptionHandler(CustomException ex, WebRequest request) {
+        ResponseEntity response = handleExceptionInternal(ex, null,null,ex.getErrorCode().getStatus(), request);
+        return response;
     }
 }
 
