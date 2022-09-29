@@ -1,20 +1,24 @@
 package com.project.Project.controller.building;
 
+import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewForm;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
+import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.BuildingService;
 import com.project.Project.service.ReviewService;
 import com.project.Project.validator.ExistBuilding;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,7 +84,7 @@ public class BuildingRestController {
     @GetMapping("/{buildingId}")
     public BuildingResponseDto.BuildingResponse getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
         Building building = this.buildingService.getBuildingByBuildingId(buildingId);
-        return building.toBuildingResponse();
+        return BuildingSerializer.toBuildingResponse(building);
     }
 
     /* 8.1
@@ -94,6 +98,6 @@ public class BuildingRestController {
     public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params) {
         List<Building> buildingList = this.buildingService.getBuildingBySearch(params);
         return buildingList.stream().parallel()
-                .map((building)-> building.toBuildingResponse()).collect(Collectors.toList());
+                .map(BuildingSerializer::toBuildingResponse).collect(Collectors.toList());
     }
 }
