@@ -73,7 +73,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     public Long deleteById(Long reviewId) {
-        List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewForm().getReviewImageList();
+        List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewImageList();
         for(ReviewImage reviewImage : reviewImageList) {
             fileProcessService.deleteImage(reviewImage.getUrl());
         }
