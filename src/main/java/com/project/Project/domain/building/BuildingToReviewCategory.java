@@ -20,5 +20,5 @@ public class BuildingToReviewCategory extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ReviewCategory reviewCategory;
 
-    private BigDecimal avgScore;
+    private Double avgScore;
 }
