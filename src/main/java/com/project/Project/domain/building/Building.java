@@ -56,10 +56,6 @@ public class Building extends BaseEntity {
 
     private Boolean hasElevator;
 
-    @OneToOne
-    @JoinColumn(name = "building_summary_id")
-    private BuildingSummary buildingSummary;
-
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Room> roomList = new ArrayList<>();
@@ -91,35 +87,5 @@ public class Building extends BaseEntity {
         for (Room room : rooms) {
             room.setBuilding(this);
         }
-    }
-
-    public BuildingResponseDto.BuildingResponse toBuildingResponse(){
-
-        Building building = this;
-
-        return BuildingResponseDto.BuildingResponse.builder()
-                .buildingId(building.getId())
-                .name(building.getBuildingName())
-                .address(Address.toAddressDto(building.getAddress()).toString())
-                .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
-                .isDirectDeal(false)
-                .rooms(building.getRoomList().stream().map((room)-> RoomResponseDto.RoomListResponse.builder()
-                        .roomId(room.getId())
-                        .roomNumber(room.getRoomNumber())
-                        .build()
-                ).collect(Collectors.toList()))
-                .buildingSummaries(buildingSummaryTranslate(building.getBuildingSummary()))
-                .build();
-    }
-
-    private Map<ReviewCategoryEnum, BigDecimal> buildingSummaryTranslate(BuildingSummary buildingSummary){
-        Map<ReviewCategoryEnum,BigDecimal> response = new HashMap<>();
-        response.put(ReviewCategoryEnum.TRAFFIC, buildingSummary.getAvgTrafficScore());
-        response.put(ReviewCategoryEnum.INTERNAL, buildingSummary.getAvgInternalScore());
-        response.put(ReviewCategoryEnum.BUILDINGCOMPLEX, buildingSummary.getAvgBuildingComplexScore());
-        response.put(ReviewCategoryEnum.SURROUNDING, buildingSummary.getAvgSurroundingScore());
-        response.put(ReviewCategoryEnum.LIVINGLOCATION, buildingSummary.getAvgLivingLocationScore());
-
-        return response;
     }
 }
