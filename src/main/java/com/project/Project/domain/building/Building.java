@@ -1,6 +1,9 @@
 package com.project.Project.domain.building;
 
+import com.project.Project.controller.building.dto.BuildingResponseDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.Address;
@@ -10,8 +13,12 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE building SET deleted = true WHERE id=?")

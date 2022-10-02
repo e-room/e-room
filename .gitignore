@@ -41,3 +41,6 @@ application-oauth.properties
 
 ###docker###
 db
+
+###pem###
+eroom-key.pem
