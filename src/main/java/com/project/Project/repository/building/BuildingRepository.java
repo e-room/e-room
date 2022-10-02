@@ -1,6 +1,7 @@
-package com.project.Project.repository;
+package com.project.Project.repository.building;
 
 import com.project.Project.domain.building.Building;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

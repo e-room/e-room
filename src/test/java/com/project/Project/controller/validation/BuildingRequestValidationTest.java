@@ -7,7 +7,7 @@ import com.project.Project.controller.building.BuildingRestController;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
-import com.project.Project.repository.BuildingRepository;
+import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.validator.BuildingExistValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
