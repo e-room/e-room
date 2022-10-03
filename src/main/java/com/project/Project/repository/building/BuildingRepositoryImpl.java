@@ -45,10 +45,48 @@ public class BuildingRepositoryImpl implements BuildingCustomRepository {
                 .and(notDeletedCondition());
     }
 
-    public Function<JPAQuery<Building>,JPAQuery<Building>> sortBy(Long cursorId, Pageable pageable) {
 
-        return (query) -> query.orderBy(building.id.desc())
-                .offset(cursorId)
-                .limit(pageable.getPageSize());
+    private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
+
+        List<OrderSpecifier> ORDERS = new ArrayList<>();
+
+        if (!isEmpty(pageable.getSort())) {
+            for (Sort.Order order : pageable.getSort()) {
+                Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
+                switch (order.getProperty()) {
+                    case "id":
+                        OrderSpecifier<?> orderId = QueryDslUtil.getSortedColumn(direction, building, "id");
+                        ORDERS.add(orderId);
+                        break;
+                    case "reviewCnt":
+                        OrderSpecifier<?> orderReviewCnt = QueryDslUtil.getSortedColumn(direction, building.buildingSummary, "reviewCnt");
+                        ORDERS.add(orderReviewCnt);
+                    case "avgScore":
+                        OrderSpecifier<?> orderScore = QueryDslUtil.getSortedColumn(direction, building.buildingSummary, "avgScore");
+                        ORDERS.add(orderScore);
+                    default:
+                        break;
+                }
+            }
+        } else {
+            OrderSpecifier<?> orderId = QueryDslUtil.getSortedColumn(Order.DESC, building, "id");
+            ORDERS.add(orderId);
+        }
+
+        return ORDERS;
+    }
+
+    private BooleanExpression cursorId(Pageable pageable, Long cursorId) {
+        Sort.Order order = pageable.getSort().get().collect(Collectors.toList()).get(0);
+        // id < 파라미터를 첫 페이지에선 사용하지 않기 위한 동적 쿼리
+        if (cursorId==null) {
+            return null; // // BooleanExpression 자리에 null 이 반환되면 조건문에서 자동으로 제거
+        }
+        else if(order.getProperty().equals("reviewCnt"))
+            return building.buildingSummary.reviewCnt.lt(cursorId);
+        else if(order.getProperty().equals("avgScore"))
+            return building.buildingSummary.avgScore.lt(cursorId);
+        else
+            return building.id.lt(cursorId);   //최신순
     }
 }
