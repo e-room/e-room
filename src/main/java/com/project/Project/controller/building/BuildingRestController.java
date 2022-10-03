@@ -99,9 +99,11 @@ public class BuildingRestController {
     return: 건물 정보
      */
     @GetMapping("/search")
-    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params, @RequestBody CursorDto cursorDto) {
-        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
-        return buildingList.stream().parallel()
-                .map(BuildingSerializer::toBuildingResponse).collect(Collectors.toList());
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestBody CursorDto cursorDto) {
+        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
+//        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
+        List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorDto.getCursorId(), pageable);
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse,pageable));
     }
 }
