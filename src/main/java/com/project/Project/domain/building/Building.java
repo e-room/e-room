@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE building SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
