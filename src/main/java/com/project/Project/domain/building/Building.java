@@ -5,6 +5,7 @@ import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.Favorite;
+import com.project.Project.domain.review.ReviewSummary;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
@@ -68,6 +69,9 @@ public class Building extends BaseEntity {
     @OneToMany(mappedBy = "building")
     @Builder.Default
     private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "building")
+    private BuildingSummary buildingSummary;
 
     // TODO : 이미지 업로드 방법에 따라 추후 필드 추가. ex) S3업로드 or ec2 서버내에 업로드 등
 
