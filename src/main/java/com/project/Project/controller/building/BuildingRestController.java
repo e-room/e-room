@@ -1,5 +1,6 @@
 package com.project.Project.controller.building;
 
+import com.project.Project.Util.QueryDslUtil;
 import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
@@ -14,6 +15,9 @@ import com.project.Project.service.ReviewService;
 import com.project.Project.validator.ExistBuilding;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
