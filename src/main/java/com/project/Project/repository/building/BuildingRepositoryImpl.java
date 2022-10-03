@@ -33,6 +33,12 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class BuildingRepositoryImpl implements BuildingCustomRepository {
     private final JPAQueryFactory factory;
 
+    public List<Building> searchBuildings(String params, Long cursorId, Pageable pageable) {
+        List<Building> results = searchBuildingsQuery(cursorId,pageable).andThen(customOrderBy(pageable)).apply(params)
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+        return results;
+    }
 
     public Function<String, JPAQuery<Building>> searchBuildingsQuery(Long cursorId, Pageable pageable) {
         return (params) -> factory.selectFrom(building)
