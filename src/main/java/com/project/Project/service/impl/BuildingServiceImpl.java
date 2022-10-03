@@ -1,12 +1,15 @@
 package com.project.Project.service.impl;
 
 import com.project.Project.domain.building.Building;
-import com.project.Project.repository.BuildingRepository;
+import com.project.Project.repository.building.BuildingCustomRepository;
+import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.ReviewRepository;
 import com.project.Project.repository.RoomRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.service.BuildingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BuildingServiceImpl implements BuildingService {
     private final BuildingRepository buildingRepository;
+    private final BuildingCustomRepository buildingCustomRepo;
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
 
@@ -35,8 +39,9 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public List<Building> getBuildingBySearch(String params) {
-        return buildingRepository.searchBuildings(params);
+    public List<Building> getBuildingsBySearch(String params, Long cursorId, Pageable page) {
+//        return buildingRepository.searchBuildings(params);
+       return  buildingCustomRepo.searchBuildings(params,cursorId,page);
     }
 
     @Override
