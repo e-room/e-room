@@ -122,7 +122,7 @@ public class ReviewRestController {
 
         Review review = ReviewSerializer.toReview(request, member, room);
         savedReviewId = reviewService.save(review);
-//        reviewImageService.saveImageList(request.getReviewImageList(), review);
+
 
 
         return ReviewResponseDto.ReviewCreateResponse.builder()

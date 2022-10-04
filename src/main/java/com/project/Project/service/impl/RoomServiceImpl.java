@@ -26,8 +26,7 @@ public class RoomServiceImpl implements RoomService {
                 .roomNumber(roomNumber)
                 .build();
         room.setBuilding(building);
-        roomRepository.save(room);
-        return room;
+        return roomRepository.save(room);
     }
 
     public Optional<Room> findByBuildingAndLineNumberAndRoomNumber(Building building, Integer lineNumber, Integer roomNumber) {
