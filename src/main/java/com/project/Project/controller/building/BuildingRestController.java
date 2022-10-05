@@ -1,5 +1,6 @@
 package com.project.Project.controller.building;
 
+import com.project.Project.Util.QueryDslUtil;
 import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
@@ -14,6 +15,9 @@ import com.project.Project.service.ReviewService;
 import com.project.Project.validator.ExistBuilding;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -99,9 +103,11 @@ public class BuildingRestController {
     return: 건물 정보
      */
     @GetMapping("/search")
-    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params, @RequestBody CursorDto cursorDto) {
-        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
-        return buildingList.stream().parallel()
-                .map(BuildingSerializer::toBuildingResponse).collect(Collectors.toList());
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestBody CursorDto cursorDto) {
+        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
+//        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
+        List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorDto.getCursorId(), pageable);
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse,pageable));
     }
 }

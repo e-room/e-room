@@ -4,7 +4,7 @@
 //import com.project.Project.WithMockCustomOAuth2Account;
 //import com.project.Project.config.auth.SecurityConfig;
 //import com.project.Project.controller.review.controller.ReviewRestController;
-//import com.project.Project.repository.BuildingRepository;
+//import com.project.Project.repository.building.BuildingRepository;
 //import com.project.Project.repository.ReviewRepository;
 //import com.project.Project.repository.RoomRepository;
 //import com.project.Project.service.BuildingService;

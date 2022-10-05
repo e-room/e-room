@@ -8,12 +8,14 @@ import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.repository.BuildingToReviewCategoryRepository;
+import com.project.Project.repository.ReviewCategoryRepository;
 import com.project.Project.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +27,16 @@ public class BuildingSerializer {
 
     private final RoomRepository roomRepository;
     private final BuildingToReviewCategoryRepository buildingToReviewCategoryRepository;
+    private final ReviewCategoryRepository reviewCategoryRepository;
 
     private static RoomRepository staticRoomRepo;
     private static BuildingToReviewCategoryRepository staticBuildingToReviewCategoryRepo;
-
+    private static ReviewCategoryRepository staticReviewCategoryRepo;
     @PostConstruct
     public void init(){
         staticRoomRepo = this.roomRepository;
         staticBuildingToReviewCategoryRepo = this.buildingToReviewCategoryRepository;
+        staticReviewCategoryRepo = this.reviewCategoryRepository;
     }
     public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building){
 
@@ -52,6 +56,23 @@ public class BuildingSerializer {
                         .build()
                 ).collect(Collectors.toList()))
                 .buildingSummaries(buildingSummary)
+                .build();
+    }
+
+    public static BuildingResponseDto.BuildingListResponse toBuildingListResponse(Building building){
+        if(building.getBuildingToReviewCategoryList().isEmpty()){
+            List<BuildingToReviewCategory> reviewCategories = staticBuildingToReviewCategoryRepo.findBuildingToReviewCategoriesByBuilding_Id(building.getId());
+            building.setBuildingToReviewCategoryList(reviewCategories);
+        }
+        BuildingToReviewCategory maxScoreCategory = building.getBuildingToReviewCategoryList().stream().max(Comparator.comparing(BuildingToReviewCategory::getAvgScore)).get();
+        return BuildingResponseDto.BuildingListResponse.builder()
+                .buildingId(building.getId())
+                .name(building.getBuildingName())
+                .address(building.getAddress().toString())
+                .isDirectDeal(false)
+                .reviewCnt(building.getBuildingSummary().getReviewCnt())
+                .scoreAvg(building.getBuildingSummary().getAvgScore())
+                .bestCategory(maxScoreCategory.getReviewCategory().getType())
                 .build();
     }
 }
