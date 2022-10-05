@@ -29,7 +29,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds) {
+    public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, Long cursorId, Pageable pageable) {
         return buildingRepository.findBuildingsByIdIn(buildingIds);
     }
 
