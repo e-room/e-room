@@ -96,7 +96,7 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request){
+    public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request) {
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회

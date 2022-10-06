@@ -22,7 +22,7 @@ public class ReviewRequestDto {
     */
 
     @NoArgsConstructor
-    @Getter
+    @Getter @Setter
     @AllArgsConstructor
     @Builder
     public static class ReviewCreateDto {
