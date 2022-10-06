@@ -30,8 +30,7 @@ import java.util.stream.Collectors;
                 @UniqueConstraint(
                         name = "UniqueAddress",
                         columnNames = {
-                            "metropolitanGovernment",
-                            "basicLocalGovernment",
+                            "siDo",
                             "siGunGu",
                             "eupMyeon",
                             "roadName",
