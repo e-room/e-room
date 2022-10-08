@@ -6,14 +6,9 @@ import lombok.Builder;
 public class AddressDto {
 
     /**
-     * 광역지방자치단체
+     * 시도
      */
-    private String metropolitanGovernment;
-
-    /**
-     * 기초지방자치단체
-     */
-    private String basicLocalGovernment;
+    private String siDo;
 
     /**
      * 시군구
@@ -35,7 +30,7 @@ public class AddressDto {
 
     @Override
     public String toString() {
-        return  metropolitanGovernment + " " + basicLocalGovernment + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " ;
+        return  siDo + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " ;
     }
 
 //    /**

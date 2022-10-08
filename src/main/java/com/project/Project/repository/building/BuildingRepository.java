@@ -16,7 +16,7 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     @Query("select distinct b from Building  b join fetch b.roomList where b.id in :ids ")
     List<Building> findBuildingsByIdIn(List<Long> ids);
 
-    @Query("select distinct b from Building b where b.address.metropolitanGovernment like %:params% or b.address.basicLocalGovernment like %:params% or b.address.siGunGu like %:params% or b.address.eupMyeon like %:params% or b.address.roadName like %:params% or b.address.buildingNumber like %:params% or b.buildingName like %:params%")
+    @Query("select distinct b from Building b where b.address.siDo like %:params% or b.address.siGunGu like %:params% or b.address.eupMyeon like %:params% or b.address.roadName like %:params% or b.address.buildingNumber like %:params% or b.buildingName like %:params%")
     List<Building> searchBuildings (String params);
 
     @Query("select distinct b from Building b where b.address = :address") // todo : 이게 동작할까?..

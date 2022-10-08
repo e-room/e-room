@@ -38,7 +38,9 @@ public class ReviewSerializer {
 
     public static Review toReview(ReviewRequestDto.ReviewCreateDto request, Member member, Room room) {
 
-
+//        Optional.ofNullable(staticReviewCategoryRepository).orElseThrow(()-> {
+//            throw new RuntimeException();
+//        });
         // ReviewToReviewCategoryList 생성
         ArrayList<ReviewCategory> allReviewCategory = (ArrayList) staticReviewCategoryRepository.findAll();
 
