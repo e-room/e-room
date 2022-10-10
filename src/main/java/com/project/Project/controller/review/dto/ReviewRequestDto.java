@@ -9,6 +9,7 @@ import com.project.Project.validator.ValidEnum;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -31,7 +32,30 @@ public class ReviewRequestDto {
          * 건물주소 : 경기도 수원시 ~~
          */
         @NotNull
-        private String address;
+        private String siDo;
+
+        /**
+         * 시군구
+         */
+        @NotNull
+        private String siGunGu;
+
+        /**
+         * 읍면
+         */
+        @NotNull
+        private String eupMyeon;
+
+        /**
+         * 도로명
+         */
+        @NotNull
+        private String roadName;
+
+        /**
+         * 건물 번호
+         */
+        private String buildingNumber;
 
         /**
          * 몇 동인지 : 101동

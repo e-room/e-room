@@ -61,7 +61,7 @@ public class Address {
      * @param stringAddress 문자열로 된 주소
      * @return Address 객체 반환
      */
-    public static Address valueOf(String stringAddress) {
+    public static Address valueOf(String siDo, String siGunGu, String eupMyeon, String roadName, String buildingNumber) {
         /*
             todo : 구현
             todo : Q. 우리의 Address 엔티티에 상세주소와 참고항목이 필요한가? Room 엔티티에 있지 않은가?
@@ -74,11 +74,11 @@ public class Address {
             참고항목 : 동 or 주택명
         */
         return Address.builder()
-                .siDo("경기도")
-                .siGunGu("수원시 영통구")
-                .eupMyeon("")
-                .roadName("매영로425번길")
-                .buildingNumber("4")
+                .siDo(siDo)
+                .siGunGu(siGunGu)
+                .eupMyeon(eupMyeon)
+                .roadName(roadName)
+                .buildingNumber(buildingNumber)
                 .build();
     }
 

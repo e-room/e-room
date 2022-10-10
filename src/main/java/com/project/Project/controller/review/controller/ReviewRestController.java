@@ -5,6 +5,7 @@ import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
@@ -113,9 +114,12 @@ public class ReviewRestController {
                 .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
 
+        Address address = Address.valueOf(request.getSiDo(), request.getSiGunGu(), request.getEupMyeon(), request.getRoadName(), request.getBuildingNumber());
+
+
         Long savedReviewId = 0L;
-        Building building = buildingService.findByAddress(request.getAddress())
-                .orElse(buildingService.createBuilding(request.getAddress())); // 빌딩이 없는 경우 생성
+        Building building = buildingService.findByAddress(address)
+                .orElse(buildingService.createBuilding(address)); // 빌딩이 없는 경우 생성
 
         Room room = roomService.findByBuildingAndLineNumberAndRoomNumber(building, request.getRoomNumber(), request.getLineNumber())
                 .orElse(roomService.createRoom(building, request.getLineNumber(), request.getRoomNumber())); // 방이 없는 경우 생성해줌.
