@@ -57,7 +57,29 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public Building createBuilding(String address) { // todo : 구현
-        return null;
+    public Building createBuilding(Address address) {
+
+        String query = address.toString();
+
+        KakaoAddressAPI kakaoAddress = BuildingGenerator.searchAddressByKakao(query);
+        return Building.builder()
+                .coordinate(Coordinate.builder()
+                        .longitude(Double.parseDouble(kakaoAddress.getDocuments().get(0).getX()))
+                        .latitude(Double.parseDouble(kakaoAddress.getDocuments().get(0).getY()))
+                        .build())
+                .buildingName(kakaoAddress.getDocuments().get(0).getRoad_address().getBuilding_name())
+                .address(address).build();
+    }
+
+    @Override
+    public Building createBuilding(Address address, Coordinate coordinate) {
+        return Building.builder()
+                .coordinate(coordinate)
+                .address(address).build();
+    }
+
+    @Override
+    public List<Building> createBuilding(String address) {
+        return BuildingGenerator.generateBuildings(address);
     }
 }
