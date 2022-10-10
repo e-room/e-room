@@ -12,10 +12,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(RepositoryTestConfig.class)
 public class BuildingRepositoryTest {
 
     BuildingRepository buildingRepository;
@@ -103,5 +106,14 @@ public class BuildingRepositoryTest {
         List<OnlyBuildingIdAndCoord> resultList = this.buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
 
         assertThat(resultList).usingRecursiveComparison().isEqualTo(expectedList);
+    }
+
+    @Test
+    void findBuildingByAddressTest(){
+        Building expectedBuilding = saveBuilding1;
+        List<Building> results = this.buildingRepository.findAll();
+        Building result = this.buildingRepository.findByAddress(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).get();
+        assertThat(result)
+                .usingRecursiveComparison().isEqualTo(expectedBuilding);
     }
 }
