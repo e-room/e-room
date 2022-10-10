@@ -10,6 +10,7 @@ import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.repository.BuildingToReviewCategoryRepository;
 import com.project.Project.repository.ReviewCategoryRepository;
 import com.project.Project.repository.RoomRepository;
+import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -73,6 +74,13 @@ public class BuildingSerializer {
                 .reviewCnt(building.getBuildingSummary().getReviewCnt())
                 .scoreAvg(building.getBuildingSummary().getAvgScore())
                 .bestCategory(maxScoreCategory.getReviewCategory().getType())
+                .build();
+    }
+
+    public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(OnlyBuildingIdAndCoord building){
+        return BuildingResponseDto.BuildingCountResponse.builder()
+                .buildingId(building.getId())
+                .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .build();
     }
 }

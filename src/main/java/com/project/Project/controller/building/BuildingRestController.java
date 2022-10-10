@@ -46,12 +46,10 @@ public class BuildingRestController {
     return: buildingId와 위치를 return
      */
     @GetMapping("/marking")
-    public List<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
+    public ResponseEntity<List<BuildingResponseDto.BuildingCountResponse>> getBuildingMarker() {
         List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
-        return buildingList.stream().map((building) -> BuildingResponseDto.BuildingCountResponse.builder()
-                .buildingId(building.getId())
-                .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
-                .build()).collect(Collectors.toList());
+        List<BuildingResponseDto.BuildingCountResponse> responseList = buildingList.stream().map(BuildingSerializer::toBuildingCountResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(responseList);
     }
 
     /*
@@ -73,9 +71,9 @@ public class BuildingRestController {
     return: 단일 건물 BuildingResponse
      */
     @GetMapping("/{buildingId}")
-    public BuildingResponseDto.BuildingResponse getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
+    public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
         Building building = this.buildingService.getBuildingByBuildingId(buildingId);
-        return BuildingSerializer.toBuildingResponse(building);
+        return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building));
     }
 
     /* 8.1
