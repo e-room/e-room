@@ -26,6 +26,7 @@ import static com.project.Project.Util.QueryDslUtil.toSlice;
 import static com.project.Project.domain.building.QBuilding.building;
 import static com.project.Project.domain.building.QBuildingSummary.buildingSummary;
 import static com.project.Project.domain.building.QBuildingToReviewCategory.buildingToReviewCategory;
+import static com.project.Project.domain.room.QRoom.room;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -33,11 +34,29 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class BuildingRepositoryImpl implements BuildingCustomRepository {
     private final JPAQueryFactory factory;
 
+    @Override
     public List<Building> searchBuildings(String params, Long cursorId, Pageable pageable) {
-        List<Building> results = searchBuildingsQuery(cursorId,pageable).andThen(customOrderBy(pageable)).apply(params)
+        List<Building> results = searchBuildingsQuery(cursorId, pageable).andThen(customOrderBy(pageable)).apply(params)
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
         return results;
+    }
+
+    @Override
+    public List<Building> findBuildingsByIdIn(List<Long> ids, Long cursorId, Pageable pageable) {
+        List<Building> results = findBuildingInQuery(cursorId, pageable).andThen(customOrderBy(pageable)).apply(ids)
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+        return results;
+    }
+
+    public Function<List<Long>, JPAQuery<Building>> findBuildingInQuery(Long cursorId, Pageable pageable) {
+        return (ids) -> factory.selectFrom(building)
+                .innerJoin(building.roomList, room)
+                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
+                .innerJoin(building.buildingSummary, buildingSummary)
+                .fetchJoin()
+                .where(building.id.in(ids).and(notDeletedCondition()).and(cursorId(pageable, cursorId)));
     }
 
     public Function<String, JPAQuery<Building>> searchBuildingsQuery(Long cursorId, Pageable pageable) {
@@ -45,7 +64,7 @@ public class BuildingRepositoryImpl implements BuildingCustomRepository {
                 .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
                 .innerJoin(building.buildingSummary, buildingSummary)
                 .fetchJoin()
-                .where(buildingSearchPredicate(params),cursorId(pageable,cursorId));
+                .where(buildingSearchPredicate(params), cursorId(pageable, cursorId));
     }
 
     public Function<JPAQuery<Building>, JPAQuery<Building>> customOrderBy(Pageable pageable) {
@@ -103,12 +122,11 @@ public class BuildingRepositoryImpl implements BuildingCustomRepository {
     private BooleanExpression cursorId(Pageable pageable, Long cursorId) {
         Sort.Order order = pageable.getSort().get().collect(Collectors.toList()).get(0);
         // id < 파라미터를 첫 페이지에선 사용하지 않기 위한 동적 쿼리
-        if (cursorId==null) {
+        if (cursorId == null) {
             return null; // // BooleanExpression 자리에 null 이 반환되면 조건문에서 자동으로 제거
-        }
-        else if(order.getProperty().equals("reviewCnt"))
+        } else if (order.getProperty().equals("reviewCnt"))
             return building.buildingSummary.reviewCnt.lt(cursorId);
-        else if(order.getProperty().equals("avgScore"))
+        else if (order.getProperty().equals("avgScore"))
             return building.buildingSummary.avgScore.lt(cursorId);
         else
             return building.id.lt(cursorId);   //최신순

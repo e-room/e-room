@@ -37,7 +37,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, Long cursorId, Pageable pageable) {
-        return buildingRepository.findBuildingsByIdIn(buildingIds);
+        return buildingCustomRepo.findBuildingsByIdIn(buildingIds,cursorId,pageable);
     }
 
     @Override
@@ -58,17 +58,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public Building createBuilding(Address address) {
-
-        String query = address.toString();
-
-        KakaoAddressAPI kakaoAddress = BuildingGenerator.searchAddressByKakao(query);
-        return Building.builder()
-                .coordinate(Coordinate.builder()
-                        .longitude(Double.parseDouble(kakaoAddress.getDocuments().get(0).getX()))
-                        .latitude(Double.parseDouble(kakaoAddress.getDocuments().get(0).getY()))
-                        .build())
-                .buildingName(kakaoAddress.getDocuments().get(0).getRoad_address().getBuilding_name())
-                .address(address).build();
+        return BuildingGenerator.generateBuilding(address);
     }
 
     @Override
