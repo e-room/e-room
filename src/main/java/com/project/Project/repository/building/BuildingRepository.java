@@ -23,5 +23,9 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     @Query("select distinct b from Building b join fetch b.roomList where b.address = :address") // todo : 이게 동작할까?..
     Optional<Building> findByAddress(@Param("address") Address address);
 
+    Boolean existsBuildingByAddress(Address address);
+
+    Optional<Building> findBuildingByAddress(@Param("address") Address address);
+
     <T> List<T> findBy(Class<T> projection);
 }
