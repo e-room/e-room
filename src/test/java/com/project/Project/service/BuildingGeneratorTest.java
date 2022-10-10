@@ -23,7 +23,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest(classes = {BuildingGenerator.class, BuildingGenerator.class})
+@SpringBootTest(classes = {BuildingGenerator.class})
 @Import({WebClientConfig.class})
 public class BuildingGeneratorTest {
     @Autowired
@@ -36,7 +36,7 @@ public class BuildingGeneratorTest {
     private BuildingRepository buildingRepository;
 
     @Autowired
-    private BuildingGenerator buildingGenerator;
+    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient,buildingCustomRepository,buildingRepository);
 
     @Test
     public void searchBuildingByKakao(){
