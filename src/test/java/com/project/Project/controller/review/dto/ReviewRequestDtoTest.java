@@ -38,7 +38,11 @@ public class ReviewRequestDtoTest {
         String disadvantageDescription = "길지 풍부하게 보이는 곳이 밝은 있으랴? 싹이 있으며, 따뜻한 바이며, 일월과 청춘 때문이다. 스며들어 사랑의 끓는 무엇을 부패를 말이다. 자신과 품으며, 이상이 같지 천지는 위하여 인생에 속잎나고, 바이며, 말이다. 속잎나고, 그들의 피부가 영원히 얼마나 이것을 그리하였는가? 인간이 용감하고 영락과 품고 전인 있으랴? 실현에 심장의 동산에는 얼음에 기쁘며, 사는가 위하여서. 것이 스며들어 그들에게 불어 보내는 크고 인간의 품고 이 말이다. 품으며, 하는 찬미를 봄바람을 피가 하는 그들을 그러므로 봄바람이다. 그들에게 목숨을 가슴이 무엇을 행복스럽고 것이다.";
 
         ReviewRequestDto.ReviewCreateDto reviewCreateDto = ReviewRequestDto.ReviewCreateDto.builder()
-                .address("경기도 수원시 영통구 매영로425번길 4(영통동)")
+                .siDo("경기도")
+                .siGunGu("수원시 영통구")
+                .eupMyeon("")
+                .roadName("매영로425번길")
+                .buildingNumber("4")
                 .lineNumber(101)
                 .roomNumber(103)
                 .residenceType("APARTMENT")
@@ -128,7 +132,11 @@ public class ReviewRequestDtoTest {
         }
 
         ReviewRequestDto.ReviewCreateDto reviewCreateDto = ReviewRequestDto.ReviewCreateDto.builder()
-                .address("경기도 수원시 영통구 매영로425번길 4(영통동)")
+                .siDo("경기도")
+                .siGunGu("수원시 영통구")
+                .eupMyeon("")
+                .roadName("매영로425번길")
+                .buildingNumber("4")
                 .lineNumber(-101) // 음수
                 .roomNumber(-103) // 음수
                 .residenceType("hello world") // 잘못된 Enum 값

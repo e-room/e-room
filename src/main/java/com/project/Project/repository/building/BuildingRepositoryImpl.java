@@ -60,8 +60,7 @@ public class BuildingRepositoryImpl implements BuildingCustomRepository {
 
     private BooleanBuilder buildingSearchPredicate(String params) {
         return new BooleanBuilder()
-                .orAllOf(building.address.metropolitanGovernment.contains(params),
-                        building.address.basicLocalGovernment.contains(params),
+                .orAllOf(building.address.siDo.contains(params),
                         building.address.siGunGu.contains(params),
                         building.address.eupMyeon.contains(params),
                         building.address.roadName.contains(params),

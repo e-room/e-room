@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
 
     //Building
-    BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND,"해당하는 건물이 존재하지 않습니다.");
+    BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND,"해당하는 건물이 존재하지 않습니다."),
+    ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND,"알맞은 도로명 주소가 없습니다.");
     private final String message;
     private final HttpStatus status;
 

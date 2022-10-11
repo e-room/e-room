@@ -39,15 +39,6 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 .body(ApiErrorResult.builder().message(message).cause(cause).build());
     }
 
-    @ExceptionHandler
-    public ResponseEntity<ApiErrorResult> MethodArgumentTypeHandler(MethodArgumentNotValidException ex){
-
-        String message = "파라미터가 유효하지 않습니다.";
-        String cause = ex.getClass().getName();
-
-        return ResponseEntity.badRequest()
-                .body(ApiErrorResult.builder().message(message).cause(cause).build());
-    }
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResult> ConstraintViolationExceptionHandler (ConstraintViolationException e){
