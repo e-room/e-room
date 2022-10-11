@@ -5,9 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.PrePersist;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,35 +33,46 @@ public class Address {
     /**
      * 시도
      */
-    @Column(length = 20)
-    private String siDo;
+    @Column(length = 20, nullable = false)
+    @ColumnDefault("''")
+    @NotNull @Builder.Default
+    private String siDo = "";
 
     /**
      * 시군구
      */
-    @Column(length = 20)
-    private String siGunGu;
+    @Column(length = 20, nullable = false)
+    @ColumnDefault("''")
+    @NotNull @Builder.Default
+    private String siGunGu = "";
 
     /**
      * 읍면
      */
-    @Column(length = 20)
-    private String eupMyeon;
+    @Column(length = 20, nullable = false)
+    @ColumnDefault("''")
+    @NotNull @Builder.Default
+    private String eupMyeon = "";
 
     /**
      * 도로명
      */
-    private String roadName;
+    @Column(length = 20, nullable = false)
+    @ColumnDefault("''")
+    @NotNull @Builder.Default
+    private String roadName = "";
 
     /**
      * 건물 번호
      */
-    private String buildingNumber;
+    @Column(length = 20, nullable = false)
+    @ColumnDefault("''")
+    @NotNull @Builder.Default
+    private String buildingNumber = "";
 
     /**
      * 문자열로 된 주소를 Address 객체로 변환
      *
-     * @param stringAddress 문자열로 된 주소
      * @return Address 객체 반환
      */
     public static Address valueOf(String siDo, String siGunGu, String eupMyeon, String roadName, String buildingNumber) {

@@ -112,7 +112,7 @@ public class BuildingRepositoryTest {
     void findBuildingByAddressTest(){
         Building expectedBuilding = saveBuilding1;
         List<Building> results = this.buildingRepository.findAll();
-        Building result = this.buildingRepository.findByAddress(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).get();
+        Building result = this.buildingRepository.findBuildingByAddress(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).get();
         assertThat(result)
                 .usingRecursiveComparison().isEqualTo(expectedBuilding);
     }

@@ -53,4 +53,8 @@ public class ReviewServiceTest {
         // then
         assertEquals(review.getId(), savedReviewId);
     }
+
+    public void delete_Test() {
+
+    }
 }

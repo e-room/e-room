@@ -27,5 +27,6 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
 
     Optional<Building> findBuildingByAddress(@Param("address") Address address);
 
+
     <T> List<T> findBy(Class<T> projection);
 }
