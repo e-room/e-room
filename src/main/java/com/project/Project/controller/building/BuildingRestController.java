@@ -46,12 +46,10 @@ public class BuildingRestController {
     return: buildingId와 위치를 return
      */
     @GetMapping("/marking")
-    public List<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
+    public ResponseEntity<List<BuildingResponseDto.BuildingCountResponse>> getBuildingMarker() {
         List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
-        return buildingList.stream().map((building) -> BuildingResponseDto.BuildingCountResponse.builder()
-                .buildingId(building.getId())
-                .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
-                .build()).collect(Collectors.toList());
+        List<BuildingResponseDto.BuildingCountResponse> responseList = buildingList.stream().map(BuildingSerializer::toBuildingCountResponse).collect(Collectors.toList());
+        return ResponseEntity.ok(responseList);
     }
 
     /*
@@ -60,28 +58,11 @@ public class BuildingRestController {
     return: 해당하는 건물 list
      */
     @GetMapping("/")
-    public List<BuildingResponseDto.BuildingListResponse> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestBody CursorDto cursorDto) {
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestBody CursorDto cursorDto) {
+        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
         List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorDto.getCursorId(), PageRequest.of(0,cursorDto.getSize()));
-
-        return buildingList.stream().map(
-                (building) -> {
-                    List<Review> reviewListByBuilding = this.reviewService.getReviewListByBuildingId(building.getId(), cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
-                    Integer reviewCnt = reviewListByBuilding.size();
-                    Double buildingScoreAcc = building.getBuildingToReviewCategoryList().stream().map(buildingToReviewCategory -> buildingToReviewCategory.getAvgScore()).reduce(0D, (a,b)-> a + b);
-                    Double buildingScoreAvg = buildingScoreAcc/building.getBuildingToReviewCategoryList().size();
-
-                    BuildingToReviewCategory maxScoreCategory = building.getBuildingToReviewCategoryList().stream().max(Comparator.comparing(BuildingToReviewCategory::getAvgScore)).get();
-                    return BuildingResponseDto.BuildingListResponse.builder()
-                            .buildingId(building.getId())
-                            .name(building.getBuildingName())
-                            .address(Address.toAddressDto(building.getAddress()).toString())
-                            .isDirectDeal(false)
-                            .reviewCnt(Long.valueOf(reviewCnt))
-                            .scoreAvg(buildingScoreAvg)
-                            .bestCategory(maxScoreCategory.getReviewCategory().getType())
-                            .build();
-                }
-        ).collect(Collectors.toList());
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse,pageable));
     }
 
     /*
@@ -90,9 +71,9 @@ public class BuildingRestController {
     return: 단일 건물 BuildingResponse
      */
     @GetMapping("/{buildingId}")
-    public BuildingResponseDto.BuildingResponse getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
+    public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
         Building building = this.buildingService.getBuildingByBuildingId(buildingId);
-        return BuildingSerializer.toBuildingResponse(building);
+        return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building));
     }
 
     /* 8.1
