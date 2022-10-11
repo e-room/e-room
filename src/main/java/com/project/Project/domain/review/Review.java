@@ -6,7 +6,6 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.enums.FloorHeight;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ResidencePeriod;
-import com.project.Project.domain.enums.ResidenceType;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.AnonymousStatus;
@@ -62,12 +61,6 @@ public class Review extends BaseEntity {
 
     @Embedded
     private AnonymousStatus anonymousStatus;
-
-    /**
-     * 거주 유형(아파트 / 오피스텔 또는 원룸 빌라 주택)
-     */
-    @Enumerated(EnumType.STRING)
-    private ResidenceType residenceType;
 
     /**
      * 거주 기간 : 2018년 이전, 2018년까지, 2019년까지, ..., 2022년까지

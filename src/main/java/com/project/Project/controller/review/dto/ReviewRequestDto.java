@@ -71,13 +71,6 @@ public class ReviewRequestDto {
         private Integer roomNumber;
 
         /**
-         * 거주 유형(아파트 / 오피스텔 또는 원룸 빌라 주택)
-         */
-        // todo : 답변오면 결정
-        @ValidEnum(enumClass = ResidenceType.class, ignoreCase = true)
-        private String residenceType;
-
-        /**
          * 거주 기간 : 2018년 이전, 2018년까지, 2019년까지, ..., 2022년까지
          */
         @NotNull

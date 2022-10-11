@@ -94,8 +94,7 @@ public class ReviewSerializer {
 
 
         Review review = Review.builder()
-                .residenceType(ResidenceType.valueOf(request.getResidenceType()))
-                .residencePeriod(ResidencePeriod.valueOf(request.getResidenceType()))
+                .residencePeriod(ResidencePeriod.valueOf(request.getResidencePeriod()))
                 .floorHeight(FloorHeight.valueOf(request.getFloorHeight()))
                 .deposit(request.getDeposit())
                 .monthlyRent(request.getMonthlyRent())
