@@ -7,7 +7,7 @@ const countPerPage = 100
 const resultType = `json`
 
 
-class AddressDto{
+class AddressDto {
     sido!: string | null
     siGunGu!: string | null
     eupMyeon!: string | null
@@ -15,7 +15,7 @@ class AddressDto{
     buildingNumber!: string | null
 }
 
-class RoadAddrAPIResponseDto{
+class RoadAddrAPIResponseDto {
     detBdNmList!: string | null
     engAddr!: string | null
     rn!: string | null
@@ -42,9 +42,9 @@ class RoadAddrAPIResponseDto{
     buldSlno!: string | null
 }
 
-function requestToAddrAPI(){
+function requestToAddrAPI() {
     return async (keyword: string): Promise<AxiosResponse> => {
-        try{
+        try {
             return axios({
                 url: apiUrl,
                 method: 'get',
@@ -56,58 +56,70 @@ function requestToAddrAPI(){
                     keyword: keyword
                 }
             })
-        }catch (error){
+        } catch (error) {
             throw new Error(`Error: ${error}`)
         }
     }
 }
 
-function requestToBuildingGen(){
+function requestToBuildingGen() {
     return async (address: AddressDto): Promise<AxiosResponse> => {
-        try{
+        try {
             return axios({
-                url: apiUrl,
+                url: 'http://localhost:8080/building/',
                 method: 'post',
                 data: {
-                    sido: address.sido,
-                    siGunGu: address.siGunGu,
-                    eupMyeon: address.eupMyeon,
-                    roadName: address.roadName,
-                    buildingNumber: address.buildingNumber
+                    addressDto: {
+                        siDo: address.sido,
+                        siGunGu: address.siGunGu,
+                        eupMyeon: address.eupMyeon,
+                        roadName: address.roadName,
+                        buildingNumber: address.buildingNumber
+                    },
+                    buildingOptionalDto: {
+                        buildingName: null,
+                        hasElevator: true
+                    }
+
                 }
             })
-        }catch (error){
+        } catch (error) {
             throw new Error(`Error: ${error}`)
         }
     }
 }
 
-async function main(){
+const delay = (ms: number) => {
+    return new Promise((resolve) => setTimeout(() => {
+        resolve(ms);
+    }, ms))
+}
+
+async function main() {
     const keyword = '영통구'
-    try{
+    try {
         const buildingList = (await requestToAddrAPI()(keyword)).data?.results?.juso
-        const addressList = buildingList.map((building: RoadAddrAPIResponseDto)=> {
-            // console.log(JSON.stringify(building,null,2));
+        const addressList = buildingList.map((building: RoadAddrAPIResponseDto) => {
+            console.log(JSON.stringify(building, null, 2));
             const address: AddressDto = new AddressDto()
             address.sido = building.siNm
             address.siGunGu = building.sggNm
             address.eupMyeon = building.emdNm
             address.roadName = building.rn
-            address.buildingNumber = building.buldMnnm
+            address.buildingNumber = building.buldSlno == "0" ? building.buldMnnm : building.buldMnnm + '-' + building.buldSlno
             return address
         })
-        await Promise.all(
-            addressList.map(async (address: AddressDto) => {
-                try {
-                    const response = await requestToBuildingGen()(address)
-                    const building = response.data
-                    console.log(JSON.stringify(building, null, 2))
-                } catch (e) {
-                    console.error(e)
-                }
-            })
-        )
-    }catch (e) {
+        for (const address of addressList) {
+            try {
+                const response = await requestToBuildingGen()(address)
+                const building = response.data
+                console.log(JSON.stringify(building, null, 2))
+                await delay(1000);
+            } catch (e: Error | any) {
+                console.error(e)
+            }
+        }
+    } catch (e) {
         console.error(e)
     }
 }
