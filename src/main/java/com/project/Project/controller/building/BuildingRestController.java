@@ -2,6 +2,7 @@ package com.project.Project.controller.building;
 
 import com.project.Project.Util.QueryDslUtil;
 import com.project.Project.controller.CursorDto;
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
@@ -90,5 +91,14 @@ public class BuildingRestController {
         List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorDto.getCursorId(), pageable);
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse,pageable));
+    }
+
+    /*
+    building set generator for test
+     */
+    @PostMapping("/")
+    public ResponseEntity<Building> createBuilding(@RequestBody AddressDto addressDto){
+        Building building = this.buildingService.createBuilding(AddressDto.toAddress(addressDto));
+        return ResponseEntity.ok(building);
     }
 }
