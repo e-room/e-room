@@ -1,5 +1,6 @@
 package com.project.Project.controller.review.dto;
 
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.*;
@@ -7,9 +8,11 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,34 +31,11 @@ public class ReviewRequestDto {
     @Builder
     public static class ReviewCreateDto {
 
-        /**
-         * 건물주소 : 경기도 수원시 ~~
-         */
-        @NotNull
-        private String siDo;
+        @Valid
+        private AddressDto address;
 
-        /**
-         * 시군구
-         */
         @NotNull
-        private String siGunGu;
-
-        /**
-         * 읍면
-         */
-        @NotNull
-        private String eupMyeon;
-
-        /**
-         * 도로명
-         */
-        @NotNull
-        private String roadName;
-
-        /**
-         * 건물 번호
-         */
-        private String buildingNumber;
+        private String buildingName;
 
         /**
          * 몇 동인지 : 101동

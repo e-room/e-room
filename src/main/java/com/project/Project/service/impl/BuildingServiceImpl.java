@@ -1,7 +1,7 @@
 package com.project.Project.service.impl;
 
 import com.project.Project.Util.BuildingGenerator;
-import com.project.Project.Util.KakaoAddressAPI;
+import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
@@ -57,19 +57,23 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public Building createBuilding(Address address) {
-        return BuildingGenerator.generateBuilding(address);
+    public Building createBuilding(Address address, BuildingOptionalDto buildingOptionalDto) {
+        Building building = BuildingGenerator.generateBuilding(address);
+        return building.setOptions(buildingOptionalDto);
     }
 
     @Override
-    public Building createBuilding(Address address, Coordinate coordinate) {
-        return Building.builder()
-                .coordinate(coordinate)
-                .address(address).build();
+    public Building createBuilding(Address address, Coordinate coordinate, BuildingOptionalDto buildingOptionalDto) {
+        Building building = BuildingGenerator.generateBuilding(address,coordinate);
+        return building.setOptions(buildingOptionalDto);
     }
 
     @Override
     public List<Building> createBuilding(String address) {
         return BuildingGenerator.generateBuildings(address);
+    }
+
+    public Building updateBuilding(BuildingOptionalDto buildingOptionalDto){
+        return null;
     }
 }

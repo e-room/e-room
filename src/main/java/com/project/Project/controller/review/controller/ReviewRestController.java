@@ -1,11 +1,14 @@
 package com.project.Project.controller.review.controller;
 
 import com.project.Project.controller.CursorDto;
+import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
+import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
@@ -26,7 +29,6 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Validated
@@ -114,12 +116,14 @@ public class ReviewRestController {
                 .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
 
-        Address address = Address.valueOf(request.getSiDo(), request.getSiGunGu(), request.getEupMyeon(), request.getRoadName(), request.getBuildingNumber());
-
+        Address address = AddressDto.toAddress(request.getAddress());
+        String buildingName = request.getBuildingName();
+        Boolean hasElevator = request.getAdvantageKeywordList().stream().anyMatch((keyword)-> keyword.equalsIgnoreCase(KeywordEnum.ELEVATOR.toString()));
+        BuildingOptionalDto buildingOptionalDto = new BuildingOptionalDto(buildingName,hasElevator);
 
         Long savedReviewId = 0L;
         Building building = buildingService.findByAddress(address)
-                .orElse(buildingService.createBuilding(address)); // 빌딩이 없는 경우 생성
+                .orElse(buildingService.createBuilding(address, buildingOptionalDto)); // 빌딩이 없는 경우 생성
 
         Room room = roomService.findByBuildingAndLineNumberAndRoomNumber(building, request.getRoomNumber(), request.getLineNumber())
                 .orElse(roomService.createRoom(building, request.getLineNumber(), request.getRoomNumber())); // 방이 없는 경우 생성해줌.

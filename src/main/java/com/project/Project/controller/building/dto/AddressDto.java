@@ -1,30 +1,49 @@
 package com.project.Project.controller.building.dto;
 
-import lombok.Builder;
+import com.project.Project.domain.embedded.Address;
+import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 @Builder
 public class AddressDto {
 
     /**
      * 시도
      */
+    @NotBlank
+    @Size(max=20)
     private String siDo;
 
     /**
      * 시군구
      */
+    @NotBlank
+    @Size(max=20)
     private String siGunGu;
 
     /**
      * 읍면
      */
+    @NotNull
+    @Size(max=20)
     private String eupMyeon;
 
     /**
      * 도로명
      */
+    @NotBlank
+    @Size(max=20)
     private String roadName;
 
+    @NotBlank
+    @Size(max=20)
     private String buildingNumber;
 
 
@@ -33,13 +52,13 @@ public class AddressDto {
         return  siDo + " " +  siGunGu + " " + eupMyeon +  " " +  roadName + " " ;
     }
 
-//    /**
-//     * 상세주소
-//     */
-//    private String detailedAddress;
-//
-//    /**
-//     * 참고항목
-//     */
-//    private String referenceItem;
+    public static Address toAddress(AddressDto addressDto){
+        return Address.builder()
+                .siDo(addressDto.getSiDo())
+                .siGunGu(addressDto.getSiGunGu())
+                .eupMyeon(addressDto.getEupMyeon())
+                .roadName(addressDto.getRoadName())
+                .buildingNumber(addressDto.getBuildingNumber())
+                .build();
+    }
 }

@@ -11,7 +11,6 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @SQLDelete(sql = "UPDATE building_summary SET deleted = true WHERE id=?")
@@ -29,7 +28,14 @@ public class BuildingSummary {
 
     private Long reviewCnt;
 
+    public BuildingSummary(){
+        this.building = null;
+        this.avgScore = 0.0;
+        this.reviewCnt = 0L;
+    }
+
     public void setBuilding(Building building) {
         this.building = building;
+        building.setBuildingSummary(this);
     }
 }

@@ -1,25 +1,19 @@
 package com.project.Project.domain.building;
 
-import com.project.Project.controller.building.dto.BuildingResponseDto;
-import com.project.Project.controller.room.dto.RoomResponseDto;
+import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.Favorite;
-import com.project.Project.domain.review.ReviewSummary;
 import com.project.Project.domain.room.Room;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @SQLDelete(sql = "UPDATE building SET deleted = true WHERE id=?")
@@ -48,8 +42,10 @@ public class Building extends BaseEntity {
     @Embedded
     private Address address;
 
-    @Column
-    private String buildingName;
+    @Column(nullable = true)
+    @ColumnDefault("''")
+    @Builder.Default
+    private String buildingName = "";
 
     @Embedded
     private Coordinate coordinate;
@@ -69,7 +65,7 @@ public class Building extends BaseEntity {
     @Builder.Default
     private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "building")
+    @OneToOne(mappedBy = "building", cascade = CascadeType.ALL)
     private BuildingSummary buildingSummary;
 
     // TODO : 이미지 업로드 방법에 따라 추후 필드 추가. ex) S3업로드 or ec2 서버내에 업로드 등
@@ -90,5 +86,13 @@ public class Building extends BaseEntity {
         for (Room room : rooms) {
             room.setBuilding(this);
         }
+    }
+
+    public Building setOptions(BuildingOptionalDto dto){
+        if(this.buildingName == null || this.buildingName.equals("")){
+            this.buildingName = dto.getBuildingName();
+        }
+        this.hasElevator = dto.getHasElevator();
+        return this;
     }
 }
