@@ -89,7 +89,7 @@ public class Building extends BaseEntity {
     }
 
     public Building setOptions(BuildingOptionalDto dto){
-        if(this.buildingName == null || this.buildingName.equals("")){
+        if(dto.getBuildingName() != null && (this.buildingName == null || this.buildingName.equals(""))){
             this.buildingName = dto.getBuildingName();
         }
         this.hasElevator = dto.getHasElevator();

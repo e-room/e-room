@@ -5,10 +5,10 @@ import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
-import com.project.Project.repository.building.BuildingCustomRepository;
-import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.ReviewRepository;
 import com.project.Project.repository.RoomRepository;
+import com.project.Project.repository.building.BuildingCustomRepository;
+import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.service.BuildingService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -31,13 +32,13 @@ public class BuildingServiceImpl implements BuildingService {
     private final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
     private final WebClient webclient;
 
-    public List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord(){
+    public List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord() {
         return buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
     }
 
     @Override
     public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, Long cursorId, Pageable pageable) {
-        return buildingCustomRepo.findBuildingsByIdIn(buildingIds,cursorId,pageable);
+        return buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorId, pageable);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<Building> getBuildingsBySearch(String params, Long cursorId, Pageable page) {
 //        return buildingRepository.searchBuildings(params);
-       return  buildingCustomRepo.searchBuildings(params,cursorId,page);
+        return buildingCustomRepo.searchBuildings(params, cursorId, page);
     }
 
     @Override
@@ -57,6 +58,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
+    @Transactional
     public Building createBuilding(Address address, BuildingOptionalDto buildingOptionalDto) {
         Building building = BuildingGenerator.generateBuilding(address);
         return building.setOptions(buildingOptionalDto);
@@ -64,7 +66,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public Building createBuilding(Address address, Coordinate coordinate, BuildingOptionalDto buildingOptionalDto) {
-        Building building = BuildingGenerator.generateBuilding(address,coordinate);
+        Building building = BuildingGenerator.generateBuilding(address, coordinate);
         return building.setOptions(buildingOptionalDto);
     }
 
@@ -73,7 +75,7 @@ public class BuildingServiceImpl implements BuildingService {
         return BuildingGenerator.generateBuildings(address);
     }
 
-    public Building updateBuilding(BuildingOptionalDto buildingOptionalDto){
+    public Building updateBuilding(BuildingOptionalDto buildingOptionalDto) {
         return null;
     }
 }
