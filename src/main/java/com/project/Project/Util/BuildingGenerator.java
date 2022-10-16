@@ -46,8 +46,8 @@ public class BuildingGenerator {
                 .block();
     }
 
-    public static Building generateBuilding(Address address, Coordinate coordinate){
-        return staticBuildingRepository.findByAddress(address).orElseGet(()-> {
+    public static Building generateBuilding(Address address, Coordinate coordinate) {
+        return staticBuildingRepository.findByAddress(address).orElseGet(() -> {
             // building.create()
             Building buildingCreated = Building.builder()
                     .coordinate(coordinate)
@@ -60,15 +60,21 @@ public class BuildingGenerator {
         });
     }
 
-    public static Building generateBuilding(Address address){
+    public static Building generateBuilding(Address address) {
         return staticBuildingRepository.findByAddress(address)
-                .orElseGet(()-> {
+                .orElseGet(() -> {
                     //주소 검색
                     String query = address.toString();
                     KakaoAddressAPI kakaoAddress = BuildingGenerator.searchAddressByKakao(query);
-                    if(kakaoAddress.getDocuments().get(0).getAddress_type() == "ROAD") throw new BuildingException("주소가 완벽하지 않습니다.",ErrorCode.ADDRESS_NOT_FOUND);
+                    if (kakaoAddress.getDocuments().isEmpty()) {
+                        System.out.println(query);
+                        throw new BuildingException("해당하는 도로명 주소가 존재하지 않습니다..", ErrorCode.BUILDING_NOT_FOUND);
+                    }
+                    if (kakaoAddress.getDocuments().get(0).getAddress_type() == "ROAD")
+                        throw new BuildingException("주소가 완벽하지 않습니다.", ErrorCode.ADDRESS_NOT_FOUND);
                     String type = kakaoAddress.getDocuments().get(0).getAddress_type();
-                    if(!type.equals("ROAD_ADDR") ) throw new BuildingException("해당하는 도로명 주소가 없거나 지번 주소입니다.", ErrorCode.BUILDING_NOT_FOUND);
+                    if (!type.equals("ROAD_ADDR"))
+                        throw new BuildingException("해당하는 도로명 주소가 없거나 지번 주소입니다.", ErrorCode.BUILDING_NOT_FOUND);
                     // building.create
                     Building buildingCreated = Building.builder()
                             .coordinate(Coordinate.builder()
@@ -90,6 +96,8 @@ public class BuildingGenerator {
         //주소 검색
         KakaoAddressAPI kakaoAddress = searchAddressByKakao(param);
         List<KakaoAddressAPI.Document> documents = kakaoAddress.getDocuments();
+        if (documents.isEmpty())
+            throw new BuildingException("해당하는 도로명 주소가 존재하지 않습니다..", ErrorCode.BUILDING_NOT_FOUND);
         List<Building> buildingList = new ArrayList<>();
 
         //stream 처리
@@ -108,7 +116,7 @@ public class BuildingGenerator {
             String buildingName = document.getRoad_address().getBuilding_name();
             //building.create()
             Building building = staticBuildingRepository.findBuildingByAddress(address)
-                    .orElseGet(()->generateBuilding(address,coordinate));
+                    .orElseGet(() -> generateBuilding(address, coordinate));
             building.setBuildingName(buildingName);
             buildingList.add(building);
         });
