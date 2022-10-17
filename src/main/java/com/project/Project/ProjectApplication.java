@@ -1,13 +1,25 @@
 package com.project.Project;
 
+import com.project.Project.domain.review.ReviewCategory;
+import com.project.Project.repository.ReviewCategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class ProjectApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
-	}
+
+    private final ReviewCategoryRepository reviewCategoryRepository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(ProjectApplication.class, args);
+    }
+
+    @PostConstruct()
+    public void init() {
+        ReviewCategory.init(reviewCategoryRepository);
+    }
 }

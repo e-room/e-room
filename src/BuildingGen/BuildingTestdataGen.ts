@@ -114,7 +114,7 @@ async function main() {
                 const response = await requestToBuildingGen()(address)
                 const building = response.data
                 console.log(JSON.stringify(building, null, 2))
-                await delay(1000);
+                // await delay(1000);
             } catch (e: Error | any) {
                 console.error(e)
             }
