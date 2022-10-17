@@ -1,7 +1,7 @@
 package com.project.Project;
 
-import com.project.Project.domain.review.ReviewCategory;
-import com.project.Project.repository.ReviewCategoryRepository;
+import com.project.Project.service.ReviewCategoryService;
+import com.project.Project.service.ReviewKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +12,8 @@ import javax.annotation.PostConstruct;
 @RequiredArgsConstructor
 public class ProjectApplication {
 
-    private final ReviewCategoryRepository reviewCategoryRepository;
+    private final ReviewCategoryService reviewCategoryService;
+    private final ReviewKeywordService reviewKeywordService;
 
     public static void main(String[] args) {
         SpringApplication.run(ProjectApplication.class, args);
@@ -20,6 +21,7 @@ public class ProjectApplication {
 
     @PostConstruct()
     public void init() {
-        ReviewCategory.init(reviewCategoryRepository);
+        reviewCategoryService.initReviewCategory();
+        reviewKeywordService.initReviewKeyword();
     }
 }
