@@ -52,17 +52,15 @@ public class ReviewCategory extends BaseEntity {
         if (reviewCategoryRepository.findAll().size() == reviewCategoryEnums.size()) {
             return;
         } else if (reviewCategoryEnumListInDB.isEmpty()) {
-            List<ReviewCategory> ReviewCategoryList = reviewCategoryEnums.stream().map((reviewCategoryEnum) -> {
+            reviewCategoryEnums.stream().forEach((reviewCategoryEnum) -> {
                 ReviewCategory reviewCategory = ReviewCategory.builder()
                         .type(reviewCategoryEnum)
                         .build();
-                return reviewCategoryRepository.save(reviewCategory);
-            }).collect(Collectors.toList());
+                reviewCategoryRepository.save(reviewCategory);
+            });
         } else {
             //something not in DB
-            List<ReviewCategoryEnum> notInDbList = reviewCategoryEnums.stream().filter((categoryEnum) -> {
-                return !(reviewCategoryEnumListInDB.contains(categoryEnum));
-            }).collect(Collectors.toList());
+            List<ReviewCategoryEnum> notInDbList = reviewCategoryEnums.stream().filter((categoryEnum) -> !(reviewCategoryEnumListInDB.contains(categoryEnum))).collect(Collectors.toList());
             //새롭게 저장
             notInDbList.stream().forEach(categoryEnum -> reviewCategoryRepository.save(
                     ReviewCategory.builder()
