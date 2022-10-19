@@ -1,10 +1,9 @@
 package com.project.Project.domain.building;
 
-import com.project.Project.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -17,7 +16,8 @@ import javax.persistence.*;
 @Where(clause = "deleted=false")
 @Entity
 public class BuildingSummary {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @OneToOne()
@@ -26,11 +26,14 @@ public class BuildingSummary {
 
     private Double avgScore;
 
-    private Long reviewCnt;
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    @Builder.Default
+    private Long reviewCnt = 0L;
 
-    public BuildingSummary(){
+    public BuildingSummary() {
         this.building = null;
-        this.avgScore = 0.0;
+        this.avgScore = null;
         this.reviewCnt = 0L;
     }
 
