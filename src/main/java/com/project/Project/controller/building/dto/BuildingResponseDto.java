@@ -19,7 +19,7 @@ public class BuildingResponseDto {
     public static class BuildingListResponse {
         private Long buildingId;
         private String name;
-        private String address;
+        private AddressDto address;
         private Long reviewCnt;
         private Double scoreAvg;
         private ReviewCategoryEnum bestCategory;
@@ -45,7 +45,7 @@ public class BuildingResponseDto {
     public static class BuildingResponse {
         private Long buildingId;
         private String name;
-        private String address;
+        private AddressDto address;
         private CoordinateDto coordinate;
         private Boolean isDirectDeal;
         private List<RoomResponseDto.RoomListResponse> rooms;
@@ -57,7 +57,7 @@ public class BuildingResponseDto {
     public static class BuildingMetaData {
         private Long buildingId;
         private String name;
-        private String address;
+        private AddressDto address;
         private CoordinateDto coordinateDto;
         private Boolean isDirectDeal;
     }
