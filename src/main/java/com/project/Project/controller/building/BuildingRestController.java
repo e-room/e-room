@@ -2,12 +2,10 @@ package com.project.Project.controller.building;
 
 import com.project.Project.Util.QueryDslUtil;
 import com.project.Project.controller.CursorDto;
+import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
-import com.project.Project.domain.building.BuildingToReviewCategory;
-import com.project.Project.domain.embedded.Address;
-import com.project.Project.domain.embedded.Coordinate;
-import com.project.Project.domain.review.Review;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.BuildingService;
@@ -21,9 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,9 +55,9 @@ public class BuildingRestController {
     @GetMapping("/")
     public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestBody CursorDto cursorDto) {
         Pageable pageable = PageRequest.of(0, cursorDto.getSize());
-        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorDto.getCursorId(), PageRequest.of(0,cursorDto.getSize()));
+        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse,pageable));
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
 
     /*
@@ -89,6 +84,15 @@ public class BuildingRestController {
 //        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
         List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorDto.getCursorId(), pageable);
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse,pageable));
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
+    }
+
+    /*
+    building set generator for test
+     */
+    @PostMapping("/")
+    public ResponseEntity<BuildingResponseDto.BuildingMetaData> createBuilding(@RequestBody BuildingRequestDto.BuildingCreateRequest request) {
+        Building building = this.buildingService.createBuilding(AddressDto.toAddress(request.getAddressDto()), request.getBuildingOptionalDto());
+        return ResponseEntity.ok(BuildingSerializer.toBuildingMetaData(building));
     }
 }

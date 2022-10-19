@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -33,13 +32,15 @@ public class BuildingSerializer {
     private static RoomRepository staticRoomRepo;
     private static BuildingToReviewCategoryRepository staticBuildingToReviewCategoryRepo;
     private static ReviewCategoryRepository staticReviewCategoryRepo;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         staticRoomRepo = this.roomRepository;
         staticBuildingToReviewCategoryRepo = this.buildingToReviewCategoryRepository;
         staticReviewCategoryRepo = this.reviewCategoryRepository;
     }
-    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building){
+
+    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building) {
 
         List<BuildingToReviewCategory> buildingToReviewCategoryList = building.getBuildingToReviewCategoryList();
         Map<ReviewCategoryEnum, Double> buildingSummary = new HashMap<>();
@@ -51,7 +52,7 @@ public class BuildingSerializer {
                 .address(Address.toAddressDto(building.getAddress()).toString())
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .isDirectDeal(false)
-                .rooms(building.getRoomList().stream().map((room)-> RoomResponseDto.RoomListResponse.builder()
+                .rooms(building.getRoomList().stream().map((room) -> RoomResponseDto.RoomListResponse.builder()
                         .roomId(room.getId())
                         .roomNumber(room.getRoomNumber())
                         .build()
@@ -60,8 +61,8 @@ public class BuildingSerializer {
                 .build();
     }
 
-    public static BuildingResponseDto.BuildingListResponse toBuildingListResponse(Building building){
-        if(building.getBuildingToReviewCategoryList().isEmpty()){
+    public static BuildingResponseDto.BuildingListResponse toBuildingListResponse(Building building) {
+        if (building.getBuildingToReviewCategoryList().isEmpty()) {
             List<BuildingToReviewCategory> reviewCategories = staticBuildingToReviewCategoryRepo.findBuildingToReviewCategoriesByBuilding_Id(building.getId());
             building.setBuildingToReviewCategoryList(reviewCategories);
         }
@@ -77,10 +78,22 @@ public class BuildingSerializer {
                 .build();
     }
 
-    public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(OnlyBuildingIdAndCoord building){
+    public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(OnlyBuildingIdAndCoord building) {
         return BuildingResponseDto.BuildingCountResponse.builder()
                 .buildingId(building.getId())
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .build();
     }
+
+    public static BuildingResponseDto.BuildingMetaData toBuildingMetaData(Building building) {
+        return BuildingResponseDto.BuildingMetaData.builder()
+                .buildingId(building.getId())
+                .name(building.getBuildingName())
+                .address(building.getAddress().toString())
+                .isDirectDeal(false)
+                .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
+                .build();
+    }
+
+
 }

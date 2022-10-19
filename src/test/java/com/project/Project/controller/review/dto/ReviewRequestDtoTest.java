@@ -1,10 +1,8 @@
 package com.project.Project.controller.review.dto;
 
-import org.junit.jupiter.api.Test;
+import com.project.Project.controller.building.dto.AddressDto;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintViolation;
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ReviewRequestDtoTest {
     private static ValidatorFactory factory;
@@ -38,11 +36,14 @@ public class ReviewRequestDtoTest {
         String disadvantageDescription = "길지 풍부하게 보이는 곳이 밝은 있으랴? 싹이 있으며, 따뜻한 바이며, 일월과 청춘 때문이다. 스며들어 사랑의 끓는 무엇을 부패를 말이다. 자신과 품으며, 이상이 같지 천지는 위하여 인생에 속잎나고, 바이며, 말이다. 속잎나고, 그들의 피부가 영원히 얼마나 이것을 그리하였는가? 인간이 용감하고 영락과 품고 전인 있으랴? 실현에 심장의 동산에는 얼음에 기쁘며, 사는가 위하여서. 것이 스며들어 그들에게 불어 보내는 크고 인간의 품고 이 말이다. 품으며, 하는 찬미를 봄바람을 피가 하는 그들을 그러므로 봄바람이다. 그들에게 목숨을 가슴이 무엇을 행복스럽고 것이다.";
 
         ReviewRequestDto.ReviewCreateDto reviewCreateDto = ReviewRequestDto.ReviewCreateDto.builder()
-                .siDo("경기도")
-                .siGunGu("수원시 영통구")
-                .eupMyeon("")
-                .roadName("매영로425번길")
-                .buildingNumber("4")
+                .address(
+                        AddressDto.builder().siDo("경기도")
+                                .siGunGu("수원시 영통구")
+                                .eupMyeon("")
+                                .roadName("매영로425번길")
+                                .buildingNumber("4")
+                                .build()
+                )
                 .lineNumber(101)
                 .roomNumber(103)
                 .residenceType("APARTMENT")
@@ -57,9 +58,9 @@ public class ReviewRequestDtoTest {
                 .surrounding(BigDecimal.valueOf(1.0))
                 .internal(BigDecimal.valueOf(5.0))
                 .livingLocation(BigDecimal.valueOf(3.0))
-                .advantageKeywordList(List.of("PARKING","VENTILATION","TOWN_NOISE"))
+                .advantageKeywordList(List.of("PARKING", "VENTILATION", "TOWN_NOISE"))
                 .advantageDescription(advantageDescription)
-                .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE","DAY_LIGHTING"))
+                .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE", "DAY_LIGHTING"))
                 .disadvantageDescription(disadvantageDescription)
                 .reviewImageList(new ArrayList<>())
                 .residenceSatisfaction(BigDecimal.valueOf(5.0))
@@ -87,7 +88,7 @@ public class ReviewRequestDtoTest {
                 "청춘의 길을 별과 이것을 있다. 그들의 그들의 장식하는 있다. 있는 이상이 그와 부패뿐이다. 같은 풀이 그들은 품었기 튼튼하며, 것이다. 천하를 속에서 넣는 가는 간에 행복스럽고 얼음에 뿐이다. 품에 곧 옷을 같이 열매를 우리 위하여 품었기 말이다. 얼음과 노래하며 수 사는가 가는 것이다. 그것을 우리의 따뜻한 봄바람을 있는 위하여서, 청춘에서만 그것은 인간에 것이다. 관현악이며, 무엇을 못할 우리 할지니, 얼음과 없으면 열락의 피고 이것이다. 무엇을 하는 용감하고 이것은 온갖 약동하다. 속에서 불어 인간은 황금시대다.";
 
         List<MultipartFile> reviewImageList = new ArrayList<>();
-        for(int i=0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             reviewImageList.add(new MultipartFile() {
                 @Override
                 public String getName() {
@@ -132,11 +133,15 @@ public class ReviewRequestDtoTest {
         }
 
         ReviewRequestDto.ReviewCreateDto reviewCreateDto = ReviewRequestDto.ReviewCreateDto.builder()
-                .siDo("경기도")
-                .siGunGu("수원시 영통구")
-                .eupMyeon("")
-                .roadName("매영로425번길")
-                .buildingNumber("4")
+                .address(
+                        AddressDto.builder()
+                                .siDo("경기도")
+                                .siGunGu("수원시 영통구")
+                                .eupMyeon("")
+                                .roadName("매영로425번길")
+                                .buildingNumber("4")
+                                .build()
+                )
                 .lineNumber(-101) // 음수
                 .roomNumber(-103) // 음수
                 .residenceType("hello world") // 잘못된 Enum 값
@@ -151,9 +156,9 @@ public class ReviewRequestDtoTest {
                 .surrounding(BigDecimal.valueOf(6.6)) // 5.0 초과
                 .internal(BigDecimal.valueOf(5.1)) // 5.0 초과
                 .livingLocation(BigDecimal.valueOf(-1.0)) // 0.0 미만
-                .advantageKeywordList(List.of("PARKING@","VENTILATION~~","앍TOWN_NOISE")) // 잘못된 Enum 값 3개
+                .advantageKeywordList(List.of("PARKING@", "VENTILATION~~", "앍TOWN_NOISE")) // 잘못된 Enum 값 3개
                 .advantageDescription(advantageDescription) // 50자 미만
-                .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE히히","ㅁㅁ")) // 잘못된 Enum 값 2개
+                .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE히히", "ㅁㅁ")) // 잘못된 Enum 값 2개
                 .disadvantageDescription(disadvantageDescription) // 500자 초과
                 .reviewImageList(reviewImageList) // 5개 이상의 이미지
                 .residenceSatisfaction(BigDecimal.valueOf(5.5)) // 5.0 초과

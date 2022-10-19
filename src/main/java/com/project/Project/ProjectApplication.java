@@ -1,13 +1,27 @@
 package com.project.Project;
 
+import com.project.Project.service.ReviewCategoryService;
+import com.project.Project.service.ReviewKeywordService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import javax.annotation.PostConstruct;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class ProjectApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
-	}
+
+    private final ReviewCategoryService reviewCategoryService;
+    private final ReviewKeywordService reviewKeywordService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(ProjectApplication.class, args);
+    }
+
+    @PostConstruct()
+    public void init() {
+        reviewCategoryService.initReviewCategory();
+        reviewKeywordService.initReviewKeyword();
+    }
 }
