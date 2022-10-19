@@ -1,84 +1,68 @@
 package com.project.Project.serializer.building;
 
 import com.project.Project.controller.building.dto.BuildingResponseDto;
-import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
-import com.project.Project.repository.BuildingToReviewCategoryRepository;
-import com.project.Project.repository.ReviewCategoryRepository;
-import com.project.Project.repository.RoomRepository;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import com.project.Project.serializer.room.RoomSerializer;
 
-import javax.annotation.PostConstruct;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
 public class BuildingSerializer {
-
-    private final RoomRepository roomRepository;
-    private final BuildingToReviewCategoryRepository buildingToReviewCategoryRepository;
-    private final ReviewCategoryRepository reviewCategoryRepository;
-
-    private static RoomRepository staticRoomRepo;
-    private static BuildingToReviewCategoryRepository staticBuildingToReviewCategoryRepo;
-    private static ReviewCategoryRepository staticReviewCategoryRepo;
-
-    @PostConstruct
-    public void init() {
-        staticRoomRepo = this.roomRepository;
-        staticBuildingToReviewCategoryRepo = this.buildingToReviewCategoryRepository;
-        staticReviewCategoryRepo = this.reviewCategoryRepository;
-    }
 
     public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building) {
 
         List<BuildingToReviewCategory> buildingToReviewCategoryList = building.getBuildingToReviewCategoryList();
         Map<ReviewCategoryEnum, Double> buildingSummary = new HashMap<>();
-        buildingToReviewCategoryList.stream().forEach(buildingToReviewCategory -> buildingSummary.put(buildingToReviewCategory.getReviewCategory().getType(), buildingToReviewCategory.getAvgScore()));
-
+        //with stream, if the list is empty, it does nothing
+        buildingToReviewCategoryList.stream().forEach(
+                buildingToReviewCategory -> {
+                    // when list contains null elem, NPE occurs, we'd like to protect that case
+                    ReviewCategoryEnum category = BuildingToReviewCategory.bestCategoryOrNull.apply(buildingToReviewCategory);
+                    Double avgScore = buildingToReviewCategory.getAvgScore();
+                    if (category != null || avgScore != null) {
+                        buildingSummary.put(category, avgScore);
+                    }
+                }
+        );
+        //with stream, if the list is empty, stream map method return empty list
         return BuildingResponseDto.BuildingResponse.builder()
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
-                .address(Address.toAddressDto(building.getAddress()).toString())
+                .address(Address.toAddressDto(building.getAddress()))
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .isDirectDeal(false)
-                .rooms(building.getRoomList().stream().map((room) -> RoomResponseDto.RoomListResponse.builder()
-                        .roomId(room.getId())
-                        .roomNumber(room.getRoomNumber())
-                        .build()
-                ).collect(Collectors.toList()))
+                .rooms(building.getRoomList().stream().map(RoomSerializer::toRoomListResponse).collect(Collectors.toList()))
                 .buildingSummaries(buildingSummary)
                 .build();
     }
 
     public static BuildingResponseDto.BuildingListResponse toBuildingListResponse(Building building) {
-        if (building.getBuildingToReviewCategoryList().isEmpty()) {
-            List<BuildingToReviewCategory> reviewCategories = staticBuildingToReviewCategoryRepo.findBuildingToReviewCategoriesByBuilding_Id(building.getId());
-            building.setBuildingToReviewCategoryList(reviewCategories);
-        }
-        BuildingToReviewCategory maxScoreCategory = building.getBuildingToReviewCategoryList().stream().max(Comparator.comparing(BuildingToReviewCategory::getAvgScore)).get();
+        //protect NPE when building is null
+        Optional.ofNullable(building).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NPE));
+
+        BuildingToReviewCategory maxScoreCategory = building.getBuildingToReviewCategoryList().stream().max(Comparator.comparing(BuildingToReviewCategory::getAvgScore)).orElse(null);
         return BuildingResponseDto.BuildingListResponse.builder()
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
-                .address(building.getAddress().toString())
+                .address(Address.toAddressDto(building.getAddress()))
                 .isDirectDeal(false)
-                .reviewCnt(building.getBuildingSummary().getReviewCnt())
-                .scoreAvg(building.getBuildingSummary().getAvgScore())
-                .bestCategory(maxScoreCategory.getReviewCategory().getType())
+                .reviewCnt(Building.reviewCntOrZero.apply(building))
+                .scoreAvg(Building.avgScoreOrNull.apply(building))
+                .bestCategory(BuildingToReviewCategory.bestCategoryOrNull.apply(maxScoreCategory))
                 .build();
     }
 
     public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(OnlyBuildingIdAndCoord building) {
+        //protect NPE when building is null
+        Optional.ofNullable(building).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NPE));
+
         return BuildingResponseDto.BuildingCountResponse.builder()
                 .buildingId(building.getId())
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
@@ -86,10 +70,13 @@ public class BuildingSerializer {
     }
 
     public static BuildingResponseDto.BuildingMetaData toBuildingMetaData(Building building) {
+        //protect NPE when building is null
+        Optional.ofNullable(building).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NPE));
+
         return BuildingResponseDto.BuildingMetaData.builder()
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
-                .address(building.getAddress().toString())
+                .address(Address.toAddressDto(building.getAddress()))
                 .isDirectDeal(false)
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .build();
