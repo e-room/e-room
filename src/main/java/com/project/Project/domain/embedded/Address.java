@@ -1,6 +1,8 @@
 package com.project.Project.domain.embedded;
 
 import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.building.BuildingException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,12 +11,13 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.PrePersist;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Embeddable
 public class Address {
     /*
@@ -35,7 +38,8 @@ public class Address {
      */
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
-    @NotNull @Builder.Default
+    @NotNull
+    @Builder.Default
     private String siDo = "";
 
     /**
@@ -43,7 +47,8 @@ public class Address {
      */
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
-    @NotNull @Builder.Default
+    @NotNull
+    @Builder.Default
     private String siGunGu = "";
 
     /**
@@ -51,7 +56,8 @@ public class Address {
      */
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
-    @NotNull @Builder.Default
+    @NotNull
+    @Builder.Default
     private String eupMyeon = "";
 
     /**
@@ -59,7 +65,8 @@ public class Address {
      */
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
-    @NotNull @Builder.Default
+    @NotNull
+    @Builder.Default
     private String roadName = "";
 
     /**
@@ -67,7 +74,8 @@ public class Address {
      */
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
-    @NotNull @Builder.Default
+    @NotNull
+    @Builder.Default
     private String buildingNumber = "";
 
     /**
@@ -102,6 +110,7 @@ public class Address {
     }
 
     public static AddressDto toAddressDto(Address address) {
+        Optional.ofNullable(address).orElseThrow(() -> new BuildingException("주소 객체가 null입니다.", ErrorCode.ADDRESS_BAD_REQUEST));
         return AddressDto.builder()
                 .siDo(address.getSiDo())
                 .siGunGu(address.getSiGunGu())
