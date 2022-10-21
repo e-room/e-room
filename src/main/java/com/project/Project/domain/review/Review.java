@@ -3,14 +3,17 @@ package com.project.Project.domain.review;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.FloorHeight;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ResidencePeriod;
 import com.project.Project.domain.enums.ResidenceType;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
-import com.project.Project.domain.embedded.AnonymousStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -18,21 +21,24 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
 @Table(
-    uniqueConstraints = {
-        @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
-    }
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
+        }
 )
 public class Review extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -106,12 +112,12 @@ public class Review extends BaseEntity {
     private String advantageDescription;
 
     private String disadvantageDescription;
-
+    
     @OneToMany(mappedBy = "review")
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @PreRemove
-    public void deleteHandler(){
+    public void deleteHandler() {
         super.setDeleted(true);
     }
 
@@ -133,6 +139,7 @@ public class Review extends BaseEntity {
                 .disadvantageDescription(getDisadvantageDescription())
                 .build();
     }
+
     public List<KeywordEnum> getAdvantageKeywordEnumList() {
         return new ArrayList<>();
     }
