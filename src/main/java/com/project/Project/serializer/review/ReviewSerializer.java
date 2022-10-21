@@ -56,7 +56,7 @@ public class ReviewSerializer {
                         ReviewCategory targetReviewCategory = clonedAllReviewCategory.stream().filter(reviewCategory -> reviewCategory.getType().equals(ReviewCategoryEnum.valueOf(field.getName().toUpperCase(Locale.ROOT)))).findFirst().orElseThrow(() -> new RuntimeException());
                         ReviewToReviewCategory temp = ReviewToReviewCategory
                                 .builder()
-                                .score(score)
+                                .score(score.doubleValue())
                                 .build();
                         temp.setReviewCategory(targetReviewCategory);
                         return temp;
