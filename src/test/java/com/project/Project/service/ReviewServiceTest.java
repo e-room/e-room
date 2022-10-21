@@ -1,30 +1,19 @@
 package com.project.Project.service;
 
-import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
-import com.project.Project.repository.ReviewRepository;
-import com.project.Project.repository.RoomRepository;
-import com.project.Project.serializer.review.ReviewSerializer;
+import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.impl.ReviewServiceImpl;
-import com.project.Project.service.impl.RoomServiceImpl;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.BDDMockito.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.*;
-
-
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class ReviewServiceTest {

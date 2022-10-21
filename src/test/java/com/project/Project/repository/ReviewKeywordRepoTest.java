@@ -3,6 +3,7 @@ package com.project.Project.repository;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.review.ReviewKeyword;
+import com.project.Project.repository.review.ReviewKeywordRepository;
 import com.project.Project.service.ReviewCategoryService;
 import com.project.Project.service.ReviewKeywordService;
 import org.junit.jupiter.api.BeforeEach;

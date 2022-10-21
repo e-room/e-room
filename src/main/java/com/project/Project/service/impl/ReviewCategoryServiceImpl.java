@@ -2,7 +2,7 @@ package com.project.Project.service.impl;
 
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.ReviewCategory;
-import com.project.Project.repository.ReviewCategoryRepository;
+import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.service.ReviewCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
