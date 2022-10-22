@@ -2,7 +2,7 @@ package com.project.Project.controller;
 
 import com.project.Project.Util.CookieUtil;
 import com.project.Project.Util.JsonResult;
-import com.project.Project.config.auth.dto.Token;
+import com.project.Project.auth.dto.Token;
 import com.project.Project.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -64,6 +64,7 @@ public class TokenController {
 
     /**
      * /token/free?email=abscce@naver.com 등으로 요청
+     *
      * @param email : 사용자 이메일
      * @return
      */

@@ -1,6 +1,6 @@
 package com.project.Project.service.impl;
 
-import com.project.Project.config.auth.dto.Token;
+import com.project.Project.auth.dto.Token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +20,7 @@ public class TokenService {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-//    @Override
+    //    @Override
     public Token generateToken(String uid, String role) {
         long tokenPeriod = 1000L * 60L * 30L; // 30분
         long refreshPeriod = 1000L * 60L * 60L * 24L * 30L * 1L; // 1개월

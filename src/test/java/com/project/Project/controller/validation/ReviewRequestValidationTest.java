@@ -2,7 +2,7 @@
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.project.Project.WithMockCustomOAuth2Account;
-//import com.project.Project.config.auth.SecurityConfig;
+//import com.project.Project.config.SecurityConfig;
 //import com.project.Project.controller.review.controller.ReviewRestController;
 //import com.project.Project.repository.building.BuildingRepository;
 //import com.project.Project.repository.review.ReviewRepository;

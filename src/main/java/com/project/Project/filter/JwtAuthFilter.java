@@ -1,6 +1,6 @@
 package com.project.Project.filter;
 
-import com.project.Project.config.auth.dto.UserDto;
+import com.project.Project.auth.dto.UserDto;
 import com.project.Project.domain.Member;
 import com.project.Project.service.MemberService;
 import com.project.Project.service.impl.TokenService;
@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
-import org.springframework.web.util.WebUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,7 +29,7 @@ public class JwtAuthFilter extends GenericFilterBean {
     private final MemberService memberService;
 
     private String getCookieValue(HttpServletRequest req, String cookieName) {
-        if(req.getCookies() == null) return null;
+        if (req.getCookies() == null) return null;
         return Arrays.stream(req.getCookies())
                 .filter(c -> c.getName().equals(cookieName))
                 .findFirst()

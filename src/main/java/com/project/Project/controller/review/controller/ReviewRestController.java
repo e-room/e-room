@@ -14,8 +14,8 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.BuildingService;
-import com.project.Project.service.ReviewService;
 import com.project.Project.service.ReviewImageService;
+import com.project.Project.service.ReviewService;
 import com.project.Project.service.RoomService;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
@@ -49,12 +49,13 @@ public class ReviewRestController {
      * 3.2 리뷰_상세페이지<br>
      * - 특정 건물에 대한 리뷰 리스트를 반환<br>
      * - 3.2 리뷰_상세페이지에서 <strong>전체</strong>버튼을 눌렀을 때 사용
+     *
      * @param buildingId 건물의 id
-     * @param cursorDto cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
+     * @param cursorDto  cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/buildig/{buildingId}/room/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @ModelAttribute CursorDto cursorDto){
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @ModelAttribute CursorDto cursorDto) {
         List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
@@ -64,16 +65,16 @@ public class ReviewRestController {
     }
 
     /**
-     *
      * 3.2 리뷰_상세페이지<br>
      * - 특정 방에 대한 리뷰 리스트를 반환<br>
      * - 3.2 리뷰_상세페이지에서 <strong>방(ex.102호)</strong>버튼을 눌렀을 때 사용
-     * @param roomId 방의 id
+     *
+     * @param roomId    방의 id
      * @param cursorDto cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @ModelAttribute CursorDto cursorDto){
+    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @ModelAttribute CursorDto cursorDto) {
         List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
@@ -95,6 +96,7 @@ public class ReviewRestController {
     /**
      * 7.1 ~ 7.5 리뷰쓰기<br>
      * - 리뷰등록 API<br>
+     *
      * @param request 등록할 리뷰
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
@@ -116,10 +118,11 @@ public class ReviewRestController {
                 .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
 
+
         Address address = AddressDto.toAddress(request.getAddress());
         String buildingName = request.getBuildingName();
-        Boolean hasElevator = request.getAdvantageKeywordList().stream().anyMatch((keyword)-> keyword.equalsIgnoreCase(KeywordEnum.ELEVATOR.toString()));
-        BuildingOptionalDto buildingOptionalDto = new BuildingOptionalDto(buildingName,hasElevator);
+        Boolean hasElevator = request.getAdvantageKeywordList().stream().anyMatch((keyword) -> keyword.equalsIgnoreCase(KeywordEnum.ELEVATOR.toString()));
+        BuildingOptionalDto buildingOptionalDto = new BuildingOptionalDto(buildingName, hasElevator);
 
         Long savedReviewId = 0L;
         Building building = buildingService.findByAddress(address)
@@ -130,7 +133,6 @@ public class ReviewRestController {
 
         Review review = ReviewSerializer.toReview(request, member, room);
         savedReviewId = reviewService.save(review);
-
 
 
         return ReviewResponseDto.ReviewCreateResponse.builder()
@@ -145,11 +147,12 @@ public class ReviewRestController {
     /**
      * 3.2 리뷰_상세페이지<br>
      * - 리뷰삭제 API
+     *
      * @param reviewId 삭제할 리뷰 id
      * @return 삭제된 리뷰의 id, 등록일시, affected row의 개수
      */
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId){
+    public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ReviewResponseDto.ReviewDeleteResponse.builder()
                 .reviewId(deletedReviewId)

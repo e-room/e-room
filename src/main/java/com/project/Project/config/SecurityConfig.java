@@ -1,12 +1,12 @@
-package com.project.Project.config.auth;
+package com.project.Project.config;
 
+import com.project.Project.auth.OAuth2SuccessHandler;
 import com.project.Project.filter.JwtAuthFilter;
 import com.project.Project.service.MemberService;
 import com.project.Project.service.impl.CustomOAuth2UserService;
 import com.project.Project.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/token/**").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST, "/building/").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()

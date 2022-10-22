@@ -1,12 +1,11 @@
-package com.project.Project.config.auth;
+package com.project.Project.auth;
 
 import com.project.Project.Util.CookieUtil;
-import com.project.Project.config.auth.dto.Token;
-import com.project.Project.config.auth.dto.UserDto;
+import com.project.Project.auth.dto.Token;
+import com.project.Project.auth.dto.UserDto;
 import com.project.Project.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -27,7 +26,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         UserDto userDto = userRequestMapper.toDto(oAuth2User);
 
         Token token = tokenService.generateToken(userDto.getEmail(), "USER");

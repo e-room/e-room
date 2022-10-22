@@ -1,4 +1,4 @@
-package com.project.Project.config.auth.dto;
+package com.project.Project.auth.dto;
 
 import lombok.*;
 

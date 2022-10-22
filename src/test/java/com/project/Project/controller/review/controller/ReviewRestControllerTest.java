@@ -2,7 +2,7 @@ package com.project.Project.controller.review.controller;
 
 
 import com.project.Project.WithMockCustomOAuth2Account;
-import com.project.Project.config.auth.SecurityConfig;
+import com.project.Project.config.SecurityConfig;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.domain.building.Building;
