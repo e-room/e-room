@@ -1,14 +1,31 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "RTRC.withReviewAndRoomAndBuilding",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "reviewCategory"),
+                        @NamedAttributeNode(value = "review", subgraph = "RTRC.review.room")
+                },
+                subgraphs = {
+                        @NamedSubgraph(name = "RTRC.review.room", attributeNodes = @NamedAttributeNode(value = "room", subgraph = "RTRC.room.building")),
+                        @NamedSubgraph(name = "RTRC.room.building", attributeNodes = @NamedAttributeNode(value = "building"))
+                }
+        )
+})
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @SQLDelete(sql = "UPDATE review_to_review_category SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
@@ -19,7 +36,8 @@ import java.math.BigDecimal;
 )
 public class ReviewToReviewCategory extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,10 +48,10 @@ public class ReviewToReviewCategory extends BaseEntity {
     @JoinColumn(name = "review_category_id")
     private ReviewCategory reviewCategory;
 
-    private BigDecimal score;
+    private Double score;
 
     @PreRemove
-    public void deleteHandler(){
+    public void deleteHandler() {
         super.setDeleted(true);
     }
 

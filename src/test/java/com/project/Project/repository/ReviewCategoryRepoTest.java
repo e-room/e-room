@@ -2,6 +2,7 @@ package com.project.Project.repository;
 
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.ReviewCategory;
+import com.project.Project.repository.review.ReviewCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

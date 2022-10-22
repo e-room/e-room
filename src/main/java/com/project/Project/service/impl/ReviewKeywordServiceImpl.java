@@ -3,7 +3,7 @@ package com.project.Project.service.impl;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.review.ReviewKeyword;
-import com.project.Project.repository.ReviewKeywordRepository;
+import com.project.Project.repository.review.ReviewKeywordRepository;
 import com.project.Project.service.ReviewKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

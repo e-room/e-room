@@ -5,8 +5,8 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
-import com.project.Project.repository.ReviewRepository;
-import com.project.Project.repository.RoomRepository;
+import com.project.Project.repository.review.ReviewRepository;
+import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -36,8 +36,8 @@ public class ReviewServiceImpl implements ReviewService {
         List<Room> roomList = roomRepository.findByBuilding(building);
 
         List<Long> reviewIdList = new ArrayList<>();
-        for(Room room : roomList) { // todo : id 추출 코드 개선하기
-            for(Review review : room.getReviewList()) {
+        for (Room room : roomList) { // todo : id 추출 코드 개선하기
+            for (Review review : room.getReviewList()) {
                 reviewIdList.add(review.getId());
             }
         }
@@ -55,7 +55,7 @@ public class ReviewServiceImpl implements ReviewService {
         Room room = roomRepository.findById(roomId).get();
 
         List<Long> reviewIdList = new ArrayList<>();
-        for(Review review : room.getReviewList()) {
+        for (Review review : room.getReviewList()) {
             reviewIdList.add(review.getId());
         }
 
@@ -74,7 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public Long deleteById(Long reviewId) {
         List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewImageList();
-        for(ReviewImage reviewImage : reviewImageList) {
+        for (ReviewImage reviewImage : reviewImageList) {
             fileProcessService.deleteImage(reviewImage.getUrl());
         }
         reviewRepository.deleteById(reviewId);

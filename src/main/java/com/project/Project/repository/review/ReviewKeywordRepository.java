@@ -1,4 +1,4 @@
-package com.project.Project.repository;
+package com.project.Project.repository.review;
 
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;

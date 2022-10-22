@@ -37,6 +37,11 @@ public class BuildingSummary {
         this.reviewCnt = 0L;
     }
 
+    public void updateBuildingSummary(Double avgScore, Long reviewCnt) {
+        this.avgScore = avgScore;
+        this.reviewCnt = reviewCnt;
+    }
+
     public void setBuilding(Building building) {
         this.building = building;
         building.setBuildingSummary(this);

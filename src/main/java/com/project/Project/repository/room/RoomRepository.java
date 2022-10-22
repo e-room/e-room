@@ -1,4 +1,4 @@
-package com.project.Project.repository;
+package com.project.Project.repository.room;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.room.Room;

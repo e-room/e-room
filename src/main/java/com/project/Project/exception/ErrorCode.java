@@ -13,7 +13,10 @@ public enum ErrorCode {
 
     //Room
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 방이 존재하지 않습니다."),
-    ROOM_NPE(HttpStatus.INTERNAL_SERVER_ERROR, "방 참조가 Null입니다");
+    ROOM_NPE(HttpStatus.INTERNAL_SERVER_ERROR, "방 참조가 Null입니다"),
+
+    //etc
+    EVENT_LISTENER_INJECTION(HttpStatus.INTERNAL_SERVER_ERROR, "의존성 주입에 실패했습니다.");
     private final String message;
     private final HttpStatus status;
 

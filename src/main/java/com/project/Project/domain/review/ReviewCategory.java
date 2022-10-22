@@ -3,7 +3,7 @@ package com.project.Project.domain.review;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
-import com.project.Project.repository.ReviewCategoryRepository;
+import com.project.Project.repository.review.ReviewCategoryRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

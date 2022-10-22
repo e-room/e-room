@@ -1,9 +1,8 @@
 package com.project.Project.service.impl;
 
 import com.project.Project.config.auth.dto.OAuthAttributes;
-
 import com.project.Project.domain.Member;
-import com.project.Project.repository.MemberRepository;
+import com.project.Project.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

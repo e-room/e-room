@@ -5,8 +5,8 @@
 //import com.project.Project.config.auth.SecurityConfig;
 //import com.project.Project.controller.review.controller.ReviewRestController;
 //import com.project.Project.repository.building.BuildingRepository;
-//import com.project.Project.repository.ReviewRepository;
-//import com.project.Project.repository.RoomRepository;
+//import com.project.Project.repository.review.ReviewRepository;
+//import com.project.Project.repository.room.RoomRepository;
 //import com.project.Project.service.BuildingService;
 //import com.project.Project.service.ReviewService;
 //import com.project.Project.service.RoomService;

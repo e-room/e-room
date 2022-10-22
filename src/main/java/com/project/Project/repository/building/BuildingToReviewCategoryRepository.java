@@ -1,6 +1,5 @@
-package com.project.Project.repository;
+package com.project.Project.repository.building;
 
-import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

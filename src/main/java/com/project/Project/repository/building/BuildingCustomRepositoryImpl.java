@@ -2,8 +2,6 @@ package com.project.Project.repository.building;
 
 import com.project.Project.Util.QueryDslUtil;
 import com.project.Project.domain.building.Building;
-import com.project.Project.domain.building.BuildingToReviewCategory;
-import com.project.Project.domain.building.QBuilding;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -12,9 +10,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,7 +18,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.project.Project.Util.QueryDslUtil.toSlice;
 import static com.project.Project.domain.building.QBuilding.building;
 import static com.project.Project.domain.building.QBuildingSummary.buildingSummary;
 import static com.project.Project.domain.building.QBuildingToReviewCategory.buildingToReviewCategory;
@@ -31,7 +26,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 @RequiredArgsConstructor
-public class BuildingRepositoryImpl implements BuildingCustomRepository {
+public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     private final JPAQueryFactory factory;
 
     @Override

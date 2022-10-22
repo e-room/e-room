@@ -1,6 +1,5 @@
 package com.project.Project.user.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,8 @@ import javax.persistence.*;
 @Entity
 public class UserEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
     @Column(name = "USERNAME")
@@ -19,4 +19,24 @@ public class UserEntity {
 
     @Column(name = "AGE")
     private int age;
+
+    @PostUpdate
+    public void postUpdate() {
+        System.out.println(">>> postUpdate");
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        System.out.println(">>> preUpdate");
+    }
+
+    @PrePersist
+    public void prePersist() {
+        System.out.println(">>> prePersist");
+    }
+
+    @PostPersist
+    public void postPersist() {
+        System.out.println(">>> postPersist");
+    }
 }
