@@ -3,17 +3,22 @@ package com.project.Project.domain.room;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @SQLDelete(sql = "UPDATE room SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
@@ -24,7 +29,8 @@ import java.util.List;
 )
 public class Room extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @OneToMany(mappedBy = "room")
@@ -32,10 +38,11 @@ public class Room extends BaseEntity {
     private List<Review> reviewList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "building_id")
     private Building building;
 
     /**
-        몇 동인지
+     * 몇 동인지
      **/
     @Column
     private Integer lineNumber;
@@ -54,7 +61,7 @@ public class Room extends BaseEntity {
      */
 
     @PreRemove
-    public void deleteHandler(){
+    public void deleteHandler() {
         super.setDeleted(true);
     }
 

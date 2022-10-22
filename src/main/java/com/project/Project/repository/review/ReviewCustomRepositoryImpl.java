@@ -17,6 +17,7 @@ import static com.project.Project.domain.building.QBuilding.building;
 import static com.project.Project.domain.building.QBuildingSummary.buildingSummary;
 import static com.project.Project.domain.building.QBuildingToReviewCategory.buildingToReviewCategory;
 import static com.project.Project.domain.review.QReview.review;
+import static com.project.Project.domain.review.QReviewCategory.reviewCategory;
 import static com.project.Project.domain.review.QReviewToReviewCategory.reviewToReviewCategory;
 import static com.project.Project.domain.room.QRoom.room;
 
@@ -57,14 +58,16 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
         Long buildingId = updatedReview.getRoom().getBuilding().getId();
 
         //building Summary
-        Tuple buildingSummaryResults = factory.select(review.satisfaction.avg(), review.countDistinct())
+        Tuple buildingSummaryResults = factory.select(reviewToReviewCategory.score.avg(), review.countDistinct())
                 .from(review)
+                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
+                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
                 .innerJoin(review.room, room)
                 .innerJoin(room.building, building)
-                .where(building.id.eq(buildingId))
+                .where(building.id.eq(buildingId), reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
                 .setLockMode(LockModeType.PESSIMISTIC_WRITE).fetchOne();
 
-        Double avgScore = buildingSummaryResults.get(review.satisfaction.avg());
+        Double avgScore = buildingSummaryResults.get(reviewToReviewCategory.score.avg());
         Long reviewCnt = buildingSummaryResults.get(review.countDistinct());
 
         long affectedRow = factory.update(buildingSummary)

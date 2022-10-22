@@ -6,6 +6,7 @@ import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
+import com.project.Project.repository.room.RoomRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,9 +48,9 @@ public class BuildingRepositoryTest {
     }
 
     @BeforeEach
-    void setup(){
-        testBuilding1 = Building.builder().hasElevator(true).address(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).buildingName("덕영빌").coordinate(new Coordinate(34.2321,40.1)).build();
-        testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().siDo("서울특별시").siGunGu("관악구").roadName("덕영대로").buildingNumber("47").build()).buildingName("휴먼라이트 빌").coordinate(new Coordinate(45.2321,50.1)).build();
+    void setup() {
+        testBuilding1 = Building.builder().hasElevator(true).address(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).buildingName("덕영빌").coordinate(new Coordinate(34.2321, 40.1)).build();
+        testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().siDo("서울특별시").siGunGu("관악구").roadName("덕영대로").buildingNumber("47").build()).buildingName("휴먼라이트 빌").coordinate(new Coordinate(45.2321, 50.1)).build();
         buildingRepository.save(testBuilding1);
         buildingRepository.save(testBuilding2);
         testRoom1 = Room.builder()
@@ -61,17 +61,18 @@ public class BuildingRepositoryTest {
                 .roomNumber(101).lineNumber(1).build();
         testRoom4 = Room.builder()
                 .roomNumber(102).lineNumber(1).build();
-        testBuilding1.addRooms(Arrays.asList(testRoom1,testRoom2));
-        testBuilding2.addRooms(Arrays.asList(testRoom3,testRoom4));
+        testBuilding1.addRooms(Arrays.asList(testRoom1, testRoom2));
+        testBuilding2.addRooms(Arrays.asList(testRoom3, testRoom4));
         saveBuilding1 = buildingRepository.save(testBuilding1);
         saveBuilding2 = buildingRepository.save(testBuilding2);
     }
 
     @AfterEach
-    void cleanup(){
+    void cleanup() {
         this.buildingRepository.deleteAll();
         this.roomRepository.deleteAll();
     }
+
     @Test
     void findBuildingByIdTest() {
 
@@ -101,15 +102,15 @@ public class BuildingRepositoryTest {
     }
 
     @Test
-    void findProjectedByTest(){
-        List<OnlyBuildingIdAndCoord> expectedList = Arrays.asList(saveBuilding1, saveBuilding2).stream().map((elem)-> OnlyBuildingIdAndCoord.builder().id(elem.getId()).coordinate(elem.getCoordinate()).build()).collect(Collectors.toList());
+    void findProjectedByTest() {
+        List<OnlyBuildingIdAndCoord> expectedList = Arrays.asList(saveBuilding1, saveBuilding2).stream().map((elem) -> OnlyBuildingIdAndCoord.builder().id(elem.getId()).coordinate(elem.getCoordinate()).build()).collect(Collectors.toList());
         List<OnlyBuildingIdAndCoord> resultList = this.buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
 
         assertThat(resultList).usingRecursiveComparison().isEqualTo(expectedList);
     }
 
     @Test
-    void findBuildingByAddressTest(){
+    void findBuildingByAddressTest() {
         Building expectedBuilding = saveBuilding1;
         List<Building> results = this.buildingRepository.findAll();
         Building result = this.buildingRepository.findBuildingByAddress(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).get();
