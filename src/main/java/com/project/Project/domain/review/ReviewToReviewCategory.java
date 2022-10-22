@@ -10,6 +10,18 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "RTRC.withReviewAndRoomAndBuilding",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "reviewCategory"),
+                        @NamedAttributeNode(value = "review", subgraph = "RTRC.review.room")
+                },
+                subgraphs = {
+                        @NamedSubgraph(name = "RTRC.review.room", attributeNodes = @NamedAttributeNode(value = "room", subgraph = "RTRC.room.building")),
+                        @NamedSubgraph(name = "RTRC.room.building", attributeNodes = @NamedAttributeNode(value = "building"))
+                }
+        )
+})
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
