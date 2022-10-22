@@ -10,6 +10,7 @@ import com.project.Project.domain.enums.ResidencePeriod;
 import com.project.Project.domain.enums.ResidenceType;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
+import com.project.Project.repository.review.ReviewEventListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "Review.withRoomAndBuilding", attributeNodes = {
+                @NamedAttributeNode(value = "room", subgraph = "room")
+        },
+                subgraphs = @NamedSubgraph(name = "room", attributeNodes = {
+                        @NamedAttributeNode("building")
+                }))
+})
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +39,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
+@EntityListeners(value = ReviewEventListener.class)
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
@@ -112,7 +122,7 @@ public class Review extends BaseEntity {
     private String advantageDescription;
 
     private String disadvantageDescription;
-    
+
     @OneToMany(mappedBy = "review")
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
