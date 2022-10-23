@@ -1,17 +1,21 @@
 package com.project.Project.config;
 
-import com.project.Project.auth.OAuth2SuccessHandler;
-import com.project.Project.filter.JwtAuthFilter;
+import com.project.Project.auth.filter.CustomBasicAuthFilter;
+import com.project.Project.auth.filter.JwtAuthFilter;
+import com.project.Project.auth.handler.OAuth2SuccessHandler;
+import com.project.Project.auth.provider.JwtProvider;
+import com.project.Project.auth.service.CustomOAuth2UserService;
+import com.project.Project.auth.service.TokenService;
 import com.project.Project.service.MemberService;
-import com.project.Project.service.impl.CustomOAuth2UserService;
-import com.project.Project.service.impl.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -22,10 +26,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final TokenService tokenService;
     private final MemberService memberService;
+    private final JwtProvider jwtProvider;
+
+    @Value("${spring.profiles.active}")
+    private String env;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
+        http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -40,6 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userInfoEndpoint().userService(customOAuth2UserService);
 
         // 인증을 처리하는 기본필터 대신 별도의 인증로직을 가진 JwtAuthFilter 추가
-        http.addFilterBefore(new JwtAuthFilter(tokenService, memberService), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthFilter(tokenService, memberService, jwtProvider), UsernamePasswordAuthenticationFilter.class);
+        if (env.equals("local")) {
+            http.addFilterAt(new CustomBasicAuthFilter(memberService), BasicAuthenticationFilter.class);
+        } else {
+            http.httpBasic().disable();
+        }
+
     }
 }
