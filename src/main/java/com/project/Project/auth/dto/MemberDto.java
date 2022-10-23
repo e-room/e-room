@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserDto {
+public class MemberDto {
     private String email;
     private String name;
     private String picture;
 
     @Builder
-    public UserDto(String email, String name, String picture) {
+    public MemberDto(String email, String name, String picture) {
         this.email = email;
         this.name = name;
         this.picture = picture;

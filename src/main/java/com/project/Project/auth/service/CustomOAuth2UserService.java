@@ -1,4 +1,4 @@
-package com.project.Project.service.impl;
+package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.OAuthAttributes;
 import com.project.Project.domain.Member;
