@@ -3,7 +3,7 @@ package com.project.Project.controller;
 import com.project.Project.Util.CookieUtil;
 import com.project.Project.Util.JsonResult;
 import com.project.Project.auth.dto.Token;
-import com.project.Project.service.impl.TokenService;
+import com.project.Project.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,7 @@ public class TokenController {
     // 토큰이 만료되었을 경우 사용자에게 안내해주기
     @GetMapping("/token/expired")
     public ResponseEntity<JsonResult> auth() {
-        String message = "토큰이 만료되었습니다.";
+        String message = "로그인이 필요합니다.";
         JsonResult jsonResult = new JsonResult(HttpStatus.UNAUTHORIZED, message, "/token/refresh");
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -35,7 +35,7 @@ public class TokenController {
     @GetMapping("/token/refresh")
     public String refreshAuth(@CookieValue("refreshToken") String token, HttpServletRequest request, HttpServletResponse response) {
 
-        if (token != null && tokenService.verifyToken(token)) {
+        if (token != null && tokenService.verifyToken(token).equals(TokenService.JwtCode.EXPIRED)) {
             String email = tokenService.getUid(token);
             Token newToken = tokenService.generateToken(email, "USER");
 
@@ -56,7 +56,7 @@ public class TokenController {
     }
 
     // test
-    @GetMapping("/valid")
+    @GetMapping("/token/valid")
     public String validUser(@CookieValue("accessToken") String token) {
         String email = tokenService.getUid(token);
         return "email : " + email;
