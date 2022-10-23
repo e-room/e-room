@@ -25,7 +25,7 @@ public class CookieUtil {
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setMaxAge(60 * 60 * 24 * 30 * 1);
+        refreshTokenCookie.setMaxAge(refreshTokenMaxAge);
 
         return refreshTokenCookie;
     }
