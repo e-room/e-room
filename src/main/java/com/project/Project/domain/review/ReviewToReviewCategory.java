@@ -9,6 +9,9 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 @NamedEntityGraphs({
         @NamedEntityGraph(name = "RTRC.withReviewAndRoomAndBuilding",
@@ -48,6 +51,10 @@ public class ReviewToReviewCategory extends BaseEntity {
     @JoinColumn(name = "review_category_id")
     private ReviewCategory reviewCategory;
 
+
+    @NotNull
+    @DecimalMin(value = "0.0")
+    @DecimalMax(value = "5.0")
     private Double score;
 
     @PreRemove

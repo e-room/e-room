@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @NoArgsConstructor
@@ -25,6 +26,7 @@ public class ReviewSummary {
     @JoinColumn(name = "review_id")
     private Review review;
 
+    @PositiveOrZero
     private Integer likeCnt;
 
     public void setReview(Review review) {
