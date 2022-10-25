@@ -1,6 +1,6 @@
-package com.project.Project.service.impl;
+package com.project.Project.auth.service;
 
-import com.project.Project.config.auth.dto.OAuthAttributes;
+import com.project.Project.auth.dto.OAuthAttributes;
 import com.project.Project.domain.Member;
 import com.project.Project.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.project.Project.controller.validation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.WithMockCustomOAuth2Account;
-import com.project.Project.config.auth.SecurityConfig;
+import com.project.Project.config.SecurityConfig;
 import com.project.Project.controller.building.BuildingRestController;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.domain.building.Building;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = {BuildingRestController.class}, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
-},includeFilters = {
+}, includeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = BuildingExistValidator.class)
 })
 @AutoConfigureMockMvc
@@ -49,6 +49,7 @@ public class BuildingRequestValidationTest {
                 .build();
         return request1;
     }
+
     @Test
     @WithMockCustomOAuth2Account(role = "ROLE_USER", registrationId = "google")
     void BuildingExistsTest() throws Exception {
@@ -72,7 +73,7 @@ public class BuildingRequestValidationTest {
         final ResultActions action1 = mockMvc.perform(
                         get("/building/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .param("buildingId","5,6")
+                                .param("buildingId", "5,6")
 //                                .content(badRequestContent)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isBadRequest())
@@ -81,7 +82,7 @@ public class BuildingRequestValidationTest {
         final ResultActions action2 = mockMvc.perform(
                         get("/building/")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .param("buildingId","1,2")
+                                .param("buildingId", "1,2")
 //                                .content(goodRequestContent)
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
@@ -123,7 +124,7 @@ public class BuildingRequestValidationTest {
         final ResultActions action1 = mockMvc.perform(
                         get("/building/search")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .param("params","대덕")
+                                .param("params", "대덕")
                                 .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isOk())
                 .andDo(print());

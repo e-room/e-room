@@ -13,13 +13,14 @@ import java.util.List;
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access =  AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 //@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 //@Where(clause = "deleted=false")
 @Entity
 public class Member extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @OneToMany(mappedBy = "member")
@@ -37,6 +38,8 @@ public class Member extends BaseEntity {
 //    // Oauth 회원번호
 //    private Long userId;
 
+    private String refreshToken;
+
     private String name;
 
     private String email;
@@ -51,6 +54,10 @@ public class Member extends BaseEntity {
         this.profileImageUrl = profileImageUrl;
 
         return this;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public String getRoleKey() {
