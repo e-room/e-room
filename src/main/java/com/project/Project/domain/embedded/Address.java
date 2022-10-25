@@ -11,7 +11,9 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @Getter
@@ -36,6 +38,8 @@ public class Address {
     /**
      * 시도
      */
+    @NotBlank
+    @Size(max=20)
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
     @NotNull
@@ -45,6 +49,8 @@ public class Address {
     /**
      * 시군구
      */
+    @NotBlank
+    @Size(max=20)
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
     @NotNull
@@ -54,6 +60,8 @@ public class Address {
     /**
      * 읍면
      */
+    @NotBlank
+    @Size(max=20)
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
     @NotNull
@@ -63,6 +71,8 @@ public class Address {
     /**
      * 도로명
      */
+    @NotBlank
+    @Size(max=20)
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
     @NotNull
@@ -72,6 +82,8 @@ public class Address {
     /**
      * 건물 번호
      */
+    @NotBlank
+    @Size(max=20)
     @Column(length = 20, nullable = false)
     @ColumnDefault("''")
     @NotNull
