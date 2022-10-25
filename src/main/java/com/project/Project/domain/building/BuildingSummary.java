@@ -8,6 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
@@ -24,6 +26,8 @@ public class BuildingSummary {
     @JoinColumn(name = "building_id")
     private Building building;
 
+    @NotNull
+    @DecimalMin(value = "0.0")
     private Double avgScore;
 
     @Column(nullable = false)

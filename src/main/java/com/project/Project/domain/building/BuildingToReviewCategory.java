@@ -6,6 +6,8 @@ import com.project.Project.domain.review.ReviewCategory;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -27,6 +29,8 @@ public class BuildingToReviewCategory extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private ReviewCategory reviewCategory;
 
+    @NotNull
+    @DecimalMin(value = "0.0")
     private Double avgScore;
 
     public static final Function<BuildingToReviewCategory, ReviewCategoryEnum> bestCategoryOrNull = (reviewCategory) -> Optional.ofNullable(reviewCategory).map(BuildingToReviewCategory::getReviewCategory)

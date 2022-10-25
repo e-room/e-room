@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import java.util.Optional;
 
 @Getter
@@ -17,9 +19,9 @@ import java.util.Optional;
 @Builder
 @Embeddable
 public class Coordinate {
-
+    @DecimalMin(value = "0") @DecimalMax(value = "90")
     private Double latitude;
-
+    @DecimalMin(value = "0") @DecimalMax(value = "180")
     private Double longitude;
 
     public static CoordinateDto toCoordinateDto(Coordinate coordinate) {
