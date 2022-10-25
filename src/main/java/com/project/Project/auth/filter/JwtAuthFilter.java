@@ -1,5 +1,6 @@
 package com.project.Project.auth.filter;
 
+import com.project.Project.Util.CookieUtil;
 import com.project.Project.auth.JwtAuthentication;
 import com.project.Project.auth.dto.Token;
 import org.springframework.security.core.Authentication;
@@ -38,19 +39,28 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-        String accessToken = getCookieValue((HttpServletRequest) request, "accessToken");
-        String refreshToken = getCookieValue((HttpServletRequest) request, "refreshToken");
+        String accessToken = getCookieValue(request, "accessToken");
+        String refreshToken = getCookieValue(request, "refreshToken");
         Token jwtToken = new Token(accessToken, refreshToken);
         Object authenticationDetails = this.authenticationDetailsSource.buildDetails(request);
         JwtAuthentication authenticationRequest = new JwtAuthentication(jwtToken, request, response);
         authenticationRequest.setDetails(authenticationDetails);
 //        JwtAuthentication authentication = this.jwtProvider.authenticate(request, response, accessToken, refreshToken);
         JwtAuthentication authenticationResult = (JwtAuthentication) this.getAuthenticationManager().authenticate(authenticationRequest);
-
         /*
             authenticate 관련 정책 추가 가능
             Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
          */
+        postAuthenticate(request, response, authenticationResult);
         return authenticationResult;
     }
+
+    private void postAuthenticate(HttpServletRequest request, HttpServletResponse response, Authentication authenticationResult) {
+        JwtAuthentication jwtAuthenticationResult = (JwtAuthentication) authenticationResult;
+        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(jwtAuthenticationResult.getToken().getAccessToken());
+        response.addCookie(accessTokenCookie);
+        Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken());
+        response.addCookie(refreshTokenCookie);
+    }
+
 }

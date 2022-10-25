@@ -1,6 +1,5 @@
 package com.project.Project.auth.provider;
 
-import com.project.Project.Util.CookieUtil;
 import com.project.Project.auth.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
@@ -16,7 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
 import java.util.Base64;
 
 @Component
@@ -49,11 +47,12 @@ public class JwtProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         JwtAuthentication jwtAuthenticationToken = (JwtAuthentication) authentication;
-        String accessToken = jwtAuthenticationToken.getToken().getAccessToken();
-        String refreshToken = jwtAuthenticationToken.getToken().getRefreshToken();
+        Token token = ((JwtAuthentication) authentication).getToken();
+        String accessToken = token.getAccessToken();
+        String refreshToken = token.getRefreshToken();
         TokenService.JwtCode status = validateToken(accessToken);
         if (status.equals(TokenService.JwtCode.ACCESS)) {
-            setAuthMetadata(accessToken, jwtAuthenticationToken);
+            setAuthMetadata(token, jwtAuthenticationToken);
             return jwtAuthenticationToken;
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
             /*
@@ -62,12 +61,7 @@ public class JwtProvider implements AuthenticationProvider {
             if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
                 if (newToken != null) {
-                    Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
-                    ((JwtAuthentication) authentication).getResponse().addCookie(accessTokenCookie);
-                    Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
-                    ((JwtAuthentication) authentication).getResponse().addCookie(refreshTokenCookie);
-                    // access token 생성
-                    setAuthMetadata(newToken.getAccessToken(), jwtAuthenticationToken);
+                    setAuthMetadata(token, jwtAuthenticationToken);
                     return jwtAuthenticationToken;
                 }
             }
@@ -76,15 +70,13 @@ public class JwtProvider implements AuthenticationProvider {
     }
 
     @Transactional
-    public void setAuthMetadata(String token, JwtAuthentication authentication) {
-        String email = tokenService.getUid(token);
+    public void setAuthMetadata(Token token, JwtAuthentication authentication) {
+        String email = tokenService.getUid(token.getAccessToken());
         Member member = memberService.findByEmail(email).get(); // 추후 예외처리
-
         MemberDto memberDto = MemberDto.builder()
                 .email(email)
                 .name(member.getName())
                 .picture(member.getProfileImageUrl()).build();
-
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);
         authentication.setPrincipalDetails(member);

@@ -25,7 +25,7 @@ public class JwtAuthentication implements Authentication {
     private Collection<GrantedAuthority> authorities;
     private MemberDto principal;
     private Member principalDetails;
-    private final Token token;
+    private Token token;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
     private Boolean isAuthenticated = false;
