@@ -3,7 +3,10 @@ package com.project.Project.serializer.review;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
-import com.project.Project.domain.enums.*;
+import com.project.Project.domain.enums.DTypeEnum;
+import com.project.Project.domain.enums.FileFolder;
+import com.project.Project.domain.enums.KeywordEnum;
+import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.*;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewCategoryRepository;
@@ -97,9 +100,8 @@ public class ReviewSerializer {
 
 
         Review review = Review.builder()
-                .residenceType(ResidenceType.valueOf(request.getResidenceType()))
-                .residencePeriod(ResidencePeriod.valueOf(request.getResidenceType()))
-                .floorHeight(FloorHeight.valueOf(request.getFloorHeight()))
+                .residenceStartYear(request.getResidenceStartYear())
+                .residenceDuration(request.getResidenceDuration())
                 .deposit(request.getDeposit())
                 .monthlyRent(request.getMonthlyRent())
                 .managementFee(request.getManagementFee())

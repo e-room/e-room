@@ -46,9 +46,8 @@ public class ReviewRequestDtoTest {
                 )
                 .lineNumber(101)
                 .roomNumber(103)
-                .residenceType("APARTMENT")
-                .residencePeriod("UNTIL_NINETEEN")
-                .floorHeight("LOW")
+                .residenceStartYear(2020)
+                .residenceDuration(12)
                 .deposit(800)
                 .monthlyRent(50)
                 .managementFee(10)
@@ -144,9 +143,8 @@ public class ReviewRequestDtoTest {
                 )
                 .lineNumber(-101) // 음수
                 .roomNumber(-103) // 음수
-                .residenceType("hello world") // 잘못된 Enum 값
-                .residencePeriod("UNTIL_NINETEEN_TENTEN") // 잘못된 Enum 값
-                .floorHeight("LOWER") // 잘못된 Enum 값
+                .residenceDuration(-1)
+                .residenceStartYear(2045) // 미래
                 .deposit(-800) // 음수
                 .monthlyRent(-50) // 음수
                 .managementFee(-10) // 음수

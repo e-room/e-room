@@ -1,9 +1,11 @@
 package com.project.Project.controller.review.dto;
 
-import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.FloorHeight;
-import com.project.Project.domain.enums.ResidencePeriod;
-import lombok.*;
+import com.project.Project.domain.enums.KeywordEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,12 +13,16 @@ import java.util.List;
 
 public class ReviewResponseDto {
 
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewListResponse{
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewListResponse {
         private String profilePictureUrl;
         private String nickName;
         private BigDecimal score;
-        private ResidencePeriod residencePeriod;
+        private Integer residencePeriod;
+        private Integer residenceDuration;
         private FloorHeight floorHeight;
         private BigDecimal netLeasableArea;
         private Integer deposit;
@@ -29,13 +35,20 @@ public class ReviewResponseDto {
         private Integer reviewLikeCnt;
     }
 
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewCreateResponse{
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewCreateResponse {
         private Long reviewId;
         private LocalDateTime createdAt;
     }
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewDeleteResponse{
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewDeleteResponse {
         private Long reviewId;
         private LocalDateTime deletedAt;
         private Integer affectedRowCnt;

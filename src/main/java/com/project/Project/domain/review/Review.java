@@ -4,10 +4,7 @@ import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
-import com.project.Project.domain.enums.FloorHeight;
 import com.project.Project.domain.enums.KeywordEnum;
-import com.project.Project.domain.enums.ResidencePeriod;
-import com.project.Project.domain.enums.ResidenceType;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewEventListener;
@@ -80,22 +77,15 @@ public class Review extends BaseEntity {
     private AnonymousStatus anonymousStatus;
 
     /**
-     * 거주 유형(아파트 / 오피스텔 또는 원룸 빌라 주택)
+     * 거주 시작 년도 : 거주 시작년도
      */
-    @Enumerated(EnumType.STRING)
-    private ResidenceType residenceType;
+    private Integer residenceStartYear;
 
     /**
-     * 거주 기간 : 2018년 이전, 2018년까지, 2019년까지, ..., 2022년까지
+     * 거주 기간: 개월 수
      */
-    @Enumerated(EnumType.STRING)
-    private ResidencePeriod residencePeriod;
+    private Integer residenceDuration;
 
-    /**
-     * 거주층 : 저층, 중층, 고층
-     */
-    @Enumerated(EnumType.STRING)
-    private FloorHeight floorHeight;
 
     /**
      * 보증금 : 000만원
@@ -137,8 +127,8 @@ public class Review extends BaseEntity {
                 .profilePictureUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .nickName("하품하는 망아지")
                 .score(new BigDecimal(4.5))
-                .residencePeriod(getResidencePeriod())
-                .floorHeight(getFloorHeight())
+                .residencePeriod(getResidenceDuration())
+                .residenceDuration(getResidenceDuration())
                 .netLeasableArea(getNetLeasableArea())
                 .deposit(getDeposit())
                 .monthlyRent(getMonthlyRent())

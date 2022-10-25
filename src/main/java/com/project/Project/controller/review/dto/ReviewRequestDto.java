@@ -1,17 +1,11 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.controller.building.dto.AddressDto;
-import com.project.Project.domain.Member;
-import com.project.Project.domain.embedded.AnonymousStatus;
-import com.project.Project.domain.enums.*;
-import com.project.Project.domain.review.Review;
-import com.project.Project.domain.room.Room;
+import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -26,7 +20,8 @@ public class ReviewRequestDto {
     */
 
     @NoArgsConstructor
-    @Getter @Setter
+    @Getter
+    @Setter
     @AllArgsConstructor
     @Builder
     public static class ReviewCreateDto {
@@ -51,25 +46,13 @@ public class ReviewRequestDto {
         private Integer roomNumber;
 
         /**
-         * 거주 유형(아파트 / 오피스텔 또는 원룸 빌라 주택)
-         */
-        // todo : 답변오면 결정
-        @ValidEnum(enumClass = ResidenceType.class, ignoreCase = true)
-        private String residenceType;
-
-        /**
          * 거주 기간 : 2018년 이전, 2018년까지, 2019년까지, ..., 2022년까지
          */
         @NotNull
-        @ValidEnum(enumClass = ResidencePeriod.class, ignoreCase = true)
-        private String residencePeriod;
+        private Integer residenceStartYear;
 
-        /**
-         * 거주층 : 저층, 중층, 고층
-         */
         @NotNull
-        @ValidEnum(enumClass = FloorHeight.class, ignoreCase = true)
-        private String floorHeight;
+        private Integer residenceDuration;
 
         /**
          * 보증금 : 000만원
@@ -165,7 +148,7 @@ public class ReviewRequestDto {
         @Size(min = 50, max = 500)
         private String disadvantageDescription;
 
-        @Size(max=5)
+        @Size(max = 5)
         private List<MultipartFile> reviewImageList = new ArrayList<>();
 
         /**
