@@ -8,6 +8,7 @@ import com.project.Project.auth.service.CustomOAuth2UserService;
 import com.project.Project.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,6 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.profiles.active}")
     private String env;
 
+    @Bean
+    JwtAuthFilter jwtAuthFilter() throws Exception {
+        return new JwtAuthFilter(super.authenticationManager());
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -49,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 인증을 처리하는 기본필터 대신 별도의 인증로직을 가진 JwtAuthFilter 추가
         // 가능하다면 JwtLoginConfigurer를 만들어보는 것도 좋을 듯
-        http.addFilterBefore(new JwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(jwtProvider);
         if (env.equals("local")) {
             new OAuth2LoginConfigurer<>();

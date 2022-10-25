@@ -3,12 +3,12 @@ package com.project.Project.auth.filter;
 import com.project.Project.Util.CookieUtil;
 import com.project.Project.auth.JwtAuthentication;
 import com.project.Project.auth.dto.Token;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -20,12 +20,12 @@ import java.util.Arrays;
 /**
  * 발급받은 토큰을 이용하여 security 인증을 처리하는 필터
  */
-@Component
 public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
 
-    public JwtAuthFilter() {
+    public JwtAuthFilter(AuthenticationManager authenticationManager) {
         super(new AntPathRequestMatcher("/**"));
         this.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/token/expired"));
+        super.setAuthenticationManager(authenticationManager);
     }
 
     private String getCookieValue(HttpServletRequest req, String cookieName) {
