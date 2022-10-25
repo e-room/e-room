@@ -10,19 +10,18 @@ import com.project.Project.domain.Member;
 import com.project.Project.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.Base64;
 
 @Component
 @Slf4j
-public class JwtProvider {
+public class JwtProvider implements AuthenticationProvider {
 
     private final MemberService memberService;
     private final TokenService tokenService;
@@ -42,11 +41,20 @@ public class JwtProvider {
         this.refreshPeriod = refreshPeriod * 1000;
     }
 
-    public JwtAuthentication authenticate(HttpServletRequest request, HttpServletResponse response, String accessToken, String refreshToken) {
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return JwtAuthentication.class.isAssignableFrom(authentication);
+    }
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        JwtAuthentication jwtAuthenticationToken = (JwtAuthentication) authentication;
+        String accessToken = jwtAuthenticationToken.getToken().getAccessToken();
+        String refreshToken = jwtAuthenticationToken.getToken().getRefreshToken();
         TokenService.JwtCode status = validateToken(accessToken);
         if (status.equals(TokenService.JwtCode.ACCESS)) {
-            JwtAuthentication auth = getAuthentication(accessToken);
-            return auth;
+            setAuthMetadata(accessToken, jwtAuthenticationToken);
+            return jwtAuthenticationToken;
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
             /*
                 refresh token 가지고 access token 발급
@@ -54,13 +62,13 @@ public class JwtProvider {
             if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
                 if (newToken != null) {
-                    Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getToken());
-                    response.addCookie(accessTokenCookie);
+                    Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
+                    ((JwtAuthentication) authentication).getResponse().addCookie(accessTokenCookie);
                     Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
-                    response.addCookie(refreshTokenCookie);
+                    ((JwtAuthentication) authentication).getResponse().addCookie(refreshTokenCookie);
                     // access token 생성
-                    JwtAuthentication authentication = getAuthentication(newToken.getToken());
-                    return authentication;
+                    setAuthMetadata(newToken.getAccessToken(), jwtAuthenticationToken);
+                    return jwtAuthenticationToken;
                 }
             }
         }
@@ -68,7 +76,7 @@ public class JwtProvider {
     }
 
     @Transactional
-    JwtAuthentication getAuthentication(String token) {
+    public void setAuthMetadata(String token, JwtAuthentication authentication) {
         String email = tokenService.getUid(token);
         Member member = memberService.findByEmail(email).get(); // 추후 예외처리
 
@@ -76,11 +84,10 @@ public class JwtProvider {
                 .email(email)
                 .name(member.getName())
                 .picture(member.getProfileImageUrl()).build();
-        return new JwtAuthentication(
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")),
-                memberDto, member,
-                member.getRefreshToken()
-        );
+
+        authentication.setAuthenticated(true);
+        authentication.setPrincipal(memberDto);
+        authentication.setPrincipalDetails(member);
     }
 
     private TokenService.JwtCode validateToken(String token) {

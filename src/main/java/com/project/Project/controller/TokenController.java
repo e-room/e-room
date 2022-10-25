@@ -39,7 +39,7 @@ public class TokenController {
             String email = tokenService.getUid(token);
             Token newToken = tokenService.generateToken(email, "USER");
 
-            Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getToken());
+            Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
             response.addCookie(accessTokenCookie);
 
             Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
@@ -74,7 +74,7 @@ public class TokenController {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
-        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getToken());
+        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken());
         response.addCookie(accessTokenCookie);
 
         Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());

@@ -1,10 +1,7 @@
 package com.project.Project.auth.filter;
 
 import com.project.Project.auth.JwtAuthentication;
-import com.project.Project.auth.exception.JwtException;
-import com.project.Project.auth.provider.JwtProvider;
-import com.project.Project.auth.service.TokenService;
-import com.project.Project.service.MemberService;
+import com.project.Project.auth.dto.Token;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -25,16 +22,8 @@ import java.util.Arrays;
 @Component
 public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
 
-
-    private final TokenService tokenService;
-    private final MemberService memberService;
-    private final JwtProvider jwtProvider;
-
-    public JwtAuthFilter(TokenService tokenService, MemberService memberService, JwtProvider jwtProvider) {
+    public JwtAuthFilter() {
         super(new AntPathRequestMatcher("/**"));
-        this.tokenService = tokenService;
-        this.memberService = memberService;
-        this.jwtProvider = jwtProvider;
         this.setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler("/token/expired"));
     }
 
@@ -51,15 +40,17 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String accessToken = getCookieValue((HttpServletRequest) request, "accessToken");
         String refreshToken = getCookieValue((HttpServletRequest) request, "refreshToken");
+        Token jwtToken = new Token(accessToken, refreshToken);
+        Object authenticationDetails = this.authenticationDetailsSource.buildDetails(request);
+        JwtAuthentication authenticationRequest = new JwtAuthentication(jwtToken, request, response);
+        authenticationRequest.setDetails(authenticationDetails);
+//        JwtAuthentication authentication = this.jwtProvider.authenticate(request, response, accessToken, refreshToken);
+        JwtAuthentication authenticationResult = (JwtAuthentication) this.getAuthenticationManager().authenticate(authenticationRequest);
 
-        if (accessToken != null) {
-            throw new JwtException("no accessToken");
-        }
-        JwtAuthentication authentication = this.jwtProvider.authenticate(request, response, accessToken, refreshToken);
         /*
             authenticate 관련 정책 추가 가능
             Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
          */
-        return authentication;
+        return authenticationResult;
     }
 }

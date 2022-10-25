@@ -38,7 +38,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
-        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getToken());
+        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken());
         response.addCookie(accessTokenCookie);
 
         Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());

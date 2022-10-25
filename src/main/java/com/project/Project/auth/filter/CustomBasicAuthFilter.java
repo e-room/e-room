@@ -49,15 +49,15 @@ public class CustomBasicAuthFilter extends OncePerRequestFilter {
         Member member = this.mockMember(mockMemberId);
         MemberDto memberDto = MemberSerializer.toDto(member);
 
-        Authentication auth = getAuthentication(memberDto, member);
+        Authentication auth = getAuthentication(memberDto, member, request, response);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-    private Authentication getAuthentication(MemberDto memberDto, Member member) {
+    private Authentication getAuthentication(MemberDto memberDto, Member member, HttpServletRequest request, HttpServletResponse response) {
         return new JwtAuthentication(
                 Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")),
                 memberDto, member,
-                member.getRefreshToken()
-        );
+                member.getRefreshToken(),
+                request, response);
     }
 }
