@@ -16,6 +16,10 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,16 +94,22 @@ public class Review extends BaseEntity {
     /**
      * 보증금 : 000만원
      */
+    @NotNull
+    @PositiveOrZero
     private Integer deposit;
 
     /**
      * 월세 : 00만원
      */
+    @NotNull
+    @PositiveOrZero
     private Integer monthlyRent;
 
     /**
      * 관리비 : 몇호기준 얼마정도에요. 여름에는 에어컨을 틀면 추가적으로 ....
      */
+    @NotNull
+    @PositiveOrZero
     private Integer managementFee;
 
     /**
@@ -107,10 +117,17 @@ public class Review extends BaseEntity {
      * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
      */
     @Column(precision = 10, scale = 3)
+    @NotNull
+    @DecimalMin(value = "0.0")
     private BigDecimal netLeasableArea;
 
+    @NotNull
+    @Size(min = 50, max = 500)
     private String advantageDescription;
 
+
+    @NotNull
+    @Size(min = 50, max = 500)
     private String disadvantageDescription;
 
     @OneToMany(mappedBy = "review")
