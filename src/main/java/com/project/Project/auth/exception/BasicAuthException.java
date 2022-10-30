@@ -5,26 +5,25 @@ import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
 
 @Getter
-public class JwtException extends AuthenticationException {
+public class BasicAuthException extends AuthenticationException {
 
     public ErrorCode errorCode;
 
-    public JwtException(String msg, Throwable cause) {
+    public BasicAuthException(String msg, Throwable cause) {
         super(msg, cause);
     }
 
-    public JwtException(String msg) {
+    public BasicAuthException(String msg) {
         super(msg);
-        this.errorCode = ErrorCode.INVALID_JWT;
     }
 
-    public JwtException(String msg, Throwable cause, ErrorCode errorCode) {
+    public BasicAuthException(String msg, Throwable cause, ErrorCode errorCode) {
         super(msg, cause);
         this.errorCode = errorCode;
     }
 
 
-    public JwtException(ErrorCode errorCode) {
+    public BasicAuthException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

@@ -1,7 +1,10 @@
 package com.project.Project.config;
 
+import com.project.Project.auth.CustomAuthenticationEntryPoint;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
+import com.project.Project.auth.handler.BasicAuthFailureHandler;
+import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.service.CustomOAuth2UserService;
@@ -13,10 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -27,13 +28,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final MemberService memberService;
     private final JwtProvider jwtProvider;
+    private final BasicAuthFailureHandler basicAuthFailureHandler;
 
     @Value("${spring.profiles.active}")
     private String env;
 
     @Bean
     JwtAuthFilter jwtAuthFilter() throws Exception {
-        return new JwtAuthFilter(super.authenticationManager());
+        return new JwtAuthFilter(super.authenticationManager(), new JWTFailureHandler());
+    }
+
+    @Bean
+    CustomBasicAuthFilter customBasicAuthFilter() throws Exception {
+        return new CustomBasicAuthFilter(super.authenticationManager(), new CustomAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
     }
 
 
@@ -45,11 +52,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/token/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/profile").permitAll()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .logout().logoutSuccessUrl("/login")
+                .and()
                 .oauth2Login()
-                .loginPage("/token/expired")
+                .loginPage("/login")
                 .successHandler(oAuth2SuccessHandler) // 성공시
                 .userInfoEndpoint().userService(customOAuth2UserService);
 
@@ -58,8 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(jwtProvider);
         if (env.equals("local")) {
-            new OAuth2LoginConfigurer<>();
-            http.addFilterAt(new CustomBasicAuthFilter(memberService), BasicAuthenticationFilter.class);
+            http.httpBasic().disable();
+            http.addFilterAfter(customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         } else {
             http.httpBasic().disable();
         }

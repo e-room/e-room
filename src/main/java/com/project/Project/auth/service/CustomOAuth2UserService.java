@@ -14,6 +14,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -30,12 +32,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserInfoEndpoint().getUserNameAttributeName();
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-
+        Map<String, Object> modifiableAttributes = new HashMap<>(attributes.getAttributes());
+        modifiableAttributes.put("registrationId", registrationId);
+        modifiableAttributes.put("userNameAttributeName", userNameAttributeName);
         Member user = saveOrUpdate(attributes);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-                attributes.getAttributes(),
+                modifiableAttributes,
                 attributes.getNameAttributeKey());
     }
 

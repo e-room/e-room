@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.Base64;
 import java.util.Date;
 
@@ -23,15 +22,15 @@ public class TokenService {
         EXPIRED;
     }
 
-    private String secretKey = "token-secret-key";
+    private String secretKey;
     private final Long tokenPeriod;
     private final Long refreshPeriod;
     private final MemberService memberService;
 
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
+//    @PostConstruct
+//    protected void init() {
+//        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+//    }
 
     public TokenService(
             @Value("${jwt.secret-key}") String secretKey,
@@ -70,9 +69,11 @@ public class TokenService {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
+            System.out.println(new Date().getTime());
+            System.out.println(claims.getBody().getExpiration().getTime());
             if (claims.getBody()
                     .getExpiration()
-                    .after(new Date())) {
+                    .before(new Date())) {
                 throw new ExpiredJwtException(claims.getHeader(), claims.getBody(), "expired Token, reissue refresh Token");
             }
             return JwtCode.ACCESS;
