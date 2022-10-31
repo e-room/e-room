@@ -14,6 +14,10 @@ public interface ReviewService {
 
     Long deleteById(Long reviewId);
 
+    /*
+    if the review exists, return review
+    else create review
+     */
     Review createReview(ReviewRequestDto.ReviewCreateDto request, Member author);
 
     Long save(Review review);
