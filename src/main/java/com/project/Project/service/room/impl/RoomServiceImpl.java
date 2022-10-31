@@ -20,13 +20,16 @@ public class RoomServiceImpl implements RoomService {
 
     @Transactional
     public Room createRoom(Building building, Integer lineNumber, Integer roomNumber) {
-        Room room = Room.builder()
-                .reviewList(new ArrayList<>())
-                .lineNumber(lineNumber)
-                .roomNumber(roomNumber)
-                .build();
-        room.setBuilding(building);
-        return roomRepository.save(room);
+        return roomRepository.findByBuildingAndLineNumberAndRoomNumber(building, lineNumber, roomNumber)
+                .orElseGet(() -> {
+                    Room room = Room.builder()
+                            .reviewList(new ArrayList<>())
+                            .lineNumber(lineNumber)
+                            .roomNumber(roomNumber)
+                            .build();
+                    room.setBuilding(building);
+                    return roomRepository.save(room);
+                });
     }
 
     public Optional<Room> findByBuildingAndLineNumberAndRoomNumber(Building building, Integer lineNumber, Integer roomNumber) {
