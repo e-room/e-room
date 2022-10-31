@@ -1,13 +1,16 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.building.dto.BuildingOptionalDto;
+import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,99 +31,20 @@ public class ReviewRequestDto {
         @Valid
         private AddressDto address;
 
-        @NotNull
-        private String buildingName;
+        @Valid
+        private BuildingOptionalDto buildingOptionalDto;
 
-        /**
-         * 몇 동인지 : 101동
-         */
-        @PositiveOrZero
-        private Integer lineNumber;
+        @Valid
+        private RoomBaseDto roomBaseDto;
 
-        /**
-         * 몇 호인지 : 103호
-         */
-        @NotNull
-        @PositiveOrZero
-        private Integer roomNumber;
+        @Valid
+        private ReviewBaseDto reviewBaseDto;
 
-        /**
-         * 거주 기간 : 2018년 이전, 2018년까지, 2019년까지, ..., 2022년까지
-         */
-        @NotNull
-        private Integer residenceStartYear;
+        @Valid
+        private ReviewScoreDto reviewScoreDto;
 
-        @NotNull
-        private Integer residenceDuration;
-
-        /**
-         * 보증금 : 000만원
-         */
-        @NotNull
-        @PositiveOrZero
-        private Integer deposit;
-
-
-        /**
-         * 월세 : 00만원
-         */
-        @NotNull
-        @PositiveOrZero
-        private Integer monthlyRent;
-
-        /**
-         * 관리비 : 몇호기준 얼마정도에요. 여름에는 에어컨을 틀면 추가적으로 ....
-         */
-        @NotNull
-        @PositiveOrZero
-        private Integer managementFee;
-
-        /**
-         * 집 크기 : 6.3평
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        private Double netLeasableArea;
-
-        /**
-         * 교통점수
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "5.0")
-        private Double traffic;
-
-        /**
-         * 건물 및 단지 점수
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "5.0")
-        private Double buildingComplex;
-
-        /**
-         * 주변 및 환경 점수
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "5.0")
-        private Double surrounding;
-
-        /**
-         * 내부 점수
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "5.0")
-        private Double internal;
-
-        /**
-         * 생활 및 입지 점수
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "5.0")
-        private Double livingLocation;
+        @Valid
+        private ReviewResidencePeriodDto reviewResidencePeriodDto;
 
         /**
          * 장점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
@@ -149,13 +73,5 @@ public class ReviewRequestDto {
 
         @Size(max = 5)
         private List<MultipartFile> reviewImageList = new ArrayList<>();
-
-        /**
-         * 해당 거주지 만족도
-         */
-        @NotNull
-        @DecimalMin(value = "0.0")
-        @DecimalMax(value = "5.0")
-        private Double residenceSatisfaction;
     }
 }
