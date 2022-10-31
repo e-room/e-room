@@ -99,7 +99,9 @@ public class Building extends BaseEntity {
         if (dto.getBuildingName() != null && (this.buildingName == null || this.buildingName.equals(""))) {
             this.buildingName = dto.getBuildingName();
         }
-        this.hasElevator = dto.getHasElevator();
+        if (dto.getHasElevator() != null) {
+            this.hasElevator = dto.getHasElevator();
+        }
         return this;
     }
 

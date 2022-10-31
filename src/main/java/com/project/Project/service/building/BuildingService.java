@@ -21,6 +21,10 @@ public interface BuildingService {
 
     List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord();
 
+    /*
+    if the building exists, update with buildingOptionalDto
+    else create Building
+     */
     Building createBuilding(Address address, BuildingOptionalDto buildingOptionalDto);
 
     Building createBuilding(Address address, Coordinate coordinate, BuildingOptionalDto buildingOptionalDto);
