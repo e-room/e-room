@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.LockModeType;
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByRoom(Room room);
@@ -27,5 +28,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @EntityGraph(value = "Review.withRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
     @Query("select review from Review review where review.room.building.id = :id")
     List<Review> findReviewsWithRoomAndBuildingAndLock(Long id);
+
+    Optional<Review> findReviewByMemberAndRoom(Long memberId, Long roomId);
 
 }

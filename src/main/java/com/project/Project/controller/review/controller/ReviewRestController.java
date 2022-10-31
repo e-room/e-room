@@ -2,17 +2,10 @@ package com.project.Project.controller.review.controller;
 
 import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.CursorDto;
-import com.project.Project.controller.building.dto.AddressDto;
-import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
-import com.project.Project.domain.building.Building;
-import com.project.Project.domain.embedded.Address;
-import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.room.Room;
-import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
@@ -101,32 +94,10 @@ public class ReviewRestController {
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
     public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthUser Member loginMember) {
-        /*
-            1. address로 빌딩 조회
-            2. 빌딩의 room 조회
-            3. room을 toReview로 넘겨서 review 생성
-            4. 저장 후 응답
-         */
-
-
-        Address address = AddressDto.toAddress(request.getAddress());
-        String buildingName = request.getBuildingName();
-        Boolean hasElevator = request.getAdvantageKeywordList().stream().anyMatch((keyword) -> keyword.equalsIgnoreCase(KeywordEnum.ELEVATOR.toString()));
-        BuildingOptionalDto buildingOptionalDto = new BuildingOptionalDto(buildingName, hasElevator);
-
-        Long savedReviewId = 0L;
-        Building building = buildingService.findByAddress(address)
-                .orElseGet(() -> buildingService.createBuilding(address, buildingOptionalDto)); // 빌딩이 없는 경우 생성
-
-        Room room = roomService.findByBuildingAndLineNumberAndRoomNumber(building, request.getRoomNumber(), request.getLineNumber())
-                .orElse(roomService.createRoom(building, request.getLineNumber(), request.getRoomNumber())); // 방이 없는 경우 생성해줌.
-
-        Review review = ReviewSerializer.toReview(request, loginMember, room);
-        savedReviewId = reviewService.save(review);
-
+        Review review = reviewService.createReview(request, loginMember);
 
         return ReviewResponseDto.ReviewCreateResponse.builder()
-                .reviewId(savedReviewId)
+                .reviewId(review.getId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }

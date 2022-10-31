@@ -1,14 +1,23 @@
 package com.project.Project.service.review.impl;
 
+import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.building.dto.BuildingOptionalDto;
+import com.project.Project.controller.review.dto.ReviewRequestDto;
+import com.project.Project.controller.room.dto.RoomBaseDto;
+import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
+import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.FileProcessService;
+import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewService;
+import com.project.Project.service.room.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +34,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
     private final FileProcessService fileProcessService;
+    private final BuildingService buildingService;
+    private final RoomService roomService;
 
     public List<Review> getReviewListByBuildingId(Long buildingId, Long cursorId, Pageable page) {
 
@@ -65,13 +76,6 @@ public class ReviewServiceImpl implements ReviewService {
                 reviewRepository.findByIdInAndIdLessThanOrderByCreatedAtDesc(reviewIdList, cursorId, page);
     }
 
-//    private List<Review> getReviews(Long cursorId, Pageable page) {
-//        return cursorId == null ?
-//                reviewRepository.findAllByOrderByCreatedAtDesc(page) :
-//                reviewRepository.findByIdLessThanOrderByCreatedAtDesc(cursorId, page);
-//
-//    }
-
     @Transactional
     public Long deleteById(Long reviewId) {
         List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewImageList();
@@ -80,6 +84,27 @@ public class ReviewServiceImpl implements ReviewService {
         }
         reviewRepository.deleteById(reviewId);
         return reviewId;
+    }
+
+
+    @Transactional
+    public Review createReview(ReviewRequestDto.ReviewCreateDto request, Member author) {
+        /*
+            1. address로 빌딩 조회
+            2. 빌딩의 room 조회
+            3. room을 toReview로 넘겨서 review 생성
+            4. 저장 후 응답
+         */
+        Address address = AddressDto.toAddress(request.getAddress());
+        BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
+
+        Building building = buildingService.createBuilding(address, buildingOptionalDto);// 빌딩이 없는 경우 생성
+
+        RoomBaseDto roomBaseDto = request.getRoomBaseDto();
+        Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
+        Review review = reviewRepository.findReviewByMemberAndRoom(author.getId(), room.getId())
+                .orElseGet(() -> ReviewSerializer.toReview(request, author, room));
+        return reviewRepository.save(review);
     }
 
     @Transactional
