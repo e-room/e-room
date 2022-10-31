@@ -1,5 +1,6 @@
 package com.project.Project.controller.review.controller;
 
+import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
@@ -9,7 +10,6 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.enums.KeywordEnum;
-import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.serializer.review.ReviewSerializer;
@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,22 +100,13 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request) {
+    public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthUser Member loginMember) {
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회
             3. room을 toReview로 넘겨서 review 생성
             4. 저장 후 응답
          */
-        Member member = Member.builder() // temp user
-                .reviewList(new ArrayList<>())
-                .favoriteBuildingList(new ArrayList<>())
-                .likeReviewList(new ArrayList<>())
-                .name("하품하는 망아지")
-                .email("swa07016@khu.ac.kr")
-                .memberRole(MemberRole.USER)
-                .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
-                .build();
 
 
         Address address = AddressDto.toAddress(request.getAddress());
@@ -126,12 +116,12 @@ public class ReviewRestController {
 
         Long savedReviewId = 0L;
         Building building = buildingService.findByAddress(address)
-                .orElse(buildingService.createBuilding(address, buildingOptionalDto)); // 빌딩이 없는 경우 생성
+                .orElseGet(() -> buildingService.createBuilding(address, buildingOptionalDto)); // 빌딩이 없는 경우 생성
 
         Room room = roomService.findByBuildingAndLineNumberAndRoomNumber(building, request.getRoomNumber(), request.getLineNumber())
                 .orElse(roomService.createRoom(building, request.getLineNumber(), request.getRoomNumber())); // 방이 없는 경우 생성해줌.
 
-        Review review = ReviewSerializer.toReview(request, member, room);
+        Review review = ReviewSerializer.toReview(request, loginMember, room);
         savedReviewId = reviewService.save(review);
 
 

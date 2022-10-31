@@ -3,9 +3,28 @@ package com.project.Project.serializer.member;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.OAuthAttributes;
 import com.project.Project.domain.Member;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.member.MemberException;
+import com.project.Project.repository.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
+@Component
+@RequiredArgsConstructor
 public class MemberSerializer {
+
+    private final MemberRepository memberRepository;
+
+    private static MemberRepository staticMemberRepo;
+
+    @PostConstruct
+    public void init() {
+        this.staticMemberRepo = memberRepository;
+    }
+
 
     public static MemberDto toDto(OAuth2User oAuth2User) {
         var attributes = oAuth2User.getAttributes();
@@ -17,6 +36,12 @@ public class MemberSerializer {
                 .name(oAuthAttributes.getName())
                 .picture(oAuthAttributes.getPicture())
                 .build();
+    }
+
+    public static Member toMember(MemberDto memberDto) {
+        String email = memberDto.getEmail();
+        Member member = staticMemberRepo.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+        return member;
     }
 
     public static MemberDto toDto(Member member) {
