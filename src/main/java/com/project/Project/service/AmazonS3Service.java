@@ -1,4 +1,4 @@
-package com.project.Project.service.impl;
+package com.project.Project.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

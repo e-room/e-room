@@ -1,4 +1,4 @@
-package com.project.Project.service.impl;
+package com.project.Project.service.review.impl;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
@@ -7,7 +7,8 @@ import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
-import com.project.Project.service.ReviewService;
+import com.project.Project.service.FileProcessService;
+import com.project.Project.service.review.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

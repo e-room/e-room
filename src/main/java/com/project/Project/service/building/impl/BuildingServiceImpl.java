@@ -1,4 +1,4 @@
-package com.project.Project.service.impl;
+package com.project.Project.service.building.impl;
 
 import com.project.Project.Util.BuildingGenerator;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
@@ -10,7 +10,7 @@ import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
-import com.project.Project.service.BuildingService;
+import com.project.Project.service.building.BuildingService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

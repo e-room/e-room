@@ -1,10 +1,10 @@
-package com.project.Project.service.impl;
+package com.project.Project.service.review.impl;
 
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.review.ReviewKeyword;
 import com.project.Project.repository.review.ReviewKeywordRepository;
-import com.project.Project.service.ReviewKeywordService;
+import com.project.Project.service.review.ReviewKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

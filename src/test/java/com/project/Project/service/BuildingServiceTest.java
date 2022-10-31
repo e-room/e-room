@@ -6,7 +6,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
-import com.project.Project.service.impl.BuildingServiceImpl;
+import com.project.Project.service.building.impl.BuildingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,8 +35,8 @@ public class BuildingServiceTest {
     private BuildingServiceImpl buildingService;
 
     @BeforeEach
-    public void prepare(){
-        this.buildingGenerator = new BuildingGenerator(webClient,buildingCustomRepository,buildingRepository);
+    public void prepare() {
+        this.buildingGenerator = new BuildingGenerator(webClient, buildingCustomRepository, buildingRepository);
     }
 
     // todo : createBuilding 구현 후 작성
@@ -50,8 +50,8 @@ public class BuildingServiceTest {
                 .buildingNumber("4")
                 .build();
         this.buildingGenerator.init();
-        BuildingOptionalDto dto = new BuildingOptionalDto("원빌리지",false);
-        Building building = buildingService.createBuilding(address,dto);
+        BuildingOptionalDto dto = new BuildingOptionalDto("원빌리지", false);
+        Building building = buildingService.createBuilding(address, dto);
     }
 
 }

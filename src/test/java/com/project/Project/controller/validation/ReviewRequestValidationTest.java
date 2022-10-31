@@ -7,9 +7,9 @@
 //import com.project.Project.repository.building.BuildingRepository;
 //import com.project.Project.repository.review.ReviewRepository;
 //import com.project.Project.repository.room.RoomRepository;
-//import com.project.Project.service.BuildingService;
-//import com.project.Project.service.ReviewService;
-//import com.project.Project.service.RoomService;
+//import com.project.Project.service.building.BuildingService;
+//import com.project.Project.service.review.ReviewService;
+//import com.project.Project.service.room.RoomService;
 //import com.project.Project.validator.BuildingExistValidator;
 //import com.project.Project.validator.EnumValidator;
 //import com.project.Project.validator.ReviewExistValidator;

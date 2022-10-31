@@ -8,7 +8,7 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.serializer.member.MemberSerializer;
-import com.project.Project.service.MemberService;
+import com.project.Project.service.member.MemberService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

@@ -1,9 +1,9 @@
-package com.project.Project.service.impl;
+package com.project.Project.service.room.impl;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.room.RoomRepository;
-import com.project.Project.service.RoomService;
+import com.project.Project.service.room.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

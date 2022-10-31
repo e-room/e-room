@@ -4,7 +4,7 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewRepository;
-import com.project.Project.service.impl.ReviewServiceImpl;
+import com.project.Project.service.review.impl.ReviewServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -8,7 +8,7 @@ import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.service.CustomOAuth2UserService;
-import com.project.Project.service.MemberService;
+import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

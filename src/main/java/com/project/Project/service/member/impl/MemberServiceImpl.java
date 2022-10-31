@@ -1,8 +1,8 @@
-package com.project.Project.service.impl;
+package com.project.Project.service.member.impl;
 
 import com.project.Project.domain.Member;
 import com.project.Project.repository.member.MemberRepository;
-import com.project.Project.service.MemberService;
+import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -3,7 +3,7 @@ package com.project.Project.service;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.room.RoomRepository;
-import com.project.Project.service.impl.RoomServiceImpl;
+import com.project.Project.service.room.impl.RoomServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

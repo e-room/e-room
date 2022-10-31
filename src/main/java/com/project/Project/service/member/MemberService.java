@@ -1,4 +1,4 @@
-package com.project.Project.service;
+package com.project.Project.service.member;
 
 import com.project.Project.domain.Member;
 

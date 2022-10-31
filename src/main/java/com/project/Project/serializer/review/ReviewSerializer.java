@@ -11,7 +11,7 @@ import com.project.Project.domain.review.*;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
-import com.project.Project.service.impl.FileProcessService;
+import com.project.Project.service.FileProcessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
