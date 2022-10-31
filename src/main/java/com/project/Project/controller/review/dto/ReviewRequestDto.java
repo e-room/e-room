@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +80,7 @@ public class ReviewRequestDto {
          */
         @NotNull
         @DecimalMin(value = "0.0")
-        private BigDecimal netLeasableArea;
+        private Double netLeasableArea;
 
         /**
          * 교통점수
@@ -89,7 +88,7 @@ public class ReviewRequestDto {
         @NotNull
         @DecimalMin(value = "0.0")
         @DecimalMax(value = "5.0")
-        private BigDecimal traffic;
+        private Double traffic;
 
         /**
          * 건물 및 단지 점수
@@ -97,7 +96,7 @@ public class ReviewRequestDto {
         @NotNull
         @DecimalMin(value = "0.0")
         @DecimalMax(value = "5.0")
-        private BigDecimal buildingComplex;
+        private Double buildingComplex;
 
         /**
          * 주변 및 환경 점수
@@ -105,7 +104,7 @@ public class ReviewRequestDto {
         @NotNull
         @DecimalMin(value = "0.0")
         @DecimalMax(value = "5.0")
-        private BigDecimal surrounding;
+        private Double surrounding;
 
         /**
          * 내부 점수
@@ -113,7 +112,7 @@ public class ReviewRequestDto {
         @NotNull
         @DecimalMin(value = "0.0")
         @DecimalMax(value = "5.0")
-        private BigDecimal internal;
+        private Double internal;
 
         /**
          * 생활 및 입지 점수
@@ -121,7 +120,7 @@ public class ReviewRequestDto {
         @NotNull
         @DecimalMin(value = "0.0")
         @DecimalMax(value = "5.0")
-        private BigDecimal livingLocation;
+        private Double livingLocation;
 
         /**
          * 장점 키워드 선택 : 없음 주차 대중교통 공원산책 치안 경비실 건물관리 분리수거 환기 방습
@@ -157,6 +156,6 @@ public class ReviewRequestDto {
         @NotNull
         @DecimalMin(value = "0.0")
         @DecimalMax(value = "5.0")
-        private BigDecimal residenceSatisfaction;
+        private Double residenceSatisfaction;
     }
 }

@@ -16,7 +16,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +106,7 @@ public class Review extends BaseEntity {
      * 최대 유효 자릿수 : 10, 소수점 우측 자릿수 : 3
      */
     @Column(precision = 10, scale = 3)
-    private BigDecimal netLeasableArea;
+    private Double netLeasableArea;
 
     private String advantageDescription;
 
@@ -126,7 +125,7 @@ public class Review extends BaseEntity {
         return ReviewResponseDto.ReviewListResponse.builder()
                 .profilePictureUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .nickName("하품하는 망아지")
-                .score(new BigDecimal(4.5))
+                .score(4.5)
                 .residencePeriod(getResidenceDuration())
                 .residenceDuration(getResidenceDuration())
                 .netLeasableArea(getNetLeasableArea())
