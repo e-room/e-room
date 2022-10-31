@@ -3,6 +3,8 @@ package com.project.Project.exception;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
+    //
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 사용자가 존재하지 않습니다."),
 
     //Building
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 건물이 존재하지 않습니다."),
