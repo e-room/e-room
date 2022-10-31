@@ -1,4 +1,4 @@
-package com.project.Project.auth;
+package com.project.Project.auth.authentication;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;

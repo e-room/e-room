@@ -1,6 +1,6 @@
 package com.project.Project.auth.provider;
 
-import com.project.Project.auth.JwtAuthentication;
+import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.exception.JwtException;

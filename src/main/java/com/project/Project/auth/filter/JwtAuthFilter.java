@@ -1,7 +1,7 @@
 package com.project.Project.auth.filter;
 
 import com.project.Project.Util.CookieUtil;
-import com.project.Project.auth.JwtAuthentication;
+import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.handler.JWTFailureHandler;

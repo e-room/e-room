@@ -1,6 +1,6 @@
 package com.project.Project.auth.filter;
 
-import com.project.Project.auth.JwtAuthentication;
+import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.exception.BasicAuthException;
 import com.project.Project.auth.handler.BasicAuthFailureHandler;
