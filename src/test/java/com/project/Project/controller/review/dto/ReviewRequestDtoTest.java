@@ -12,7 +12,6 @@ import javax.validation.ValidatorFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -51,18 +50,18 @@ public class ReviewRequestDtoTest {
                 .deposit(800)
                 .monthlyRent(50)
                 .managementFee(10)
-                .netLeasableArea(BigDecimal.valueOf(13.0))
-                .traffic(BigDecimal.valueOf(3.0))
-                .buildingComplex(BigDecimal.valueOf(4.0))
-                .surrounding(BigDecimal.valueOf(1.0))
-                .internal(BigDecimal.valueOf(5.0))
-                .livingLocation(BigDecimal.valueOf(3.0))
+                .netLeasableArea(13.0)
+                .traffic(3.0)
+                .buildingComplex(4.0)
+                .surrounding(1.0)
+                .internal(5.0)
+                .livingLocation(3.0)
                 .advantageKeywordList(List.of("PARKING", "VENTILATION", "TOWN_NOISE"))
                 .advantageDescription(advantageDescription)
                 .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE", "DAY_LIGHTING"))
                 .disadvantageDescription(disadvantageDescription)
                 .reviewImageList(new ArrayList<>())
-                .residenceSatisfaction(BigDecimal.valueOf(5.0))
+                .residenceSatisfaction(5.0)
                 .build();
 
         // when
@@ -148,18 +147,18 @@ public class ReviewRequestDtoTest {
                 .deposit(-800) // 음수
                 .monthlyRent(-50) // 음수
                 .managementFee(-10) // 음수
-                .netLeasableArea(BigDecimal.valueOf(-13.0)) // 0.0 미만
-                .traffic(BigDecimal.valueOf(5.5)) // 5.0 초과
-                .buildingComplex(BigDecimal.valueOf(-1.0)) // 0.0 미만
-                .surrounding(BigDecimal.valueOf(6.6)) // 5.0 초과
-                .internal(BigDecimal.valueOf(5.1)) // 5.0 초과
-                .livingLocation(BigDecimal.valueOf(-1.0)) // 0.0 미만
+                .netLeasableArea(-13.0) // 0.0 미만
+                .traffic(5.5) // 5.0 초과
+                .buildingComplex(-1.0) // 0.0 미만
+                .surrounding(6.6) // 5.0 초과
+                .internal(5.1) // 5.0 초과
+                .livingLocation(-1.0) // 0.0 미만
                 .advantageKeywordList(List.of("PARKING@", "VENTILATION~~", "앍TOWN_NOISE")) // 잘못된 Enum 값 3개
                 .advantageDescription(advantageDescription) // 50자 미만
                 .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE히히", "ㅁㅁ")) // 잘못된 Enum 값 2개
                 .disadvantageDescription(disadvantageDescription) // 500자 초과
                 .reviewImageList(reviewImageList) // 5개 이상의 이미지
-                .residenceSatisfaction(BigDecimal.valueOf(5.5)) // 5.0 초과
+                .residenceSatisfaction(5.5) // 5.0 초과
                 .build();
 
 
