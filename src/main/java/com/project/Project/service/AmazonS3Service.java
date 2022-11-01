@@ -5,9 +5,8 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.project.Project.Util.AmazonS3Component;
 import com.project.Project.domain.enums.FileFolder;
-import com.project.Project.service.FileService;
+import com.project.Project.util.component.AmazonS3Component;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,5 @@
 package com.project.Project.controller.building;
 
-import com.project.Project.Util.QueryDslUtil;
 import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
@@ -10,6 +9,7 @@ import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord
 import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewService;
+import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

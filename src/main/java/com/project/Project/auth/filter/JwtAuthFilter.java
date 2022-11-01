@@ -1,10 +1,10 @@
 package com.project.Project.auth.filter;
 
-import com.project.Project.Util.CookieUtil;
 import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.handler.JWTFailureHandler;
+import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;

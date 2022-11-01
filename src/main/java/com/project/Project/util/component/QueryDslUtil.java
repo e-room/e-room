@@ -1,4 +1,4 @@
-package com.project.Project.Util;
+package com.project.Project.util.component;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class QueryDslUtil {
 
-    public static OrderSpecifier<?> getSortedColumn(Order order, Path<?> parent, String fieldName){
+    public static OrderSpecifier<?> getSortedColumn(Order order, Path<?> parent, String fieldName) {
         Path<Object> fieldPath = Expressions.path(Object.class, parent, fieldName);
         return new OrderSpecifier(order, fieldPath);
     }

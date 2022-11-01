@@ -100,12 +100,12 @@ public class ReviewSerializer {
 
 
         Review review = Review.builder()
-                .residenceStartYear(request.getResidenceStartYear())
-                .residenceDuration(request.getResidenceDuration())
-                .deposit(request.getDeposit())
-                .monthlyRent(request.getMonthlyRent())
-                .managementFee(request.getManagementFee())
-                .netLeasableArea(request.getNetLeasableArea())
+                .residenceStartYear(request.getReviewResidencePeriodDto().getResidenceStartYear())
+                .residenceDuration(request.getReviewResidencePeriodDto().getResidenceDuration())
+                .deposit(request.getReviewBaseDto().getDeposit())
+                .monthlyRent(request.getReviewBaseDto().getMonthlyRent())
+                .managementFee(request.getReviewBaseDto().getManagementFee())
+                .netLeasableArea(request.getReviewBaseDto().getNetLeasableArea())
                 .advantageDescription(request.getAdvantageDescription())
                 .disadvantageDescription(request.getDisadvantageDescription())
                 .anonymousStatus(AnonymousStatus.generateAnonymousStatus())

@@ -1,24 +1,35 @@
-package com.project.Project.Util;
+package com.project.Project.util;
 
 
 import lombok.*;
 
 import java.util.List;
 
-@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class KakaoAddressAPI {
 
     private List<Document> documents;
     private MetaData meta;
 
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-    private static class MetaData{
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class MetaData {
         private Boolean is_end;
         private Integer pageable_count;
         private Integer total_count;
     }
-    @Getter @Setter  @NoArgsConstructor @AllArgsConstructor
-    public static class Document{
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Document {
         private Address address;
         private AddressByRoad road_address;
         private String address_name;
@@ -27,18 +38,11 @@ public class KakaoAddressAPI {
         private String y;
     }
 
-//    @Getter @Setter  @NoArgsConstructor @AllArgsConstructor
-//    private static class KakoAddress{
-//        private Address address;
-//        private AddressByRoad addressByRoad;
-//        private String address_name;
-//        private String address_type;
-//        private String x;
-//        private String y;
-//    }
-
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-    public static class Address{
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Address {
         private String address_name;
         private String b_code;
         private String h_code;
@@ -53,8 +57,11 @@ public class KakaoAddressAPI {
         private String y;
     }
 
-    @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-    public static class AddressByRoad{
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddressByRoad {
         private String address_name;
         private String building_name;
         private String main_building_no;

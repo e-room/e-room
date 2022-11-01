@@ -1,12 +1,12 @@
 package com.project.Project.service;
 
-import com.project.Project.Util.BuildingGenerator;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.service.building.impl.BuildingServiceImpl;
+import com.project.Project.util.component.BuildingGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +16,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
 @Import(BuildingGeneratorTestConfig.class)

@@ -1,6 +1,7 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.room.dto.RoomBaseDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,25 +44,16 @@ public class ReviewRequestDtoTest {
                                 .buildingNumber("4")
                                 .build()
                 )
-                .lineNumber(101)
-                .roomNumber(103)
-                .residenceStartYear(2020)
-                .residenceDuration(12)
-                .deposit(800)
-                .monthlyRent(50)
-                .managementFee(10)
-                .netLeasableArea(13.0)
-                .traffic(3.0)
-                .buildingComplex(4.0)
-                .surrounding(1.0)
-                .internal(5.0)
-                .livingLocation(3.0)
+                .roomBaseDto(RoomBaseDto.builder().roomNumber(103).lineNumber(101).build())
+                .reviewResidencePeriodDto(ReviewResidencePeriodDto.builder().residenceStartYear(2020).residenceDuration(12).build())
+                .reviewBaseDto(ReviewBaseDto.builder().deposit(800).monthlyRent(50).managementFee(10).netLeasableArea(13.0).build())
+                .reviewScoreDto(ReviewScoreDto.builder().traffic(3.0).buildingComplex(4.0).surrounding(1.0).internal(5.0).livingLocation(3.0)
+                        .residenceSatisfaction(5.0).build())
                 .advantageKeywordList(List.of("PARKING", "VENTILATION", "TOWN_NOISE"))
                 .advantageDescription(advantageDescription)
                 .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE", "DAY_LIGHTING"))
                 .disadvantageDescription(disadvantageDescription)
                 .reviewImageList(new ArrayList<>())
-                .residenceSatisfaction(5.0)
                 .build();
 
         // when
@@ -139,26 +131,16 @@ public class ReviewRequestDtoTest {
                                 .roadName("매영로425번길")
                                 .buildingNumber("4")
                                 .build()
-                )
-                .lineNumber(-101) // 음수
-                .roomNumber(-103) // 음수
-                .residenceDuration(-1)
-                .residenceStartYear(2045) // 미래
-                .deposit(-800) // 음수
-                .monthlyRent(-50) // 음수
-                .managementFee(-10) // 음수
-                .netLeasableArea(-13.0) // 0.0 미만
-                .traffic(5.5) // 5.0 초과
-                .buildingComplex(-1.0) // 0.0 미만
-                .surrounding(6.6) // 5.0 초과
-                .internal(5.1) // 5.0 초과
-                .livingLocation(-1.0) // 0.0 미만
+                ).roomBaseDto(RoomBaseDto.builder().roomNumber(-103).lineNumber(-101).build())
+                .reviewResidencePeriodDto(ReviewResidencePeriodDto.builder().residenceStartYear(2045).residenceDuration(-1).build())
+                .reviewBaseDto(ReviewBaseDto.builder().deposit(-800).monthlyRent(-50).managementFee(-10).netLeasableArea(-13.0).build())
+                .reviewScoreDto(ReviewScoreDto.builder().traffic(5.5).buildingComplex(-1.0).surrounding(6.6).internal(5.1).livingLocation(-1.0)
+                        .residenceSatisfaction(5.5).build())
                 .advantageKeywordList(List.of("PARKING@", "VENTILATION~~", "앍TOWN_NOISE")) // 잘못된 Enum 값 3개
                 .advantageDescription(advantageDescription) // 50자 미만
                 .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE히히", "ㅁㅁ")) // 잘못된 Enum 값 2개
                 .disadvantageDescription(disadvantageDescription) // 500자 초과
                 .reviewImageList(reviewImageList) // 5개 이상의 이미지
-                .residenceSatisfaction(5.5) // 5.0 초과
                 .build();
 
 

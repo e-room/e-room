@@ -1,4 +1,4 @@
-package com.project.Project.Util;
+package com.project.Project.util.component;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingSummary;
@@ -8,6 +8,7 @@ import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.util.KakaoAddressAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
