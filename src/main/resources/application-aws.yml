@@ -1,9 +1,9 @@
 cloud:
   aws:
     s3:
-      bucket: 'e-room'
+      bucket: e-room
       folder:
-        reviewImages : 'review-images'
+        reviewImages: review-images
     region:
       static: ap-northeast-2
     stack:

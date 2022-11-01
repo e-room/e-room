@@ -1,10 +1,10 @@
 package com.project.Project.serializer.review;
 
+import com.project.Project.aws.s3.ReviewImagePackage;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DTypeEnum;
-import com.project.Project.domain.enums.FileFolder;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.*;
@@ -130,8 +130,12 @@ public class ReviewSerializer {
 
         // ReviewImageList 생성
         List<MultipartFile> imageFileList = request.getReviewImageList();
+        ReviewImagePackage reviewImagePackage = ReviewImagePackage.builder()
+                .buildingId(room.getBuilding().getId())
+                .roomId(room.getId())
+                .build();
         for (MultipartFile multipartFile : imageFileList) {
-            String url = staticFileProcessService.uploadImage(multipartFile, FileFolder.REVIEW_IMAGES);
+            String url = staticFileProcessService.uploadImage(multipartFile, reviewImagePackage);
             ReviewImage reviewImage = ReviewImage.builder().url(url).build();
             reviewImage.setReview(review);
         }
