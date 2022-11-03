@@ -1,6 +1,6 @@
 package com.project.Project.serializer.review;
 
-import com.project.Project.aws.s3.ReviewImagePackage;
+import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
@@ -11,7 +11,7 @@ import com.project.Project.domain.review.*;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
-import com.project.Project.service.FileProcessService;
+import com.project.Project.service.fileProcess.ReviewImageProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,17 +27,17 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class ReviewSerializer {
-    private final FileProcessService fileProcessService;
+    private final ReviewImageProcess reviewImageProcess;
     private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewCategoryRepository reviewCategoryRepository;
 
-    private static FileProcessService staticFileProcessService;
+    private static ReviewImageProcess staticReviewImageProcess;
     private static ReviewKeywordRepository staticReviewKeywordRepository;
     private static ReviewCategoryRepository staticReviewCategoryRepository;
 
     @PostConstruct
     public void init() {
-        this.staticFileProcessService = fileProcessService;
+        this.staticReviewImageProcess = reviewImageProcess;
         this.staticReviewKeywordRepository = reviewKeywordRepository;
         this.staticReviewCategoryRepository = reviewCategoryRepository;
     }
@@ -130,14 +130,16 @@ public class ReviewSerializer {
 
         // ReviewImageList 생성
         List<MultipartFile> imageFileList = request.getReviewImageList();
-        ReviewImagePackage reviewImagePackage = ReviewImagePackage.builder()
+        ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
                 .buildingId(room.getBuilding().getId())
                 .roomId(room.getId())
                 .build();
+
+        /*
+        todo: asynchronously
+         */
         for (MultipartFile multipartFile : imageFileList) {
-            String url = staticFileProcessService.uploadImage(multipartFile, reviewImagePackage);
-            ReviewImage reviewImage = ReviewImage.builder().url(url).build();
-            reviewImage.setReview(review);
+            staticReviewImageProcess.uploadImageAndMapToReview(multipartFile, reviewImagePackageMeta, review);
         }
 
         return review;

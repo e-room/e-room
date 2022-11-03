@@ -1,4 +1,4 @@
-package com.project.Project.aws.s3;
+package com.project.Project.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Getter
-public class AmazonS3Config {
+public class AmazonConfig {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
@@ -27,6 +27,9 @@ public class AmazonS3Config {
 
     @Value("${cloud.aws.region.static}")
     private String region;
+
+    @Value("${cloud.aws.cloudFront.distributionDomain}")
+    private String distributionDomain;
 
     @Bean
     public AmazonS3 amazonS3() {

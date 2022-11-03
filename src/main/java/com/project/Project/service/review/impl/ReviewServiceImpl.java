@@ -14,8 +14,8 @@ import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.serializer.review.ReviewSerializer;
-import com.project.Project.service.FileProcessService;
 import com.project.Project.service.building.BuildingService;
+import com.project.Project.service.fileProcess.FileProcessServiceImpl;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.service.room.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final BuildingRepository buildingRepository;
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
-    private final FileProcessService fileProcessService;
+    private final FileProcessServiceImpl fileProcessServiceImpl;
     private final BuildingService buildingService;
     private final RoomService roomService;
 
@@ -80,7 +80,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Long deleteById(Long reviewId) {
         List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewImageList();
         for (ReviewImage reviewImage : reviewImageList) {
-            fileProcessService.deleteImage(reviewImage.getUrl());
+            fileProcessServiceImpl.deleteImage(reviewImage.getUrl());
         }
         reviewRepository.deleteById(reviewId);
         return reviewId;
