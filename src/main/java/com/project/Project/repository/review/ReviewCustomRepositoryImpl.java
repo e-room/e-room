@@ -35,7 +35,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .set(review.reviewSummary, updatedReview.getReviewSummary())
                 .set(review.reviewToReviewCategoryList, updatedReview.getReviewToReviewCategoryList())
                 .set(review.anonymousStatus, updatedReview.getAnonymousStatus())
-                .set(review.member, updatedReview.getMember())
+                .set(review.member, updatedReview.getAuthor())
                 .set(review.room, updatedReview.getRoom())
                 .set(review.advantageDescription, updatedReview.getAdvantageDescription())
                 .set(review.disadvantageDescription, updatedReview.getDisadvantageDescription())

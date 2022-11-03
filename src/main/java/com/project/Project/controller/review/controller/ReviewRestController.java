@@ -6,6 +6,7 @@ import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.review.Review;
+import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
@@ -15,6 +16,7 @@ import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,13 +49,13 @@ public class ReviewRestController {
      * @return 건물 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/buildig/{buildingId}/room/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @ModelAttribute CursorDto cursorDto) {
+    public ResponseEntity<List<ReviewResponseDto.ReviewListResponse>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @ModelAttribute CursorDto cursorDto) {
         List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
-                        .map(Review::toReviewListResponse)
+                        .map(ReviewSerializer::toReviewListResponse)
                         .collect(Collectors.toList());
-        return reviewListResponseList;
+        return ResponseEntity.ok(reviewListResponseList);
     }
 
     /**
@@ -66,13 +68,13 @@ public class ReviewRestController {
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public List<ReviewResponseDto.ReviewListResponse> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @ModelAttribute CursorDto cursorDto) {
+    public ResponseEntity<List<ReviewResponseDto.ReviewListResponse>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @ModelAttribute CursorDto cursorDto) {
         List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
-                        .map(Review::toReviewListResponse)
+                        .map(ReviewSerializer::toReviewListResponse)
                         .collect(Collectors.toList());
-        return reviewListResponseList;
+        return ResponseEntity.ok(reviewListResponseList);
     }
     /* todo
         @GetMapping("/building/room/review/{reviewId}")
@@ -93,13 +95,13 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ReviewResponseDto.ReviewCreateResponse createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthUser Member loginMember) {
+    public ResponseEntity<ReviewResponseDto.ReviewCreateResponse> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthUser Member loginMember) {
         Review review = reviewService.createReview(request, loginMember);
 
-        return ReviewResponseDto.ReviewCreateResponse.builder()
+        return ResponseEntity.ok(ReviewResponseDto.ReviewCreateResponse.builder()
                 .reviewId(review.getId())
                 .createdAt(LocalDateTime.now())
-                .build();
+                .build());
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -113,12 +115,12 @@ public class ReviewRestController {
      * @return 삭제된 리뷰의 id, 등록일시, affected row의 개수
      */
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ReviewResponseDto.ReviewDeleteResponse deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
+    public ResponseEntity<ReviewResponseDto.ReviewDeleteResponse> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
         Long deletedReviewId = reviewService.deleteById(reviewId);
-        return ReviewResponseDto.ReviewDeleteResponse.builder()
+        return ResponseEntity.ok(ReviewResponseDto.ReviewDeleteResponse.builder()
                 .reviewId(deletedReviewId)
                 .deletedAt(LocalDateTime.now())
                 .affectedRowCnt(3) // 어캐앎 ?? todo : affected row 하드코딩 해결 및 review API 전부 테스트
-                .build();
+                .build());
     }
 }

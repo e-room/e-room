@@ -40,4 +40,7 @@ public class ReviewBaseDto {
     @NotNull
     @DecimalMin(value = "0.0")
     private Double netLeasableArea;
+
+    @NotNull
+    private Boolean isAnonymous;
 }

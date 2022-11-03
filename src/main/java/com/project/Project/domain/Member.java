@@ -23,7 +23,7 @@ public class Member extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "author")
     @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 

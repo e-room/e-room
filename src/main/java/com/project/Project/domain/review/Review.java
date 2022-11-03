@@ -1,6 +1,5 @@
 package com.project.Project.domain.review;
 
-import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
@@ -26,6 +25,12 @@ import java.util.List;
         },
                 subgraphs = @NamedSubgraph(name = "room", attributeNodes = {
                         @NamedAttributeNode("building")
+                })),
+        @NamedEntityGraph(name = "Review.withReviewCategory", attributeNodes = {
+                @NamedAttributeNode(value = "reviewToReviewCategoryList", subgraph = "reviewCategory")
+        },
+                subgraphs = @NamedSubgraph(name = "reviewCategory", attributeNodes = {
+                        @NamedAttributeNode("reviewCategory")
                 }))
 })
 @Getter
@@ -49,7 +54,7 @@ public class Review extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Member author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
@@ -118,25 +123,6 @@ public class Review extends BaseEntity {
     @PreRemove
     public void deleteHandler() {
         super.setDeleted(true);
-    }
-
-    // todo : 하드코딩 되어있는 필드 해결
-    public ReviewResponseDto.ReviewListResponse toReviewListResponse() {
-        return ReviewResponseDto.ReviewListResponse.builder()
-                .profilePictureUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
-                .nickName("하품하는 망아지")
-                .score(4.5)
-                .residencePeriod(getResidenceDuration())
-                .residenceDuration(getResidenceDuration())
-                .netLeasableArea(getNetLeasableArea())
-                .deposit(getDeposit())
-                .monthlyRent(getMonthlyRent())
-                .managementFee(getManagementFee())
-                .advantage(getAdvantageKeywordEnumList())
-                .advantageDescription(getAdvantageDescription())
-                .disadvantage(getDisadvantageKeywordEnumList())
-                .disadvantageDescription(getDisadvantageDescription())
-                .build();
     }
 
     public List<KeywordEnum> getAdvantageKeywordEnumList() {

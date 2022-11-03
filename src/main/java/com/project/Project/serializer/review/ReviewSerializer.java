@@ -2,6 +2,7 @@ package com.project.Project.serializer.review;
 
 import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
+import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DTypeEnum;
@@ -143,5 +144,26 @@ public class ReviewSerializer {
         }
 
         return review;
+    }
+
+    // todo : 하드코딩 되어있는 필드 해결
+    public static ReviewResponseDto.ReviewListResponse toReviewListResponse(Review review) {
+        //todo named graph로 한 번에 들고오든가...
+        
+        return ReviewResponseDto.ReviewListResponse.builder()
+                .profilePictureUrl(review.getAuthor().getProfileImageUrl())
+                .nickName(review.getAnonymousStatus().getAnonymousName())
+                .score(4.5)
+                .residencePeriod(review.getResidenceDuration())
+                .residenceDuration(review.getResidenceDuration())
+                .netLeasableArea(review.getNetLeasableArea())
+                .deposit(review.getDeposit())
+                .monthlyRent(review.getMonthlyRent())
+                .managementFee(review.getManagementFee())
+                .advantage(review.getAdvantageKeywordEnumList())
+                .advantageDescription(review.getAdvantageDescription())
+                .disadvantage(review.getDisadvantageKeywordEnumList())
+                .disadvantageDescription(review.getDisadvantageDescription())
+                .build();
     }
 }
