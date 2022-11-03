@@ -4,6 +4,7 @@ cloud:
       bucket: e-room
       folder:
         reviewImages: review-images
+        profileImages: profile-images
     region:
       static: ap-northeast-2
     stack:

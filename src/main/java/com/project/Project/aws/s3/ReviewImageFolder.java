@@ -1,9 +1,7 @@
 package com.project.Project.aws.s3;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import com.project.Project.util.PropertyUtil;
 
-@Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
 public class ReviewImageFolder implements AmazonS3FolderCommand {
 
     private ReviewImagePackage reviewImagePackage;
@@ -22,6 +20,8 @@ public class ReviewImageFolder implements AmazonS3FolderCommand {
     }
 
     private String getFolderInternal(ReviewImagePackage reviewImagePackage) {
+
+        PropertyUtil.getProperty("cloud.aws.s3.folder.reviewImages");
         // review-images/buildingId/roomId/review/${reviewImage file name} 형식으로
         return "";
     }
