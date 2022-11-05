@@ -32,6 +32,7 @@ public class ReviewResponseDto {
         private List<KeywordEnum> disadvantage;
         private String disadvantageDescription;
         private Integer reviewLikeCnt;
+        private Long roomId;
     }
 
     @NoArgsConstructor

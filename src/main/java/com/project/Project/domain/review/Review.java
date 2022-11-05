@@ -4,6 +4,7 @@ import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.KeywordEnum;
+import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewEventListener;
@@ -17,6 +18,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @NamedEntityGraphs({
@@ -131,5 +133,19 @@ public class Review extends BaseEntity {
 
     public List<KeywordEnum> getDisadvantageKeywordEnumList() {
         return new ArrayList<>();
+    }
+
+    public Optional<ReviewToReviewCategory> getReviewCategory(ReviewCategoryEnum type) {
+        return this.reviewToReviewCategoryList.stream()
+                .filter(reviewToReviewCategory -> {
+                    ReviewCategoryEnum reviewCategoryEnum = Optional.ofNullable(reviewToReviewCategory.getReviewCategory())
+                            .map(ReviewCategory::getType)
+                            .orElse(null);
+                    if (reviewCategoryEnum != null) {
+                        return reviewCategoryEnum.equals(type);
+                    }
+                    return false;
+                })
+                .findFirst();
     }
 }

@@ -114,7 +114,7 @@ public class ReviewSerializer {
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
-                .member(member)
+                .author(member)
                 .room(room)
                 .reviewSummary(reviewSummary)
                 .build();
@@ -146,14 +146,22 @@ public class ReviewSerializer {
         return review;
     }
 
-    // todo : 하드코딩 되어있는 필드 해결
     public static ReviewResponseDto.ReviewListResponse toReviewListResponse(Review review) {
-        //todo named graph로 한 번에 들고오든가...
-        
+        /*
+        todo
+        무조건 reviewCategory의 점수를 들고와야하는 입장에서 한 번 더 조회하는게 맞을까?
+        객체 탐색이 나을지 NamedQuery가 나을지
+        OSIV가 있으니까 들고올 때 한방 쿼리로 들고오고 객체 탐색하는 걸로
+         */
+        Double score = review.getReviewCategory(ReviewCategoryEnum.RESIDENCESATISFACTION)
+                .map(ReviewToReviewCategory::getScore)
+                .orElse(null);
+
         return ReviewResponseDto.ReviewListResponse.builder()
                 .profilePictureUrl(review.getAuthor().getProfileImageUrl())
                 .nickName(review.getAnonymousStatus().getAnonymousName())
-                .score(4.5)
+                .roomId(review.getRoom().getId())
+                .score(score)
                 .residencePeriod(review.getResidenceDuration())
                 .residenceDuration(review.getResidenceDuration())
                 .netLeasableArea(review.getNetLeasableArea())
