@@ -29,6 +29,24 @@ public class Favorite extends BaseEntity {
     @JoinColumn(name = "room_id")
     private Building building;
 
+    public void setBuilding(Building building) {
+        if (this.building != null) { // 기존에 이미 팀이 존재한다면
+            this.building.getFavoriteList().remove(this); // 관계를 끊는다.
+        }
+        this.building = building;
+        building.getFavoriteList().add(this);
+    }
+
+
+
+    public void setMember(Member member) {
+        if (this.member != null) { // 기존에 이미 팀이 존재한다면
+            this.member.getFavoriteBuildingList().remove(this); // 관계를 끊는다.
+        }
+        this.member = member;
+        member.getFavoriteBuildingList().add(this);
+    }
+
     @PreRemove
     public void deleteHandler(){
         super.setDeleted(true);
