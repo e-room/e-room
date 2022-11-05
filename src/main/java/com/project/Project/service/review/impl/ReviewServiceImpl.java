@@ -13,9 +13,9 @@ import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
-import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.fileProcess.FileProcessServiceImpl;
+import com.project.Project.service.review.ReviewGenerator;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.service.room.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +88,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     @Transactional
-    public Review createReview(ReviewRequestDto.ReviewCreateDto request, Member author) {
+    public Review saveReview(ReviewRequestDto.ReviewCreateDto request, Member author) {
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회
@@ -103,7 +103,7 @@ public class ReviewServiceImpl implements ReviewService {
         RoomBaseDto roomBaseDto = request.getRoomBaseDto();
         Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
         Review review = reviewRepository.findReviewByMemberAndRoom(author.getId(), room.getId())
-                .orElseGet(() -> ReviewSerializer.toReview(request, author, room));
+                .orElseGet(() -> ReviewGenerator.createReview(request, author, room));
         return reviewRepository.save(review);
     }
 

@@ -18,7 +18,7 @@ public interface ReviewService {
     if the review exists, return review
     else create review
      */
-    Review createReview(ReviewRequestDto.ReviewCreateDto request, Member author);
+    Review saveReview(ReviewRequestDto.ReviewCreateDto request, Member author);
 
     Long save(Review review);
 }

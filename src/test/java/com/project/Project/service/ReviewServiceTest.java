@@ -30,7 +30,7 @@ public class ReviewServiceTest {
         Review review = Review.builder()
                 .id(1L)
                 .room(Room.builder().build())
-                .member(Member.builder().build())
+                .author(Member.builder().build())
                 .build();
         given(reviewRepository.save(any()))
                 .willReturn(review);

@@ -1,4 +1,4 @@
-package com.project.Project.util.component;
+package com.project.Project.service.building;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingSummary;

@@ -96,7 +96,7 @@ public class ReviewRestController {
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
     public ResponseEntity<ReviewResponseDto.ReviewCreateResponse> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthUser Member loginMember) {
-        Review review = reviewService.createReview(request, loginMember);
+        Review review = reviewService.saveReview(request, loginMember);
 
         return ResponseEntity.ok(ReviewResponseDto.ReviewCreateResponse.builder()
                 .reviewId(review.getId())
