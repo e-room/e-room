@@ -16,6 +16,7 @@ import com.project.Project.service.fileProcess.ReviewImageProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -29,19 +30,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewGenerator {
 
+    private final WebClient nickNameWebClient;
     private final ReviewImageProcess reviewImageProcess;
     private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewCategoryRepository reviewCategoryRepository;
 
+    private static WebClient staticNickNameWebClient;
     private static ReviewImageProcess staticReviewImageProcess;
     private static ReviewKeywordRepository staticReviewKeywordRepository;
     private static ReviewCategoryRepository staticReviewCategoryRepository;
 
     @PostConstruct
     public void init() {
-        this.staticReviewImageProcess = reviewImageProcess;
-        this.staticReviewKeywordRepository = reviewKeywordRepository;
-        this.staticReviewCategoryRepository = reviewCategoryRepository;
+        staticReviewImageProcess = this.reviewImageProcess;
+        staticReviewKeywordRepository = this.reviewKeywordRepository;
+        staticReviewCategoryRepository = this.reviewCategoryRepository;
+        staticNickNameWebClient = this.nickNameWebClient;
     }
 
     public static Review createReview(ReviewRequestDto.ReviewCreateDto request, Member member, Room room) {
@@ -56,8 +60,15 @@ public class ReviewGenerator {
         List<ReviewToReviewKeyword> selectedReviewAdvantageKeywordList = createKeywordList(request, request.getAdvantageKeywordList(), DTypeEnum.ADVANTAGE);
         List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList = createKeywordList(request, request.getDisadvantageKeywordList(), DTypeEnum.DISADVANTAGE);
 
+        //AnonymousStatus
+        AnonymousStatus status = null;
+        if (request.getReviewBaseDto().getIsAnonymous()) {
+            status = createAnonymousStatus();
+        }
+
         //Review Entity
-        Review review = createReviewEntity(request, member, room, reviewSummary);
+        Review review = createReviewEntity(request, member, room, reviewSummary, status);
+
 
         mappingEntities(reviewToReviewCategoryList, reviewSummary, selectedReviewAdvantageKeywordList, selectedReviewDisadvantageKeywordList, review);
 
@@ -65,6 +76,10 @@ public class ReviewGenerator {
         createAndMapReviewImage(request, room, review);
 
         return review;
+    }
+
+    private static AnonymousStatus createAnonymousStatus() {
+        return generateAnonymousStatus();
     }
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
@@ -91,9 +106,10 @@ public class ReviewGenerator {
 
         // Review - ReviewSummary
         reviewSummary.setReview(review);
+
     }
 
-    private static Review createReviewEntity(ReviewRequestDto.ReviewCreateDto request, Member member, Room room, ReviewSummary reviewSummary) {
+    private static Review createReviewEntity(ReviewRequestDto.ReviewCreateDto request, Member member, Room room, ReviewSummary reviewSummary, AnonymousStatus status) {
         return Review.builder()
                 .residenceStartYear(request.getReviewResidencePeriodDto().getResidenceStartYear())
                 .residenceDuration(request.getReviewResidencePeriodDto().getResidenceDuration())
@@ -103,7 +119,6 @@ public class ReviewGenerator {
                 .netLeasableArea(request.getReviewBaseDto().getNetLeasableArea())
                 .advantageDescription(request.getAdvantageDescription())
                 .disadvantageDescription(request.getDisadvantageDescription())
-                .anonymousStatus(AnonymousStatus.generateAnonymousStatus())
                 .reviewImageList(new ArrayList<>())
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
@@ -111,6 +126,7 @@ public class ReviewGenerator {
                 .author(member)
                 .room(room)
                 .reviewSummary(reviewSummary)
+                .anonymousStatus(status)
                 .build();
     }
 
@@ -156,5 +172,14 @@ public class ReviewGenerator {
                     temp.setReviewKeyword(reviewKeyword);
                     return temp;
                 }).collect(Collectors.toList());
+    }
+
+    private static AnonymousStatus generateAnonymousStatus() {
+        // todo : 형용사 + 명사의 이름 짓는 로직 포함
+        String nickName = staticNickNameWebClient;
+        return AnonymousStatus.builder()
+                .anonymousName("하품하는 망아지")
+                .isAnonymous(Boolean.TRUE)
+                .build();
     }
 }
