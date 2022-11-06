@@ -102,7 +102,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         RoomBaseDto roomBaseDto = request.getRoomBaseDto();
         Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
-        Review review = reviewRepository.findReviewByMemberAndRoom(author.getId(), room.getId())
+        Review review = reviewRepository.findReviewByAuthorAndRoom(author.getId(), room.getId())
                 .orElseGet(() -> ReviewGenerator.createReview(request, author, room));
         return reviewRepository.save(review);
     }

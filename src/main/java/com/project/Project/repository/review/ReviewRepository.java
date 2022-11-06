@@ -29,6 +29,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("select review from Review review where review.room.building.id = :id")
     List<Review> findReviewsWithRoomAndBuildingAndLock(Long id);
 
-    Optional<Review> findReviewByMemberAndRoom(Long memberId, Long roomId);
+    Optional<Review> findReviewByAuthorAndRoom(Long memberId, Long roomId);
 
 }
