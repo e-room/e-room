@@ -1,10 +1,11 @@
-package com.project.Project.repository;
+package com.project.Project.generator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.domain.Member;
+import com.project.Project.repository.RepositoryTestConfig;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.service.member.MemberService;
 import com.project.Project.service.review.ReviewCategoryService;
@@ -24,6 +25,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +89,18 @@ public class TestMemberGenerator {
         File memberGenResult = new File(Paths.get("src/main/resources/testData/members/", fileName).toUri());
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(memberGenResult, true);
+            FileChannel channel = fileOutputStream.getChannel();
+            ByteBuffer buffer = ByteBuffer.allocate(64);
+            buffer.clear();
+            buffer.put(json.getBytes());
+
+            buffer.flip();
+
+            while (buffer.hasRemaining()) {
+                channel.write(buffer);
+            }
+
+            fileOutputStream.close();
         } catch (Exception e) {
             e.getStackTrace();
         }

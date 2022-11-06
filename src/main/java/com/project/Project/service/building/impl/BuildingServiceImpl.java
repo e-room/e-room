@@ -7,17 +7,12 @@ import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
-import com.project.Project.repository.review.ReviewRepository;
-import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.service.building.BuildingService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,10 +22,6 @@ import java.util.Optional;
 public class BuildingServiceImpl implements BuildingService {
     private final BuildingRepository buildingRepository;
     private final BuildingCustomRepository buildingCustomRepo;
-    private final RoomRepository roomRepository;
-    private final ReviewRepository reviewRepository;
-    private final Logger log = LoggerFactory.getLogger(this.getClass().getSimpleName());
-    private final WebClient webclient;
 
     public List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord() {
         return buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
