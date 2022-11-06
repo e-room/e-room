@@ -21,7 +21,7 @@ public class WebClientConfig {
     @Bean
     WebClient nickNameWebClient() {
         return WebClient.builder()
-                .baseUrl("")
+                .baseUrl("https://nickname.hwanmoo.kr/")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }

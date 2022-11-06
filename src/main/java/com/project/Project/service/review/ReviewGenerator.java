@@ -176,9 +176,13 @@ public class ReviewGenerator {
 
     private static AnonymousStatus generateAnonymousStatus() {
         // todo : 형용사 + 명사의 이름 짓는 로직 포함
-        String nickName = staticNickNameWebClient;
+        String nickName = staticNickNameWebClient.get()
+                .uri(uriBuilder -> uriBuilder.queryParam("format", "text").queryParam("max_length", 8).build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
         return AnonymousStatus.builder()
-                .anonymousName("하품하는 망아지")
+                .anonymousName(nickName)
                 .isAnonymous(Boolean.TRUE)
                 .build();
     }
