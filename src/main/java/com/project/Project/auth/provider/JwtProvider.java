@@ -52,14 +52,17 @@ public class JwtProvider implements AuthenticationProvider {
         Token token = ((JwtAuthentication) authentication).getToken();
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
-        TokenService.JwtCode status = validateToken(accessToken);
+        TokenService.JwtCode status;
+        if (accessToken != null) {
+            status = validateToken(accessToken);
+        } else {
+            status = TokenService.JwtCode.EXPIRED;
+        }
         if (status.equals(TokenService.JwtCode.ACCESS)) {
             setAuthMetadata(token, jwtAuthenticationToken);
             return jwtAuthenticationToken;
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
-            /*
-                refresh token 가지고 access token 발급
-            */
+            // refresh token 가지고 access token 발급
             if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
                 if (newToken != null) {

@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -30,7 +32,9 @@ public class MemberSerializer {
         var attributes = oAuth2User.getAttributes();
         String registrationId = oAuth2User.getAttribute("registrationId");
         String userNameAttributeName = oAuth2User.getAttribute("userNameAttributeName");
-        OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, attributes);
+        Map<String, Object> cloned = new HashMap<>(attributes);
+        cloned.put("response", attributes);
+        OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, cloned);
         return MemberDto.builder()
                 .email(oAuthAttributes.getEmail())
                 .name(oAuthAttributes.getName())

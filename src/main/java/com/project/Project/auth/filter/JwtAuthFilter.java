@@ -60,25 +60,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String accessToken = getCookieValue(request, "accessToken");
         String refreshToken = getCookieValue(request, "refreshToken");
-        try {
-            Token jwtToken = new Token(accessToken, refreshToken);
-//        Object authenticationDetails = this.authenticationDetailsSource.buildDetails(request);
-            JwtAuthentication authenticationRequest = new JwtAuthentication(jwtToken, request, response);
-//        authenticationRequest.setDetails(authenticationDetails);
-//        JwtAuthentication authentication = this.jwtProvider.authenticate(request, response, accessToken, refreshToken);
-            JwtAuthentication authenticationResult = (JwtAuthentication) this.authenticationManager.authenticate(authenticationRequest);
-            SecurityContextHolder.getContext().setAuthentication(authenticationResult);
+        if (accessToken == null && refreshToken == null) {
+            filterChain.doFilter(request, response);
+        } else {
+            try {
+                Token jwtToken = new Token(accessToken, refreshToken);
+                JwtAuthentication authenticationRequest = new JwtAuthentication(jwtToken, request, response);
+                JwtAuthentication authenticationResult = (JwtAuthentication) this.authenticationManager.authenticate(authenticationRequest);
+                SecurityContextHolder.getContext().setAuthentication(authenticationResult);
         /*
             authenticate 관련 정책 추가 가능
             Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
          */
-            postAuthenticate(request, response, authenticationResult);
-        } catch (JwtException ex) {
-            SecurityContextHolder.clearContext();
-            this.failureHandler.onAuthenticationFailure(request, response, ex);
-        }
+                postAuthenticate(request, response, authenticationResult);
+            } catch (JwtException ex) {
+                SecurityContextHolder.clearContext();
+                this.failureHandler.onAuthenticationFailure(request, response, ex);
+            }
 
-        filterChain.doFilter(request, response);
-//        return authenticationResult;
+            filterChain.doFilter(request, response);
+        }
     }
 }
