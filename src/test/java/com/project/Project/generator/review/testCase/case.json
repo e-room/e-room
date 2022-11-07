@@ -1,0 +1,30 @@
+[
+  {
+    "memberId": 1,
+    "buildingIds": [
+      {
+        "id": 1
+      },
+      {
+        "id": 2
+      },
+      {
+        "id": 3
+      }
+    ]
+  },
+  {
+    "memberId": 2,
+    "buildingIds": [
+      {
+        "id": 5
+      },
+      {
+        "id": 2
+      },
+      {
+        "id": 3
+      }
+    ]
+  }
+]
