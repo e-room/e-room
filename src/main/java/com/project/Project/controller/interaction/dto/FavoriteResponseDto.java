@@ -19,7 +19,12 @@ public class FavoriteResponseDto {
         private LocalDateTime createdAt;
     }
 
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class FavoriteDeleteResponse {
-
+        private Long favoriteId;
+        private LocalDateTime deletedAt;
     }
 }

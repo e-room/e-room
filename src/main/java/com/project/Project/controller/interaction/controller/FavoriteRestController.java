@@ -6,6 +6,8 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.service.FavoriteService;
 import com.project.Project.validator.ExistBuilding;
+import com.project.Project.validator.interaction.ExistFavorite;
+import com.project.Project.validator.interaction.FavoriteExistValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +57,15 @@ public class FavoriteRestController {
 
     @DeleteMapping("/member/favorite")
     public ResponseEntity<FavoriteResponseDto.FavoriteDeleteResponse> deleteFavoriteBuilding(@ExistBuilding Long buildingId) {
+        Member member = getTestMember();
+        @ExistFavorite
+        FavoriteExistValidator.FavoriteExistVO favoriteExistVO =
+                FavoriteExistValidator.FavoriteExistVO.builder().member(member).buildingId(buildingId).build();
 
-        return null;
+        Long deletedFavoriteId = favoriteService.deleteFavoriteBuilding(buildingId, member);
+        return ResponseEntity.ok(FavoriteResponseDto.FavoriteDeleteResponse.builder()
+                .favoriteId(deletedFavoriteId)
+                .deletedAt(LocalDateTime.now())
+                .build());
     }
 }
