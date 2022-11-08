@@ -10,19 +10,7 @@ import javax.validation.ConstraintValidatorContext;
 
 @Component
 @RequiredArgsConstructor
-public class FavoriteExistValidator implements ConstraintValidator<ExistFavorite, FavoriteExistValidator.FavoriteExistVO> {
-
-    @Getter
-    @Builder
-    public class FavoriteExistVO {
-        private final Member member;
-        private final Long buildingId;
-
-        public FavoriteExistVO(Member member, Long buildingId) {
-            this.member = member;
-            this.buildingId = buildingId;
-        }
-    }
+public class FavoriteExistValidator implements ConstraintValidator<ExistFavorite, FavoriteExistVO> {
 
     private final FavoriteRepository favoriteRepository;
 

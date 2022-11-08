@@ -1,23 +1,29 @@
 package com.project.Project.controller.interaction.controller;
 
+import com.project.Project.Util.QueryDslUtil;
+import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.controller.interaction.dto.FavoriteResponseDto;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.building.Building;
 import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.FavoriteService;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.interaction.ExistFavorite;
+import com.project.Project.validator.interaction.FavoriteExistVO;
 import com.project.Project.validator.interaction.FavoriteExistValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -41,8 +47,11 @@ public class FavoriteRestController {
     }
 
     @GetMapping("/member/favorite")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList() {
-        return null;
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList(@RequestBody CursorDto cursorDto) {
+        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
+        List<Building> buildingList = favoriteService.getBuildingListByMember(getTestMember(), cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
 
     @PostMapping("/member/favorite")
@@ -59,8 +68,7 @@ public class FavoriteRestController {
     public ResponseEntity<FavoriteResponseDto.FavoriteDeleteResponse> deleteFavoriteBuilding(@ExistBuilding Long buildingId) {
         Member member = getTestMember();
         @ExistFavorite
-        FavoriteExistValidator.FavoriteExistVO favoriteExistVO =
-                FavoriteExistValidator.FavoriteExistVO.builder().member(member).buildingId(buildingId).build();
+        FavoriteExistVO favoriteExistVO = FavoriteExistVO.builder().member(member).buildingId(buildingId).build();
 
         Long deletedFavoriteId = favoriteService.deleteFavoriteBuilding(buildingId, member);
         return ResponseEntity.ok(FavoriteResponseDto.FavoriteDeleteResponse.builder()
