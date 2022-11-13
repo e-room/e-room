@@ -13,7 +13,7 @@ import javax.persistence.*;
 찜기능용 연결 테이블
  */
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
-@SQLDelete(sql = "UPDATE member_room SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE favorite SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
 public class Favorite extends BaseEntity {

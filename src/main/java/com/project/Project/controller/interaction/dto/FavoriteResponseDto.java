@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 public class FavoriteResponseDto {
-    // todo : GET에 대한 응답은 BuildingResponseDto를 사용?
 
     @NoArgsConstructor
     @Getter
