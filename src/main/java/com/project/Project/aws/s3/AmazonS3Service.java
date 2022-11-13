@@ -32,7 +32,7 @@ public class AmazonS3Service implements FileService {
         String cloudFrontDomain = amazonConfig.getDistributionDomain();
         String bucketName = amazonConfig.getBucket();
         String S3BaseURI = "s3://" + bucketName;
-        String fileUrl = cloudFrontDomain + bucketPath.substring(S3BaseURI.length());
+        String fileUrl = cloudFrontDomain + "/" + path;
         return fileUrl;
     }
 

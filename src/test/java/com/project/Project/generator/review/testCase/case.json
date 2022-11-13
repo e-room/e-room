@@ -1,6 +1,6 @@
 [
   {
-    "memberId": 3020,
+    "memberId": 3024,
     "buildingIds": [
       {
         "id": 4126
@@ -11,7 +11,7 @@
     ]
   },
   {
-    "memberId": 3021,
+    "memberId": 3025,
     "buildingIds": [
       {
         "id": 4130
@@ -22,7 +22,7 @@
     ]
   },
   {
-    "memberId": 3022,
+    "memberId": 3026,
     "buildingIds": [
       {
         "id": 4132
@@ -33,7 +33,7 @@
     ]
   },
   {
-    "memberId": 3023,
+    "memberId": 3027,
     "buildingIds": [
       {
         "id": 4134
