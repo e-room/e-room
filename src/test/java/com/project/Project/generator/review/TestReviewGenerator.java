@@ -12,6 +12,8 @@ import com.project.Project.repository.RepositoryTestConfig;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.member.MemberRepository;
+import com.project.Project.repository.review.ReviewEventListener;
+import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.fileProcess.ReviewImageProcess;
 import com.project.Project.service.member.MemberService;
@@ -20,6 +22,7 @@ import com.project.Project.service.review.ReviewGenerator;
 import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.service.room.RoomService;
+import com.project.Project.util.ApplicationContextServe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ReviewGenerator.class, ReviewCategoryService.class, ReviewKeywordService.class, MemberService.class, ReviewService.class, RoomService.class, ReviewImageProcess.class, FileService.class, BuildingService.class, BuildingCustomRepository.class}))
+@DataJpaTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ReviewGenerator.class, ReviewCategoryService.class, ReviewKeywordService.class, MemberService.class, ReviewService.class, RoomService.class, ReviewImageProcess.class, FileService.class, BuildingService.class, BuildingCustomRepository.class, BuildingGenerator.class, ApplicationContextServe.class
+        , ReviewEventListener.class,
+}))
 @ActiveProfiles("local")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({RepositoryTestConfig.class, WebClientConfig.class, AmazonConfig.class})
@@ -67,17 +72,18 @@ public class TestReviewGenerator {
     private Review saveReview(Long targetBuildingId, Long targetMemberId) throws IOException {
         Member member = this.memberService.findById(targetMemberId).orElseGet(() -> this.memberRepository.findAll().get(0));
         ReviewRequestDto.ReviewCreateDto request = this.configurer.setBasics(targetBuildingId).build();
-        return this.reviewService.saveReview(request, member);
+        Review review = this.reviewService.saveReview(request, member);
+        System.out.println("AAAAAAA");
+        return review;
     }
 
     @Test
     public void createReviews() throws IOException {
-        File file = new File(Paths.get("./testCase/case.json").toUri());
+        File file = new File(Paths.get("src/test/java/com/project/Project/generator/review/testCase/case.json").toUri());
         ObjectMapper objectMapper = new ObjectMapper();
         List<Review> reviewList = new ArrayList<>();
 
-        // JSON File -> Student Object
-        List<TestCase> testCaseList = objectMapper.readValue(file, new TypeReference<List<TestCase>>() {
+        List<TestCase> testCaseList = objectMapper.readValue(file, new TypeReference<>() {
         });
         testCaseList.forEach(x -> System.out.println(x.toString()));
         testCaseList.stream().forEach(testCase -> {

@@ -1,6 +1,7 @@
 package com.project.Project.domain.review;
 
 
+import com.project.Project.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +18,9 @@ import javax.persistence.*;
 @SQLDelete(sql = "UPDATE review_summary SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
-public class ReviewSummary {
-    @Id @GeneratedValue
+public class ReviewSummary extends BaseEntity {
+    @Id
+    @GeneratedValue
     private Long id;
 
     @OneToOne()

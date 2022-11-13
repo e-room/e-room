@@ -21,8 +21,8 @@ public class ReviewImagePackageCommand implements AmazonS3PackageCommand {
 
     private String getFolderInternal(ReviewImagePackageMetaMeta reviewImagePackageMeta) {
 
-        PropertyUtil.getProperty("cloud.aws.s3.folder.reviewImages");
+        String rootPackage = PropertyUtil.getProperty("cloud.aws.s3.folder.reviewImages");
         // review-images/buildingId/roomId/review/${reviewImage file name} 형식으로
-        return "";
+        return rootPackage + "/" + reviewImagePackageMeta.getBuildingId() + "/" + reviewImagePackageMeta.getRoomId() + "/";
     }
 }

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
+@PropertySource("application-security.yml")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -30,8 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtProvider jwtProvider;
     private final BasicAuthFailureHandler basicAuthFailureHandler;
 
-    @Value("${spring.profiles.active}")
-    private String env;
+    @Value("${security.profiles.active}")
+    private String stage;
 
     @Bean
     JwtAuthFilter jwtAuthFilter() throws Exception {
@@ -46,6 +48,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (stage.equals("dev")) {
+            devSetting(http);
+        } else if (stage.equals("unit-test")) {
+            unitTestSetting(http);
+        } else if (stage.equals("integration-test")) {
+            integrationTestSetting(http);
+        }
+    }
+
+    private void integrationTestSetting(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -68,11 +80,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 가능하다면 JwtLoginConfigurer를 만들어보는 것도 좋을 듯
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(jwtProvider);
-        if (env.equals("local")) {
-            http.httpBasic().disable();
-            http.addFilterAfter(customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
-        } else {
-            http.httpBasic().disable();
-        }
+        http.httpBasic().disable();
+    }
+
+    private void unitTestSetting(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/token/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/profile").permitAll()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .logout().logoutSuccessUrl("/login")
+                .and();
+        http.httpBasic().disable();
+        http.addFilterAfter(customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    private void devSetting(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**").permitAll();
     }
 }

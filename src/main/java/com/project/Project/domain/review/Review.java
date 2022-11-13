@@ -7,7 +7,6 @@ import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
-import com.project.Project.repository.review.ReviewEventListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,7 +41,6 @@ import java.util.Optional;
 @SQLDelete(sql = "UPDATE review SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
-@EntityListeners(value = ReviewEventListener.class)
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
@@ -58,7 +56,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
     private Room room;
 
@@ -76,7 +74,7 @@ public class Review extends BaseEntity {
     @Builder.Default
     private List<ReviewToReviewKeyword> reviewToReviewKeywordList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "review")
+    @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)
     private ReviewSummary reviewSummary;
 
     @Embedded
@@ -119,7 +117,7 @@ public class Review extends BaseEntity {
 
     private String disadvantageDescription;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
     @PreRemove

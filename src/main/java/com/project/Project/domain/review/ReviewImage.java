@@ -22,6 +22,8 @@ public class ReviewImage extends BaseEntity {
     @GeneratedValue
     private Long id;
 
+    private String fileName;
+    
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)

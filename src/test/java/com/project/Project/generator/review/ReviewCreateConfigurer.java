@@ -55,8 +55,8 @@ public class ReviewCreateConfigurer {
                 .setReviewScoreBasic()
                 .setReviewResidencePeriodBasic()
                 .setReviewKeywordBasic()
-                .setAdvantageDescription("good" + (int) Math.random() * 100)
-                .setDisadvantageDescription("good" + (int) Math.random() * 100)
+                .setAdvantageDescription("good" + (int) (Math.random() * 100))
+                .setDisadvantageDescription("bad" + (int) (Math.random() * 100))
                 .setReviewImageListBasic();
         return this;
     }
@@ -108,7 +108,7 @@ public class ReviewCreateConfigurer {
                 .deposit(deposit)
                 .monthlyRent(monthlyRent)
                 .managementFee(managementFee)
-                .netLeasableArea(netLeasableArea)
+                .netLeasableArea(netLeasableArea * 100)
                 .isAnonymous(isAnonymous)
                 .build();
         return this;
@@ -151,7 +151,7 @@ public class ReviewCreateConfigurer {
         List<Integer> durationCandidate = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18);
         this.reviewResidencePeriodDto = ReviewResidencePeriodDto.builder()
                 .residenceStartYear(yearCandidate.get((int) (Math.random() * 6)))
-                .residenceDuration(durationCandidate.get((int) Math.random() * 18))
+                .residenceDuration(durationCandidate.get((int) (Math.random() * 18)))
                 .build();
         return this;
     }
@@ -222,7 +222,7 @@ public class ReviewCreateConfigurer {
 
     private ReviewCreateConfigurer setReviewImageListBasic() throws IOException {
         this.reviewImageList = new ArrayList<>();
-        File gf = new File("./testImage/");
+        File gf = new File("src/test/java/com/project/Project/generator/review/testImage/");
         final String contentType = "png"; //파일타입
         for (File file : gf.listFiles()) {
             if (file.isFile() && file.getName().endsWith(".png")) {

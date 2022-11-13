@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import javax.persistence.LockModeType;
 import java.util.List;
@@ -22,13 +23,14 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @EntityGraph(value = "Review.withRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
     @Query("select review from Review review where review.room.building.id = :id")
-    List<Review> findReviewsWithRoomAndBuilding(Long id);
+    List<Review> findReviewsWithRoomAndBuilding(@Param("id") Long id);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @EntityGraph(value = "Review.withRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
     @Query("select review from Review review where review.room.building.id = :id")
-    List<Review> findReviewsWithRoomAndBuildingAndLock(Long id);
+    List<Review> findReviewsWithRoomAndBuildingAndLock(@Param("id") Long buildingId);
 
-    Optional<Review> findReviewByAuthorAndRoom(Long memberId, Long roomId);
+    @Query("select review from Review review where review.room.id = :roomId and review.author.id = :memberId")
+    Optional<Review> findReviewByAuthorAndRoom(@Param("memberId") Long memberId, @Param("roomId") Long roomId);
 
 }

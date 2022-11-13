@@ -1,29 +1,45 @@
 [
   {
-    "memberId": 1,
+    "memberId": 3020,
     "buildingIds": [
       {
-        "id": 1
+        "id": 4126
       },
       {
-        "id": 2
-      },
-      {
-        "id": 3
+        "id": 4128
       }
     ]
   },
   {
-    "memberId": 2,
+    "memberId": 3021,
     "buildingIds": [
       {
-        "id": 5
+        "id": 4130
       },
       {
-        "id": 2
+        "id": 4132
+      }
+    ]
+  },
+  {
+    "memberId": 3022,
+    "buildingIds": [
+      {
+        "id": 4132
       },
       {
-        "id": 3
+        "id": 4134
+      }
+    ]
+  },
+  {
+    "memberId": 3023,
+    "buildingIds": [
+      {
+        "id": 4134
+      },
+      {
+        "id": 4126
       }
     ]
   }

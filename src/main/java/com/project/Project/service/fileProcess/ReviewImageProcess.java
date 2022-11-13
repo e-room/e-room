@@ -29,7 +29,8 @@ public class ReviewImageProcess extends FileProcessServiceImpl<ReviewImagePackag
     public Review uploadImageAndMapToReview(MultipartFile file, ReviewImagePackageMetaMeta reviewImagePackageMeta, Review review) {
         Optional.ofNullable(review).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
         String url = this.uploadImage(file, reviewImagePackageMeta);
-        ReviewImage reviewImage = ReviewImage.builder().url(url).build();
+        ReviewImage reviewImage = ReviewImage.builder().url(url)
+                .fileName(file.getOriginalFilename()).build();
         reviewImage.setReview(review);
         return review;
     }

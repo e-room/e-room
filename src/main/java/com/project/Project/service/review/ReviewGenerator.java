@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,10 +60,7 @@ public class ReviewGenerator {
         List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList = createKeywordList(request, request.getDisadvantageKeywordList(), DTypeEnum.DISADVANTAGE);
 
         //AnonymousStatus
-        AnonymousStatus status = null;
-        if (request.getReviewBaseDto().getIsAnonymous()) {
-            status = createAnonymousStatus();
-        }
+        AnonymousStatus status = createAnonymousStatus(request.getReviewBaseDto().getIsAnonymous());
 
         //Review Entity
         Review review = createReviewEntity(request, member, room, reviewSummary, status);
@@ -78,8 +74,15 @@ public class ReviewGenerator {
         return review;
     }
 
-    private static AnonymousStatus createAnonymousStatus() {
-        return generateAnonymousStatus();
+    private static AnonymousStatus createAnonymousStatus(Boolean isAnonymous) {
+        if (isAnonymous) {
+            return generateAnonymousStatus();
+        } else {
+            return AnonymousStatus.builder()
+                    .anonymousName(null)
+                    .isAnonymous(Boolean.FALSE)
+                    .build();
+        }
     }
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
@@ -146,7 +149,7 @@ public class ReviewGenerator {
                 .map((field) -> {
                     field.setAccessible(true);
                     try {
-                        BigDecimal score = (BigDecimal) field.get(reviewScores);
+                        Double score = (Double) field.get(reviewScores);
                         ArrayList<ReviewCategory> clonedAllReviewCategory = (ArrayList) allReviewCategory.clone();
                         ReviewCategory targetReviewCategory = clonedAllReviewCategory.stream().filter(reviewCategory -> reviewCategory.getType().equals(ReviewCategoryEnum.valueOf(field.getName().toUpperCase(Locale.ROOT)))).findFirst().orElseThrow(() -> new RuntimeException());
                         ReviewToReviewCategory temp = ReviewToReviewCategory

@@ -11,6 +11,7 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.repository.review.ReviewEventListener;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.service.building.BuildingService;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
     private final FileProcessServiceImpl fileProcessServiceImpl;
     private final BuildingService buildingService;
     private final RoomService roomService;
+    private final EntityManager entityManager;
+    private final ReviewEventListener eventListener;
 
     public List<Review> getReviewListByBuildingId(Long buildingId, Long cursorId, Pageable page) {
 
@@ -95,6 +99,7 @@ public class ReviewServiceImpl implements ReviewService {
             3. room을 toReview로 넘겨서 review 생성
             4. 저장 후 응답
          */
+//        entityManager.setFlushMode(FlushModeType.COMMIT);
         Address address = AddressDto.toAddress(request.getAddress());
         BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
 
@@ -104,7 +109,9 @@ public class ReviewServiceImpl implements ReviewService {
         Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
         Review review = reviewRepository.findReviewByAuthorAndRoom(author.getId(), room.getId())
                 .orElseGet(() -> ReviewGenerator.createReview(request, author, room));
-        return reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+        eventListener.updateOthers(savedReview);
+        return savedReview;
     }
 
     @Transactional
