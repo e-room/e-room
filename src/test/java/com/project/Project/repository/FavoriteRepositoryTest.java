@@ -112,6 +112,7 @@ public class FavoriteRepositoryTest {
                 .isEqualTo(expected);
     }
 
+    @Test
     void findByMember_Test() {
         List<Favorite> expected = new ArrayList<>();
         expected.add(favorite1); expected.add(favorite3);
