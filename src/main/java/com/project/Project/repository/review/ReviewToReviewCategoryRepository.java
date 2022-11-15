@@ -16,4 +16,9 @@ public interface ReviewToReviewCategoryRepository extends JpaRepository<ReviewTo
     @EntityGraph(value = "RTRC.withReviewAndRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
     @Query("select rtrc from ReviewToReviewCategory rtrc where rtrc.review.room.building.id = :buildingId")
     List<ReviewToReviewCategory> findReviewToCategoriesWithReviewAndRoomAndBuildingAndLock(@Param("buildingId") Long buildingId);
+
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select rtrc from ReviewToReviewCategory rtrc where rtrc.review.id in :reviewIds")
+    List<ReviewToReviewCategory> findReviewToReviewCategoriesByReviewIds(@Param("reviewIds") List<Long> reviewIds);
 }

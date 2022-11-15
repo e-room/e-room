@@ -4,7 +4,7 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewRepository;
-import com.project.Project.service.impl.ReviewServiceImpl;
+import com.project.Project.service.review.impl.ReviewServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +30,7 @@ public class ReviewServiceTest {
         Review review = Review.builder()
                 .id(1L)
                 .room(Room.builder().build())
-                .member(Member.builder().build())
+                .author(Member.builder().build())
                 .build();
         given(reviewRepository.save(any()))
                 .willReturn(review);

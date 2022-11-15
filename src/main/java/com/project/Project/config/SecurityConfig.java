@@ -1,55 +1,78 @@
 package com.project.Project.config;
 
+import com.project.Project.auth.CustomAuthenticationEntryPoint;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
+import com.project.Project.auth.handler.BasicAuthFailureHandler;
+import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.service.CustomOAuth2UserService;
-import com.project.Project.service.MemberService;
+import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
+@PropertySource("application-security.yml")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final MemberService memberService;
     private final JwtProvider jwtProvider;
+    private final BasicAuthFailureHandler basicAuthFailureHandler;
 
-    @Value("${spring.profiles.active}")
-    private String env;
+    @Value("${security.profiles.active}")
+    private String stage;
 
     @Bean
     JwtAuthFilter jwtAuthFilter() throws Exception {
-        return new JwtAuthFilter(super.authenticationManager());
+        return new JwtAuthFilter(super.authenticationManager(), new JWTFailureHandler());
+    }
+
+    @Bean
+    CustomBasicAuthFilter customBasicAuthFilter() throws Exception {
+        return new CustomBasicAuthFilter(super.authenticationManager(), new CustomAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
     }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if (stage.equals("dev")) {
+            devSetting(http);
+        } else if (stage.equals("unit-test")) {
+            unitTestSetting(http);
+        } else if (stage.equals("integration-test")) {
+            integrationTestSetting(http);
+        }
+    }
+
+    private void integrationTestSetting(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers("/token/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/profile").permitAll()
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .logout().logoutSuccessUrl("/login")
+                .and()
                 .oauth2Login()
-                .loginPage("/token/expired")
+                .loginPage("/login")
                 .successHandler(oAuth2SuccessHandler) // 성공시
                 .userInfoEndpoint().userService(customOAuth2UserService);
 
@@ -57,11 +80,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 가능하다면 JwtLoginConfigurer를 만들어보는 것도 좋을 듯
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(jwtProvider);
-        if (env.equals("local")) {
-            new OAuth2LoginConfigurer<>();
-            http.addFilterAt(new CustomBasicAuthFilter(memberService), BasicAuthenticationFilter.class);
-        } else {
-            http.httpBasic().disable();
-        }
+        http.httpBasic().disable();
+    }
+
+    private void unitTestSetting(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/token/**").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/api/profile").permitAll()
+                .antMatchers("/").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .logout().logoutSuccessUrl("/login")
+                .and();
+        http.httpBasic().disable();
+        http.addFilterAfter(customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    private void devSetting(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**").permitAll();
     }
 }

@@ -1,9 +1,10 @@
 cloud:
   aws:
     s3:
-      bucket: 'e-room'
+      bucket: e-room
       folder:
-        reviewImages : 'review-images'
+        reviewImages: review-images
+        profileImages: profile-images
     region:
       static: ap-northeast-2
     stack:
@@ -11,3 +12,5 @@ cloud:
     credentials:
       accessKey: ${AWS_ACCESS_KEY_ID}
       secretKey: ${AWS_SECRET_ACCESS_KEY}
+    cloudFront:
+      distributionDomain: https://d2ykyi5jl9muoc.cloudfront.net

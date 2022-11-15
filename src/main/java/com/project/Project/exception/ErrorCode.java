@@ -3,6 +3,13 @@ package com.project.Project.exception;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
+    //member
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 사용자가 존재하지 않습니다."),
+
+
+    //Auth
+    INVALID_JWT(HttpStatus.UNAUTHORIZED, "잘못된 JWT입니다."),
+    INVALID_BASIC_AUTH(HttpStatus.UNAUTHORIZED, "잘못된 userId입니다."),
 
     //Building
     BUILDING_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 건물이 존재하지 않습니다."),
@@ -14,6 +21,9 @@ public enum ErrorCode {
     //Room
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 방이 존재하지 않습니다."),
     ROOM_NPE(HttpStatus.INTERNAL_SERVER_ERROR, "방 참조가 Null입니다"),
+
+    //Review
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
 
     //etc
     EVENT_LISTENER_INJECTION(HttpStatus.INTERNAL_SERVER_ERROR, "의존성 주입에 실패했습니다.");

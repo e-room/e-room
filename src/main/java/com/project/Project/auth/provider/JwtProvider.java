@@ -1,21 +1,23 @@
 package com.project.Project.auth.provider;
 
-import com.project.Project.auth.JwtAuthentication;
+import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.domain.Member;
-import com.project.Project.service.MemberService;
+import com.project.Project.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
+import java.util.Collections;
 
 @Component
 @Slf4j
@@ -50,14 +52,17 @@ public class JwtProvider implements AuthenticationProvider {
         Token token = ((JwtAuthentication) authentication).getToken();
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
-        TokenService.JwtCode status = validateToken(accessToken);
+        TokenService.JwtCode status;
+        if (accessToken != null) {
+            status = validateToken(accessToken);
+        } else {
+            status = TokenService.JwtCode.EXPIRED;
+        }
         if (status.equals(TokenService.JwtCode.ACCESS)) {
             setAuthMetadata(token, jwtAuthenticationToken);
             return jwtAuthenticationToken;
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
-            /*
-                refresh token 가지고 access token 발급
-            */
+            // refresh token 가지고 access token 발급
             if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
                 if (newToken != null) {
@@ -80,6 +85,7 @@ public class JwtProvider implements AuthenticationProvider {
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);
         authentication.setPrincipalDetails(member);
+        authentication.setAuthorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
     private TokenService.JwtCode validateToken(String token) {

@@ -1,7 +1,7 @@
 package com.project.Project;
 
-import com.project.Project.service.ReviewCategoryService;
-import com.project.Project.service.ReviewKeywordService;
+import com.project.Project.service.review.ReviewCategoryService;
+import com.project.Project.service.review.ReviewKeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -4,13 +4,17 @@ package com.project.Project.controller.review.controller;
 import com.project.Project.WithMockCustomOAuth2Account;
 import com.project.Project.config.SecurityConfig;
 import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.review.dto.ReviewBaseDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
+import com.project.Project.controller.review.dto.ReviewResidencePeriodDto;
+import com.project.Project.controller.review.dto.ReviewScoreDto;
+import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.room.Room;
-import com.project.Project.service.impl.BuildingServiceImpl;
-import com.project.Project.service.impl.ReviewImageServiceImpl;
-import com.project.Project.service.impl.ReviewServiceImpl;
-import com.project.Project.service.impl.RoomServiceImpl;
+import com.project.Project.service.building.impl.BuildingServiceImpl;
+import com.project.Project.service.review.impl.ReviewImageServiceImpl;
+import com.project.Project.service.review.impl.ReviewServiceImpl;
+import com.project.Project.service.room.impl.RoomServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,7 +27,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.FileInputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,25 +70,16 @@ public class ReviewRestControllerTest {
                             .buildingNumber("4")
                             .build()
             )
-            .lineNumber(101)
-            .roomNumber(103)
-            .residenceStartYear(2020)
-            .residenceDuration(12)
-            .deposit(800)
-            .monthlyRent(50)
-            .managementFee(10)
-            .netLeasableArea(BigDecimal.valueOf(13.0))
-            .traffic(BigDecimal.valueOf(3.0))
-            .buildingComplex(BigDecimal.valueOf(4.0))
-            .surrounding(BigDecimal.valueOf(1.0))
-            .internal(BigDecimal.valueOf(5.0))
-            .livingLocation(BigDecimal.valueOf(3.0))
+            .roomBaseDto(RoomBaseDto.builder().roomNumber(103).lineNumber(101).build())
+            .reviewResidencePeriodDto(ReviewResidencePeriodDto.builder().residenceStartYear(2020).residenceDuration(12).build())
+            .reviewBaseDto(ReviewBaseDto.builder().deposit(800).monthlyRent(50).managementFee(10).netLeasableArea(13.0).build())
+            .reviewScoreDto(ReviewScoreDto.builder().traffic(3.0).buildingComplex(4.0).surrounding(1.0).internal(5.0).livingLocation(3.0)
+                    .residenceSatisfaction(5.0).build())
             .advantageKeywordList(List.of("PARKING", "VENTILATION", "TOWN_NOISE"))
             .advantageDescription(advantageDescription)
             .disadvantageKeywordList(List.of("MART_CONVENIENCE_STORE", "DAY_LIGHTING"))
             .disadvantageDescription(disadvantageDescription)
             .reviewImageList(new ArrayList<>())
-            .residenceSatisfaction(BigDecimal.valueOf(5.0))
             .build();
 
     // https://jhkimmm.tistory.com/31

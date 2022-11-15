@@ -3,11 +3,11 @@ spring:
     include:
       - oauth
       - aws
+      - security
     active: local
   devtools:
     livereload:
       enabled: true
-
 
 server:
   port: 8080
@@ -119,8 +119,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        show_sql: false
-        format_sql: false
+        show_sql: true
+        format_sql: true
         use_sql_comments: true
         hbm2ddl:
           auto: update

@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,11 +19,11 @@ public class ReviewResponseDto {
     public static class ReviewListResponse {
         private String profilePictureUrl;
         private String nickName;
-        private BigDecimal score;
+        private Double score;
         private Integer residencePeriod;
         private Integer residenceDuration;
         private FloorHeight floorHeight;
-        private BigDecimal netLeasableArea;
+        private Double netLeasableArea;
         private Integer deposit;
         private Integer monthlyRent;
         private Integer managementFee;
@@ -33,6 +32,7 @@ public class ReviewResponseDto {
         private List<KeywordEnum> disadvantage;
         private String disadvantageDescription;
         private Integer reviewLikeCnt;
+        private Long roomId;
     }
 
     @NoArgsConstructor

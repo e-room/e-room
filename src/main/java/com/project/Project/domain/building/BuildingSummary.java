@@ -1,5 +1,6 @@
 package com.project.Project.domain.building;
 
+import com.project.Project.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @SQLDelete(sql = "UPDATE building_summary SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
-public class BuildingSummary {
+public class BuildingSummary extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;

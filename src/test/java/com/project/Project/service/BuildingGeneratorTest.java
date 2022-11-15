@@ -1,12 +1,12 @@
 package com.project.Project.service;
 
-import com.project.Project.Util.BuildingGenerator;
-import com.project.Project.Util.KakaoAddressAPI;
 import com.project.Project.config.WebClientConfig;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.service.building.BuildingGenerator;
+import com.project.Project.util.KakaoAddressAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,20 +31,20 @@ public class BuildingGeneratorTest {
     private WebClient kakaoMapClient;
 
     @MockBean
-    private  BuildingCustomRepository buildingCustomRepository;
+    private BuildingCustomRepository buildingCustomRepository;
     @MockBean
     private BuildingRepository buildingRepository;
 
     @Autowired
-    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient,buildingCustomRepository,buildingRepository);
+    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient, buildingCustomRepository, buildingRepository);
 
     @Test
-    public void searchBuildingByKakao(){
+    public void searchBuildingByKakao() {
 
     }
 
     @BeforeEach
-    public void prepare(){
+    public void prepare() {
         this.buildingGenerator.init();
     }
 
@@ -75,10 +75,10 @@ public class BuildingGeneratorTest {
         Building expected = Building.builder()
                 .address(address).build();
         EqualBuilding(building, expected);
-       assertThat(building.getCoordinate()).isNotNull();
+        assertThat(building.getCoordinate()).isNotNull();
     }
 
-    private Boolean EqualBuilding(Building building1, Building building2){
+    private Boolean EqualBuilding(Building building1, Building building2) {
         Address address1 = building1.getAddress();
         Address address2 = building2.getAddress();
         assertThat(address1).usingRecursiveComparison().isEqualTo(address2);
@@ -94,6 +94,6 @@ public class BuildingGeneratorTest {
                 .eupMyeon("")
                 .buildingNumber("4")
                 .build();
-        List<Building> buildingList= BuildingGenerator.generateBuildings(address.toString());
+        List<Building> buildingList = BuildingGenerator.generateBuildings(address.toString());
     }
 }

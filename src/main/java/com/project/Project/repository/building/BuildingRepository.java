@@ -2,7 +2,6 @@ package com.project.Project.repository.building;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface BuildingRepository extends JpaRepository<Building,Long> {
+public interface BuildingRepository extends JpaRepository<Building, Long> {
     @Query("select distinct b from Building b join fetch b.roomList where b.id = :buildingId")
     Building findBuildingById(@Param("buildingId") Long buildingId);
 
@@ -18,9 +17,9 @@ public interface BuildingRepository extends JpaRepository<Building,Long> {
     List<Building> findBuildingsByIdIn(@Param("ids") List<Long> ids);
 
     @Query("select distinct b from Building b where b.address.siDo like %:params% or b.address.siGunGu like %:params% or b.address.eupMyeon like %:params% or b.address.roadName like %:params% or b.address.buildingNumber like %:params% or b.buildingName like %:params%")
-    List<Building> searchBuildings (@Param("params")String params);
+    List<Building> searchBuildings(@Param("params") String params);
 
-    @Query("select distinct b from Building b join fetch b.roomList where b.address = :address") // todo : 이게 동작할까?..
+    @Query("select distinct b from Building b left join fetch b.roomList where b.address = :address")
     Optional<Building> findByAddress(@Param("address") Address address);
 
     Boolean existsBuildingByAddress(Address address);
