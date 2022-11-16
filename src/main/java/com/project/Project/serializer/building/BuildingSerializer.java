@@ -59,13 +59,20 @@ public class BuildingSerializer {
                 .build();
     }
 
-    public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(OnlyBuildingIdAndCoord building) {
+    public static BuildingResponseDto.BuildingMarkerResponse toBuildingMarkerResponse(OnlyBuildingIdAndCoord building) {
         //protect NPE when building is null
         Optional.ofNullable(building).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NPE));
 
-        return BuildingResponseDto.BuildingCountResponse.builder()
+        return BuildingResponseDto.BuildingMarkerResponse.builder()
                 .buildingId(building.getId())
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
+                .build();
+    }
+
+    public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(List<OnlyBuildingIdAndCoord> buildingList) {
+        return BuildingResponseDto.BuildingCountResponse.builder()
+                .buildingCount(buildingList.size())
+                .buildingList(buildingList.stream().map(BuildingSerializer::toBuildingMarkerResponse).collect(Collectors.toList()))
                 .build();
     }
 

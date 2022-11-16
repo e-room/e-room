@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BuildingRepository extends JpaRepository<Building, Long> {
-    @Query("select distinct b from Building b join fetch b.roomList where b.id = :buildingId")
+    @Query("select distinct b from Building b where b.id = :buildingId")
     Building findBuildingById(@Param("buildingId") Long buildingId);
 
     @Query("select distinct b from Building  b join fetch b.roomList where b.id in :ids ")

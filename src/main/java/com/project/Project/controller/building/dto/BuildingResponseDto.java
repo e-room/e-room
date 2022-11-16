@@ -26,12 +26,19 @@ public class BuildingResponseDto {
         private boolean isDirectDeal;
     }
 
+    @Builder
+    @Getter
+    public static class BuildingCountResponse {
+        private List<BuildingMarkerResponse> buildingList;
+        private Integer buildingCount;
+    }
+
     /*
     지도 마킹용
      */
     @Builder
     @Getter
-    public static class BuildingCountResponse {
+    public static class BuildingMarkerResponse {
         private CoordinateDto coordinateDto;
         private Long buildingId;
     }

@@ -10,6 +10,7 @@ import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord
 import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.service.building.BuildingService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BuildingServiceImpl implements BuildingService {
+
     private final BuildingRepository buildingRepository;
     private final BuildingCustomRepository buildingCustomRepo;
 
@@ -29,12 +31,17 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, Long cursorId, Pageable pageable) {
-        return buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorId, pageable);
+        List<Building> buildingList = buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorId, pageable);
+        buildingList.stream().map(Building::getRoomList).forEach(Hibernate::initialize);
+        buildingList.stream().map(Building::getBuildingSummary).forEach(Hibernate::initialize);
+        buildingList.stream().map(Building::getBuildingToReviewCategoryList).forEach(Hibernate::initialize);
+
+        return buildingList;
     }
 
     @Override
-    public Building getBuildingByBuildingId(Long buildingId) {
-        return buildingRepository.findBuildingById(buildingId);
+    public Optional<Building> getBuildingByBuildingId(Long buildingId) {
+        return Optional.ofNullable(buildingRepository.findBuildingById(buildingId));
     }
 
     @Override

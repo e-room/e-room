@@ -34,6 +34,8 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+        default_batch_fetch_size: 1000
+
 logging:
   level:
     root: debug
@@ -63,6 +65,8 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+        default_batch_fetch_size: 1000
+
 logging:
   level:
     root: info
@@ -92,6 +96,8 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+        default_batch_fetch_size: 1000
+
 logging:
   level:
     root: error
@@ -124,6 +130,7 @@ spring:
         use_sql_comments: true
         hbm2ddl:
           auto: update
+        default_batch_fetch_size: 1000
 logging:
   level:
     org:

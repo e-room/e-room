@@ -13,20 +13,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityGraph;
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.project.Project.domain.building.QBuilding.building;
-import static com.project.Project.domain.building.QBuildingSummary.buildingSummary;
-import static com.project.Project.domain.building.QBuildingToReviewCategory.buildingToReviewCategory;
-import static com.project.Project.domain.room.QRoom.room;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 @RequiredArgsConstructor
 public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
+    private final EntityManager em;
     private final JPAQueryFactory factory;
 
     @Override
@@ -35,6 +37,19 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
         return results;
+    }
+
+    @Override
+    public Optional<Building> findFullBuildingById(Long id, Set<String> hints) {
+        EntityGraph<Building> graph = em.createEntityGraph(Building.class);
+        for (String attribute : hints) {
+            graph.addAttributeNodes(attribute);
+        }
+
+        return Optional.ofNullable(factory.selectFrom(building)
+                .where(building.id.eq(id))
+                .setHint("javax.persistence.fetchgraph", graph)
+                .fetchOne());
     }
 
     @Override
@@ -47,17 +62,17 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
 
     public Function<List<Long>, JPAQuery<Building>> findBuildingInQuery(Long cursorId, Pageable pageable) {
         return (ids) -> factory.selectFrom(building)
-                .innerJoin(building.roomList, room)
-                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
-                .innerJoin(building.buildingSummary, buildingSummary)
-                .fetchJoin()
+//                .innerJoin(building.roomList, room)
+//                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
+//                .innerJoin(building.buildingSummary, buildingSummary)
+//                .fetchJoin()
                 .where(building.id.in(ids).and(notDeletedCondition()).and(cursorId(pageable, cursorId)));
     }
 
     public Function<String, JPAQuery<Building>> searchBuildingsQuery(Long cursorId, Pageable pageable) {
         return (params) -> factory.selectFrom(building)
-                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
-                .innerJoin(building.buildingSummary, buildingSummary)
+//                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
+//                .innerJoin(building.buildingSummary, buildingSummary)
                 .fetchJoin()
                 .where(buildingSearchPredicate(params), cursorId(pageable, cursorId));
     }

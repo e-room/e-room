@@ -5,6 +5,8 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.building.BuildingService;
@@ -12,9 +14,12 @@ import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -41,10 +46,10 @@ public class BuildingRestController {
     return: buildingId와 위치를 return
      */
     @GetMapping("/marking")
-    public ResponseEntity<List<BuildingResponseDto.BuildingCountResponse>> getBuildingMarker() {
+    public ResponseEntity<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
         List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
-        List<BuildingResponseDto.BuildingCountResponse> responseList = buildingList.stream().map(BuildingSerializer::toBuildingCountResponse).collect(Collectors.toList());
-        return ResponseEntity.ok(responseList);
+        BuildingResponseDto.BuildingCountResponse response = BuildingSerializer.toBuildingCountResponse(buildingList);
+        return ResponseEntity.ok(response);
     }
 
     /*
@@ -52,10 +57,9 @@ public class BuildingRestController {
     request: buildingId list
     return: 해당하는 건물 list
      */
-    @GetMapping("/")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestBody CursorDto cursorDto) {
-        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
-        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+    @GetMapping("")
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestParam Long id, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, id, pageable);
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
@@ -67,7 +71,9 @@ public class BuildingRestController {
      */
     @GetMapping("/{buildingId}")
     public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
-        Building building = this.buildingService.getBuildingByBuildingId(buildingId);
+        Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
+        building.getRoomList().stream().forEach(Hibernate::initialize);
+        building.getBuildingToReviewCategoryList().stream().forEach(Hibernate::initialize);
         return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building));
     }
 
