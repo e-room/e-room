@@ -7,9 +7,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class JWTFailureHandler implements AuthenticationFailureHandler {
@@ -19,6 +22,12 @@ public class JWTFailureHandler implements AuthenticationFailureHandler {
         JwtException jwtException = (JwtException) exception;
         response.setStatus(jwtException.getErrorCode().getStatus().value());
         response.setContentType("application/json");
+        Cookie accessToken = getCookieValue(request, "accessToken").orElse(new Cookie("accessToken", null));
+        Cookie refreshToken = getCookieValue(request, "refreshToken").orElse(new Cookie("refreshToken", null));
+        accessToken.setMaxAge(0);
+        refreshToken.setMaxAge(0);
+        response.addCookie(accessToken);
+        response.addCookie(refreshToken);
         ApiErrorResult errorResponse = ApiErrorResult.builder()
                 .cause(exception.getClass().getName())
                 .message(jwtException.getMessage()).build();
@@ -29,5 +38,12 @@ public class JWTFailureHandler implements AuthenticationFailureHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Optional<Cookie> getCookieValue(HttpServletRequest req, String cookieName) {
+        if (req.getCookies() == null) return null;
+        return Arrays.stream(req.getCookies())
+                .filter(c -> c.getName().equals(cookieName))
+                .findFirst();
     }
 }
