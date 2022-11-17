@@ -1,6 +1,8 @@
 package com.project.Project.controller.interaction.controller;
 
 import com.project.Project.Util.QueryDslUtil;
+import com.project.Project.auth.AuthUser;
+import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.controller.interaction.dto.FavoriteResponseDto;
@@ -38,30 +40,17 @@ public class FavoriteRestController {
     private final FavoriteService favoriteService;
     private final FavoriteExistValidator favoriteExistValidator;
 
-    private Member getTestMember() {
-         return  Member.builder() // temp user
-                 .reviewList(new ArrayList<>())
-                 .favoriteBuildingList(new ArrayList<>())
-                 .likeReviewList(new ArrayList<>())
-                 .name("하품하는 망아지")
-                 .email("swa07016@khu.ac.kr")
-                 .memberRole(MemberRole.USER)
-                 .refreshToken("mockingMember")
-                 .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
-                 .build();
-    }
-
     @GetMapping("/member/favorite")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList(@RequestBody CursorDto cursorDto) {
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList(@RequestBody CursorDto cursorDto, @AuthUser Member member) {
         Pageable pageable = PageRequest.of(0, cursorDto.getSize());
-        List<Building> buildingList = favoriteService.getBuildingListByMember(getTestMember(), cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+        List<Building> buildingList = favoriteService.getBuildingListByMember(member, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
 
     @PostMapping("/member/favorite/{buildingId}")
-    public ResponseEntity<FavoriteResponseDto.FavoriteAddResponse> addFavoriteBuilding(@ExistBuilding Long buildingId) {
-        Long savedFavoriteId = favoriteService.addFavoriteBuilding(buildingId, getTestMember());
+    public ResponseEntity<FavoriteResponseDto.FavoriteAddResponse> addFavoriteBuilding(@ExistBuilding Long buildingId, @AuthUser Member member) {
+        Long savedFavoriteId = favoriteService.addFavoriteBuilding(buildingId, member);
         return ResponseEntity.ok(FavoriteResponseDto.FavoriteAddResponse.builder()
                 .favoriteId(savedFavoriteId)
                 .createdAt(LocalDateTime.now())
@@ -70,8 +59,7 @@ public class FavoriteRestController {
     }
 
     @DeleteMapping("/member/favorite/{buildingId}")
-    public ResponseEntity<FavoriteResponseDto.FavoriteDeleteResponse> deleteFavoriteBuilding(@ExistBuilding Long buildingId) {
-        Member member = getTestMember();
+    public ResponseEntity<FavoriteResponseDto.FavoriteDeleteResponse> deleteFavoriteBuilding(@ExistBuilding Long buildingId, @AuthUser Member member) {
         if(!favoriteExistValidator.isValid(member, buildingId))
             throw new FavoriteException(ErrorCode.FAVORITE_NOT_FOUND);
 
