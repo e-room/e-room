@@ -1,6 +1,5 @@
 package com.project.Project.controller.building;
 
-import com.project.Project.controller.CursorDto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
@@ -15,7 +14,6 @@ import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -24,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,8 +57,9 @@ public class BuildingRestController {
     return: 해당하는 건물 list
      */
     @GetMapping("")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestParam Long id, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
-        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, id, pageable);
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestParam(required = false) List<Long> cursorIds, @PageableDefault(size = 10, sort = {"id", "reviewCnt", "avgScore"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        if (cursorIds == null) cursorIds = new ArrayList<>();
+        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorIds, pageable);
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
@@ -85,10 +85,8 @@ public class BuildingRestController {
     return: 건물 정보
      */
     @GetMapping("/search")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestBody CursorDto cursorDto) {
-        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
-//        List<Building> buildingList = this.buildingService.getBuildingBySearch(params, cursorDto.getCursorId(),PageRequest.of(0, cursorDto.getSize()));
-        List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorDto.getCursorId(), pageable);
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestParam(required = false) Long id, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, id, pageable);
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }

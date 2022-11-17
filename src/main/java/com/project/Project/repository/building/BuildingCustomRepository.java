@@ -14,7 +14,7 @@ public interface BuildingCustomRepository {
 
     List<Building> searchBuildings(String params, Long cursorId, Pageable pageable);
 
-    List<Building> findBuildingsByIdIn(List<Long> ids, Long cursorId, Pageable pageable);
+    List<Building> findBuildingsByIdIn(List<Long> ids, List<Long> cursorIds, Pageable pageable);
 
     Optional<Building> findFullBuildingById(Long id, Set<String> graph);
 }

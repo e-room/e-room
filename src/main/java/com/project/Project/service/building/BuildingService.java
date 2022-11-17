@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BuildingService {
-    List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, Long cursorId, Pageable page);
+    List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, List<Long> cursorIds, Pageable page);
 
     Optional<Building> getBuildingByBuildingId(Long buildingId);
 
