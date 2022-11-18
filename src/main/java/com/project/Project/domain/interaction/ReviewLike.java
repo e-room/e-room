@@ -2,6 +2,7 @@ package com.project.Project.domain.interaction;
 
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,9 +35,10 @@ public class ReviewLike extends BaseEntity {
     private Long id;
 
     @Column()
-    @ColumnDefault("1")
+    @ColumnDefault("ACTIVE")
     @Builder.Default
-    private boolean status = true;
+    @Enumerated(EnumType.STRING)
+    private ReviewLikeStatus reviewLikeStatus = ReviewLikeStatus.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
