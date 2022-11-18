@@ -54,7 +54,7 @@ public class BuildingSerializer {
                 .address(Address.toAddressDto(building.getAddress()))
                 .isDirectDeal(false)
                 .reviewCnt(Building.reviewCntOrZero.apply(building))
-                .scoreAvg(Building.avgScoreOrNull.apply(building))
+                .avgScore(Building.avgScoreOrNull.apply(building))
                 .bestCategory(BuildingToReviewCategory.bestCategoryOrNull.apply(maxScoreCategory))
                 .build();
     }

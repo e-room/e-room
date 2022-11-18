@@ -21,7 +21,7 @@ public class BuildingResponseDto {
         private String name;
         private AddressDto address;
         private Long reviewCnt;
-        private Double scoreAvg;
+        private Double avgScore;
         private ReviewCategoryEnum bestCategory;
         private boolean isDirectDeal;
     }
