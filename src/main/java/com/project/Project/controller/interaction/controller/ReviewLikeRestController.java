@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequiredArgsConstructor
 public class ReviewLikeRestController {
@@ -17,6 +19,10 @@ public class ReviewLikeRestController {
 
     @PostMapping("/building/room/review/like/{reviewId}")
     public ResponseEntity<ReviewLikeResponseDto.ReviewLikeUpdateResponse> updateReviewLike(@PathVariable("reviewId") Long reviewId, @AuthUser Member member) {
-        return null;
+        Long updatedReviewLikeId = reviewLikeService.updateReviewLike(reviewId, member);
+        return ResponseEntity.ok(ReviewLikeResponseDto.ReviewLikeUpdateResponse.builder()
+                .reviewLikeId(updatedReviewLikeId)
+                .updatedAt(LocalDateTime.now())
+                .build());
     }
 }

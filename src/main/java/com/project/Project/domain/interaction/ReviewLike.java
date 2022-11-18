@@ -48,8 +48,28 @@ public class ReviewLike extends BaseEntity {
     @JoinColumn(name = "review_id", nullable = false)
     private Review review;
 
+    public void setReviewLikeStatus(ReviewLikeStatus reviewLikeStatus) {
+        this.reviewLikeStatus = reviewLikeStatus;
+    }
+
     @PreRemove
     public void deleteHandler() {
         super.setDeleted(true);
+    }
+
+    public void setMember(Member member) {
+        if (this.member != null) { // 기존에 이미 팀이 존재한다면
+            this.member.getReviewLikeList().remove(this); // 관계를 끊는다.
+        }
+        this.member = member;
+        member.getReviewLikeList().add(this);
+    }
+
+    public void setReview(Review review) {
+        if (this.review != null) { // 기존에 이미 팀이 존재한다면
+            this.review.getReviewLikeList().remove(this); // 관계를 끊는다.
+        }
+        this.review = review;
+        review.getReviewLikeList().add(this);
     }
 }

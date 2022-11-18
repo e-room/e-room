@@ -74,6 +74,10 @@ public class Review extends BaseEntity {
     @Builder.Default
     private List<ReviewToReviewKeyword> reviewToReviewKeywordList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<ReviewLike> reviewLikeList = new ArrayList<>();
+
     @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)
     private ReviewSummary reviewSummary;
 
