@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({RepositoryTestConfig.class, WebClientConfig.class, AmazonConfig.class})
 @Commit
-public class TestReviewGenerator {
+public class ReviewGeneratorTest {
 
     @Autowired
     BuildingRepository buildingRepository;

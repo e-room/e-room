@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(RepositoryTestConfig.class)
 @Commit
-public class TestMemberGenerator {
+public class MemberGeneratorTest {
 
     @Autowired
     MemberRepository memberRepository;
