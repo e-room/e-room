@@ -35,10 +35,9 @@ public class ReviewLike extends BaseEntity {
     private Long id;
 
     @Column()
-    @ColumnDefault("ACTIVE")
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private ReviewLikeStatus reviewLikeStatus = ReviewLikeStatus.ACTIVE;
+    private ReviewLikeStatus reviewLikeStatus = ReviewLikeStatus.LIKED;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)

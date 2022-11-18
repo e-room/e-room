@@ -4,11 +4,16 @@ import lombok.Getter;
 
 @Getter
 public enum ReviewLikeStatus {
-    ACTIVE("활성"), INACTIVE("비활성");
+    LIKED("좋아요"), CANCELED("취소됨");
 
     private String description;
 
     ReviewLikeStatus(String description) {
         this.description = description;
     }
+
+    public ReviewLikeStatus reverse() {
+        return this == ReviewLikeStatus.LIKED ? CANCELED : LIKED;
+    }
+
 }

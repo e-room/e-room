@@ -20,20 +20,16 @@ public class ReviewLikeServiceImpl implements ReviewLikeService {
     private final ReviewLikeRepository reviewLikeRepository;
     private final ReviewRepository reviewRepository;
 
-    private ReviewLikeStatus getReverseReviewLikeStatus(ReviewLikeStatus reviewLikeStatus) {
-        return reviewLikeStatus == ReviewLikeStatus.ACTIVE ? ReviewLikeStatus.INACTIVE : ReviewLikeStatus.ACTIVE;
-    }
-
     @Transactional
     public Long updateReviewLike(Long reviewId, Member member) {
         Optional<ReviewLike> optionalReviewLike = reviewLikeRepository.findByMemberAndReview_Id(member, reviewId);
         ReviewLike reviewLike;
         if(optionalReviewLike.isPresent()) {
             reviewLike = optionalReviewLike.get();
-            reviewLike.setReviewLikeStatus(getReverseReviewLikeStatus(reviewLike.getReviewLikeStatus()));
+            reviewLike.setReviewLikeStatus(reviewLike.getReviewLikeStatus().reverse());
         } else {
             reviewLike = ReviewLike.builder()
-                    .reviewLikeStatus(ReviewLikeStatus.ACTIVE)
+                    .reviewLikeStatus(ReviewLikeStatus.LIKED)
                     .build();
             reviewLike.setReview(reviewRepository.findById(reviewId).get());
             reviewLike.setMember(member);

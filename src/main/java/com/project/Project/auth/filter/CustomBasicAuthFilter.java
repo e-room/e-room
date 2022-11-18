@@ -51,7 +51,7 @@ public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
         return this.memberService.findById(id).orElseGet(() -> Member.builder() // temp user
                 .reviewList(new ArrayList<>())
                 .favoriteBuildingList(new ArrayList<>())
-                .likeReviewList(new ArrayList<>())
+                .reviewLikeList(new ArrayList<>())
                 .name("하품하는 망아지")
                 .email("swa07016@khu.ac.kr")
                 .memberRole(MemberRole.USER)
