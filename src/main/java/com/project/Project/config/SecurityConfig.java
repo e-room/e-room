@@ -10,7 +10,6 @@ import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.service.CustomOAuth2UserService;
 import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -32,8 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtProvider jwtProvider;
     private final BasicAuthFailureHandler basicAuthFailureHandler;
 
-    @Value("${security.profiles.active}")
-    private String stage;
+    //    @Value("${security.profiles.active}")
+    private String stage = "dev";
 
     @Bean
     JwtAuthFilter jwtAuthFilter() throws Exception {
