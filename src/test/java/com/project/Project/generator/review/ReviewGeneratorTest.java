@@ -34,7 +34,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -75,6 +77,42 @@ public class ReviewGeneratorTest {
         Review review = this.reviewService.saveReview(request, member);
         System.out.println("AAAAAAA");
         return review;
+    }
+
+    @Test
+    public void createReviewDto() throws IOException {
+        File file = new File(Paths.get("src/test/java/com/project/Project/generator/review/testCase/case.json").toUri());
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Review> reviewList = new ArrayList<>();
+
+        List<TestCase> testCaseList = objectMapper.readValue(file, new TypeReference<>() {
+        });
+        testCaseList.forEach(x -> System.out.println(x.toString()));
+        testCaseList.stream().forEach(testCase -> {
+            List<Long> buildingIds = testCase.getBuildingIds().stream().mapToLong((buildingId) -> buildingId.getId()).boxed().collect(Collectors.toList());
+            int i = 0;
+            for (Long buildingId : buildingIds) {
+                try {
+                    ReviewRequestDto.ReviewCreateDto request = this.configurer.setBasics(buildingId).setReviewImageList(null).build();
+                    String fileName = "testJson" + i + ".json";
+                    i++;
+                    String filePath = "src/test/java/com/project/Project/generator/review/testCase/" + fileName;
+                    File jsonFile = new File(filePath);
+                    if (!jsonFile.exists()) {
+                        file.createNewFile();
+                    }
+
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+                    String json = objectMapper.writeValueAsString(request);
+                    writer.newLine();
+                    writer.write(json);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @Test

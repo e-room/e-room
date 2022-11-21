@@ -54,17 +54,6 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
 
     @Override
     public List<Building> findBuildingsByIdIn(List<Long> ids, List<Double> cursorIds, Pageable pageable) {
-//        List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
-//        Predicate predicate1 = building.buildingSummary.reviewCnt.loe(cursorIds.get(0).intValue()).and(building.buildingSummary.reviewCnt.lt(cursorIds.get(0).intValue()).or(building.id.lt(cursorIds.get(1).intValue())));
-//        Predicate predicate2 = cursorId(pageable, cursorIds, 0);
-//        System.out.println(predicate1.equals(predicate2));
-//        List<Building> results = factory.selectFrom(building)
-//                .where(building.id.in(ids).andAnyOf(cursorId(pageable, cursorIds, 0)))
-//                .orderBy(ORDERS.stream().toArray(OrderSpecifier[]::new))
-//                .limit(pageable.getPageSize() + 1)
-//                .fetch();
-
-
         List<Building> results = findBuildingInQuery(cursorIds, pageable).andThen(customOrderBy(pageable)).apply(ids)
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
@@ -105,7 +94,7 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     }
 
 
-    private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
+    public List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
 
         List<OrderSpecifier> ORDERS = new ArrayList<>();
 
@@ -137,7 +126,7 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
         return ORDERS;
     }
 
-    private BooleanExpression cursorId(Pageable pageable, List<Double> cursorIds, Integer index) {
+    public BooleanExpression cursorId(Pageable pageable, List<Double> cursorIds, Integer index) {
         if (index == cursorIds.size()) return null;
         Sort.Order order = pageable.getSort().get().collect(Collectors.toList()).get(index);
         // id < 파라미터를 첫 페이지에선 사용하지 않기 위한 동적 쿼리

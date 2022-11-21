@@ -194,6 +194,10 @@ public class ReviewCreateConfigurer {
     }
 
     public ReviewCreateConfigurer setReviewImageList(List<String> fileNames) throws Exception {
+        if (fileNames == null || fileNames.isEmpty()) {
+            this.reviewImageList = null;
+            return this;
+        }
         final String contentType = "png"; //파일타입
         List<MultipartFile> images = fileNames.stream().map(fileName -> {
             final String filePath = "./testImage/" + fileName + "." + contentType; //파일경로

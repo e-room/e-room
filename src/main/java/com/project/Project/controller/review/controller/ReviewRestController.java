@@ -1,7 +1,7 @@
 package com.project.Project.controller.review.controller;
 
 import com.project.Project.auth.AuthUser;
-import com.project.Project.controller.CursorDto;
+import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.Member;
@@ -11,17 +11,23 @@ import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.service.room.RoomService;
+import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,17 +51,20 @@ public class ReviewRestController {
      * - 3.2 리뷰_상세페이지에서 <strong>전체</strong>버튼을 눌렀을 때 사용
      *
      * @param buildingId 건물의 id
-     * @param cursorDto  cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
+     * @param cursorIds  : 조회해서 받았던 리스트 중에 가장 마지막 원소를 식별하는 cursor| size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/buildig/{buildingId}/room/review")
-    public ResponseEntity<List<ReviewResponseDto.ReviewListResponse>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @ModelAttribute CursorDto cursorDto) {
-        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+    public ResponseEntity<Slice<ReviewResponseDto.ReviewListResponse>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
+                                                                                               @RequestParam(required = false) List<Double> cursorIds,
+                                                                                               @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        if (cursorIds == null) cursorIds = new ArrayList<>();
+        List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorIds, pageable);
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(ReviewSerializer::toReviewListResponse)
                         .collect(Collectors.toList());
-        return ResponseEntity.ok(reviewListResponseList);
+        return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
     }
 
     /**
@@ -64,12 +73,15 @@ public class ReviewRestController {
      * - 3.2 리뷰_상세페이지에서 <strong>방(ex.102호)</strong>버튼을 눌렀을 때 사용
      *
      * @param roomId    방의 id
-     * @param cursorDto cursorId : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
+     * @param cursorIds : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public ResponseEntity<List<ReviewResponseDto.ReviewListResponse>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId, @ModelAttribute CursorDto cursorDto) {
-        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+    public ResponseEntity<List<ReviewResponseDto.ReviewListResponse>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
+                                                                                          @RequestParam(required = false) List<Double> cursorIds,
+                                                                                          @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        if (cursorIds == null) cursorIds = new ArrayList<>();
+        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorIds, pageable);
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(ReviewSerializer::toReviewListResponse)
@@ -95,7 +107,7 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ResponseEntity<ReviewResponseDto.ReviewCreateResponse> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthUser Member loginMember) {
+    public ResponseEntity<ReviewResponseDto.ReviewCreateResponse> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
         Review review = reviewService.saveReview(request, loginMember);
 
         return ResponseEntity.ok(ReviewResponseDto.ReviewCreateResponse.builder()
