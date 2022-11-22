@@ -16,4 +16,13 @@ public class RoomSerializer {
                 .roomNumber(room.getRoomNumber())
                 .build();
     }
+
+    public static RoomResponseDto.BaseRoomResponse toBaseRoomResponse(Room room) {
+        Optional.ofNullable(room).orElseThrow(() -> new RoomException(ErrorCode.ROOM_NPE));
+        return RoomResponseDto.BaseRoomResponse.builder()
+                .roomId(room.getId())
+                .lineNumber(room.getLineNumber())
+                .roomNumber(room.getRoomNumber())
+                .build();
+    }
 }

@@ -1,6 +1,7 @@
 package com.project.Project.controller.review.dto;
 
-import com.project.Project.domain.enums.FloorHeight;
+import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,12 +18,20 @@ public class ReviewResponseDto {
     @AllArgsConstructor
     @Builder
     public static class ReviewListResponse {
-        private String profilePictureUrl;
-        private String nickName;
+        private BaseReviewResponse baseReviewResponse;
+        private RoomResponseDto.BaseRoomResponse baseRoomResponse;
+        private MemberDto authorDto;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class BaseReviewResponse {
+        private Long reviewId;
         private Double score;
         private Integer residencePeriod;
         private Integer residenceDuration;
-        private FloorHeight floorHeight;
         private Double netLeasableArea;
         private Integer deposit;
         private Integer monthlyRent;
@@ -32,7 +41,6 @@ public class ReviewResponseDto {
         private List<KeywordEnum> disadvantage;
         private String disadvantageDescription;
         private Integer reviewLikeCnt;
-        private Long roomId;
     }
 
     @NoArgsConstructor

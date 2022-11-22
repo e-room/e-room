@@ -40,11 +40,19 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
 
     @Override
     public Function<Long, JPAQuery<Review>> findReviewQueryByBuildingId(List<Double> cursorIds, Pageable pageable) {
-        return (buildingId) -> factory.selectFrom(review).where(cursorId(pageable, cursorIds, 0).and(review.room.building.id.eq(buildingId)));
+        return (buildingId) -> factory.selectFrom(review)
+                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
+                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
+                .on(reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
+                .where(cursorId(pageable, cursorIds, 0), review.room.building.id.eq(buildingId));
     }
 
     public Function<Long, JPAQuery<Review>> findReviewQueryByRoomId(List<Double> cursorIds, Pageable pageable) {
-        return (roomId) -> factory.selectFrom(review).where(cursorId(pageable, cursorIds, 0).and(review.room.building.id.eq(roomId)));
+        return (roomId) -> factory.selectFrom(review)
+                .leftJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
+                .leftJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
+                .on(reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
+                .where(cursorId(pageable, cursorIds, 0).and(review.room.building.id.eq(roomId)));
     }
 
     public List<Review> findReviewsByBuildingId(Long buildingId, List<Double> cursorIds, Pageable pageable) {
@@ -78,9 +86,12 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                         ORDERS.add(orderId);
                         break;
                     case "likeCnt":
-                        OrderSpecifier<?> orderReviewCnt = QueryDslUtil.getSortedColumn(direction, review.reviewSummary, "likeCnt");
-                        ORDERS.add(orderReviewCnt);
+                        OrderSpecifier<?> orderLikeCnt = QueryDslUtil.getSortedColumn(direction, review.reviewSummary, "likeCnt");
+                        ORDERS.add(orderLikeCnt);
                         break;
+                    case "score":
+                        OrderSpecifier<?> orderReviewCnt = QueryDslUtil.getSortedColumn(direction, review.reviewToReviewCategoryList, "score");
+                        ORDERS.add(orderReviewCnt);
                 }
             }
         } else {
@@ -109,6 +120,17 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 sub2 = cursorId(pageable, cursorIds, next);
             }
             return sub1.and(review.reviewSummary.likeCnt.lt(cursorIds.get(index).intValue()).or(sub2));
+        } else if (order.getProperty().equals("score")) {
+            BooleanExpression sub1 = null;
+            BooleanExpression sub2 = null;
+            if (index == cursorIds.size() - 1) {
+                return reviewToReviewCategory.score.lt(cursorIds.get(index));
+            } else {
+                sub1 = reviewToReviewCategory.score.loe(cursorIds.get(index));
+                Integer next = index + 1;
+                sub2 = cursorId(pageable, cursorIds, next);
+            }
+            return sub1.and(reviewToReviewCategory.score.lt(cursorIds.get(index)).or(sub2));
         } else return review.id.lt(cursorIds.get(index).intValue());   //최신순
     }
 

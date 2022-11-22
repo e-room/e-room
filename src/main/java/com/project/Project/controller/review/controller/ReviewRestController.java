@@ -54,10 +54,10 @@ public class ReviewRestController {
      * @param cursorIds  : 조회해서 받았던 리스트 중에 가장 마지막 원소를 식별하는 cursor| size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
-    @GetMapping("/buildig/{buildingId}/room/review")
+    @GetMapping("/building/{buildingId}/room/review")
     public ResponseEntity<Slice<ReviewResponseDto.ReviewListResponse>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
                                                                                                @RequestParam(required = false) List<Double> cursorIds,
-                                                                                               @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+                                                                                               @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorIds, pageable);
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
