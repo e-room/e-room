@@ -33,7 +33,7 @@ public class ReviewLikeServiceImpl implements ReviewLikeService {
                     .build();
             reviewLike.setReview(reviewRepository.findById(reviewId).get());
             reviewLike.setMember(member);
-            reviewLikeRepository.save(reviewLike);
+            reviewLike = reviewLikeRepository.save(reviewLike);
         }
         return reviewLike.getId();
     }
