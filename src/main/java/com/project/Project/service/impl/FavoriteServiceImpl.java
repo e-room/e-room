@@ -8,6 +8,7 @@ import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.interaction.FavoriteRepository;
 import com.project.Project.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,11 @@ public class FavoriteServiceImpl implements FavoriteService {
         List<Long> buildingIds = favoriteList.stream()
                 .map(favorite -> favorite.getBuilding().getId())
                 .collect(Collectors.toList());
-        return buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorIds, pageable);
+        List<Building> buildingList = buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorIds, pageable);
+        buildingList.stream().map(Building::getRoomList).forEach(Hibernate::initialize);
+        buildingList.stream().map(Building::getBuildingSummary).forEach(Hibernate::initialize);
+        buildingList.stream().map(Building::getBuildingToReviewCategoryList).forEach(Hibernate::initialize);
+
+        return buildingList;
     }
 }
