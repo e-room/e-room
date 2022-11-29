@@ -74,33 +74,33 @@ public class FavoriteServiceTest {
         assertNotNull(savedFavoriteId);
     }
 
-    @Test
-    void getBuildingListByMember_Test() {
-        // given
-        Member member = createTestMember();
-        CursorDto cursorDto = new CursorDto();
-        cursorDto.setCursorId(4L); cursorDto.setSize(5);
-        Building building1 = Building.builder().id(7L).build();
-        Building building2 = Building.builder().id(8L).build();
-        Favorite favorite1 = Favorite.builder().id(5L).build(); favorite1.setBuilding(building1);
-        Favorite favorite2 = Favorite.builder().id(6L).build(); favorite2.setBuilding(building2);
-
-
-        List<Favorite> favoriteList = List.of(favorite1, favorite2);
-        given(favoriteRepository.findByMember(member))
-                .willReturn(favoriteList);
-
-        List<Building> resultBuildingList = List.of(building1, building2);
-        List<Long> buildingIds = List.of(building1.getId(), building2.getId());
-        given(buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize())))
-                .willReturn(resultBuildingList);
-
-        // when
-        List<Building> buildingList = favoriteService.getBuildingListByMember(member, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
-
-        // then
-        assertEquals(buildingList.size(), 2);
-    }
+//    @Test
+//    void getBuildingListByMember_Test() {
+//        // given
+//        Member member = createTestMember();
+//        CursorDto cursorDto = new CursorDto();
+//        cursorDto.setCursorId(4L); cursorDto.setSize(5);
+//        Building building1 = Building.builder().id(7L).build();
+//        Building building2 = Building.builder().id(8L).build();
+//        Favorite favorite1 = Favorite.builder().id(5L).build(); favorite1.setBuilding(building1);
+//        Favorite favorite2 = Favorite.builder().id(6L).build(); favorite2.setBuilding(building2);
+//
+//
+//        List<Favorite> favoriteList = List.of(favorite1, favorite2);
+//        given(favoriteRepository.findByMember(member))
+//                .willReturn(favoriteList);
+//
+//        List<Building> resultBuildingList = List.of(building1, building2);
+//        List<Long> buildingIds = List.of(building1.getId(), building2.getId());
+//        given(buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize())))
+//                .willReturn(resultBuildingList);
+//
+//        // when
+//        List<Building> buildingList = favoriteService.getBuildingListByMember(member, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+//
+//        // then
+//        assertEquals(buildingList.size(), 2);
+//    }
 
     @Test
     void deleteFavoriteBuilding_Test() {

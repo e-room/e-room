@@ -43,11 +43,11 @@ public class FavoriteServiceImpl implements FavoriteService {
         return savedFavorite.getId();
     }
 
-    public List<Building> getBuildingListByMember(Member member, Long cursorId, Pageable pageable) {
+    public List<Building> getBuildingListByMember(Member member, List<Double> cursorIds, Pageable pageable) {
         List<Favorite> favoriteList = favoriteRepository.findByMember(member);
         List<Long> buildingIds = favoriteList.stream()
                 .map(favorite -> favorite.getBuilding().getId())
                 .collect(Collectors.toList());
-        return buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorId, pageable);
+        return buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorIds, pageable);
     }
 }

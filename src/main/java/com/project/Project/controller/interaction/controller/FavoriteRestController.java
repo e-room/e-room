@@ -35,15 +35,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class FavoriteRestController {
-    // todo : 사용자 정보 파라미터 모든 메소드에 필요
 
     private final FavoriteService favoriteService;
     private final FavoriteExistValidator favoriteExistValidator;
 
     @GetMapping("/member/favorite")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList(@RequestBody CursorDto cursorDto, @AuthUser Member member) {
-        Pageable pageable = PageRequest.of(0, cursorDto.getSize());
-        List<Building> buildingList = favoriteService.getBuildingListByMember(member, cursorDto.getCursorId(), PageRequest.of(0, cursorDto.getSize()));
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList(@RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable, @AuthUser Member member) {
+        if(cursorIds == null) cursorIds = new ArrayList<>();
+        List<Building> buildingList = favoriteService.getBuildingListByMember(member, cursorIds, pageable);
         List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
