@@ -14,5 +14,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class AnonymousStatus {
     private String anonymousName;
+    private String anonymousProfilePicture;
     private Boolean isAnonymous;
 }

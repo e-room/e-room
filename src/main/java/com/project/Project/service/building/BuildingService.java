@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BuildingService {
-    List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, Long cursorId, Pageable page);
+    List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, List<Double> cursorIds, Pageable page);
 
     Optional<Building> getBuildingByBuildingId(Long buildingId);
 
-    List<Building> getBuildingsBySearch(String params, Long cursorId, Pageable page);
+    List<Building> getBuildingsBySearch(String params, List<Double> cursorIds, Pageable page);
 
     Optional<Building> findByAddress(Address address);
 

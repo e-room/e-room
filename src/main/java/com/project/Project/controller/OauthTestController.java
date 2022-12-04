@@ -1,5 +1,6 @@
 package com.project.Project.controller;
 
+import com.project.Project.auth.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -27,7 +28,7 @@ public class OauthTestController {
 
     @GetMapping("/api/profile")
     @ResponseBody
-    public ResponseEntity<Object> getProfile(@AuthenticationPrincipal Authentication auth) {
+    public ResponseEntity<Object> getProfile(@AuthenticationPrincipal MemberDto auth) {
         //??
         // auth가 왜 null이지...
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -32,8 +32,8 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     private final JPAQueryFactory factory;
 
     @Override
-    public List<Building> searchBuildings(String params, Long cursorId, Pageable pageable) {
-        List<Building> results = searchBuildingsQuery(cursorId, pageable).andThen(customOrderBy(pageable)).apply(params)
+    public List<Building> searchBuildings(String params, List<Double> cursorIds, Pageable pageable) {
+        List<Building> results = searchBuildingsQuery(cursorIds, pageable).andThen(customOrderBy(pageable)).apply(params)
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
         return results;
@@ -53,28 +53,21 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     }
 
     @Override
-    public List<Building> findBuildingsByIdIn(List<Long> ids, Long cursorId, Pageable pageable) {
-        List<Building> results = findBuildingInQuery(cursorId, pageable).andThen(customOrderBy(pageable)).apply(ids)
+    public List<Building> findBuildingsByIdIn(List<Long> ids, List<Double> cursorIds, Pageable pageable) {
+        List<Building> results = findBuildingInQuery(cursorIds, pageable).andThen(customOrderBy(pageable)).apply(ids)
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
         return results;
     }
 
-    public Function<List<Long>, JPAQuery<Building>> findBuildingInQuery(Long cursorId, Pageable pageable) {
+    public Function<List<Long>, JPAQuery<Building>> findBuildingInQuery(List<Double> cursorIds, Pageable pageable) {
         return (ids) -> factory.selectFrom(building)
-//                .innerJoin(building.roomList, room)
-//                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
-//                .innerJoin(building.buildingSummary, buildingSummary)
-//                .fetchJoin()
-                .where(building.id.in(ids).and(notDeletedCondition()).and(cursorId(pageable, cursorId)));
+                .where(building.id.in(ids).and(cursorId(pageable, cursorIds, 0)));
     }
 
-    public Function<String, JPAQuery<Building>> searchBuildingsQuery(Long cursorId, Pageable pageable) {
+    public Function<String, JPAQuery<Building>> searchBuildingsQuery(List<Double> cursorIds, Pageable pageable) {
         return (params) -> factory.selectFrom(building)
-//                .innerJoin(building.buildingToReviewCategoryList, buildingToReviewCategory)
-//                .innerJoin(building.buildingSummary, buildingSummary)
-                .fetchJoin()
-                .where(buildingSearchPredicate(params), cursorId(pageable, cursorId));
+                .where(buildingSearchPredicate(params), cursorId(pageable, cursorIds, 0));
     }
 
     public Function<JPAQuery<Building>, JPAQuery<Building>> customOrderBy(Pageable pageable) {
@@ -89,17 +82,19 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
 
     private BooleanBuilder buildingSearchPredicate(String params) {
         return new BooleanBuilder()
-                .orAllOf(building.address.siDo.contains(params),
+                .and(notDeletedCondition())
+                .andAnyOf(
+                        building.address.siDo.contains(params),
                         building.address.siGunGu.contains(params),
                         building.address.eupMyeon.contains(params),
                         building.address.roadName.contains(params),
                         building.address.buildingNumber.contains(params),
-                        building.buildingName.contains(params))
-                .and(notDeletedCondition());
+                        building.buildingName.contains(params));
+
     }
 
 
-    private List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
+    public List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable) {
 
         List<OrderSpecifier> ORDERS = new ArrayList<>();
 
@@ -114,9 +109,11 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
                     case "reviewCnt":
                         OrderSpecifier<?> orderReviewCnt = QueryDslUtil.getSortedColumn(direction, building.buildingSummary, "reviewCnt");
                         ORDERS.add(orderReviewCnt);
+                        break;
                     case "avgScore":
                         OrderSpecifier<?> orderScore = QueryDslUtil.getSortedColumn(direction, building.buildingSummary, "avgScore");
                         ORDERS.add(orderScore);
+                        break;
                     default:
                         break;
                 }
@@ -129,16 +126,36 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
         return ORDERS;
     }
 
-    private BooleanExpression cursorId(Pageable pageable, Long cursorId) {
-        Sort.Order order = pageable.getSort().get().collect(Collectors.toList()).get(0);
+    public BooleanExpression cursorId(Pageable pageable, List<Double> cursorIds, Integer index) {
+        if (index == cursorIds.size()) return null;
+        Sort.Order order = pageable.getSort().get().collect(Collectors.toList()).get(index);
         // id < 파라미터를 첫 페이지에선 사용하지 않기 위한 동적 쿼리
-        if (cursorId == null) {
+        if (cursorIds.get(index) == null) {
             return null; // // BooleanExpression 자리에 null 이 반환되면 조건문에서 자동으로 제거
-        } else if (order.getProperty().equals("reviewCnt"))
-            return building.buildingSummary.reviewCnt.lt(cursorId);
-        else if (order.getProperty().equals("avgScore"))
-            return building.buildingSummary.avgScore.lt(cursorId);
-        else
-            return building.id.lt(cursorId);   //최신순
+        } else if (order.getProperty().equals("reviewCnt")) {
+            BooleanExpression sub1 = null;
+            BooleanExpression sub2 = null;
+            if (index == cursorIds.size() - 1) {
+
+                return building.buildingSummary.reviewCnt.lt(cursorIds.get(index).intValue());
+            } else {
+                sub1 = building.buildingSummary.reviewCnt.loe(cursorIds.get(index).intValue());
+                Integer next = index + 1;
+                sub2 = cursorId(pageable, cursorIds, next);
+            }
+            return sub1.and(building.buildingSummary.reviewCnt.lt(cursorIds.get(index).intValue()).or(sub2));
+        } else if (order.getProperty().equals("avgScore")) {
+            BooleanExpression sub1 = null;
+            BooleanExpression sub2 = null;
+            if (index == cursorIds.size() - 1) {
+                return building.buildingSummary.avgScore.lt(cursorIds.get(index));
+            } else {
+                sub1 = building.buildingSummary.avgScore.loe(cursorIds.get(index));
+                Integer next = index + 1;
+                sub2 = cursorId(pageable, cursorIds, next);
+            }
+            return sub1.and(building.buildingSummary.avgScore.lt(cursorIds.get(index)).or(sub2));
+        } else
+            return building.id.lt(cursorIds.get(index).intValue());   //최신순
     }
 }

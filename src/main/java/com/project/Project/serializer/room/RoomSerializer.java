@@ -9,10 +9,19 @@ import java.util.Optional;
 
 public class RoomSerializer {
 
-    public static RoomResponseDto.RoomListResponse toRoomListResponse(Room room) {
+    public static RoomResponseDto.RoomListDto toRoomListResponse(Room room) {
         Optional.ofNullable(room).orElseThrow(() -> new RoomException(ErrorCode.ROOM_NPE));
-        return RoomResponseDto.RoomListResponse.builder()
+        return RoomResponseDto.RoomListDto.builder()
                 .roomId(room.getId())
+                .roomNumber(room.getRoomNumber())
+                .build();
+    }
+
+    public static RoomResponseDto.BaseRoomDto toBaseRoomResponse(Room room) {
+        Optional.ofNullable(room).orElseThrow(() -> new RoomException(ErrorCode.ROOM_NPE));
+        return RoomResponseDto.BaseRoomDto.builder()
+                .roomId(room.getId())
+                .lineNumber(room.getLineNumber())
                 .roomNumber(room.getRoomNumber())
                 .build();
     }

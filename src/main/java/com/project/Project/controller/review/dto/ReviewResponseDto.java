@@ -1,6 +1,7 @@
 package com.project.Project.controller.review.dto;
 
-import com.project.Project.domain.enums.FloorHeight;
+import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,13 +17,23 @@ public class ReviewResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class ReviewListResponse {
-        private String profilePictureUrl;
-        private String nickName;
+    public static class ReviewListDto {
+        private BaseReviewDto baseReviewDto;
+        private RoomResponseDto.BaseRoomDto baseRoomDto;
+        private ReviewScoreDto reviewScoreDto;
+        private MemberDto authorDto;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class BaseReviewDto {
+        private Long reviewId;
+        private LocalDateTime createdAt;
         private Double score;
         private Integer residencePeriod;
         private Integer residenceDuration;
-        private FloorHeight floorHeight;
         private Double netLeasableArea;
         private Integer deposit;
         private Integer monthlyRent;
@@ -32,14 +43,31 @@ public class ReviewResponseDto {
         private List<KeywordEnum> disadvantage;
         private String disadvantageDescription;
         private Integer reviewLikeCnt;
-        private Long roomId;
     }
 
     @NoArgsConstructor
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class ReviewCreateResponse {
+    public static class ReviewScoreDto {
+        private Double traffic;
+
+        private Double buildingComplex;
+
+        private Double surrounding;
+
+        private Double internal;
+
+        private Double livingLocation;
+
+        private Double residenceSatisfaction;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewCreateDto {
         private Long reviewId;
         private LocalDateTime createdAt;
     }
@@ -48,9 +76,8 @@ public class ReviewResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class ReviewDeleteResponse {
+    public static class ReviewDeleteDto {
         private Long reviewId;
         private LocalDateTime deletedAt;
-        private Integer affectedRowCnt;
     }
 }

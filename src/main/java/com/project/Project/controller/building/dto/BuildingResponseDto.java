@@ -21,7 +21,7 @@ public class BuildingResponseDto {
         private String name;
         private AddressDto address;
         private Long reviewCnt;
-        private Double scoreAvg;
+        private Double avgScore;
         private ReviewCategoryEnum bestCategory;
         private boolean isDirectDeal;
     }
@@ -55,7 +55,7 @@ public class BuildingResponseDto {
         private AddressDto address;
         private CoordinateDto coordinate;
         private Boolean isDirectDeal;
-        private List<RoomResponseDto.RoomListResponse> rooms;
+        private List<RoomResponseDto.RoomListDto> rooms;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
     }
 

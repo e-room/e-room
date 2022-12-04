@@ -33,7 +33,7 @@ public class Room extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 

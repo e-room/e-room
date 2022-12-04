@@ -8,9 +8,10 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
+import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.repository.review.ReviewCustomRepository;
 import com.project.Project.repository.review.ReviewEventListener;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -39,53 +39,30 @@ public class ReviewServiceImpl implements ReviewService {
     private final BuildingService buildingService;
     private final RoomService roomService;
     private final EntityManager entityManager;
+    private final ReviewCustomRepository reviewCustomRepository;
     private final ReviewEventListener eventListener;
+    private final ReviewLoader reviewLoader;
 
-    public List<Review> getReviewListByBuildingId(Long buildingId, Long cursorId, Pageable page) {
+    public List<Review> getReviewListByBuildingId(Long buildingId, List<Double> cursorIds, Pageable pageable) {
 
         /*
             1. buildingId로 building 조회 -> room 리스트 조회
             2. room 리스트의 reviewList들을 연결하여 반환
          */
         // 컨트롤러에서 존재하는 빌딩으로 검증되고 넘어왔으므로 바로 get
-        Building building = buildingRepository.findById(buildingId).get();
-        List<Room> roomList = roomRepository.findByBuilding(building);
-
-        List<Long> reviewIdList = new ArrayList<>();
-        for (Room room : roomList) { // todo : id 추출 코드 개선하기
-            for (Review review : room.getReviewList()) {
-                reviewIdList.add(review.getId());
-            }
-        }
-
-        return cursorId == null ?
-                reviewRepository.findByIdInOrderByCreatedAtDesc(reviewIdList, page) :
-                reviewRepository.findByIdInAndIdLessThanOrderByCreatedAtDesc(reviewIdList, cursorId, page);
+        List<Review> reviewList = reviewCustomRepository.findReviewsByBuildingId(buildingId, cursorIds, pageable);
+        reviewList = reviewLoader.loadAllScores(reviewList);
+        return reviewList;
     }
 
-    public List<Review> getReviewListByRoomId(Long roomId, Long cursorId, Pageable page) {
-        /*
-            roomId로 room 조회 -> review 리스트 조회
-         */
-        // 컨트롤러에서 존재하는 룸으로 검증되고 넘어왔으므로 바로 get
-        Room room = roomRepository.findById(roomId).get();
-
-        List<Long> reviewIdList = new ArrayList<>();
-        for (Review review : room.getReviewList()) {
-            reviewIdList.add(review.getId());
-        }
-
-        return cursorId == null ?
-                reviewRepository.findByIdInOrderByCreatedAtDesc(reviewIdList, page) :
-                reviewRepository.findByIdInAndIdLessThanOrderByCreatedAtDesc(reviewIdList, cursorId, page);
+    public List<Review> getReviewListByRoomId(Long roomId, List<Double> cursorIds, Pageable page) {
+        List<Review> reviewList = reviewCustomRepository.findReviewsByRoomId(roomId, cursorIds, page);
+        reviewList = reviewLoader.loadAllScores(reviewList);
+        return reviewList;
     }
 
     @Transactional
     public Long deleteById(Long reviewId) {
-        List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewImageList();
-        for (ReviewImage reviewImage : reviewImageList) {
-            fileProcessServiceImpl.deleteImage(reviewImage.getUrl());
-        }
         reviewRepository.deleteById(reviewId);
         return reviewId;
     }
@@ -99,7 +76,6 @@ public class ReviewServiceImpl implements ReviewService {
             3. room을 toReview로 넘겨서 review 생성
             4. 저장 후 응답
          */
-//        entityManager.setFlushMode(FlushModeType.COMMIT);
         Address address = AddressDto.toAddress(request.getAddress());
         BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
 

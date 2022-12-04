@@ -46,12 +46,12 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 
-    public void deleteImage(String url) {
-        amazonS3Service.deleteFile(getFileName(url));
-    }
-
-    private String getFileName(String url) {
-        String[] paths = url.split("/");
-        return paths[paths.length - 2] + "/" + paths[paths.length - 1];
-    }
+//    public void deleteImage(String url) {
+//        amazonS3Service.deleteFile(getFileName(url));
+//    }
+//
+//    private String getFileName(String url) {
+//        String[] paths = url.split("/");
+//        return paths[paths.length - 2] + "/" + paths[paths.length - 1];
+//    }
 }

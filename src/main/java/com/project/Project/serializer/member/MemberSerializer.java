@@ -50,8 +50,8 @@ public class MemberSerializer {
 
     public static MemberDto toDto(Member member) {
         return MemberDto.builder()
-                .email((String) member.getEmail())
-                .name((String) member.getName())
+                .email(member.getEmail())
+                .name(member.getName())
                 .picture(member.getProfileImageUrl())
                 .build();
     }

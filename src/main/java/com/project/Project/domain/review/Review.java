@@ -3,7 +3,6 @@ package com.project.Project.domain.review;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
-import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.room.Room;
@@ -56,7 +55,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 
@@ -123,14 +122,6 @@ public class Review extends BaseEntity {
     @PreRemove
     public void deleteHandler() {
         super.setDeleted(true);
-    }
-
-    public List<KeywordEnum> getAdvantageKeywordEnumList() {
-        return new ArrayList<>();
-    }
-
-    public List<KeywordEnum> getDisadvantageKeywordEnumList() {
-        return new ArrayList<>();
     }
 
     public Optional<ReviewToReviewCategory> getReviewCategory(ReviewCategoryEnum type) {
