@@ -128,11 +128,11 @@ public class ReviewRestController {
      */
     @DeleteMapping("/building/room/review/{reviewId}")
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
+        LocalDateTime now = LocalDateTime.now();
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewResponseDto.ReviewDeleteDto.builder()
                 .reviewId(deletedReviewId)
-                .deletedAt(LocalDateTime.now())
-                .affectedRowCnt(3) // 어캐앎 ?? todo : affected row 하드코딩 해결 및 review API 전부 테스트
+                .deletedAt(now)
                 .build());
     }
 }

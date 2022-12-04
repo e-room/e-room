@@ -79,6 +79,5 @@ public class ReviewResponseDto {
     public static class ReviewDeleteDto {
         private Long reviewId;
         private LocalDateTime deletedAt;
-        private Integer affectedRowCnt;
     }
 }

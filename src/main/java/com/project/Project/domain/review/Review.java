@@ -55,7 +55,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 

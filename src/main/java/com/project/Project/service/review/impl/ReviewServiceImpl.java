@@ -8,7 +8,6 @@ import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.building.BuildingRepository;
@@ -64,10 +63,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     public Long deleteById(Long reviewId) {
-        List<ReviewImage> reviewImageList = reviewRepository.findById(reviewId).get().getReviewImageList();
-        for (ReviewImage reviewImage : reviewImageList) {
-            fileProcessServiceImpl.deleteImage(reviewImage.getUrl());
-        }
         reviewRepository.deleteById(reviewId);
         return reviewId;
     }
