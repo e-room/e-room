@@ -77,16 +77,16 @@ public class ReviewRestController {
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public ResponseEntity<List<ReviewResponseDto.ReviewListResponse>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
-                                                                                          @RequestParam(required = false) List<Double> cursorIds,
-                                                                                          @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Slice<ReviewResponseDto.ReviewListResponse>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
+                                                                                           @RequestParam(required = false) List<Double> cursorIds,
+                                                                                           @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorIds, pageable);
         List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
                 reviewList.stream()
                         .map(ReviewSerializer::toReviewListResponse)
                         .collect(Collectors.toList());
-        return ResponseEntity.ok(reviewListResponseList);
+        return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
     }
     /* todo
         @GetMapping("/building/room/review/{reviewId}")

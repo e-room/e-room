@@ -49,10 +49,10 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
 
     public Function<Long, JPAQuery<Review>> findReviewQueryByRoomId(List<Double> cursorIds, Pageable pageable) {
         return (roomId) -> factory.selectFrom(review)
-                .leftJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
-                .leftJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
+                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
+                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
                 .on(reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
-                .where(cursorId(pageable, cursorIds, 0).and(review.room.building.id.eq(roomId)));
+                .where(cursorId(pageable, cursorIds, 0), review.room.id.eq(roomId));
     }
 
     public List<Review> findReviewsByBuildingId(Long buildingId, List<Double> cursorIds, Pageable pageable) {
