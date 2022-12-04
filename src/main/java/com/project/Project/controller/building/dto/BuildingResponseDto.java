@@ -55,7 +55,7 @@ public class BuildingResponseDto {
         private AddressDto address;
         private CoordinateDto coordinate;
         private Boolean isDirectDeal;
-        private List<RoomResponseDto.RoomListResponse> rooms;
+        private List<RoomResponseDto.RoomListDto> rooms;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
     }
 

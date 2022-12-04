@@ -13,7 +13,7 @@ public enum ReviewCategoryEnum {
     RESIDENCESATISFACTION("해당 거주지 만족도");
     private String description;
 
-    ReviewCategoryEnum(String description){
+    ReviewCategoryEnum(String description) {
         this.description = description;
     }
 
@@ -21,6 +21,15 @@ public enum ReviewCategoryEnum {
 
         for (ReviewCategoryEnum r : ReviewCategoryEnum.values()) {
             if (r.name().equalsIgnoreCase(test)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean contains(ReviewCategoryEnum test) {
+        for (ReviewCategoryEnum r : ReviewCategoryEnum.values()) {
+            if (r.equals(test)) {
                 return true;
             }
         }

@@ -13,7 +13,7 @@ public class RoomResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class BaseRoomResponse {
+    public static class BaseRoomDto {
         private Long roomId;
         private Integer roomNumber;
         private Integer lineNumber;
@@ -23,7 +23,7 @@ public class RoomResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class RoomListResponse {
+    public static class RoomListDto {
         private Long roomId;
         private Integer roomNumber;
     }
@@ -32,7 +32,7 @@ public class RoomResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class RoomCreateResponse {
+    public static class RoomCreateDto {
         private Long roomId;
         private Long buildingId;
         private LocalDateTime createdAt;

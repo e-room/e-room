@@ -55,14 +55,14 @@ public class ReviewRestController {
      * @return 건물 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/{buildingId}/room/review")
-    public ResponseEntity<Slice<ReviewResponseDto.ReviewListResponse>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
-                                                                                               @RequestParam(required = false) List<Double> cursorIds,
-                                                                                               @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
+                                                                                          @RequestParam(required = false) List<Double> cursorIds,
+                                                                                          @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorIds, pageable);
-        List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
+        List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
                 reviewList.stream()
-                        .map(ReviewSerializer::toReviewListResponse)
+                        .map(ReviewSerializer::toReviewListDto)
                         .collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
     }
@@ -77,14 +77,14 @@ public class ReviewRestController {
      * @return 방 id에 해당하는 리뷰 리스트
      */
     @GetMapping("/building/room/{roomId}/review")
-    public ResponseEntity<Slice<ReviewResponseDto.ReviewListResponse>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
-                                                                                           @RequestParam(required = false) List<Double> cursorIds,
-                                                                                           @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
+                                                                                      @RequestParam(required = false) List<Double> cursorIds,
+                                                                                      @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorIds, pageable);
-        List<ReviewResponseDto.ReviewListResponse> reviewListResponseList =
+        List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
                 reviewList.stream()
-                        .map(ReviewSerializer::toReviewListResponse)
+                        .map(ReviewSerializer::toReviewListDto)
                         .collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
     }
@@ -107,10 +107,10 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ResponseEntity<ReviewResponseDto.ReviewCreateResponse> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
+    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
         Review review = reviewService.saveReview(request, loginMember);
 
-        return ResponseEntity.ok(ReviewResponseDto.ReviewCreateResponse.builder()
+        return ResponseEntity.ok(ReviewResponseDto.ReviewCreateDto.builder()
                 .reviewId(review.getId())
                 .createdAt(LocalDateTime.now())
                 .build());
@@ -127,9 +127,9 @@ public class ReviewRestController {
      * @return 삭제된 리뷰의 id, 등록일시, affected row의 개수
      */
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ResponseEntity<ReviewResponseDto.ReviewDeleteResponse> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
+    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
         Long deletedReviewId = reviewService.deleteById(reviewId);
-        return ResponseEntity.ok(ReviewResponseDto.ReviewDeleteResponse.builder()
+        return ResponseEntity.ok(ReviewResponseDto.ReviewDeleteDto.builder()
                 .reviewId(deletedReviewId)
                 .deletedAt(LocalDateTime.now())
                 .affectedRowCnt(3) // 어캐앎 ?? todo : affected row 하드코딩 해결 및 review API 전부 테스트
