@@ -186,3 +186,7 @@ task buildZipFull(type: Zip) {
 }
 
 build.dependsOn buildZipFull
+
+jar {
+	enabled = false
+}
