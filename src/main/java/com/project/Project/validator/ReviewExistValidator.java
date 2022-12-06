@@ -1,6 +1,6 @@
 package com.project.Project.validator;
 
-import com.project.Project.repository.ReviewRepository;
+import com.project.Project.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

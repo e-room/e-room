@@ -1,0 +1,28 @@
+security:
+  profiles:
+    active: dev
+
+---
+stage:
+  on-profile: unit-test
+  authentication:
+    status: false
+    oauth: false
+    basic-auth: true
+  authorization: true
+---
+stage:
+  on-profile: integration-test
+  authentication:
+    status: true
+    oauth: true
+    basic-auth: false
+  authorization: true
+---
+stage:
+  on-profile: dev
+  authentication:
+    status: false
+    oauth: false
+    basic-auth: false
+  authorization: false

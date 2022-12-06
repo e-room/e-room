@@ -1,6 +1,6 @@
 package com.project.Project.validator;
 
-import com.project.Project.repository.RoomRepository;
+import com.project.Project.repository.room.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

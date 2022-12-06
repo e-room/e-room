@@ -41,3 +41,9 @@ application-datasource.properties
 
 ###docker###
 db
+
+###pem###
+eroom-key.pem
+
+###buildingTestdataGen###
+/src/BuildingGen/node_modules/
