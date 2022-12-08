@@ -4,7 +4,7 @@ spring:
       - oauth
       - aws
       - security
-    active: local
+    active: dev
   devtools:
     livereload:
       enabled: true
