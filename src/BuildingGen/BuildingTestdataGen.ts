@@ -66,7 +66,7 @@ function requestToBuildingGen() {
     return async (address: AddressDto): Promise<AxiosResponse> => {
         try {
             return axios({
-                url: 'http://localhost:8080/building/',
+                url: 'http://43.200.50.204:8080/building/',
                 method: 'post',
                 data: {
                     addressDto: {
