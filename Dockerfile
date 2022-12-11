@@ -6,8 +6,8 @@ ENV AWS_DEV_DB_URL=jdbc:mysql://eroom-db.cpghnwiewsdn.ap-northeast-2.rds.amazona
     AWS_USERNAME=admin \
     AWS_ACCESS_KEY_ID=AKIA2TUNUHCY6ACXD4VA \
     AWS_SECRET_ACCESS_KEY=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 \
-    spring_profiles_active=dev
+    ACTIVE_PROFILES=dev
 
 ARG JAR_FILE=/build/libs/*.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar","--spring.profiles.active=dev"]
+ENTRYPOINT ["java","-jar","/app.jar"]
