@@ -1,6 +1,5 @@
 package com.project.Project.exception;
 
-import com.project.Project.exception.building.BuildingException;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     @ExceptionHandler
     public ResponseEntity<ApiErrorResult> MethodArgumentTypeHandler(MethodArgumentTypeMismatchException ex) {
 
-        String message = "파라미터가 " + ex.getParameter() + " 타입이 아닙니다.";
+        String message = "파라미터가 " + ex.getParameter().getParameterType() + " 타입이 아닙니다.";
         String cause = ex.getClass().getName();
 
         return ResponseEntity.badRequest()
@@ -40,7 +39,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResult> ConstraintViolationExceptionHandler(ConstraintViolationException e) {
-        String message = "request가 Validate 하지 않습니다.";
+        String message = "request가 Validate 하지 않습니다. :" + e.getConstraintViolations().getClass().getName();
         String cause = e.getClass().getName();
         return ResponseEntity.badRequest()
                 .body(ApiErrorResult.builder().message(message).cause(cause).build());
@@ -55,21 +54,21 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     }
 
     @ExceptionHandler(CustomException.class)
-    public <T extends ApiErrorResult> ResponseEntity<T> CustomExceptionHandler(CustomException ex, WebRequest request) {
+    public <T extends ApiErrorResult> ResponseEntity<T> customExceptionHandler(CustomException ex, WebRequest request) {
         ResponseEntity response = handleExceptionInternal(ex, null, null, ex.getErrorCode().getStatus(), request);
         return response;
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApiErrorResult> BuildingExceptionHandler(BuildingException ex) {
-        return ResponseEntity.status(ex.getErrorCode().getStatus())
-                .body(ApiErrorResult.builder().message(ex.getMessage()).cause(ex.getClass().toString()).build());
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ApiErrorResult> DuplicatedEntryExceptionHandler(SQLIntegrityConstraintViolationException ex) {
+    public ResponseEntity<ApiErrorResult> duplicatedEntryExceptionHandler(SQLIntegrityConstraintViolationException ex) {
         return ResponseEntity.status(ex.getErrorCode())
                 .body(ApiErrorResult.builder().message("중복된 값입니다.").cause(ex.getClass().toString()).build());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public <T extends ApiErrorResult> ResponseEntity<T> generalExceptionHandler(Exception exception, WebRequest request) {
+        ResponseEntity response = handleExceptionInternal(exception, null, null, HttpStatus.INTERNAL_SERVER_ERROR, request);
+        return response;
     }
 }
 

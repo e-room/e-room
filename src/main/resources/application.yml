@@ -38,8 +38,8 @@ spring:
 
 logging:
   level:
-    root: debug
-    sql: debug
+    root: info
+    sql: info
 
 jwt:
   secret-key: token-secret-key

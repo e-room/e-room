@@ -81,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         http.authenticationProvider(jwtProvider);
         http.httpBasic().disable();
+        http.addFilterAfter(customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     private void unitTestSetting(HttpSecurity http) throws Exception {

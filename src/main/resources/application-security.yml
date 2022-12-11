@@ -1,6 +1,6 @@
 security:
   profiles:
-    active: dev
+    active: integration-test
 
 ---
 stage:
@@ -16,7 +16,7 @@ stage:
   authentication:
     status: true
     oauth: true
-    basic-auth: false
+    basic-auth: true
   authorization: true
 ---
 stage:

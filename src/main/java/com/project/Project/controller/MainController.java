@@ -1,9 +1,10 @@
 package com.project.Project.controller;
 
+import com.project.Project.exception.ApiErrorResult;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.building.BuildingException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
 
     @GetMapping("/health")
-    public String oauthTest(Model model, @AuthenticationPrincipal OAuth2AuthenticationToken auth) {
+    public String oauthTest() {
         return "I'm healthy";
+    }
+
+    @GetMapping("/exception-test")
+    public ResponseEntity<ApiErrorResult> exceptionTest() {
+        throw new BuildingException("test", ErrorCode.BUILDING_NPE);
+    }
+
+
+    @GetMapping("/internal-exception")
+    public ResponseEntity<ApiErrorResult> internalExceptionTest() {
+        throw new RuntimeException("test");
     }
 }
