@@ -33,7 +33,7 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<ReviewLike> likeReviewList = new ArrayList<>();
+    private List<ReviewLike> reviewLikeList = new ArrayList<>();
 
 //    // Oauth 회원번호
 //    private Long userId;
