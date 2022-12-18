@@ -1,6 +1,5 @@
 package com.project.Project.controller.interaction.controller;
 
-import com.project.Project.WithMockCustomOAuth2Account;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.config.SecurityConfig;
 import com.project.Project.domain.Member;
@@ -10,6 +9,7 @@ import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.interaction.impl.ReviewLikeServiceImpl;
 import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewKeywordService;
+import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
 import com.project.Project.validator.ReviewExistValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +21,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.BDDMockito.eq;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,9 +61,9 @@ public class ReviewLikeRestControllerTest {
 
         // when & then
         mockMvc.perform(
-                post("/building/room/review/like/3").with(csrf())
-        ).andExpect(status().isOk())
-        .andDo(print());
+                        post("/building/room/review/like/3").with(csrf())
+                ).andExpect(status().isOk())
+                .andDo(print());
 
     }
 }
