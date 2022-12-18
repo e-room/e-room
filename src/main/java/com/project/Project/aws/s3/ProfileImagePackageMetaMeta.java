@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class ProfileImagePackageMetaMeta implements FilePackageMeta {
+public class ProfileImagePackageMetaMeta extends FilePackageMeta {
 
     private Long memberId;
 

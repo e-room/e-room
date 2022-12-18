@@ -87,9 +87,11 @@ public class ReviewGenerator {
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
         List<MultipartFile> imageFileList = request.getReviewImageList();
+        String uuid = staticReviewImageProcess.createUUID();
         ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
                 .buildingId(room.getBuilding().getId())
                 .roomId(room.getId())
+                .uuid(uuid)
                 .build();
         /*
         todo: asynchronously
