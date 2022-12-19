@@ -71,7 +71,8 @@ dependencies {
 
     //thumbnail
     implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.11'
-
+    implementation 'com.github.downgoon:marvin:1.5.5'
+    implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
     //serverless
     implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'

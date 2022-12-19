@@ -1,6 +1,6 @@
 security:
   profiles:
-    active: integration-test
+    active: dev
 
 ---
 stage:

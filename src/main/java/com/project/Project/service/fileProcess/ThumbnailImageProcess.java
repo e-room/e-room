@@ -4,19 +4,25 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.project.Project.aws.s3.FileService;
 import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
 import com.project.Project.domain.Thumbnail;
+import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
+import com.project.Project.repository.uuid.UuidRepository;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+@Service
 public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImagePackageMetadata> {
     @Autowired
-    public ThumbnailImageProcess(FileService amazonS3Service) {
-        super(amazonS3Service);
+    public ThumbnailImageProcess(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) throws IOException {
+        super(amazonS3Service, uuidCustomRepository, uuidRepository);
     }
-
-    private final String thumbnailSavePath = "classpath:/thumbnail";
 
     public Thumbnail makeThumbnailAndUpload(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
         String fileName = createThumbnail(file, thumbnailImagePackageMetadata);
@@ -29,24 +35,28 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
     }
 
     private String createThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
-        String fileName = this.createFileName(thumbnailImagePackageMetadata.getUuid(), file.getOriginalFilename());
-        FileOutputStream thumbnail = null;
         try {
-            thumbnail = new FileOutputStream(new File(thumbnailSavePath, fileName));
+            String thumbnailSavePath = getResourcesFolder();
+            String fileName = this.createFileName(thumbnailImagePackageMetadata.getUuid(), file.getOriginalFilename());
+            FileOutputStream thumbnail = null;
+            File thumbnailImage = new File(thumbnailSavePath, fileName);
+
+            thumbnailImage.createNewFile();
+            thumbnail = new FileOutputStream(thumbnailImage);
             Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 200, 200);
             thumbnail.close();
+            return fileName;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return fileName;
     }
 
     private String uploadThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata, String fileName) {
         String filePath = this.getFilePath(file, thumbnailImagePackageMetadata);
-        ObjectMetadata objectMetadata = super.generateObjectMetadata(file);
-        File thumbNail = new File(thumbnailSavePath, fileName);
+        File thumbNail = new File(getResourcesFolder(), fileName);
+        ObjectMetadata objectMetadata = this.generateObjectMetadata(thumbNail);
         String url = null;
         try {
             url = this.uploadImage(new FileInputStream(thumbNail), objectMetadata, filePath, fileName);
@@ -54,6 +64,27 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
             throw new RuntimeException(e);
         }
         return url;
+    }
+
+    private ObjectMetadata generateObjectMetadata(File file) {
+        try {
+            Path source = Paths.get(file.getPath());
+            String mimeType = Files.probeContentType(source);
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentLength(file.length());
+            objectMetadata.setContentType(mimeType);
+            return objectMetadata;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getResourcesFolder() {
+        try {
+            return new ClassPathResource("thumbnail").getFile().getPath();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

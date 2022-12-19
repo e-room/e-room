@@ -3,6 +3,13 @@ spring:
     include:
       - aws
     active: dev
+  devtools:
+    livereload:
+      enabled: true
+  servlet:
+    multipart:
+      enabled: true
+      location: './resources/thumbnail'
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'

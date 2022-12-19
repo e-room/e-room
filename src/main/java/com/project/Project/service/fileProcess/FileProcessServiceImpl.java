@@ -17,11 +17,13 @@ import java.util.UUID;
 public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
     private FileService amazonS3Service;
 
-    private UuidCustomRepositoryImpl uuidCustomRepository;
-    private UuidRepository uuidRepository;
+    private final UuidCustomRepositoryImpl uuidCustomRepository;
+    private final UuidRepository uuidRepository;
 
-    public FileProcessServiceImpl(FileService amazonS3Service) {
+    public FileProcessServiceImpl(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) {
         this.amazonS3Service = amazonS3Service;
+        this.uuidCustomRepository = uuidCustomRepository;
+        this.uuidRepository = uuidRepository;
     }
 
     public String uploadImage(MultipartFile file, T imagePackage) {
