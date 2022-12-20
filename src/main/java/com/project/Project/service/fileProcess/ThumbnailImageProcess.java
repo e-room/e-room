@@ -43,7 +43,7 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
 
             thumbnailImage.createNewFile();
             thumbnail = new FileOutputStream(thumbnailImage);
-            Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 200, 200);
+            Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 512, 512);
             thumbnail.close();
             return fileName;
         } catch (FileNotFoundException e) {
