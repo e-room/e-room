@@ -1,6 +1,7 @@
 package com.project.Project.config;
 
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -9,6 +10,8 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 @Configuration
 @Getter
@@ -31,6 +34,13 @@ public class AmazonConfig {
     @Value("${cloud.aws.cloudFront.distributionDomain}")
     private String distributionDomain;
 
+    private AWSCredentials awsCredentials;
+
+    @PostConstruct
+    public void init() {
+        awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+    }
+
     @Bean
     public AmazonS3 amazonS3() {
         AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -38,5 +48,10 @@ public class AmazonConfig {
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
+    }
+
+    @Bean
+    public AWSCredentialsProvider awsCredentialsProvider() {
+        return new AWSStaticCredentialsProvider(awsCredentials);
     }
 }
