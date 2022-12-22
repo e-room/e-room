@@ -5,14 +5,13 @@ spring:
       - aws
       - security
     active: dev
-  devtools:
-    livereload:
-      enabled: true
+
 
 server:
   port: 8080
   tomcat:
     uri-encoding: UTF-8
+    connection-timeout: 10s
 
 
 ---
@@ -20,6 +19,9 @@ spring:
   config:
     activate:
       on-profile: dev
+  devtools:
+    livereload:
+      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${AWS_USERNAME}
