@@ -1,9 +1,9 @@
 package com.project.Project.controller;
 
+import com.project.Project.Util.component.CookieUtil;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.util.JsonResult;
-import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
