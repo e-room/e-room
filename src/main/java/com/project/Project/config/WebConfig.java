@@ -2,7 +2,6 @@ package com.project.Project.config;
 
 import com.project.Project.auth.AuthUserArgumentResolver;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -19,9 +18,6 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private final AuthUserArgumentResolver authUserArgumentResolver;
-
-    @Value("${security.profiles.active}")
-    private String stage;
 
     private final CorsProperties corsProperties;
 
