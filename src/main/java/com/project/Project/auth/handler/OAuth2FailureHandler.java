@@ -35,7 +35,7 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
-        String defaultUrl = new URIBuilder().setScheme("https").setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultSuccessPath()).toString();
+        String defaultUrl = new URIBuilder().setScheme("https").setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultFailurePath()).toString();
         Optional<String> redirectUrl = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
                 .map((path) -> new URIBuilder().setScheme("https").setHost(securityProperties.getDefaultHost()).setPath(path).toString());
