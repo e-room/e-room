@@ -1,20 +1,30 @@
 package com.project.Project.Util.component;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import com.project.Project.config.SecurityProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Base64;
 import java.util.Optional;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+//@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
+@RequiredArgsConstructor
 public class CookieUtil {
     private static int accessTokenMaxAge = 60 * 30; // 30분
     private static int refreshTokenMaxAge = 60 * 60 * 24 * 30 * 1; // 1개월
+    private final SecurityProperties securityProperties;
+    private static SecurityProperties staticSecurityProperties;
 
+    @PostConstruct
+    public void init() {
+        staticSecurityProperties = this.securityProperties;
+    }
 
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
@@ -72,6 +82,8 @@ public class CookieUtil {
         accessTokenCookie.setPath("/");
         accessTokenCookie.setSecure(true);
         accessTokenCookie.setMaxAge(accessTokenMaxAge);
+        accessTokenCookie.setDomain(staticSecurityProperties.getDefaultHost());
+
 
         return accessTokenCookie;
     }
@@ -82,7 +94,7 @@ public class CookieUtil {
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setMaxAge(refreshTokenMaxAge);
-
+        refreshTokenCookie.setDomain(staticSecurityProperties.getDefaultHost());
         return refreshTokenCookie;
     }
 }
