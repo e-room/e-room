@@ -89,7 +89,7 @@ server:
       cookie:
         same-site: none
         secure: true
-        domain: e-room.app
+        domain: dev.e-room.app
 
 logging:
   level:
@@ -176,7 +176,7 @@ server:
       cookie:
         same-site: none
         secure: true
-        domain: e-room.app
+        domain: dev.e-room.app
 
 logging:
   level:
@@ -262,7 +262,7 @@ server:
       cookie:
         same-site: none
         secure: true
-        domain: e-room.app
+        domain: dev.e-room.app
 
 logging:
   level:
