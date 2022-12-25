@@ -8,4 +8,6 @@ public interface MemberService {
     Optional<Member> findByEmail(String email);
 
     Optional<Member> findById(Long id);
+
+    Long delete(Member member);
 }
