@@ -51,8 +51,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private void postAuthenticate(HttpServletRequest request, HttpServletResponse response, Authentication authenticationResult) {
         JwtAuthentication jwtAuthenticationResult = (JwtAuthentication) authenticationResult;
         Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(jwtAuthenticationResult.getToken().getAccessToken());
-        response.addCookie(accessTokenCookie);
         Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken());
+        if (Boolean.valueOf(request.getHeader("isLocal"))) {
+            accessTokenCookie.setDomain("localhost");
+            refreshTokenCookie.setDomain("localhost");
+        }
+        response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
     }
 

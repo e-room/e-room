@@ -66,7 +66,7 @@ public class JwtProvider implements AuthenticationProvider {
             if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
                 if (newToken != null) {
-                    setAuthMetadata(token, jwtAuthenticationToken);
+                    setAuthMetadata(newToken, jwtAuthenticationToken);
                     return jwtAuthenticationToken;
                 }
             }
@@ -82,10 +82,12 @@ public class JwtProvider implements AuthenticationProvider {
                 .email(email)
                 .name(member.getName())
                 .picture(member.getProfileImageUrl()).build();
+        authentication.setToken(token);
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);
         authentication.setPrincipalDetails(member);
         authentication.setAuthorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+
     }
 
     private TokenService.JwtCode validateToken(String token) {

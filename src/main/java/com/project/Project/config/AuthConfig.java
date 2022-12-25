@@ -65,7 +65,7 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return oAuthAndJwtAuthentication().andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
         }
 
     }
@@ -82,7 +82,7 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return oAuthAndJwtAuthentication().andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
         }
     }
 
@@ -98,7 +98,7 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return oAuthAndJwtAuthentication().andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
         }
     }
 
@@ -179,19 +179,24 @@ public class AuthConfig {
     }
 
 
-    private static Function<HttpSecurity, HttpSecurity> headerMockingAuthentication() throws Exception {
+    private static Function<HttpSecurity, HttpSecurity> defaultAuthentication() throws Exception {
         return (http) -> {
             try {
                 http
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .authorizeRequests()
-                        .antMatchers("/token/**", "/login/**", "api/profile", "/", "/health").permitAll()
-                        .antMatchers("/building/marking").permitAll()
-                        .anyRequest().authenticated()
-                        .and()
                         .logout().logoutSuccessUrl("/login");
+                return http;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    private static Function<HttpSecurity, HttpSecurity> headerMockingAuthentication() throws Exception {
+        return (http) -> {
+            try {
                 http.httpBasic().disable();
                 http.addFilterAfter(staticCustomBasicAuthFilter, UsernamePasswordAuthenticationFilter.class);
                 return http;
