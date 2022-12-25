@@ -8,11 +8,11 @@ server:
   port: 8080
   tomcat:
     uri-encoding: UTF-8
-  servlet:
-    session:
-      cookie:
-        same-site: none
-#        secure: true
+#  servlet:
+#    session:
+#      cookie:
+#        same-site: none
+##        secure: true
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'
