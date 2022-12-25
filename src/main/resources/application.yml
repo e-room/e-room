@@ -4,6 +4,16 @@ spring:
       - aws
     active: dev
 
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    session:
+      cookie:
+        same-site: none
+#        secure: true
+
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
@@ -80,16 +90,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
-  servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
-        domain: dev.e-room.app
 
 logging:
   level:
@@ -167,16 +167,6 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
-  servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
-        domain: dev.e-room.app
 
 logging:
   level:
@@ -253,16 +243,6 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
-  servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
-        domain: dev.e-room.app
 
 logging:
   level:
@@ -340,16 +320,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
-  servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
-        domain: localhost
 
 logging:
   level:
@@ -427,16 +397,6 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
-  servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
-        domain: localhost
 
 logging:
   level:
