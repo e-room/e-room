@@ -2,12 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: dev
-
-server:
-  port: 8080
-  tomcat:
-    uri-encoding: UTF-8
+    active: local
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'
@@ -16,7 +11,7 @@ cors:
   max-age: 3600
 
 login:
-  default-host: 'e-room-web.vercel.app'
+  default-host: 'e-room.app'
   default-failure-path: '/login'
   default-success-path: '/'
 ---
@@ -47,8 +42,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 940432142456-djm2u20lujmnbk6dudqfkrr0356mi6bg.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 855970344531-bp304d3uabn4v4e2hm97cjguc51jloj2.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
@@ -85,6 +80,16 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: e-room.app
 
 logging:
   level:
@@ -123,8 +128,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 940432142456-djm2u20lujmnbk6dudqfkrr0356mi6bg.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 855970344531-bp304d3uabn4v4e2hm97cjguc51jloj2.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
@@ -161,6 +166,17 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: e-room.app
 
 logging:
   level:
@@ -198,8 +214,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 940432142456-djm2u20lujmnbk6dudqfkrr0356mi6bg.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 855970344531-bp304d3uabn4v4e2hm97cjguc51jloj2.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
@@ -237,6 +253,16 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: e-room.app
 
 logging:
   level:
@@ -276,8 +302,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 940432142456-djm2u20lujmnbk6dudqfkrr0356mi6bg.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 855970344531-bp304d3uabn4v4e2hm97cjguc51jloj2.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
@@ -314,6 +340,17 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: localhost
+
 logging:
   level:
     org:
@@ -352,8 +389,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 940432142456-djm2u20lujmnbk6dudqfkrr0356mi6bg.apps.googleusercontent.com
-            client-secret: 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
+            client-id: 855970344531-bp304d3uabn4v4e2hm97cjguc51jloj2.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - profile
               - email
@@ -390,6 +427,17 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        domain: localhost
+
 logging:
   level:
     org:

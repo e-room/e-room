@@ -43,9 +43,12 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         memberRepository.save(member);
         log.info("{}", token);
         writeTokenResponse(response, token);
+        response.setHeader("accessToken", token.getAccessToken());
+        response.setHeader("refreshToken", token.getRefreshToken());
         String targetUrl = determineTargetUrl(request, response, authentication);
         this.clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
+//        super.onAuthenticationSuccess(request, response, authentication);
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
