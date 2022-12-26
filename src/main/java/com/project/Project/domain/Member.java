@@ -5,10 +5,10 @@ import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import lombok.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +16,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 @Entity
 public class Member extends BaseEntity {
 
@@ -67,8 +67,8 @@ public class Member extends BaseEntity {
         return this.memberRole.getKey();
     }
 
-//    @PreRemove
-//    public void deleteHandler(){
-//        super.setDeleted(true);
-//    }
+    @PreRemove
+    public void deleteHandler(){
+        super.setDeleted(true);
+    }
 }
