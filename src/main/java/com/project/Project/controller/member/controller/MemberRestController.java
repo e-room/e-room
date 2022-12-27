@@ -7,6 +7,7 @@ import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,15 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MemberService memberService;
+
+    @GetMapping("/member/profile")
+    public ResponseEntity<MemberResponseDto.MemberProfileDto> getProfile(@AuthUser Member loginMember) {
+        return ResponseEntity.ok(MemberResponseDto.MemberProfileDto.builder()
+                .name(loginMember.getName())
+                .email(loginMember.getEmail())
+                .profileImageUrl(loginMember.getProfileImageUrl())
+                .build());
+    }
 
     @DeleteMapping("/member/exit")
     public ResponseEntity<MemberResponseDto.MemberDeleteDto> exitMember(@AuthUser Member loginMember) {

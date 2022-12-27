@@ -13,6 +13,16 @@ public class MemberResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    public static class MemberProfileDto {
+        private String name;
+        private String email;
+        private String profileImageUrl;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class MemberDeleteDto {
         private Long memberId;
         private LocalDateTime deletedAt;
