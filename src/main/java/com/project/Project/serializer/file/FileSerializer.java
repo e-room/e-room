@@ -7,6 +7,7 @@ public class FileSerializer {
 
     public static ThumbnailResponseDto.ThumbnailResponse toThumbnailResponse(Thumbnail thumbnail) {
         return ThumbnailResponseDto.ThumbnailResponse.builder()
+                .id(thumbnail.getId())
                 .uuid(thumbnail.getUuid().getUuid())
                 .url(thumbnail.getUrl())
                 .fileName(thumbnail.getFileName())

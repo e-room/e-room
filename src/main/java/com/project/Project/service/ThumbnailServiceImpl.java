@@ -3,6 +3,7 @@ package com.project.Project.service;
 import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
 import com.project.Project.domain.Thumbnail;
 import com.project.Project.domain.Uuid;
+import com.project.Project.repository.ThumbnailRepository;
 import com.project.Project.service.fileProcess.ThumbnailImageProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 public class ThumbnailServiceImpl implements ThumbnailImageService {
 
     private final ThumbnailImageProcess thumbnailImageProcess;
+    private final ThumbnailRepository thumbnailRepository;
 
     @Override
     public List<Thumbnail> saveThumbnailList(List<MultipartFile> imageFileList) {
@@ -36,6 +38,6 @@ public class ThumbnailServiceImpl implements ThumbnailImageService {
             Thumbnail thumbnail = thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
             thumbnailList.add(thumbnail);
         }
-        return thumbnailList;
+        return thumbnailRepository.saveAll(thumbnailList);
     }
 }

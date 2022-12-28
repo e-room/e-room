@@ -75,6 +75,12 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
         return savedUuid;
     }
 
+    protected String createValidOriginFileName(String originalFileName) {
+        String trimedString = originalFileName.trim();
+        String result = trimedString.replaceAll(" ", "-");
+        return result;
+    }
+
 //    public void deleteImage(String url) {
 //        amazonS3Service.deleteFile(getFileName(url));
 //    }

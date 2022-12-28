@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
@@ -63,6 +64,13 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
     public ResponseEntity<ApiErrorResult> duplicatedEntryExceptionHandler(SQLIntegrityConstraintViolationException ex) {
         return ResponseEntity.status(ex.getErrorCode())
                 .body(ApiErrorResult.builder().message("중복된 값입니다.").cause(ex.getClass().toString()).build());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiErrorResult> fileSizeLimitExceptionHandler(MultipartException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiErrorResult.builder().message("파일 처리에 실패했습니다.").cause(ex.getClass().toString()).build());
+
     }
 
     @ExceptionHandler(Exception.class)

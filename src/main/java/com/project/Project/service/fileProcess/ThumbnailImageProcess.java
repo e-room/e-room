@@ -3,15 +3,18 @@ package com.project.Project.service.fileProcess;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.project.Project.aws.s3.FileService;
 import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
+import com.project.Project.config.properties.FileProperties;
 import com.project.Project.domain.Thumbnail;
 import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
 import com.project.Project.repository.uuid.UuidRepository;
-import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,9 +22,13 @@ import java.nio.file.Paths;
 
 @Service
 public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImagePackageMetadata> {
+
+    private FileProperties fileProperties;
+
     @Autowired
-    public ThumbnailImageProcess(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) throws IOException {
+    public ThumbnailImageProcess(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository, FileProperties fileProperties) throws IOException {
         super(amazonS3Service, uuidCustomRepository, uuidRepository);
+        this.fileProperties = fileProperties;
     }
 
     public Thumbnail makeThumbnailAndUpload(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
@@ -36,14 +43,36 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
 
     private String createThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
         try {
+            BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+            int width = bufferedImage.getWidth();
+            int height = bufferedImage.getHeight();
+
             String thumbnailSavePath = getResourcesFolder();
             String fileName = this.createFileName(thumbnailImagePackageMetadata.getUuid(), file.getOriginalFilename());
             FileOutputStream thumbnail = null;
             File thumbnailImage = new File(thumbnailSavePath, fileName);
-
             thumbnailImage.createNewFile();
             thumbnail = new FileOutputStream(thumbnailImage);
-            Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, 512, 512);
+            if (needToResize(file)) {
+                if (width > height) {
+                    Thumbnails.of(file.getInputStream())
+                            .height(fileProperties.getThumbnailSize())
+                            .outputQuality(1.0)
+                            .toOutputStream(thumbnail);
+
+                } else {
+                    Thumbnails.of(file.getInputStream())
+                            .width(fileProperties.getThumbnailSize())
+                            .outputQuality(1.0)
+                            .toOutputStream(thumbnail);
+                }
+//                Thumbnailator.createThumbnail(file.getInputStream(), thumbnail, fileProperties.getThumbnailSize(), fileProperties.getThumbnailSize());
+            } else {
+                Thumbnails.of(file.getInputStream())
+                        .scale(1.0)
+                        .toOutputStream(thumbnail);
+//                Thumbnailator.createThumbnail(file.getInputStream(), thumbnail,width , height);
+            }
             thumbnail.close();
             return fileName;
         } catch (FileNotFoundException e) {
@@ -51,6 +80,16 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Boolean needToResize(MultipartFile file) throws IOException {
+        BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+        int width = bufferedImage.getWidth();
+        int height = bufferedImage.getHeight();
+        if (width > fileProperties.getThumbnailSize() || height > fileProperties.getThumbnailSize()) {
+            return true;
+        }
+        return false;
     }
 
     private String uploadThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata, String fileName) {
@@ -95,7 +134,8 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
     @Override
     protected String createFileName(String uuid, String originalFileName) {
         StringBuilder stringBuilder = new StringBuilder();
-        return stringBuilder.append(uuid).append("s_").append(originalFileName).toString();
+        String validOriginalFileName = super.createValidOriginFileName(originalFileName);
+        return stringBuilder.append("s_").append(uuid).append("_").append(validOriginalFileName).toString();
     }
 
     @Override
