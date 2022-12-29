@@ -6,7 +6,7 @@ import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.config.SecurityProperties;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.serializer.member.MemberSerializer;
 import lombok.AllArgsConstructor;

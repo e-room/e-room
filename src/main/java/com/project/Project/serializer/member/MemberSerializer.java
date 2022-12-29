@@ -2,7 +2,7 @@ package com.project.Project.serializer.member;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.OAuthAttributes;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.member.MemberException;
 import com.project.Project.repository.member.MemberRepository;
@@ -52,7 +52,7 @@ public class MemberSerializer {
         return MemberDto.builder()
                 .email(member.getEmail())
                 .name(member.getName())
-                .picture(member.getProfileImageUrl())
+                .picture(member.getProfileImage().getUrl())
                 .build();
     }
 }

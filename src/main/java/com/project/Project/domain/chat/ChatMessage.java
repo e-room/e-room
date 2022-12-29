@@ -1,7 +1,7 @@
 package com.project.Project.domain.chat;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MessageStatus;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;

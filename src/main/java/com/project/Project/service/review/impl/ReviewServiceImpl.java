@@ -4,7 +4,7 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.room.dto.RoomBaseDto;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.review.Review;

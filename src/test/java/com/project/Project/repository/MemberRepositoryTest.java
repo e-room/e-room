@@ -1,16 +1,10 @@
 package com.project.Project.repository;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.member.MemberRepository;
-import com.project.Project.service.member.MemberService;
-import com.project.Project.service.member.impl.MemberServiceImpl;
 import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.unit.repository.RepositoryTestConfig;
-import com.sun.source.tree.MemberReferenceTree;
-import org.junit.After;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,14 +12,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

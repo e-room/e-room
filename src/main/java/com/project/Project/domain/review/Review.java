@@ -1,7 +1,7 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;

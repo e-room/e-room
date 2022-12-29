@@ -2,7 +2,7 @@ package com.project.Project.util.component;
 
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class MemberGen {
                 .email(email)
                 .name(name)
                 .refreshToken(newToken.getRefreshToken())
-                .profileImageUrl(null)
+                .profileImage(null)
                 .memberRole(MemberRole.USER)
                 .build();
         return memberRepository.save(member);

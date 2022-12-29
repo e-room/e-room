@@ -1,7 +1,7 @@
 package com.project.Project.auth;
 
 import com.project.Project.auth.dto.MemberDto;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.member.MemberException;
 import com.project.Project.serializer.member.MemberSerializer;

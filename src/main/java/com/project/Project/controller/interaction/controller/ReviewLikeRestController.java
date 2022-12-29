@@ -2,7 +2,7 @@ package com.project.Project.controller.interaction.controller;
 
 import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.interaction.dto.ReviewLikeResponseDto;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.service.interaction.ReviewLikeService;
 import com.project.Project.validator.ExistReview;
 import lombok.RequiredArgsConstructor;

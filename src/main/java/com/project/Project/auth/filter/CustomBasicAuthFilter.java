@@ -4,8 +4,9 @@ import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.exception.BasicAuthException;
 import com.project.Project.auth.handler.BasicAuthFailureHandler;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.domain.member.ProfileImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.service.member.MemberService;
@@ -56,7 +57,7 @@ public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
                 .email("swa07016@khu.ac.kr")
                 .memberRole(MemberRole.USER)
                 .refreshToken("mockingMember")
-                .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
+                .profileImage(ProfileImage.builder().url("https://d2ykyi5jl9muoc.cloudfront.net/profile-images/blue-smile_eyes-d_mouth.png").build())
                 .build()
         );
     }

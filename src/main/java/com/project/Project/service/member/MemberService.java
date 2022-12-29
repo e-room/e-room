@@ -1,8 +1,7 @@
 package com.project.Project.service.member;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface MemberService {

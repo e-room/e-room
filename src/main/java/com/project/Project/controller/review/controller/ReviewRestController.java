@@ -4,7 +4,7 @@ import com.project.Project.auth.AuthUser;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;

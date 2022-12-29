@@ -2,7 +2,7 @@ package com.project.Project.controller.member.controller;
 
 import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.member.dto.MemberResponseDto;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class MemberRestController {
         return ResponseEntity.ok(MemberResponseDto.MemberProfileDto.builder()
                 .name(loginMember.getName())
                 .email(loginMember.getEmail())
-                .profileImageUrl(loginMember.getProfileImageUrl())
+                .profileImageUrl(loginMember.getProfileImage().getUrl())
                 .build());
     }
 

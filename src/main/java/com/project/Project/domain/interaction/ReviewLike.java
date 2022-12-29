@@ -1,14 +1,13 @@
 package com.project.Project.domain.interaction;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 

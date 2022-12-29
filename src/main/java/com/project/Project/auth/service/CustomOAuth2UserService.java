@@ -1,8 +1,9 @@
 package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.OAuthAttributes;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.member.MemberRepository;
+import com.project.Project.service.member.ProfileImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
-
+    private final ProfileImageService profileImageService;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService delegate = new DefaultOAuth2UserService();
@@ -42,12 +43,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 modifiableAttributes,
                 attributes.getNameAttributeKey());
     }
-
-
     private Member saveOrUpdate(OAuthAttributes attributes) {
         Member member = memberRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-                .orElse(attributes.toEntity());
+                .map(entity -> entity.update(attributes.getName()))
+                .orElseGet(() -> {
+                    Member newMember = attributes.toEntity();
+                    newMember.setProfileImage(profileImageService.random());
+                    return newMember;
+                });
 
         return memberRepository.save(member);
     }

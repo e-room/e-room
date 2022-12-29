@@ -1,6 +1,6 @@
 package com.project.Project.repository.interaction;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.interaction.ReviewLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 

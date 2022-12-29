@@ -6,7 +6,7 @@ import com.project.Project.aws.s3.FileService;
 import com.project.Project.config.AmazonConfig;
 import com.project.Project.config.WebClientConfig;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.unit.repository.RepositoryTestConfig;
 import com.project.Project.repository.building.BuildingCustomRepository;

@@ -1,6 +1,6 @@
 package com.project.Project.service.member.impl;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;

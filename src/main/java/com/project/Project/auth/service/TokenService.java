@@ -1,7 +1,7 @@
 package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.Token;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.service.member.MemberService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
