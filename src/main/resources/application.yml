@@ -109,6 +109,10 @@ server:
         same-site: none
         secure: true
         domain: e-room.app
+    multipart:
+      enabled: true
+      maxFileSize: 20MB
+      maxRequestSize: 30MB
 
 logging:
   level:
@@ -458,8 +462,8 @@ server:
         domain: localhost
     multipart:
       enabled: true
-      max-file-size: 20MB
-      max-request-size: 30MB
+      maxFileSize: 20MB
+      maxRequestSize: 30MB
 
 logging:
   level:

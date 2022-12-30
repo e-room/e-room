@@ -66,7 +66,7 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
                 .body(ApiErrorResult.builder().message("중복된 값입니다.").cause(ex.getClass().toString()).build());
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(MultipartException.class)
     public ResponseEntity<ApiErrorResult> fileSizeLimitExceptionHandler(MultipartException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiErrorResult.builder().message("파일 처리에 실패했습니다.").cause(ex.getClass().toString()).build());
