@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
@@ -25,11 +26,20 @@ public class LoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//        log.info(request.getContentType());
         MDC.put("traceId", UUID.randomUUID().toString());
+        ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
+        ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
+
         if (isAsyncDispatch(request)) {
             filterChain.doFilter(request, response);
         } else {
-            doFilterWrapped(new RequestWrapper(request), new ResponseWrapper(response), filterChain);
+            String contentType = request.getContentType();
+            if (contentType != null && MediaType.valueOf(MediaType.MULTIPART_FORM_DATA_VALUE).includes(MediaType.valueOf(request.getContentType()))) {
+                filterChain.doFilter(request, response);
+            } else {
+                doFilterWrapped(new RequestWrapper(request), new ResponseWrapper(response), filterChain);
+            }
         }
         MDC.clear();
     }
@@ -78,9 +88,9 @@ public class LoggingFilter extends OncePerRequestFilter {
                 MediaType.APPLICATION_FORM_URLENCODED,
                 MediaType.APPLICATION_JSON,
                 MediaType.APPLICATION_XML,
+                MediaType.MULTIPART_FORM_DATA,
                 MediaType.valueOf("application/*+json"),
-                MediaType.valueOf("application/*+xml"),
-                MediaType.MULTIPART_FORM_DATA
+                MediaType.valueOf("application/*+xml")
         );
 
         return VISIBLE_TYPES.stream()

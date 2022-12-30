@@ -4,6 +4,7 @@ import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.Uuid;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
@@ -87,9 +88,11 @@ public class ReviewGenerator {
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
         List<MultipartFile> imageFileList = request.getReviewImageList();
+        Uuid uuid = staticReviewImageProcess.createUUID();
         ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
                 .buildingId(room.getBuilding().getId())
                 .roomId(room.getId())
+                .uuid(uuid.getUuid())
                 .build();
         /*
         todo: asynchronously

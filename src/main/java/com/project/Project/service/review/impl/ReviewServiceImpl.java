@@ -16,7 +16,6 @@ import com.project.Project.repository.review.ReviewEventListener;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.service.building.BuildingService;
-import com.project.Project.service.fileProcess.FileProcessServiceImpl;
 import com.project.Project.service.review.ReviewGenerator;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.service.room.RoomService;
@@ -32,10 +31,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
+
+
     private final BuildingRepository buildingRepository;
     private final RoomRepository roomRepository;
     private final ReviewRepository reviewRepository;
-    private final FileProcessServiceImpl fileProcessServiceImpl;
     private final BuildingService buildingService;
     private final RoomService roomService;
     private final EntityManager entityManager;

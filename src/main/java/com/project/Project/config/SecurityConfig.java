@@ -9,6 +9,7 @@ import com.project.Project.auth.handler.OAuth2FailureHandler;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
+import com.project.Project.config.properties.SecurityProperties;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;

@@ -6,6 +6,8 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.review.ReviewException;
+import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
+import com.project.Project.repository.uuid.UuidRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,8 +18,8 @@ import java.util.Optional;
 public class ReviewImageProcess extends FileProcessServiceImpl<ReviewImagePackageMetaMeta> {
 
     @Autowired
-    public ReviewImageProcess(FileService amazonS3Service) {
-        super(amazonS3Service);
+    public ReviewImageProcess(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) {
+        super(amazonS3Service, uuidCustomRepository, uuidRepository);
     }
 
     /*

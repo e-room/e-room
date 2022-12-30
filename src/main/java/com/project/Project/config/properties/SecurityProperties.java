@@ -1,4 +1,4 @@
-package com.project.Project.config;
+package com.project.Project.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

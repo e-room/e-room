@@ -4,6 +4,9 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.project.Project.aws.s3.AmazonS3PackageCommand;
 import com.project.Project.aws.s3.FilePackageMeta;
 import com.project.Project.aws.s3.FileService;
+import com.project.Project.domain.Uuid;
+import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
+import com.project.Project.repository.uuid.UuidRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -14,13 +17,17 @@ import java.util.UUID;
 public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
     private FileService amazonS3Service;
 
-    public FileProcessServiceImpl(FileService amazonS3Service) {
+    private final UuidCustomRepositoryImpl uuidCustomRepository;
+    private final UuidRepository uuidRepository;
+
+    public FileProcessServiceImpl(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) {
         this.amazonS3Service = amazonS3Service;
+        this.uuidCustomRepository = uuidCustomRepository;
+        this.uuidRepository = uuidRepository;
     }
 
     public String uploadImage(MultipartFile file, T imagePackage) {
-        AmazonS3PackageCommand command = imagePackage.createCommand();
-        String filePath = amazonS3Service.getFileFolder(command) + createFileName(file.getOriginalFilename());
+        String filePath = this.getFilePath(file, imagePackage);
         ObjectMetadata objectMetadata = generateObjectMetadata(file);
         try (InputStream inputStream = file.getInputStream()) {
             amazonS3Service.uploadFile(inputStream, objectMetadata, filePath);
@@ -31,19 +38,47 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
         return amazonS3Service.getFileUrl(filePath);
     }
 
-    private ObjectMetadata generateObjectMetadata(MultipartFile file) {
+    public String uploadImage(InputStream inputStream, ObjectMetadata objectMetadata, String filePath, String fileName) {
+        amazonS3Service.uploadFile(inputStream, objectMetadata, filePath);
+        return amazonS3Service.getFileUrl(filePath);
+    }
+
+    public String getFilePath(MultipartFile file, T imagePackage) {
+        AmazonS3PackageCommand command = imagePackage.createCommand();
+        String uuid = imagePackage.getUuid();
+        String filePath = amazonS3Service.getFileFolder(command) + createFileName(uuid, file.getOriginalFilename());
+        return filePath;
+    }
+
+    protected ObjectMetadata generateObjectMetadata(MultipartFile file) {
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(file.getSize());
         objectMetadata.setContentType(file.getContentType());
         return objectMetadata;
     }
 
-    private String createFileName(String originalFileName) {
-        return UUID.randomUUID().toString().concat(getFileExtension(originalFileName));
+    protected String createFileName(String uuid, String originalFileName) {
+        return uuid.concat(getFileExtension(originalFileName));
     }
 
-    private String getFileExtension(String fileName) {
+    protected String getFileExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."));
+    }
+
+    public Uuid createUUID() {
+        Uuid savedUuid = null;
+        String candidate = UUID.randomUUID().toString();
+        if (uuidCustomRepository.exist(candidate)) {
+            savedUuid = createUUID();
+        }
+        savedUuid = uuidRepository.save(Uuid.builder().uuid(candidate).build());
+        return savedUuid;
+    }
+
+    protected String createValidOriginFileName(String originalFileName) {
+        String trimedString = originalFileName.trim();
+        String result = trimedString.replaceAll(" ", "-");
+        return result;
     }
 
 //    public void deleteImage(String url) {

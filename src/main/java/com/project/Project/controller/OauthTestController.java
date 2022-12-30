@@ -33,6 +33,6 @@ public class OauthTestController {
         // auth가 왜 null이지...
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         authentication.getPrincipal();
-        return ResponseEntity.ok(authentication.getPrincipal());
+        return ResponseEntity.ok(auth);
     }
 }

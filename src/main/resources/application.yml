@@ -3,12 +3,34 @@ spring:
     include:
       - aws
     active: dev
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 8
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 30MB
+  devtools:
+    add-properties: false
+    livereload:
+      enabled: off
+    restart:
+      exclude: thumbnail
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
+
+file:
+  allowed-image-extension: 'png,jpg'
+  thumbnail-size: 512
+  origin-max-size: 1500
+  thumbnail-location: './resources/thumbnail'
 
 login:
   default-host: 'e-room.app'
@@ -19,9 +41,6 @@ spring:
   config:
     activate:
       on-profile: dev
-  devtools:
-    livereload:
-      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${AWS_USERNAME}
@@ -90,6 +109,10 @@ server:
         same-site: none
         secure: true
         domain: e-room.app
+    multipart:
+      enabled: true
+      maxFileSize: 20MB
+      maxRequestSize: 30MB
 
 logging:
   level:
@@ -437,14 +460,18 @@ server:
         same-site: none
         secure: true
         domain: localhost
+    multipart:
+      enabled: true
+      maxFileSize: 20MB
+      maxRequestSize: 30MB
 
 logging:
   level:
-    org:
-      hibernate:
-        type: trace
+    #    org:
+    #      hibernate:
+    #        type: trace
     root: info
-    sql: debug
+#    sql: debug
 
 jwt:
   secret-key: token-secret-key
