@@ -2,7 +2,12 @@ spring:
   profiles:
     include:
       - aws
-    active: localDev
+    active: dev
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 8
   servlet:
     multipart:
       enabled: true
@@ -12,6 +17,8 @@ spring:
     add-properties: false
     livereload:
       enabled: off
+    restart:
+      exclude: thumbnail
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'

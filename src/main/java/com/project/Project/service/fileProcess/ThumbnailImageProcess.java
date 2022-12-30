@@ -34,6 +34,9 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
     public Thumbnail makeThumbnailAndUpload(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
         String fileName = createThumbnail(file, thumbnailImagePackageMetadata);
         String url = this.uploadThumbnail(file, thumbnailImagePackageMetadata, fileName);
+        String thumbnailSavePath = getResourcesFolder();
+        File thumbnailImage = new File(thumbnailSavePath, fileName);
+        thumbnailImage.delete();
         return Thumbnail.builder()
                 .url(url)
                 .fileName(fileName)
@@ -49,10 +52,9 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
 
             String thumbnailSavePath = getResourcesFolder();
             String fileName = this.createFileName(thumbnailImagePackageMetadata.getUuid(), file.getOriginalFilename());
-            FileOutputStream thumbnail = null;
             File thumbnailImage = new File(thumbnailSavePath, fileName);
             thumbnailImage.createNewFile();
-            thumbnail = new FileOutputStream(thumbnailImage);
+            FileOutputStream thumbnail = new FileOutputStream(thumbnailImage);
             if (needToResize(file)) {
                 if (width > height) {
                     Thumbnails.of(file.getInputStream())

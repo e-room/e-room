@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +26,19 @@ public class ThumbnailServiceImpl implements ThumbnailImageService {
         /*
         todo: asynchronously
          */
-        List<Thumbnail> thumbnailList = new ArrayList<>();
-        for (MultipartFile multipartFile : imageFileList) {
+//        List<Thumbnail> thumbnailList = new ArrayList<>();
+//        for (MultipartFile multipartFile : imageFileList) {
+//            Uuid uuid = thumbnailImageProcess.createUUID();
+//            ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
+//                    .createdAt(LocalDateTime.now())
+//                    .fileName(multipartFile.getOriginalFilename())
+//                    .uuid(uuid.getUuid())
+//                    .uuidEntity(uuid)
+//                    .build();
+//            Thumbnail thumbnail = thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
+//            thumbnailList.add(thumbnail);
+//        }
+        List<Thumbnail> thumbnailList = imageFileList.parallelStream().map((multipartFile) -> {
             Uuid uuid = thumbnailImageProcess.createUUID();
             ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
                     .createdAt(LocalDateTime.now())
@@ -36,8 +47,9 @@ public class ThumbnailServiceImpl implements ThumbnailImageService {
                     .uuidEntity(uuid)
                     .build();
             Thumbnail thumbnail = thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
-            thumbnailList.add(thumbnail);
-        }
+            return thumbnail;
+        }).collect(Collectors.toList());
+
         return thumbnailRepository.saveAll(thumbnailList);
     }
 }

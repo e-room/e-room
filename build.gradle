@@ -74,7 +74,7 @@ dependencies {
     implementation 'com.github.downgoon:marvin:1.5.5'
     implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
-    
+
     //serverless
     implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
