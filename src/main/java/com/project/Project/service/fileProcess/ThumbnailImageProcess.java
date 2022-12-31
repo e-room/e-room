@@ -34,9 +34,6 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
     public Thumbnail makeThumbnailAndUpload(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
         String fileName = createThumbnail(file, thumbnailImagePackageMetadata);
         String url = this.uploadThumbnail(file, thumbnailImagePackageMetadata, fileName);
-        String thumbnailSavePath = getResourcesFolder();
-        File thumbnailImage = new File(thumbnailSavePath, fileName);
-        thumbnailImage.delete();
         return Thumbnail.builder()
                 .url(url)
                 .fileName(fileName)
@@ -50,7 +47,7 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
 
-            String thumbnailSavePath = getResourcesFolder();
+            String thumbnailSavePath = "./thumbnail";
             String fileName = this.createFileName(thumbnailImagePackageMetadata.getUuid(), file.getOriginalFilename());
             File thumbnailImage = new File(thumbnailSavePath, fileName);
             thumbnailImage.createNewFile();
@@ -95,16 +92,18 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
     }
 
     private String uploadThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata, String fileName) {
-        String filePath = this.getFilePath(file, thumbnailImagePackageMetadata);
-        File thumbNail = new File(getResourcesFolder(), fileName);
-        ObjectMetadata objectMetadata = this.generateObjectMetadata(thumbNail);
-        String url = null;
         try {
-            url = this.uploadImage(new FileInputStream(thumbNail), objectMetadata, filePath, fileName);
+            String filePath = this.getFilePath(file, thumbnailImagePackageMetadata);
+            File thumbNail = new File("./thumbnail", fileName);
+            ObjectMetadata objectMetadata = this.generateObjectMetadata(thumbNail);
+            String url = this.uploadImage(new FileInputStream(thumbNail), objectMetadata, filePath, fileName);
+            thumbNail.delete();
+            return url;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return url;
     }
 
     private ObjectMetadata generateObjectMetadata(File file) {
@@ -120,12 +119,8 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
         }
     }
 
-    private String getResourcesFolder() {
-        try {
-            return new ClassPathResource("thumbnail").getFile().getPath();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private ClassPathResource getResourcesFolder() {
+        return new ClassPathResource("thumbnail");
     }
 
     @Override
