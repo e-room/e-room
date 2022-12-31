@@ -1,4 +1,4 @@
-package com.project.Project.Util.component;
+package com.project.Project.util.component;
 
 import com.project.Project.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;

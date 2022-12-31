@@ -1,8 +1,8 @@
 package com.project.Project.auth.handler;
 
-import com.project.Project.Util.component.CookieUtil;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.config.properties.SecurityProperties;
+import com.project.Project.util.component.CookieUtil;
 import lombok.AllArgsConstructor;
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.security.core.AuthenticationException;
