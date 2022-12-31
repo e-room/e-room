@@ -1,0 +1,21 @@
+service: serverless-spring-boot
+
+provider:
+  name: aws
+  runtime: java11
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  profile: larry-eroom
+
+package:
+  artifact: build/distributions/serverless-spring-boot-0.0.1-SNAPSHOT.zip
+
+functions:
+  e-room-api:
+    handler: com.project.Project.StreamLambdaHandler::handleRequest
+    events:
+      - http:
+          method: any
+          path: '/'
+          cors:
+            origin: '*'

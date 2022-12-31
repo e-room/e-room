@@ -1,44 +1,83 @@
 package com.project.Project.controller.review.dto;
 
-import com.project.Project.domain.enums.DisadvantageKeywordEnum;
-import com.project.Project.domain.enums.AdvantageKeywordEnum;
-import com.project.Project.domain.enums.FloorHeight;
-import com.project.Project.domain.enums.ResidencePeriod;
-import lombok.*;
+import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
+import com.project.Project.domain.enums.KeywordEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReviewResponseDto {
 
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewListResponse{
-        private String profilePictureUrl;
-        private String nickName;
-        private BigDecimal score;
-        private ResidencePeriod residencePeriod;
-        private FloorHeight floorHeight;
-        private BigDecimal netLeasableArea;
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewListDto {
+        private BaseReviewDto baseReviewDto;
+        private RoomResponseDto.BaseRoomDto baseRoomDto;
+        private ReviewScoreDto reviewScoreDto;
+        private MemberDto authorDto;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class BaseReviewDto {
+        private Long reviewId;
+        private LocalDateTime createdAt;
+        private Double score;
+        private Integer residencePeriod;
+        private Integer residenceDuration;
+        private Double netLeasableArea;
         private Integer deposit;
         private Integer monthlyRent;
         private Integer managementFee;
-        private List<AdvantageKeywordEnum> advantage;
+        private List<KeywordEnum> advantage;
         private String advantageDescription;
-        private List<DisadvantageKeywordEnum> disadvantage;
+        private List<KeywordEnum> disadvantage;
         private String disadvantageDescription;
         private Integer reviewLikeCnt;
     }
 
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewCreateResponse{
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewScoreDto {
+        private Double traffic;
+
+        private Double buildingComplex;
+
+        private Double surrounding;
+
+        private Double internal;
+
+        private Double livingLocation;
+
+        private Double residenceSatisfaction;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewCreateDto {
         private Long reviewId;
         private LocalDateTime createdAt;
     }
-    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
-    public static class ReviewDeleteResponse{
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewDeleteDto {
         private Long reviewId;
         private LocalDateTime deletedAt;
-        private Integer affectedRowCnt;
     }
 }

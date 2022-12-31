@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+
 public class BuildingRequestDto {
 
     @NoArgsConstructor @Getter @AllArgsConstructor @Builder
@@ -14,6 +16,16 @@ public class BuildingRequestDto {
         @ExistBuilding
         private Long buildingId;
     }
+    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
+    public static class BuildingCreateRequest{
+
+        @Valid
+        private AddressDto addressDto;
+
+        @Valid
+        private BuildingOptionalDto buildingOptionalDto;
+    }
+
 
 //    @NoArgsConstructor @Getter @AllArgsConstructor @Builder
 //    public static class AddressSearchParamRequest{

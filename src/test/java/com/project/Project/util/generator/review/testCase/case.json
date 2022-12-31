@@ -1,0 +1,46 @@
+[
+  {
+    "memberId": 3024,
+    "buildingIds": [
+      {
+        "id": 4144
+      },
+      {
+        "id": 4130
+      }
+    ]
+  },
+  {
+    "memberId": 3025,
+    "buildingIds": [
+      {
+        "id": 4128
+      },
+      {
+        "id": 4126
+      }
+    ]
+  },
+  {
+    "memberId": 3026,
+    "buildingIds": [
+      {
+        "id": 4146
+      },
+      {
+        "id": 4148
+      }
+    ]
+  },
+  {
+    "memberId": 3027,
+    "buildingIds": [
+      {
+        "id": 4150
+      },
+      {
+        "id": 4152
+      }
+    ]
+  }
+]

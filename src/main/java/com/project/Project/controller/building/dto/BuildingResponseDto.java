@@ -1,7 +1,6 @@
 package com.project.Project.controller.building.dto;
 
 
-import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import lombok.Builder;
@@ -17,14 +16,21 @@ public class BuildingResponseDto {
      */
     @Builder
     @Getter
-    public static class BuildingListResponse{
+    public static class BuildingListResponse {
         private Long buildingId;
         private String name;
-        private String address;
+        private AddressDto address;
         private Long reviewCnt;
-        private Float scoreAvg;
+        private Double avgScore;
         private ReviewCategoryEnum bestCategory;
         private boolean isDirectDeal;
+    }
+
+    @Builder
+    @Getter
+    public static class BuildingCountResponse {
+        private List<BuildingMarkerResponse> buildingList;
+        private Integer buildingCount;
     }
 
     /*
@@ -32,8 +38,8 @@ public class BuildingResponseDto {
      */
     @Builder
     @Getter
-    public static class BuildingCountResponse{
-        private Coordinate coordinate;
+    public static class BuildingMarkerResponse {
+        private CoordinateDto coordinateDto;
         private Long buildingId;
     }
 
@@ -43,12 +49,24 @@ public class BuildingResponseDto {
      */
     @Builder
     @Getter
-    public static class BuildingResponse{
+    public static class BuildingResponse {
         private Long buildingId;
         private String name;
-        private String address;
-        private Coordinate coordinate;
-        private List<RoomResponseDto.RoomListResponse> rooms;
-        private List<Map<ReviewCategoryEnum, Double>> buildingSummaries;
+        private AddressDto address;
+        private CoordinateDto coordinate;
+        private Boolean isDirectDeal;
+        private List<RoomResponseDto.RoomListDto> rooms;
+        private Map<ReviewCategoryEnum, Double> buildingSummaries;
+    }
+
+    @Builder
+    @Getter
+    public static class BuildingMetaData {
+        private Long buildingId;
+        private String name;
+        private AddressDto address;
+        private CoordinateDto coordinateDto;
+        private Boolean isDirectDeal;
     }
 }
+

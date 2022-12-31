@@ -1,16 +1,40 @@
 package com.project.Project.controller.building;
 
+import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
+import com.project.Project.domain.building.Building;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.building.BuildingException;
+import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
+import com.project.Project.serializer.building.BuildingSerializer;
+import com.project.Project.service.building.BuildingService;
+import com.project.Project.service.review.ReviewService;
+import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/building")
 public class BuildingRestController {
+
+    private final BuildingService buildingService;
+
+    private final ReviewService reviewService;
 
     /*
     when: 3.0.1
@@ -21,8 +45,10 @@ public class BuildingRestController {
     return: buildingId와 위치를 return
      */
     @GetMapping("/marking")
-    public List<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
-        return null;
+    public ResponseEntity<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
+        List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
+        BuildingResponseDto.BuildingCountResponse response = BuildingSerializer.toBuildingCountResponse(buildingList);
+        return ResponseEntity.ok(response);
     }
 
     /*
@@ -30,9 +56,12 @@ public class BuildingRestController {
     request: buildingId list
     return: 해당하는 건물 list
      */
-    @GetMapping("/")
-    public List<BuildingResponseDto.BuildingListResponse> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingId) {
-        return null;
+    @GetMapping("")
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = {"id", "reviewCnt", "avgScore"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        if (cursorIds == null) cursorIds = new ArrayList<>();
+        List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorIds, pageable);
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
 
     /*
@@ -41,8 +70,11 @@ public class BuildingRestController {
     return: 단일 건물 BuildingResponse
      */
     @GetMapping("/{buildingId}")
-    public BuildingResponseDto.BuildingResponse getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
-        return null;
+    public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
+        Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
+        building.getRoomList().stream().forEach(Hibernate::initialize);
+        building.getBuildingToReviewCategoryList().stream().forEach(Hibernate::initialize);
+        return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building));
     }
 
     /* 8.1
@@ -53,7 +85,19 @@ public class BuildingRestController {
     return: 건물 정보
      */
     @GetMapping("/search")
-    public List<BuildingResponseDto.BuildingResponse> searchBuilding(@RequestParam("params") String params) {
-        return null;
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+        if (cursorIds == null) cursorIds = new ArrayList<>();
+        List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorIds, pageable);
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
+    }
+
+    /*
+    building set generator for test
+     */
+    @PostMapping("/")
+    public ResponseEntity<BuildingResponseDto.BuildingMetaData> createBuilding(@RequestBody BuildingRequestDto.BuildingCreateRequest request) {
+        Building building = this.buildingService.createBuilding(AddressDto.toAddress(request.getAddressDto()), request.getBuildingOptionalDto());
+        return ResponseEntity.ok(BuildingSerializer.toBuildingMetaData(building));
     }
 }
