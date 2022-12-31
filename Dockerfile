@@ -1,4 +1,6 @@
-FROM openjdk:11
+FROM amd64/gradle:7.4-jdk-alpine
+WORKDIR /app
+COPY ./ ./
 ENV AWS_DEV_DB_URL=jdbc:mysql://eroom-db.cpghnwiewsdn.ap-northeast-2.rds.amazonaws.com:3306/PROJECT_DEV \
     AWS_PROD_DB_URL=jdbc:mysql://eroom-db.cpghnwiewsdn.ap-northeast-2.rds.amazonaws.com:3306/PROJECT_PROD \
     AWS_TEST_DB_URL=jdbc:mysql://eroom-db.cpghnwiewsdn.ap-northeast-2.rds.amazonaws.com:3306/PROJECT_TEST \
@@ -8,6 +10,5 @@ ENV AWS_DEV_DB_URL=jdbc:mysql://eroom-db.cpghnwiewsdn.ap-northeast-2.rds.amazona
     AWS_SECRET_ACCESS_KEY=ufWar1mLfvD25kTWXMoqMnw3B4ryvkmTrfPCDrEL \
     ACTIVE_PROFILES=dev
 RUN mkdir /thumbnail
-ARG JAR_FILE=/build/libs/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+RUN gradle clean build --no-daemon
+CMD java -jar build/libs/*.jar
