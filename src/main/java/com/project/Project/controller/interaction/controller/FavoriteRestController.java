@@ -8,6 +8,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.interaction.FavoriteException;
 import com.project.Project.serializer.building.BuildingSerializer;
+import com.project.Project.serializer.interaction.FavoriteSerializer;
 import com.project.Project.service.FavoriteService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
@@ -45,11 +46,7 @@ public class FavoriteRestController {
     @PostMapping("/member/favorite/{buildingId}")
     public ResponseEntity<FavoriteResponseDto.FavoriteAddResponse> addFavoriteBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @AuthUser Member member) {
         Long savedFavoriteId = favoriteService.addFavoriteBuilding(buildingId, member);
-        return ResponseEntity.ok(FavoriteResponseDto.FavoriteAddResponse.builder()
-                .favoriteId(savedFavoriteId)
-                .createdAt(LocalDateTime.now())
-                .build()
-        );
+        return ResponseEntity.ok(FavoriteSerializer.toFavoriteAddResponse(savedFavoriteId));
     }
 
     @DeleteMapping("/member/favorite/{buildingId}")
@@ -58,9 +55,6 @@ public class FavoriteRestController {
             throw new FavoriteException(ErrorCode.FAVORITE_NOT_FOUND);
 
         Long deletedFavoriteId = favoriteService.deleteFavoriteBuilding(buildingId, member);
-        return ResponseEntity.ok(FavoriteResponseDto.FavoriteDeleteResponse.builder()
-                .favoriteId(deletedFavoriteId)
-                .deletedAt(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(FavoriteSerializer.toFavoriteDeleteResponse(deletedFavoriteId));
     }
 }
