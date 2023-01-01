@@ -30,6 +30,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     public Long deleteFavoriteBuilding(Long buildingId, Member member) {
         Building building = buildingRepository.findBuildingById(buildingId);
         Favorite favorite = favoriteRepository.findByBuildingAndMember(building, member);
+        favorite.deleteMemberAndBuilding();
         favoriteRepository.delete(favorite);
         return favorite.getId();
     }
