@@ -154,7 +154,10 @@ public class AuthConfig {
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .logout().logoutSuccessUrl("/login")
+                        .logout().
+                        logoutUrl("/logout")
+                            .deleteCookies("refreshToken", "accessToken")
+                            .logoutSuccessUrl("/login")
                         .and()
                         .oauth2Login()
                         .authorizationEndpoint()
