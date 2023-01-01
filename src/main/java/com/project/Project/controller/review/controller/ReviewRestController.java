@@ -109,11 +109,7 @@ public class ReviewRestController {
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
     public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
         Review review = reviewService.saveReview(request, loginMember);
-
-        return ResponseEntity.ok(ReviewResponseDto.ReviewCreateDto.builder()
-                .reviewId(review.getId())
-                .createdAt(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -128,11 +124,7 @@ public class ReviewRestController {
      */
     @DeleteMapping("/building/room/review/{reviewId}")
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
-        LocalDateTime now = LocalDateTime.now();
         Long deletedReviewId = reviewService.deleteById(reviewId);
-        return ResponseEntity.ok(ReviewResponseDto.ReviewDeleteDto.builder()
-                .reviewId(deletedReviewId)
-                .deletedAt(now)
-                .build());
+        return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 }
