@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface ReviewLikeRepository extends JpaRepository<ReviewLike, Long> {
     Optional<ReviewLike> findByMemberAndReview_Id(Member member, Long reviewId);
+    void deleteByMember(Member member);
 }

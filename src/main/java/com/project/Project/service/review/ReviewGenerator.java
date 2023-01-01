@@ -126,7 +126,7 @@ public class ReviewGenerator {
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
-                .author(member)
+                .author(member) // todo : 이렇게 하면 Member쪽 reviewList에는 없지 않나??
                 .room(room)
                 .reviewSummary(reviewSummary)
                 .anonymousStatus(status)

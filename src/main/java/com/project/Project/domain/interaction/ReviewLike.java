@@ -39,20 +39,15 @@ public class ReviewLike extends BaseEntity {
     private ReviewLikeStatus reviewLikeStatus = ReviewLikeStatus.LIKED;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id", nullable = false)
+    @JoinColumn(name = "review_id")
     private Review review;
 
     public void setReviewLikeStatus(ReviewLikeStatus reviewLikeStatus) {
         this.reviewLikeStatus = reviewLikeStatus;
-    }
-
-    @PreRemove
-    public void deleteHandler() {
-        super.setDeleted(true);
     }
 
     public void setMember(Member member) {
@@ -69,5 +64,10 @@ public class ReviewLike extends BaseEntity {
         }
         this.review = review;
         review.getReviewLikeList().add(this);
+    }
+
+    public void deleteMemberAndReview() {
+        this.member = null;
+        this.review = null;
     }
 }

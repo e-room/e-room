@@ -17,8 +17,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Where(clause = "deleted=false")
-@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
+//@Where(clause = "deleted=false")
+//@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 @Entity
 public class Member extends BaseEntity {
 

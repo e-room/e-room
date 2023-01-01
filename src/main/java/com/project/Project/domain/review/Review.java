@@ -141,4 +141,11 @@ public class Review extends BaseEntity {
                 })
                 .findFirst();
     }
+
+    /**
+     * Member 엔티티와의 연관관계를 끊는 메소드
+     */
+    public void deleteAuthor() {
+        this.author = null;
+    }
 }

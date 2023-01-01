@@ -43,7 +43,7 @@ public class ReviewLikeServiceTest {
                 .email("swa07016@khu.ac.kr")
                 .memberRole(MemberRole.USER)
                 .refreshToken("mockingMember")
-                .profileImage("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
+                // .profileImage("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
     }
 
