@@ -68,13 +68,14 @@ dependencies {
     compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
     implementation 'ca.pjer:logback-awslogs-appender:1.4.0'
+    implementation 'commons-io:commons-io:2.6'
 
-    //serverless
-    implementation 'org.springframework.cloud:spring-cloud-function-adapter-aws'
-    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
-    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
-    runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.5.1'
-    implementation 'com.amazonaws.serverless:aws-serverless-java-container-springboot2:1.9'
+    //thumbnail
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.11'
+    implementation 'com.github.downgoon:marvin:1.5.5'
+    implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
+    implementation 'org.imgscalr:imgscalr-lib:4.2'
+
 
 }
 
@@ -162,31 +163,6 @@ configurations {
     }
     querydsl.extendsFrom compileClasspath
 }
-
-
-ext {
-    set('springCloudVersion', "2020.0.2")
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
-
-
-task buildZipFull(type: Zip) {
-    baseName = "serverless-spring-boot"
-    from compileJava
-    from processResources
-    into('lib') {
-        from(configurations.compileClasspath) {
-            exclude 'tomcat-embed-*'
-        }
-    }
-}
-
-build.dependsOn buildZipFull
 
 jar {
     enabled = false

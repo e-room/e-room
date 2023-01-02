@@ -82,7 +82,7 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
         }
     }
 

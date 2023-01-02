@@ -22,6 +22,10 @@ public class MainController {
         throw new BuildingException("test", ErrorCode.BUILDING_NPE);
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "I'm test";
+    }
 
     @GetMapping("/internal-exception")
     public ResponseEntity<ApiErrorResult> internalExceptionTest() {

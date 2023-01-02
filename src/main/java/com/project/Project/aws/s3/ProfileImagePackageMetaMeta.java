@@ -3,11 +3,16 @@ package com.project.Project.aws.s3;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
-public class ProfileImagePackageMetaMeta implements FilePackageMeta {
+public class ProfileImagePackageMetaMeta extends FilePackageMeta {
 
     private Long memberId;
+
+    @Builder
+    public ProfileImagePackageMetaMeta(String uuid, Long memberId) {
+        super(uuid);
+        this.memberId = memberId;
+    }
 
     @Override
     public AmazonS3PackageCommand createCommand() {

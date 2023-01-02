@@ -1,6 +1,6 @@
-package com.project.Project.Util.component;
+package com.project.Project.util.component;
 
-import com.project.Project.config.SecurityProperties;
+import com.project.Project.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;

@@ -22,11 +22,16 @@ public enum ErrorCode {
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 방이 존재하지 않습니다."),
     ROOM_NPE(HttpStatus.INTERNAL_SERVER_ERROR, "방 참조가 Null입니다"),
 
+    // Interaction
+    FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "찜한 자취방 목록에 해당 건물이 존재하지 않습니다."),
+
     //Review
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
 
     //etc
-    EVENT_LISTENER_INJECTION(HttpStatus.INTERNAL_SERVER_ERROR, "의존성 주입에 실패했습니다.");
+    EVENT_LISTENER_INJECTION(HttpStatus.INTERNAL_SERVER_ERROR, "의존성 주입에 실패했습니다."),
+    IMAGE_RESIZE(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 변환에 실패했습니다"),
+    IMAGE_ONLY(HttpStatus.BAD_REQUEST, "이미지만 썸네일로 생성 가능합니다.");
     private final String message;
     private final HttpStatus status;
 

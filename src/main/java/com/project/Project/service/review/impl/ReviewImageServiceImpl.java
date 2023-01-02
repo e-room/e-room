@@ -27,9 +27,11 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     public void saveImageList(List<MultipartFile> imageFileList, Review review) {
         Room room = review.getRoom();
         Building building = room.getBuilding();
+        String uuid = "asdfa";
         ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
                 .buildingId(building.getId())
                 .roomId(room.getId())
+                .uuid(uuid)
                 .build();
         for (MultipartFile multipartFile : imageFileList) {
             String url = reviewImageProcess.uploadImage(multipartFile, reviewImagePackageMeta);

@@ -23,8 +23,10 @@ public class ReviewImage extends BaseEntity {
     private Long id;
 
     private String fileName;
-    
+
     private String url;
+
+    private String uuid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review")

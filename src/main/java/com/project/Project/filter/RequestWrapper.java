@@ -1,6 +1,6 @@
 package com.project.Project.filter;
 
-import org.springframework.util.StreamUtils;
+import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
@@ -17,7 +17,7 @@ public class RequestWrapper extends HttpServletRequestWrapper {
     public RequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
         InputStream requestInputStream = request.getInputStream();
-        this.cachedInputStream = StreamUtils.copyToByteArray(requestInputStream);
+        this.cachedInputStream = IOUtils.toByteArray(requestInputStream);
     }
 
     @Override

@@ -5,6 +5,7 @@ cloud:
       folder:
         reviewImages: review-images
         profileImages: profile-images
+        thumbnailImages: thumbnail-images
     region:
       static: ap-northeast-2
     stack:

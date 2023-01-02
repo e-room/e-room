@@ -1,14 +1,16 @@
 package com.project.Project.auth.handler;
 
-import com.project.Project.Util.component.CookieUtil;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.config.SecurityProperties;
+
 import com.project.Project.domain.member.Member;
+import com.project.Project.config.properties.SecurityProperties;
+
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.serializer.member.MemberSerializer;
+import com.project.Project.util.component.CookieUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.utils.URIBuilder;
