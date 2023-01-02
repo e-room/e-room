@@ -59,7 +59,6 @@ public class TokenController {
         throw new RuntimeException();
     }
 
-    // test
     @GetMapping("/token/valid")
     public ResponseEntity<MemberDto> validUser(@AuthUser Member member) {
         return ResponseEntity.ok(MemberSerializer.toDto(member));
