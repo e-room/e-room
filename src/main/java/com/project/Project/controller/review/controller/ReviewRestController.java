@@ -2,10 +2,16 @@ package com.project.Project.controller.review.controller;
 
 import com.project.Project.auth.AuthUser;
 import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.building.dto.AddressDto;
+import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
+import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.building.Building;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.review.Review;
+import com.project.Project.domain.room.Room;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
@@ -24,8 +30,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +91,7 @@ public class ReviewRestController {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorIds, pageable);
         List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
-                reviewList.stream()
+                reviewList.parallelStream()
                         .map(ReviewSerializer::toReviewListDto)
                         .collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
@@ -107,8 +115,19 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@ModelAttribute @Valid ReviewRequestDto.ReviewCreateDto request, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
-        Review review = reviewService.saveReview(request, loginMember);
+    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
+
+
+        Address address = AddressDto.toAddress(request.getAddress());
+        BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
+
+        Building building = buildingService.createBuilding(address, buildingOptionalDto);// 빌딩이 없는 경우 생성
+
+        RoomBaseDto roomBaseDto = request.getRoomBaseDto();
+        Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
+
+        request.setReviewImageList(reviewImageList);
+        Review review = reviewService.saveReview(request, loginMember, room);
 
         return ResponseEntity.ok(ReviewResponseDto.ReviewCreateDto.builder()
                 .reviewId(review.getId())
