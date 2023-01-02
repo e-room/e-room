@@ -1,6 +1,5 @@
 package com.project.Project.service;
 
-import com.project.Project.controller.CursorDto;
 import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
@@ -16,13 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 
@@ -42,10 +38,10 @@ public class FavoriteServiceTest {
     private FavoriteServiceImpl favoriteService;
 
     private Member createTestMember() {
-        return  Member.builder() // temp user
+        return Member.builder() // temp user
                 .reviewList(new ArrayList<>())
                 .favoriteBuildingList(new ArrayList<>())
-                .likeReviewList(new ArrayList<>())
+                .reviewLikeList(new ArrayList<>())
                 .name("하품하는 망아지")
                 .email("swa07016@khu.ac.kr")
                 .memberRole(MemberRole.USER)
@@ -55,7 +51,6 @@ public class FavoriteServiceTest {
     }
 
     private Building testBuilding = Building.builder().favoriteList(new ArrayList<>()).hasElevator(true).address(Address.builder().siDo("대전광역시").siGunGu("유성구").roadName("대학로").buildingNumber("291").build()).buildingName("덕영빌").coordinate(new Coordinate(34.2321, 40.1)).build();
-
 
 
     @Test

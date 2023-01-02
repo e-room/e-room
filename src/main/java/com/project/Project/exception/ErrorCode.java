@@ -29,6 +29,7 @@ public enum ErrorCode {
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
 
     //etc
+    UUID_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당하는 UUID가 존재하지 않습니다."),
     EVENT_LISTENER_INJECTION(HttpStatus.INTERNAL_SERVER_ERROR, "의존성 주입에 실패했습니다."),
     IMAGE_RESIZE(HttpStatus.INTERNAL_SERVER_ERROR, "이미지 변환에 실패했습니다"),
     IMAGE_ONLY(HttpStatus.BAD_REQUEST, "이미지만 썸네일로 생성 가능합니다.");

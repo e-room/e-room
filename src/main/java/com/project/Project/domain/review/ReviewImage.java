@@ -1,6 +1,7 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.Uuid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +27,9 @@ public class ReviewImage extends BaseEntity {
 
     private String url;
 
-    private String uuid;
+    @OneToOne()
+    @JoinColumn(name = "uuid_id")
+    private Uuid uuid;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review")

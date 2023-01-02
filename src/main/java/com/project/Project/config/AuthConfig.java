@@ -2,6 +2,7 @@ package com.project.Project.config;
 
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
+import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
 import com.project.Project.auth.handler.OAuth2FailureHandler;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
@@ -32,6 +33,7 @@ public class AuthConfig {
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     private static CustomOAuth2UserService staticCustomOAuth2UserService;
     private static JwtProvider staticJwtProvider;
@@ -40,6 +42,7 @@ public class AuthConfig {
     private static OAuth2SuccessHandler staticOAuth2SuccessHandler;
     private static OAuth2FailureHandler staticOAuth2FailureHandler;
     private static OAuth2AuthorizationRequestBasedOnCookieRepository staticOAuth2AuthorizationRequestBasedOnCookieRepository;
+    private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
 
     @PostConstruct
     public void init() {
@@ -50,6 +53,7 @@ public class AuthConfig {
         staticOAuth2SuccessHandler = this.oAuth2SuccessHandler;
         staticOAuth2FailureHandler = this.oAuth2FailureHandler;
         staticOAuth2AuthorizationRequestBasedOnCookieRepository = this.oAuth2AuthorizationRequestBasedOnCookieRepository;
+        staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
     }
 
     @Profile("local")
@@ -59,13 +63,18 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+                    "api/profile", "/", "/health"
             );
         }
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication().andThen(oAuthAndJwtAuthentication())
+                    .andThen(headerMockingAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
 
     }
@@ -75,8 +84,7 @@ public class AuthConfig {
     public static class SecurityDevConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+            return (web) -> web.ignoring().mvcMatchers("api/profile", "/", "/health"
             );
         }
 
@@ -91,8 +99,7 @@ public class AuthConfig {
     public static class SecurityLocalDevConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+            return (web) -> web.ignoring().mvcMatchers("api/profile", "/", "/health"
             );
         }
 
@@ -107,8 +114,7 @@ public class AuthConfig {
     public static class SecurityProdConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+            return (web) -> web.ignoring().mvcMatchers("api/profile", "/", "/health"
             );
         }
 
@@ -123,6 +129,7 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
+                        .antMatchers("/token/valid").authenticated()
                         .anyRequest().authenticated();
                 return http.build();
             } catch (Exception e) {
@@ -136,8 +143,21 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
-                        .antMatchers("/token/**", "/login", "api/profile", "/", "/health").permitAll()
+                        .antMatchers("/login", "api/profile", "/", "/health").permitAll()
                         .antMatchers("/building/marking").permitAll();
+                return http;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
+    private static Function<HttpSecurity, HttpSecurity> exceptionHandler() throws Exception {
+        return (http) -> {
+            try {
+                http
+                        .exceptionHandling()
+                        .authenticationEntryPoint(staticCustomAuthenticationEntryPoint);
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);

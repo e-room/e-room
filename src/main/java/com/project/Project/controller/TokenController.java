@@ -1,7 +1,11 @@
 package com.project.Project.controller;
 
+import com.project.Project.auth.AuthUser;
+import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.service.TokenService;
+import com.project.Project.domain.Member;
+import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.JsonResult;
 import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
@@ -55,11 +59,9 @@ public class TokenController {
         throw new RuntimeException();
     }
 
-    // test
     @GetMapping("/token/valid")
-    public String validUser(@CookieValue("accessToken") String token) {
-        String email = tokenService.getUid(token);
-        return "email : " + email;
+    public ResponseEntity<MemberDto> validUser(@AuthUser Member member) {
+        return ResponseEntity.ok(MemberSerializer.toDto(member));
     }
 
     /**
