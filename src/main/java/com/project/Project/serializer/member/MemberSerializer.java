@@ -2,7 +2,8 @@ package com.project.Project.serializer.member;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.OAuthAttributes;
-import com.project.Project.domain.Member;
+import com.project.Project.controller.member.dto.MemberResponseDto;
+import com.project.Project.domain.member.Member;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.member.MemberException;
 import com.project.Project.repository.member.MemberRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +54,22 @@ public class MemberSerializer {
         return MemberDto.builder()
                 .email(member.getEmail())
                 .name(member.getName())
-                .picture(member.getProfileImageUrl())
+                .picture(member.getProfileImage().getUrl())
+                .build();
+    }
+
+    public static MemberResponseDto.MemberProfileDto toMemberProfileDto(Member member) {
+        return MemberResponseDto.MemberProfileDto.builder()
+                .name(member.getName())
+                .email(member.getEmail())
+                .profileImageUrl(member.getProfileImage().getUrl())
+                .build();
+    }
+
+    public static MemberResponseDto.MemberDeleteDto toMemberDeleteDto(Long deletedMemberId) {
+        return MemberResponseDto.MemberDeleteDto.builder()
+                .memberId(deletedMemberId)
+                .deletedAt(LocalDateTime.now())
                 .build();
     }
 }

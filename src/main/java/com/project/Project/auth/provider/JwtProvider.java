@@ -5,7 +5,7 @@ import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,7 +81,7 @@ public class JwtProvider implements AuthenticationProvider {
         MemberDto memberDto = MemberDto.builder()
                 .email(email)
                 .name(member.getName())
-                .picture(member.getProfileImageUrl()).build();
+                .picture(member.getProfileImage().getUrl()).build();
         authentication.setToken(token);
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);

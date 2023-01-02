@@ -1,6 +1,6 @@
 package com.project.Project.service.interaction.impl;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.repository.interaction.ReviewLikeRepository;

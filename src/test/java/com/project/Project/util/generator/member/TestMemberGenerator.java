@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.unit.repository.RepositoryTestConfig;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.service.member.MemberService;

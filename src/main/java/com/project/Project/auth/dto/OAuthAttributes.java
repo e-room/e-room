@@ -1,6 +1,6 @@
 package com.project.Project.auth.dto;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,16 +24,14 @@ public class OAuthAttributes {
         this.picture = picture;
     }
 
+    private void setProfileImage(String randomProfileImageUrl) {
+        picture = randomProfileImageUrl;
+    }
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if ("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
-        }
-
-        if ("kakao".equals(registrationId)) {
-            return ofKakao("id", attributes);
-        }
-
+        if ("naver".equals(registrationId)) return ofNaver("id", attributes);
+        if ("kakao".equals(registrationId)) return ofKakao("id", attributes);
         return ofGoogle(userNameAttributeName, attributes);
+        // oAuthAttributes.setProfileImage(ProfileImageSelector.select());
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
@@ -74,7 +72,6 @@ public class OAuthAttributes {
         return Member.builder()
                 .name(name)
                 .email(email)
-                .profileImageUrl(picture)
                 .memberRole(MemberRole.USER)
                 .build();
     }

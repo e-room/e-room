@@ -1,7 +1,7 @@
 package com.project.Project.domain.interaction;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.building.Building;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
@@ -44,7 +44,6 @@ public class Favorite extends BaseEntity {
         this.member = member;
         member.getFavoriteBuildingList().add(this);
     }
-
 
     /**
      * Favorite 엔티티 삭제 전, 연관관계를 끊는 메소드

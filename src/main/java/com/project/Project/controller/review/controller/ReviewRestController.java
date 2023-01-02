@@ -6,10 +6,12 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
+
+import com.project.Project.domain.member.Member;
 import com.project.Project.controller.room.dto.RoomBaseDto;
-import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
+
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.serializer.review.ReviewSerializer;
@@ -118,7 +120,6 @@ public class ReviewRestController {
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
     public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
 
-
         Address address = AddressDto.toAddress(request.getAddress());
         BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
 
@@ -132,10 +133,7 @@ public class ReviewRestController {
         }
         Review review = reviewService.saveReview(request, loginMember, room);
 
-        return ResponseEntity.ok(ReviewResponseDto.ReviewCreateDto.builder()
-                .reviewId(review.getId())
-                .createdAt(LocalDateTime.now())
-                .build());
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -150,11 +148,7 @@ public class ReviewRestController {
      */
     @DeleteMapping("/building/room/review/{reviewId}")
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
-        LocalDateTime now = LocalDateTime.now();
         Long deletedReviewId = reviewService.deleteById(reviewId);
-        return ResponseEntity.ok(ReviewResponseDto.ReviewDeleteDto.builder()
-                .reviewId(deletedReviewId)
-                .deletedAt(now)
-                .build());
+        return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 }

@@ -1,6 +1,6 @@
 package com.project.Project.service;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.ReviewLike;
@@ -10,12 +10,10 @@ import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.interaction.impl.ReviewLikeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -45,7 +43,7 @@ public class ReviewLikeServiceTest {
                 .email("swa07016@khu.ac.kr")
                 .memberRole(MemberRole.USER)
                 .refreshToken("mockingMember")
-                .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
+                // .profileImage("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
     }
 

@@ -1,7 +1,7 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;
@@ -140,5 +140,12 @@ public class Review extends BaseEntity {
                     return false;
                 })
                 .findFirst();
+    }
+
+    /**
+     * Member 엔티티와의 연관관계를 끊는 메소드
+     */
+    public void deleteAuthor() {
+        this.author = null;
     }
 }

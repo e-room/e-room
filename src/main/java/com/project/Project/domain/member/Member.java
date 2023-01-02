@@ -1,12 +1,15 @@
-package com.project.Project.domain;
+package com.project.Project.domain.member;
 
+import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import lombok.*;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +17,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 //@Where(clause = "deleted=false")
+//@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 @Entity
 public class Member extends BaseEntity {
 
@@ -48,15 +51,17 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
-    private String profileImageUrl;
-
-    public Member update(String name, String profileImageUrl) {
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ProfileImage profileImage;
+    public Member update(String name) {
         this.name = name;
-        this.profileImageUrl = profileImageUrl;
-
         return this;
     }
 
+    // 우선 단방향으로 구현, 양방향이 필요한 요구사항 추가시, 편의메소드로 변경
+    public void setProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
+    }
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
@@ -65,8 +70,8 @@ public class Member extends BaseEntity {
         return this.memberRole.getKey();
     }
 
-//    @PreRemove
-//    public void deleteHandler(){
-//        super.setDeleted(true);
-//    }
+    @PreRemove
+    public void deleteHandler(){
+        super.setDeleted(true);
+    }
 }

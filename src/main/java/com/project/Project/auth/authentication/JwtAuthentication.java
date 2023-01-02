@@ -2,7 +2,7 @@ package com.project.Project.auth.authentication;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
