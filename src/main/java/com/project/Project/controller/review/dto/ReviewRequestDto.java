@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +71,7 @@ public class ReviewRequestDto {
         @Size(min = 50, max = 500)
         private String disadvantageDescription;
 
-        @Null
-        List<MultipartFile> reviewImageList;
+        List<MultipartFile> reviewImageList = new ArrayList<>();
 
         @Size(max = 5)
         List<Long> thumbnailUuidIdList;

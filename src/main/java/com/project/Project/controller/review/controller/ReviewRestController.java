@@ -31,6 +31,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.util.annotation.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -115,7 +116,7 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
-    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
+    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
 
 
         Address address = AddressDto.toAddress(request.getAddress());
@@ -126,7 +127,9 @@ public class ReviewRestController {
         RoomBaseDto roomBaseDto = request.getRoomBaseDto();
         Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
 
-        request.setReviewImageList(reviewImageList);
+        if (!(reviewImageList == null || reviewImageList.isEmpty())) {
+            request.setReviewImageList(reviewImageList);
+        }
         Review review = reviewService.saveReview(request, loginMember, room);
 
         return ResponseEntity.ok(ReviewResponseDto.ReviewCreateDto.builder()

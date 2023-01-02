@@ -86,9 +86,10 @@ public class ReviewGenerator {
 
         mappingEntities(reviewToReviewCategoryList, reviewSummary, selectedReviewAdvantageKeywordList, selectedReviewDisadvantageKeywordList, review);
 
-        // ReviewImageList 생성
-        createAndMapReviewImage(request, room, review);
-
+        if (!request.getReviewImageList().isEmpty()) {
+            // ReviewImageList 생성
+            createAndMapReviewImage(request, room, review);
+        }
         return review;
     }
 
