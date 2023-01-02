@@ -1,12 +1,7 @@
 package com.project.Project.service.review.impl;
 
-import com.project.Project.controller.building.dto.AddressDto;
-import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
-import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.Member;
-import com.project.Project.domain.building.Building;
-import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
 import com.project.Project.loader.review.ReviewLoader;
@@ -69,20 +64,13 @@ public class ReviewServiceImpl implements ReviewService {
 
 
     @Transactional
-    public Review saveReview(ReviewRequestDto.ReviewCreateDto request, Member author) {
+    public Review saveReview(ReviewRequestDto.ReviewCreateDto request, Member author, Room room) {
         /*
             1. address로 빌딩 조회
             2. 빌딩의 room 조회
             3. room을 toReview로 넘겨서 review 생성
             4. 저장 후 응답
          */
-        Address address = AddressDto.toAddress(request.getAddress());
-        BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
-
-        Building building = buildingService.createBuilding(address, buildingOptionalDto);// 빌딩이 없는 경우 생성
-
-        RoomBaseDto roomBaseDto = request.getRoomBaseDto();
-        Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
         Review review = reviewRepository.findReviewByAuthorAndRoom(author.getId(), room.getId())
                 .orElseGet(() -> ReviewGenerator.createReview(request, author, room));
         Review savedReview = reviewRepository.save(review);

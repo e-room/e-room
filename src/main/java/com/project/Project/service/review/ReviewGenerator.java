@@ -1,9 +1,11 @@
 package com.project.Project.service.review;
 
 import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
+import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
 import com.project.Project.domain.Member;
+import com.project.Project.domain.Thumbnail;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DTypeEnum;
@@ -11,15 +13,21 @@ import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.*;
 import com.project.Project.domain.room.Room;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.etc.UuidException;
+import com.project.Project.repository.ThumbnailRepository;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
+import com.project.Project.repository.uuid.UuidRepository;
 import com.project.Project.service.fileProcess.ReviewImageProcess;
+import com.project.Project.service.fileProcess.ThumbnailImageProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,11 +42,17 @@ public class ReviewGenerator {
     private final ReviewImageProcess reviewImageProcess;
     private final ReviewKeywordRepository reviewKeywordRepository;
     private final ReviewCategoryRepository reviewCategoryRepository;
+    private final ThumbnailImageProcess thumbnailImageProcess;
+    private final ThumbnailRepository thumbnailRepository;
+    private final UuidRepository uuidRepository;
 
     private static WebClient staticNickNameWebClient;
     private static ReviewImageProcess staticReviewImageProcess;
     private static ReviewKeywordRepository staticReviewKeywordRepository;
     private static ReviewCategoryRepository staticReviewCategoryRepository;
+    private static ThumbnailImageProcess staticThumbnailImageProcess;
+    private static ThumbnailRepository staticThumbnailRepository;
+    private static UuidRepository staticUuidRepository;
 
     @PostConstruct
     public void init() {
@@ -46,6 +60,9 @@ public class ReviewGenerator {
         staticReviewKeywordRepository = this.reviewKeywordRepository;
         staticReviewCategoryRepository = this.reviewCategoryRepository;
         staticNickNameWebClient = this.nickNameWebClient;
+        staticThumbnailImageProcess = this.thumbnailImageProcess;
+        staticThumbnailRepository = this.thumbnailRepository;
+        staticUuidRepository = this.uuidRepository;
     }
 
     public static Review createReview(ReviewRequestDto.ReviewCreateDto request, Member member, Room room) {
@@ -69,9 +86,10 @@ public class ReviewGenerator {
 
         mappingEntities(reviewToReviewCategoryList, reviewSummary, selectedReviewAdvantageKeywordList, selectedReviewDisadvantageKeywordList, review);
 
-        // ReviewImageList 생성
-        createAndMapReviewImage(request, room, review);
-
+        if (!request.getReviewImageList().isEmpty()) {
+            // ReviewImageList 생성
+            createAndMapReviewImage(request, room, review);
+        }
         return review;
     }
 
@@ -88,18 +106,32 @@ public class ReviewGenerator {
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
         List<MultipartFile> imageFileList = request.getReviewImageList();
-        Uuid uuid = staticReviewImageProcess.createUUID();
-        ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
-                .buildingId(room.getBuilding().getId())
-                .roomId(room.getId())
-                .uuid(uuid.getUuid())
-                .build();
         /*
         todo: asynchronously
          */
-        for (MultipartFile multipartFile : imageFileList) {
-            staticReviewImageProcess.uploadImageAndMapToReview(multipartFile, reviewImagePackageMeta, review);
+        List<ImageThumbnailMap> imageThumbnailMaps = new ArrayList<>();
+        for (int i = 0; i < imageFileList.size(); i++) {
+            imageThumbnailMaps.add(new ImageThumbnailMap(imageFileList.get(i), request.getThumbnailUuidIdList().get(i)));
         }
+        imageThumbnailMaps.parallelStream().forEach((imageAndThumbnail) -> {
+            Uuid uuid = staticUuidRepository.findById(imageAndThumbnail.getUuidId()).orElseThrow(() -> new UuidException(ErrorCode.UUID_NOT_FOUND));
+            ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
+                    .createdAt(LocalDateTime.now())
+                    .fileName(imageAndThumbnail.getImage().getOriginalFilename())
+                    .uuid(uuid.getUuid())
+                    .uuidEntity(uuid)
+                    .build();
+            Thumbnail thumbnail = staticThumbnailImageProcess.makeThumbnailAndUpload(imageAndThumbnail.getImage(), thumbnailImagePackageMetadata);
+            staticThumbnailRepository.save(thumbnail);
+            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
+                    .buildingId(room.getBuilding().getId())
+                    .roomId(room.getId())
+                    .uuid(thumbnail.getUuid().getUuid())
+                    .uuidEntity(thumbnail.getUuid())
+                    .build();
+            staticReviewImageProcess.uploadImageAndMapToReview(imageAndThumbnail.getImage(), reviewImagePackageMeta, review);
+        });
+
     }
 
     private static void mappingEntities(List<ReviewToReviewCategory> reviewToReviewCategoryList, ReviewSummary reviewSummary, List<ReviewToReviewKeyword> selectedReviewAdvantageKeywordList, List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList, Review review) {
@@ -191,5 +223,23 @@ public class ReviewGenerator {
                 .anonymousName(nickName)
                 .isAnonymous(Boolean.TRUE)
                 .build();
+    }
+
+    private static class ImageThumbnailMap {
+        private MultipartFile image;
+        private Long UuidId;
+
+        public ImageThumbnailMap(MultipartFile image, Long UuidId) {
+            this.image = image;
+            this.UuidId = UuidId;
+        }
+
+        public MultipartFile getImage() {
+            return image;
+        }
+
+        public Long getUuidId() {
+            return UuidId;
+        }
     }
 }
