@@ -1,12 +1,8 @@
 package com.project.Project.config;
 
-import com.project.Project.auth.CustomAuthenticationEntryPoint;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
-import com.project.Project.auth.handler.BasicAuthFailureHandler;
-import com.project.Project.auth.handler.JWTFailureHandler;
-import com.project.Project.auth.handler.OAuth2FailureHandler;
-import com.project.Project.auth.handler.OAuth2SuccessHandler;
+import com.project.Project.auth.handler.*;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.config.properties.SecurityProperties;
@@ -42,7 +38,7 @@ public class SecurityConfig {
 
     @Bean
     CustomBasicAuthFilter customBasicAuthFilter() throws Exception {
-        return new CustomBasicAuthFilter(authenticationManager(authenticationConfiguration), new CustomAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
+        return new CustomBasicAuthFilter(authenticationManager(authenticationConfiguration), customAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
     }
 
     @Bean
@@ -53,6 +49,11 @@ public class SecurityConfig {
     @Bean
     OAuth2FailureHandler oAuth2FailureHandler() {
         return new OAuth2FailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository(), securityProperties);
+    }
+
+    @Bean
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
     }
 
     /*

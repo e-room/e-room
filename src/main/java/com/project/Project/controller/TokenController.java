@@ -55,7 +55,6 @@ public class TokenController {
         throw new RuntimeException();
     }
 
-    // test
     @GetMapping("/token/valid")
     public String validUser(@CookieValue("accessToken") String token) {
         String email = tokenService.getUid(token);

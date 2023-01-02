@@ -34,6 +34,7 @@ public class JWTFailureHandler implements AuthenticationFailureHandler {
         try {
             String json = errorResponse.toString();
             System.out.println(json);
+            response.setStatus(401);
             response.getWriter().write(json);
         } catch (IOException e) {
             e.printStackTrace();
