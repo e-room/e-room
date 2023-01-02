@@ -1,51 +1,40 @@
 package com.project.Project.controller.interaction;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.Project.WithMockCustomOAuth2Account;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.config.SecurityConfig;
-
 import com.project.Project.controller.interaction.controller.FavoriteRestController;
 import com.project.Project.domain.Member;
-
-import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
-import com.project.Project.service.ReviewCategoryService;
-import com.project.Project.service.ReviewKeywordService;
 import com.project.Project.service.impl.FavoriteServiceImpl;
+import com.project.Project.service.review.ReviewCategoryService;
+import com.project.Project.service.review.ReviewKeywordService;
+import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
 import com.project.Project.validator.BuildingExistValidator;
-
 import com.project.Project.validator.interaction.FavoriteExistValidator;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-
-
-import static org.mockito.BDDMockito.eq;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {FavoriteRestController.class},
         excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, CustomBasicAuthFilter.class})
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, CustomBasicAuthFilter.class})
         },
         includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ReviewKeywordService.class, ReviewCategoryService.class, BuildingExistValidator.class}))
 @ActiveProfiles("local")
