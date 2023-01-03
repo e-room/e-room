@@ -195,7 +195,7 @@ java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept
 2023-01-01 20:30:19.200 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
                         o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext.refresh - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
 2023-01-01 20:30:19.222 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
-                        o.s.b.a.l.ConditionEvaluationReportLoggingListener.logMessage - 
+                        o.s.b.a.l.ConditionEvaluationReportLoggingListener.logMessage -
 
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
 2023-01-01 20:30:19.263 [restartedMain] [35m[traceId=][0;39m [1;31mERROR[0;39m

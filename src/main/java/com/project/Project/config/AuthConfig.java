@@ -63,7 +63,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "api/profile", "/", "/health"
+                    "/token/**", "api/profile", "/", "/health",
+                    "/swagger-ui.html",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**"
             );
         }
 
@@ -84,7 +88,8 @@ public class AuthConfig {
     public static class SecurityDevConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers("api/profile", "/", "/health"
+            return (web) -> web.ignoring().mvcMatchers(
+                    "/token/**", "api/profile", "/", "/health"
             );
         }
 
@@ -99,7 +104,8 @@ public class AuthConfig {
     public static class SecurityLocalDevConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers("api/profile", "/", "/health"
+            return (web) -> web.ignoring().mvcMatchers(
+                    "/token/**", "api/profile", "/", "/health"
             );
         }
 
@@ -114,7 +120,8 @@ public class AuthConfig {
     public static class SecurityProdConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers("api/profile", "/", "/health"
+            return (web) -> web.ignoring().mvcMatchers(
+                    "/token/**", "api/profile", "/", "/health"
             );
         }
 
@@ -143,7 +150,7 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
-                        .antMatchers("/login", "api/profile", "/", "/health").permitAll()
+                        .antMatchers("/token/**", "/login", "api/profile", "/", "/health").permitAll()
                         .antMatchers("/building/marking").permitAll();
                 return http;
             } catch (Exception e) {

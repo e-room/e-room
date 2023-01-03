@@ -23,6 +23,7 @@ import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Review API", description = "리뷰")
 @Validated
 @RestController
 @RequiredArgsConstructor

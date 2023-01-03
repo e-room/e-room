@@ -76,7 +76,8 @@ dependencies {
     implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
     implementation 'org.imgscalr:imgscalr-lib:4.2'
 
-
+    // Swagger
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 }
 
 jacoco {
