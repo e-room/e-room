@@ -2,6 +2,7 @@ package com.project.Project.domain.building;
 
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
@@ -76,8 +77,9 @@ public class Building extends BaseEntity {
     @OneToOne(mappedBy = "building", cascade = CascadeType.ALL)
     private BuildingSummary buildingSummary;
 
+    @Enumerated(EnumType.STRING)
+    private DirectDealType directDealType;
     // TODO : 이미지 업로드 방법에 따라 추후 필드 추가. ex) S3업로드 or ec2 서버내에 업로드 등
-
 
     @PreRemove
     public void deleteHandler() {

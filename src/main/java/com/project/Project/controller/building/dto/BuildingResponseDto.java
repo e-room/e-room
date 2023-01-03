@@ -2,6 +2,7 @@ package com.project.Project.controller.building.dto;
 
 
 import com.project.Project.controller.room.dto.RoomResponseDto;
+import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class BuildingResponseDto {
         private Long reviewCnt;
         private Double avgScore;
         private ReviewCategoryEnum bestCategory;
-        private boolean isDirectDeal;
+        private DirectDealType directDealType;
     }
 
     @Builder
@@ -54,7 +55,7 @@ public class BuildingResponseDto {
         private String name;
         private AddressDto address;
         private CoordinateDto coordinate;
-        private Boolean isDirectDeal;
+        private DirectDealType directDealType;
         private List<RoomResponseDto.RoomListDto> rooms;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
     }
@@ -66,7 +67,7 @@ public class BuildingResponseDto {
         private String name;
         private AddressDto address;
         private CoordinateDto coordinateDto;
-        private Boolean isDirectDeal;
+        private DirectDealType directDealType;
     }
 }
 
