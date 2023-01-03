@@ -6,6 +6,7 @@ import com.project.Project.domain.member.Member;
 import com.project.Project.serializer.interaction.ReviewLikeSerializer;
 import com.project.Project.service.interaction.ReviewLikeService;
 import com.project.Project.validator.ExistReview;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
+@Tag(name = "ReviewLike API", description = "리뷰 좋아요, 취소")
 @Validated
 @RestController
 @RequiredArgsConstructor

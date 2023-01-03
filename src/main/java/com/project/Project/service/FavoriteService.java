@@ -1,6 +1,6 @@
 package com.project.Project.service;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.building.Building;
 import org.springframework.data.domain.Pageable;
 

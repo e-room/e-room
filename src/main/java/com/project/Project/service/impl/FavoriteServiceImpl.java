@@ -1,6 +1,6 @@
 package com.project.Project.service.impl;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.repository.building.BuildingCustomRepository;

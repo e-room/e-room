@@ -43,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "Review API", description = "리뷰")
+@Tag(name = "Review API", description = "리뷰 등록, 조회, 삭제")
 @Validated
 @RestController
 @RequiredArgsConstructor

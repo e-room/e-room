@@ -5,6 +5,7 @@ import com.project.Project.controller.member.dto.MemberResponseDto;
 import com.project.Project.domain.member.Member;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.service.member.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
+@Tag(name = "Member API", description = "내 정보 조회, 회원 탈퇴")
 @RestController
 @RequiredArgsConstructor
 public class MemberRestController {

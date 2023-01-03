@@ -12,6 +12,7 @@ import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Building API", description = "건물 조회, 추가")
 @Validated
 @RequiredArgsConstructor
 @RestController

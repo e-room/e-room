@@ -4,10 +4,11 @@ import com.project.Project.auth.AuthUser;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.JsonResult;
 import com.project.Project.util.component.CookieUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Tag(name = "Token API", description = "토큰 만료, 재발급, 검증")
 @RequiredArgsConstructor
 @RestController
 public class TokenController {

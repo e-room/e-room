@@ -6,6 +6,7 @@ import com.project.Project.exception.CustomException;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.serializer.file.FileSerializer;
 import com.project.Project.service.ThumbnailImageService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Image API", description = "이미지 썸네일 생성")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/images")
