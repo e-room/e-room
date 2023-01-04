@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Component
@@ -101,19 +104,40 @@ public class ReviewGenerator {
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
         List<MultipartFile> imageFileList = request.getReviewImageList();
+        System.out.println(imageFileList.size());
         /*
             todo: asynchronously
         */
-        imageFileList.parallelStream().forEach((image) -> {
-            Uuid uuid = staticReviewImageProcess.createUUID();
-            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
-                    .buildingId(room.getBuilding().getId())
-                    .roomId(room.getId())
-                    .uuid(uuid.getUuid())
-                    .uuidEntity(uuid)
-                    .build();
-            staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
-        });
+        ExecutorService executorService = Executors.newFixedThreadPool(Math.min(imageFileList.size(), 5));
+
+
+        List<CompletableFuture<Void>> futures = imageFileList.stream().map((image) -> CompletableFuture.runAsync(() -> {
+                    Uuid uuid = staticReviewImageProcess.createUUID();
+                    ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
+                            .buildingId(room.getBuilding().getId())
+                            .roomId(room.getId())
+                            .uuid(uuid.getUuid())
+                            .uuidEntity(uuid)
+                            .build();
+                    staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
+                }, executorService))
+                .collect(Collectors.toList());
+
+        /** blocking **/
+        List<Void> blockingList = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(Void -> futures.stream().map(CompletableFuture::join).collect(Collectors.toList()))
+                .join();
+
+//        imageFileList.parallelStream().forEach((image) -> {
+//            Uuid uuid = staticReviewImageProcess.createUUID();
+//            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
+//                    .buildingId(room.getBuilding().getId())
+//                    .roomId(room.getId())
+//                    .uuid(uuid.getUuid())
+//                    .uuidEntity(uuid)
+//                    .build();
+//            staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
+//        });
     }
 
     private static void mappingEntities(List<ReviewToReviewCategory> reviewToReviewCategoryList, ReviewSummary reviewSummary, List<ReviewToReviewKeyword> selectedReviewAdvantageKeywordList, List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList, Review review) {
