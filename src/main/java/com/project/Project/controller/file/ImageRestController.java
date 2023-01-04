@@ -31,7 +31,6 @@ public class ImageRestController {
 
     private final ReviewImageService reviewImageService;
 
-    // todo : ExistReviewImage 어노테이션 만들기
     @GetMapping("/image")
     public ResponseEntity<ReviewResponseDto.ReviewImageDto> getReviewImageByUuid(@RequestParam("uuid") @ExistReviewImage String uuid) {
         ReviewImage reviewImage = reviewImageService.findByUuid(uuid);
