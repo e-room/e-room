@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
 @RequiredArgsConstructor
 public class ReviewImageExistValidator implements ConstraintValidator<ExistReviewImage, String> {
 
-    private ReviewImageRepository reviewImageRepository;
+    private final ReviewImageRepository reviewImageRepository;
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
