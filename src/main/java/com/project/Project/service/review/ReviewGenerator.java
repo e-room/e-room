@@ -1,22 +1,16 @@
 package com.project.Project.service.review;
 
 import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
-import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
-
-import com.project.Project.domain.member.Member;
-import com.project.Project.domain.Thumbnail;
 import com.project.Project.domain.Uuid;
-
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.*;
 import com.project.Project.domain.room.Room;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.etc.UuidException;
 import com.project.Project.repository.ThumbnailRepository;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
@@ -29,11 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 @Component
@@ -108,32 +104,40 @@ public class ReviewGenerator {
 
     private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
         List<MultipartFile> imageFileList = request.getReviewImageList();
+        System.out.println(imageFileList.size());
         /*
-        todo: asynchronously
-         */
-        List<ImageThumbnailMap> imageThumbnailMaps = new ArrayList<>();
-        for (int i = 0; i < imageFileList.size(); i++) {
-            imageThumbnailMaps.add(new ImageThumbnailMap(imageFileList.get(i), request.getThumbnailUuidIdList().get(i)));
-        }
-        imageThumbnailMaps.parallelStream().forEach((imageAndThumbnail) -> {
-            Uuid uuid = staticUuidRepository.findById(imageAndThumbnail.getUuidId()).orElseThrow(() -> new UuidException(ErrorCode.UUID_NOT_FOUND));
-            ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
-                    .createdAt(LocalDateTime.now())
-                    .fileName(imageAndThumbnail.getImage().getOriginalFilename())
-                    .uuid(uuid.getUuid())
-                    .uuidEntity(uuid)
-                    .build();
-            Thumbnail thumbnail = staticThumbnailImageProcess.makeThumbnailAndUpload(imageAndThumbnail.getImage(), thumbnailImagePackageMetadata);
-            staticThumbnailRepository.save(thumbnail);
-            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
-                    .buildingId(room.getBuilding().getId())
-                    .roomId(room.getId())
-                    .uuid(thumbnail.getUuid().getUuid())
-                    .uuidEntity(thumbnail.getUuid())
-                    .build();
-            staticReviewImageProcess.uploadImageAndMapToReview(imageAndThumbnail.getImage(), reviewImagePackageMeta, review);
-        });
+            todo: asynchronously
+        */
+        ExecutorService executorService = Executors.newFixedThreadPool(Math.min(imageFileList.size(), 5));
 
+
+        List<CompletableFuture<Void>> futures = imageFileList.stream().map((image) -> CompletableFuture.runAsync(() -> {
+                    Uuid uuid = staticReviewImageProcess.createUUID();
+                    ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
+                            .buildingId(room.getBuilding().getId())
+                            .roomId(room.getId())
+                            .uuid(uuid.getUuid())
+                            .uuidEntity(uuid)
+                            .build();
+                    staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
+                }, executorService))
+                .collect(Collectors.toList());
+
+        /** blocking **/
+        List<Void> blockingList = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                .thenApply(Void -> futures.stream().map(CompletableFuture::join).collect(Collectors.toList()))
+                .join();
+
+//        imageFileList.parallelStream().forEach((image) -> {
+//            Uuid uuid = staticReviewImageProcess.createUUID();
+//            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
+//                    .buildingId(room.getBuilding().getId())
+//                    .roomId(room.getId())
+//                    .uuid(uuid.getUuid())
+//                    .uuidEntity(uuid)
+//                    .build();
+//            staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
+//        });
     }
 
     private static void mappingEntities(List<ReviewToReviewCategory> reviewToReviewCategoryList, ReviewSummary reviewSummary, List<ReviewToReviewKeyword> selectedReviewAdvantageKeywordList, List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList, Review review) {
