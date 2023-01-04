@@ -4,7 +4,7 @@ import com.project.Project.auth.AuthUser;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.JsonResult;
 import com.project.Project.util.component.CookieUtil;

@@ -2,7 +2,6 @@ package com.project.Project.domain.building;
 
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.interaction.Favorite;
