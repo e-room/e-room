@@ -766,3 +766,405 @@ Caused by: java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to
 	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
 	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
 	... 115 common frames omitted
+2023-01-05 01:18:06.743 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        c.project.Project.ProjectApplication.logStarting - Starting ProjectApplication using Java 11.0.15 on seonghoonui-MacBookPro.local with PID 38480 (/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main started by seonghoon in /Users/seonghoon/Desktop/프로젝트/team-project)
+2023-01-05 01:18:06.745 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        c.project.Project.ProjectApplication.logStartupProfileInfo - The following 2 profiles are active: "aws", "dev"
+2023-01-05 01:18:06.751 [background-preinit] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.validator.internal.util.Version.<clinit> - HV000001: Hibernate Validator 6.2.3.Final
+2023-01-05 01:18:06.799 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/javacv-platform-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/javacv.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/opencv-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/ffmpeg-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/flycapture-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/libdc1394-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/librealsense-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/libfreenect-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/videoinput-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/artoolkitplus-platform.jar
+2023-01-05 01:18:06.800 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/javacv-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/javacpp-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/opencv-3.1.0-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/ffmpeg-3.2.1-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/flycapture-2.9.3.43-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libdc1394-2.2.4-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libfreenect-0.5.3-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/librealsense-1.9.6-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/videoinput-0.200-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/artoolkitplus-2.3.1-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/flandmark-1.07-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/android-4.1.1.4.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-main-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-android-aarch64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-android-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-armv6hf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-macosx-universal.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-solaris-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-solaris-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-windows-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-windows-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-main-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-android-aarch64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-android-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-armv6hf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-macosx-universal.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-solaris-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-solaris-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-windows-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-windows-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-main-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-android-aarch64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-android-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-armv6hf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-macosx-universal.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-solaris-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-solaris-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-windows-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-windows-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/javacpp.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/opencv.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/ffmpeg.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/flycapture.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libdc1394.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/librealsense.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libfreenect.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/videoinput.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/artoolkitplus.jar
+2023-01-05 01:18:06.800 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-platform-1.07-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-windows-x86_64.jar
+2023-01-05 01:18:06.800 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-platform-3.1.0-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-windows-x86_64.jar
+2023-01-05 01:18:06.800 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-platform-3.2.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-windows-x86_64.jar
+2023-01-05 01:18:06.800 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-platform-2.9.3.43-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-windows-x86_64.jar
+2023-01-05 01:18:06.801 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-platform-2.2.4-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-windows-x86_64.jar
+2023-01-05 01:18:06.802 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-platform-0.5.3-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-windows-x86_64.jar
+2023-01-05 01:18:06.802 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense-platform-1.9.6-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense-linux-x86_64.jar
+2023-01-05 01:18:06.802 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput-platform-0.200-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput-windows-x86_64.jar
+2023-01-05 01:18:06.803 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-platform-2.3.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-windows-x86_64.jar
+2023-01-05 01:18:06.803 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark/1.07-1.3/e5cd132c846b296edc8eee43c596583adfd151de/flandmark-1.07-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark/1.07-1.3/e5cd132c846b296edc8eee43c596583adfd151de/javacpp.jar
+2023-01-05 01:18:06.804 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv/3.1.0-1.3/ae19e668754f80bc451d28d07c916d55f5d05fd8/opencv-3.1.0-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv/3.1.0-1.3/ae19e668754f80bc451d28d07c916d55f5d05fd8/javacpp.jar
+2023-01-05 01:18:06.804 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg/3.2.1-1.3/2b506fefac100e50800bb1b5908d7588ab21fb45/ffmpeg-3.2.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg/3.2.1-1.3/2b506fefac100e50800bb1b5908d7588ab21fb45/javacpp.jar
+2023-01-05 01:18:06.804 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture/2.9.3.43-1.3/bb48ed01be621b6b38b91d45a96e68e7ad7bf25e/flycapture-2.9.3.43-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture/2.9.3.43-1.3/bb48ed01be621b6b38b91d45a96e68e7ad7bf25e/javacpp.jar
+2023-01-05 01:18:06.804 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394/2.2.4-1.3/e702de628164ba633e77f3b4a4a16a0c402ce364/libdc1394-2.2.4-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394/2.2.4-1.3/e702de628164ba633e77f3b4a4a16a0c402ce364/javacpp.jar
+2023-01-05 01:18:06.804 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect/0.5.3-1.3/ea7981fbc3eba3cf3d8c1b8492d1952b85d20068/libfreenect-0.5.3-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect/0.5.3-1.3/ea7981fbc3eba3cf3d8c1b8492d1952b85d20068/javacpp.jar
+2023-01-05 01:18:06.805 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense/1.9.6-1.3/a38afba003c895652db9f29f7e014e451a73a0b4/librealsense-1.9.6-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense/1.9.6-1.3/a38afba003c895652db9f29f7e014e451a73a0b4/javacpp.jar
+2023-01-05 01:18:06.805 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput/0.200-1.3/f30b2cba25b56af3a60a679775016537fda37c41/videoinput-0.200-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput/0.200-1.3/f30b2cba25b56af3a60a679775016537fda37c41/javacpp.jar
+2023-01-05 01:18:06.805 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus/2.3.1-1.3/543bf47572afc2f02c30f125d77019b1306e82d1/artoolkitplus-2.3.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus/2.3.1-1.3/543bf47572afc2f02c30f125d77019b1306e82d1/javacpp.jar
+2023-01-05 01:18:06.806 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor.logTo - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-01-05 01:18:11.361 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-01-05 01:18:11.560 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 189 ms. Found 16 JPA repository interfaces.
+2023-01-05 01:18:12.091 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization - Bean '(inner bean)#6c0dd69b' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-01-05 01:18:12.093 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization - Bean '(inner bean)#7d3b3fb2' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-01-05 01:18:12.100 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization - Bean '(inner bean)#48d8ee9a' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-01-05 01:18:12.586 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.w.e.tomcat.TomcatWebServer.initialize - Tomcat initialized with port(s): 8080 (http)
+2023-01-05 01:18:12.596 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.coyote.http11.Http11NioProtocol.log - Initializing ProtocolHandler ["http-nio-8080"]
+2023-01-05 01:18:12.596 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.catalina.core.StandardService.log - Starting service [Tomcat]
+2023-01-05 01:18:12.597 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.catalina.core.StandardEngine.log - Starting Servlet engine: [Apache Tomcat/9.0.64]
+2023-01-05 01:18:12.719 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.c.c.C.[Tomcat].[localhost].[/].log - Initializing Spring embedded WebApplicationContext
+2023-01-05 01:18:12.719 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.w.s.c.ServletWebServerApplicationContext.prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 5912 ms
+2023-01-05 01:18:13.066 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-01-05 01:18:13.094 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.9.Final
+2023-01-05 01:18:13.176 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-01-05 01:18:13.226 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+2023-01-05 01:18:13.234 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.h.e.j.e.i.JdbcEnvironmentInitiator.initiateService - HHH000342: Could not obtain connection to query metadata
+java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at com.zaxxer.hikari.util.DriverDataSource.<init>(DriverDataSource.java:110)
+	at com.zaxxer.hikari.pool.PoolBase.initializeDataSource(PoolBase.java:331)
+	at com.zaxxer.hikari.pool.PoolBase.<init>(PoolBase.java:114)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:108)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:181)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:35)
+	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:101)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:237)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:214)
+	at org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory.injectServices(DefaultIdentifierGeneratorFactory.java:175)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.injectDependencies(AbstractServiceRegistryImpl.java:286)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:243)
+	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:214)
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:173)
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:127)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1460)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1494)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:330)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:113)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:693)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:510)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1195)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:374)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:134)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1707)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:410)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1195)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:213)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:212)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:175)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:170)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:155)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:87)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:262)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:236)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:53)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5219)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1396)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1386)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:140)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:919)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:835)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1396)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1386)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:140)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:919)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:263)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:432)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:930)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:486)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:123)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:104)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:479)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:211)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:184)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:577)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295)
+	at com.project.Project.ProjectApplication.main(ProjectApplication.java:19)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+2023-01-05 01:18:13.241 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-01-05 01:18:14.426 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+2023-01-05 01:18:14.431 [restartedMain] [35m[traceId=][0;39m [1;31mERROR[0;39m
+                        o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Failed to initialize JPA EntityManagerFactory: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+2023-01-05 01:18:14.433 [restartedMain] [35m[traceId=][0;39m [1;31mERROR[0;39m
+                        o.s.b.w.e.tomcat.TomcatStarter.onStartup - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'securityConfig' defined in file [/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main/com/project/Project/config/SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'memberServiceImpl' defined in file [/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main/com/project/Project/service/member/impl/MemberServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'memberRepository' defined in com.project.Project.repository.member.MemberRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot create inner bean '(inner bean)#7d2ceb6d' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#7d2ceb6d': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+2023-01-05 01:18:14.449 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.catalina.core.StandardService.log - Stopping service [Tomcat]
+2023-01-05 01:18:14.455 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext.refresh - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+2023-01-05 01:18:14.471 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.a.l.ConditionEvaluationReportLoggingListener.logMessage - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-01-05 01:18:14.494 [restartedMain] [35m[traceId=][0;39m [1;31mERROR[0;39m
+                        o.s.boot.SpringApplication.reportFailure - Application run failed
+org.springframework.context.ApplicationContextException: Unable to start web server; nested exception is org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:165)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:577)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295)
+	at com.project.Project.ProjectApplication.main(ProjectApplication.java:19)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:142)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:104)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:479)
+	at org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:211)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:184)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:162)
+	... 13 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'securityConfig' defined in file [/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main/com/project/Project/config/SecurityConfig.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'memberServiceImpl' defined in file [/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main/com/project/Project/service/member/impl/MemberServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'memberRepository' defined in com.project.Project.repository.member.MemberRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot create inner bean '(inner bean)#7d2ceb6d' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#7d2ceb6d': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:800)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:410)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1195)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:213)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:212)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:175)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:170)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:155)
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:87)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.getServletContextInitializerBeans(ServletWebServerApplicationContext.java:262)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.selfInitialize(ServletWebServerApplicationContext.java:236)
+	at org.springframework.boot.web.embedded.tomcat.TomcatStarter.onStartup(TomcatStarter.java:53)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5219)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1396)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1386)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:140)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:919)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:835)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1396)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1386)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:140)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:919)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:263)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:432)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:930)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:486)
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:123)
+	... 18 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'memberServiceImpl' defined in file [/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main/com/project/Project/service/member/impl/MemberServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'memberRepository' defined in com.project.Project.repository.member.MemberRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot create inner bean '(inner bean)#7d2ceb6d' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#7d2ceb6d': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:800)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 68 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'memberRepository' defined in com.project.Project.repository.member.MemberRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot create inner bean '(inner bean)#7d2ceb6d' of type [org.springframework.orm.jpa.SharedEntityManagerCreator] while setting bean property 'entityManager'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#7d2ceb6d': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:389)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:134)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1707)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1452)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 82 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name '(inner bean)#7d2ceb6d': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:342)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:113)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:693)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:510)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1352)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1195)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveInnerBean(BeanDefinitionValueResolver.java:374)
+	... 96 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1804)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:330)
+	... 104 common frames omitted
+Caused by: javax.persistence.PersistenceException: [PersistenceUnit: default] Unable to build Hibernate SessionFactory; nested exception is java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:421)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1863)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1800)
+	... 111 common frames omitted
+Caused by: java.lang.RuntimeException: Driver com.mysql.cj.jdbc.Driver claims to not accept jdbcUrl, ${AWS_DEV_DB_URL}
+	at com.zaxxer.hikari.util.DriverDataSource.<init>(DriverDataSource.java:110)
+	at com.zaxxer.hikari.pool.PoolBase.initializeDataSource(PoolBase.java:331)
+	at com.zaxxer.hikari.pool.PoolBase.<init>(PoolBase.java:114)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:108)
+	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
+	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
+	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:181)
+	at org.hibernate.resource.transaction.backend.jdbc.internal.DdlTransactionIsolatorNonJtaImpl.getIsolatedConnection(DdlTransactionIsolatorNonJtaImpl.java:44)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcConnection(ImprovedExtractionContextImpl.java:63)
+	at org.hibernate.tool.schema.internal.exec.ImprovedExtractionContextImpl.getJdbcDatabaseMetaData(ImprovedExtractionContextImpl.java:70)
+	at org.hibernate.tool.schema.extract.internal.InformationExtractorJdbcDatabaseMetaDataImpl.processTableResultSet(InformationExtractorJdbcDatabaseMetaDataImpl.java:64)
+	at org.hibernate.tool.schema.extract.internal.AbstractInformationExtractorImpl.getTables(AbstractInformationExtractorImpl.java:559)
+	at org.hibernate.tool.schema.extract.internal.DatabaseInformationImpl.getTablesInformation(DatabaseInformationImpl.java:122)
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:68)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:220)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:123)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:196)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:85)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:335)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:471)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1498)
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409)
+	... 115 common frames omitted
