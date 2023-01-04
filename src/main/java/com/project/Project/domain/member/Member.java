@@ -9,6 +9,7 @@ import lombok.*;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,17 @@ public class Member extends BaseEntity {
     private MemberRole memberRole;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recent_map_location_id")
+    private RecentMapLocation recentMapLocation;
+
+    public void setRecentMapLocation(RecentMapLocation recentMapLocation) {
+        this.recentMapLocation = recentMapLocation;
+    }
+
     public Member update(String name) {
         this.name = name;
         return this;
