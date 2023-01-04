@@ -1,5 +1,6 @@
 package com.project.Project.controller.member.dto;
 
+import com.project.Project.controller.building.dto.CoordinateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +27,14 @@ public class MemberResponseDto {
     public static class MemberDeleteDto {
         private Long memberId;
         private LocalDateTime deletedAt;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class RecentMapLocationDto {
+        private LocalDateTime updatedAt;
+        private CoordinateDto coordinateDto;
     }
 }

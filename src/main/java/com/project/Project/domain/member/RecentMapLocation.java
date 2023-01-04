@@ -16,14 +16,10 @@ public class RecentMapLocation {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @Embedded
     private Coordinate coordinate;
 
-    public void setMember(Member member) {
-        this.member = member;
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 }
