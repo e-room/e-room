@@ -27,7 +27,7 @@ public class ReviewImage extends BaseEntity {
 
     private String url;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuid_id")
     private Uuid uuid;
 
