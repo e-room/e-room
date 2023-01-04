@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ReviewImageService {
+    ReviewImage findByUuid(String uuid);
     List<ReviewImage> findByReview(Long reviewId);
     void saveImageList(List<MultipartFile> imageFileList, Review review);
 }

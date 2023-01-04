@@ -22,6 +22,7 @@ import java.util.List;
 public class ReviewImageServiceImpl implements ReviewImageService {
 
     private final ReviewImageProcess reviewImageProcess;
+
     private final ReviewImageRepository reviewImageRepository;
     private final ReviewRepository reviewRepository;
 
@@ -29,6 +30,12 @@ public class ReviewImageServiceImpl implements ReviewImageService {
         // controller 단에서 존재하는 @ExistReview로 검증하여 존재하는 reviewId이므로 바로 get
         Review review = reviewRepository.findById(reviewId).get();
         return reviewImageRepository.findByReview(review);
+    }
+
+    public ReviewImage findByUuid(String uuid) {
+        // controller 단에서 존재하는 @ExistReviewImage로 검증하여 존재하는 uuid이므로 바로 get
+        ReviewImage reviewImage = reviewImageRepository.findByUuid(uuid).get();
+        return reviewImage;
     }
 
     @Transactional
