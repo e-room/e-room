@@ -87,7 +87,7 @@ public class ReviewResponseDto {
     @AllArgsConstructor
     @Builder
     public static class ReviewImageDto {
-        private Uuid uuid;
+        private String uuid;
         private String url;
     }
 

@@ -3,6 +3,8 @@ package com.project.Project.controller.interaction;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.config.SecurityConfig;
+import com.project.Project.config.WebConfig;
+import com.project.Project.config.properties.CorsProperties;
 import com.project.Project.controller.interaction.controller.FavoriteRestController;
 import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingRepository;
@@ -34,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = {FavoriteRestController.class},
         excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, CustomBasicAuthFilter.class})
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityConfig.class, CustomBasicAuthFilter.class, CorsProperties.class, WebConfig.class})
         },
         includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ReviewKeywordService.class, ReviewCategoryService.class, BuildingExistValidator.class}))
 @ActiveProfiles("local")

@@ -130,7 +130,7 @@ public class ReviewSerializer {
     private static ReviewResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
         return ReviewResponseDto.ReviewImageDto.builder()
                 .url(reviewImage.getUrl())
-                .uuid(reviewImage.getUuid())
+                .uuid(reviewImage.getUuid().getUuid())
                 .build();
     }
 
