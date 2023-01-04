@@ -88,6 +88,8 @@ public class ImageRestControllerTest {
         // given
         given(reviewImageRepository.existsByUuid("iloveeroom"))
                 .willReturn(true);
+        given(reviewImageRepository.existsByUuid("iloveeroom2"))
+                .willReturn(false);
         given(reviewImageService.findByUuid("iloveeroom"))
                 .willReturn(reviewImage1);
 
@@ -96,6 +98,12 @@ public class ImageRestControllerTest {
                         get("/image?uuid=iloveeroom")
                                 .with(csrf())
                 ).andExpect(status().isOk())
+                .andDo(print());
+
+        final ResultActions action2 = mockMvc.perform(
+                        get("/image?uuid=iloveeroom2")
+                                .with(csrf())
+                ).andExpect(status().isBadRequest())
                 .andDo(print());
     }
 }

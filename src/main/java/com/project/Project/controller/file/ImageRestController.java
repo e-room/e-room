@@ -14,12 +14,14 @@ import com.project.Project.validator.ExistReviewImage;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Validated
 @Tag(name = "Image API", description = "이미지 썸네일 생성, 이미지 단건 조회")
 @RestController
 @RequiredArgsConstructor
