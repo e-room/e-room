@@ -5,10 +5,7 @@ import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
-import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewKeyword;
-import com.project.Project.domain.review.ReviewToReviewCategory;
-import com.project.Project.domain.review.ReviewToReviewKeyword;
+import com.project.Project.domain.review.*;
 import com.project.Project.domain.room.Room;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.review.ReviewCategoryRepository;
@@ -22,6 +19,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,6 +124,26 @@ public class ReviewSerializer {
         return ReviewResponseDto.ReviewDeleteDto.builder()
                 .reviewId(deletedReviewId)
                 .deletedAt(LocalDateTime.now())
+                .build();
+    }
+
+    private static ReviewResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        return ReviewResponseDto.ReviewImageDto.builder()
+                .url(reviewImage.getUrl())
+                .uuid(reviewImage.getUuid())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewImageListDto toReviewImageListDto(List<ReviewImage> reviewImageList) {
+        List<ReviewResponseDto.ReviewImageDto> reviewImageDtoList =
+               reviewImageList.stream()
+                       .map((reviewImage -> toReviewImageDto(reviewImage)))
+                       .collect(Collectors.toList());
+        Integer reviewImageCount = reviewImageDtoList.size();
+
+        return ReviewResponseDto.ReviewImageListDto.builder()
+                .reviewImageList(reviewImageDtoList)
+                .reviewImageCount(reviewImageCount)
                 .build();
     }
 }

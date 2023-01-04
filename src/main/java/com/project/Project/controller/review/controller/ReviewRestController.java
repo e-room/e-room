@@ -13,6 +13,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 
 import com.project.Project.domain.review.Review;
+import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
@@ -152,5 +153,11 @@ public class ReviewRestController {
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
+    }
+
+    @GetMapping("/review/{reviewId}/images")
+    public ResponseEntity<ReviewResponseDto.ReviewImageListDto> getReviewImageList(@PathVariable("reviewId") @ExistReview Long reviewId) {
+        List<ReviewImage> reviewImageList = reviewImageService.findByReview(reviewId);
+        return ResponseEntity.ok(ReviewSerializer.toReviewImageListDto(reviewImageList));
     }
 }
