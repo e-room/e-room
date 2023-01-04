@@ -3,8 +3,8 @@ package com.project.Project.controller.interaction.controller;
 import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.controller.interaction.dto.FavoriteResponseDto;
-import com.project.Project.domain.Member;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.member.Member;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.interaction.FavoriteException;
 import com.project.Project.serializer.building.BuildingSerializer;
@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
