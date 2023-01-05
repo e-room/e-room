@@ -9,6 +9,7 @@ import com.project.Project.service.interaction.ReviewLikeService;
 import com.project.Project.validator.ExistReview;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -31,11 +32,15 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ReviewLikeRestController {
     private final ReviewLikeService reviewLikeService;
-    @Operation(summary = "리뷰 좋아요", description = "리뷰 좋아요/취소")
+    @Operation(summary = "리뷰 좋아요/취소", description = "리뷰 좋아요/취소")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewLikeResponseDto.ReviewLikeUpdateResponse.class)))
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewLikeResponseDto.ReviewLikeUpdateResponse.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
-    @Parameter(name = "reviewId", description = "좋아요/취소하고자하는 리뷰의 id", example = "1021")
+    @Parameters({
+            @Parameter(name = "reviewId", description = "좋아요/취소하고자하는 리뷰의 id", example = "1021"),
+            @Parameter(name = "member", hidden = true)
+    })
     @PutMapping("/building/room/review/like/{reviewId}")
     public ResponseEntity<ReviewLikeResponseDto.ReviewLikeUpdateResponse> updateReviewLike(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member member) {
         ReviewLike updatedReviewLike = reviewLikeService.updateReviewLike(reviewId, member);
