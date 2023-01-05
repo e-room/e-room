@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ import java.time.LocalDateTime;
 public class ReviewLikeRestController {
     private final ReviewLikeService reviewLikeService;
 
-    @PostMapping("/building/room/review/like/{reviewId}")
+    @PutMapping("/building/room/review/like/{reviewId}")
     public ResponseEntity<ReviewLikeResponseDto.ReviewLikeUpdateResponse> updateReviewLike(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member member) {
         Long updatedReviewLikeId = reviewLikeService.updateReviewLike(reviewId, member);
         return ResponseEntity.ok(ReviewLikeSerializer.toReviewLikeUpdateResponse(updatedReviewLikeId));
