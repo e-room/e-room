@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -15,8 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE review_image SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 public class ReviewImage extends BaseEntity {
     @Id
@@ -31,12 +27,13 @@ public class ReviewImage extends BaseEntity {
     @JoinColumn(name = "uuid_id")
     private Uuid uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "review")
     private Review review;
 
     @PreRemove
     public void deleteHandler() {
+        this.review = null;
         super.setDeleted(true);
     }
 

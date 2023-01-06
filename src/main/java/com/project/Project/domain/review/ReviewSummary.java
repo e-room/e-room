@@ -2,21 +2,19 @@ package com.project.Project.domain.review;
 
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.eventListener.ReviewSummaryListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
+@EntityListeners(value = ReviewSummaryListener.class)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE review_summary SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 public class ReviewSummary extends BaseEntity {
     @Id

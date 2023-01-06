@@ -1,25 +1,25 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.eventListener.ReviewToReviewKeywordListener;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
+
+@EntityListeners(value = ReviewToReviewKeywordListener.class)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE review_to_review_keyword SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 public class ReviewToReviewKeyword extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,7 +30,7 @@ public class ReviewToReviewKeyword extends BaseEntity {
     @JoinColumn(name = "review_keyword_id")
     private ReviewKeyword reviewKeyword;
 
-    public void setReview(Review review){
+    public void setReview(Review review) {
         if (this.review != null) { // 기존에 이미 팀이 존재한다면
             this.review.getReviewToReviewKeywordList().remove(this); // 관계를 끊는다.
         }
@@ -38,8 +38,8 @@ public class ReviewToReviewKeyword extends BaseEntity {
         review.getReviewToReviewKeywordList().add(this);
     }
 
-    public void setReviewKeyword(ReviewKeyword reviewKeyword){
-        if(this.reviewKeyword != null){
+    public void setReviewKeyword(ReviewKeyword reviewKeyword) {
+        if (this.reviewKeyword != null) {
             this.reviewKeyword.getReviewList().remove(this);
         }
         this.reviewKeyword = reviewKeyword;
