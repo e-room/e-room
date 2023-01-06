@@ -9,6 +9,7 @@ import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -25,6 +26,13 @@ import java.util.function.Function;
 @Configuration
 @RequiredArgsConstructor
 public class AuthConfig {
+
+    private static String logoutSuccessUrlValue;
+
+    @Value("${spring.security.logoutSuccessUrlValue}")
+    public void setDistributionDomain(String value) {
+        logoutSuccessUrlValue = value;
+    }
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtProvider jwtProvider;
@@ -184,7 +192,7 @@ public class AuthConfig {
                         .logout().
                         logoutUrl("/logout")
                             .deleteCookies("refreshToken", "accessToken")
-                            .logoutSuccessUrl("/login")
+                            .logoutSuccessUrl(logoutSuccessUrlValue)
                         .and()
                         .oauth2Login()
                         .authorizationEndpoint()
@@ -216,7 +224,10 @@ public class AuthConfig {
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .logout().logoutSuccessUrl("/login");
+                        .logout().
+                        logoutUrl("/logout")
+                        .deleteCookies("refreshToken", "accessToken")
+                        .logoutSuccessUrl(logoutSuccessUrlValue);
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);

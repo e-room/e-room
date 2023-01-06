@@ -24,12 +24,22 @@ import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
 import com.project.Project.validator.ExistRoom;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -68,6 +78,14 @@ public class ReviewRestController {
      * @param cursorIds  : 조회해서 받았던 리스트 중에 가장 마지막 원소를 식별하는 cursor| size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
+    @Operation(summary = "리뷰 조회 by 건물", description = "특정 건물에 대한 리뷰 리스트를 반환")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK")
+    })
+    @Parameters({
+            @Parameter(name = "buildingId", description = "리뷰를 얻고자 하는 건물의 id", example = "123"),
+            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714")
+    })
     @GetMapping("/building/{buildingId}/room/review")
     public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
                                                                                           @RequestParam(required = false) List<Double> cursorIds,
@@ -90,6 +108,14 @@ public class ReviewRestController {
      * @param cursorIds : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 방 id에 해당하는 리뷰 리스트
      */
+    @Operation(summary = "리뷰 조회 by 방", description = "특정 방에 대한 리뷰 리스트를 반환")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK")
+    })
+    @Parameters({
+            @Parameter(name = "buildingId", description = "리뷰를 얻고자 하는 방의 id", example = "123"),
+            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714")
+    })
     @GetMapping("/building/room/{roomId}/review")
     public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
                                                                                       @RequestParam(required = false) List<Double> cursorIds,
@@ -120,7 +146,17 @@ public class ReviewRestController {
      * @param request 등록할 리뷰
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
-    @PostMapping("/building/room/review") // multipart/form-data 형태로 받음
+    @Operation(summary = "리뷰 등록", description = "리뷰 등록 API<br>" +
+            "요청 폼은 <a href='https://e-room.postman.co/workspace/Team-Workspace~86a5982f-98d2-4698-8cf7-b1231d296257/overview'>E-room 포스트맨</a> 참조")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewCreateDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "authentication", hidden = true),
+            @Parameter(name = "loginMember", hidden = true)
+    })
+    @PostMapping(value = "/building/room/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // multipart/form-data 형태로 받음
     public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
 
         Address address = AddressDto.toAddress(request.getAddress());
@@ -149,8 +185,17 @@ public class ReviewRestController {
      * @param reviewId 삭제할 리뷰 id
      * @return 삭제된 리뷰의 id, 등록일시, affected row의 개수
      */
+    @Operation(summary = "리뷰 삭제", description = "리뷰 삭제 API<br>")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewDeleteDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "reviewId", description = "삭제하고자 하는 리뷰의 id")
+    })
     @DeleteMapping("/building/room/review/{reviewId}")
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
+        // todo : 멤버 본인이 쓴 리뷰인지 검증하는 로직이 없음..
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }

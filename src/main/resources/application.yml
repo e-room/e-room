@@ -19,6 +19,10 @@ spring:
       enabled: off
     restart:
       exclude: thumbnail
+  security:
+    logoutSuccessUrlValue: https://e-room.app/login
+
+
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'
