@@ -12,6 +12,7 @@ import com.project.Project.util.component.CookieUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.utils.URIBuilder;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -83,13 +84,17 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
     private void writeTokenResponse(HttpServletRequest request, HttpServletResponse response, Token token) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
-        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken());
-        Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());
-        if (Boolean.valueOf(request.getHeader("isLocal"))) {
-            accessTokenCookie.setDomain("localhost");
-            refreshTokenCookie.setDomain("localhost");
+
+        Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
+                .map(Cookie::getValue)
+                .map(Boolean::parseBoolean).orElse(false);
+        if (isLocal) {
         }
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
+
+        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken(), isLocal);
+        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken(), isLocal);
+        response.addHeader("Set-Cookie", accessTokenCookie.toString());
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
+        response.addHeader("Set-Cookie", "name=value; path=/; maxAge=12341244; SameSite=Lax");
     }
 }
