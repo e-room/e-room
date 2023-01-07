@@ -4,10 +4,8 @@ import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
-
-import com.project.Project.domain.member.Member;
 import com.project.Project.config.properties.SecurityProperties;
-
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.component.CookieUtil;
@@ -25,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
@@ -47,11 +46,9 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         writeTokenResponse(request, response, token);
         response.setHeader("accessToken", token.getAccessToken());
         response.setHeader("refreshToken", token.getRefreshToken());
-        String targetUrl = determineTargetUrl(request, response, authentication);
+        String targetUrl = this.determineTargetUrl(request, response, authentication);
         this.clearAuthenticationAttributes(request, response);
-//        response.getWriter().write("success");
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
-//        super.onAuthenticationSuccess(request, response, authentication);
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
@@ -61,7 +58,10 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
     @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
-        if (Boolean.valueOf(request.getHeader("isLocal"))) {
+        Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
+                .map(Cookie::getValue)
+                .map(Boolean::parseBoolean).orElse(false);
+        if (isLocal) {
             String defaultUrl = new URIBuilder().setScheme("http").setPort(3000).setHost("localhost").setPath(securityProperties.getDefaultSuccessPath()).toString();
             Optional<String> redirectUrl = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                     .map(Cookie::getValue)
@@ -69,7 +69,6 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
             String targetUrl = redirectUrl.orElse(defaultUrl);
             return targetUrl;
-
         } else {
             String defaultUrl = new URIBuilder().setScheme("https").setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultSuccessPath()).toString();
             Optional<String> redirectUrl = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
