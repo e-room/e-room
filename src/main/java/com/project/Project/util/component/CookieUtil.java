@@ -108,6 +108,8 @@ public class CookieUtil {
                 .maxAge(accessTokenMaxAge);
         if (isLocal) {
             accessTokenCookie.domain("localhost");
+        } else {
+            accessTokenCookie.domain(staticSecurityProperties.getDefaultHost());
         }
         return accessTokenCookie.build();
     }
@@ -121,6 +123,8 @@ public class CookieUtil {
                 .maxAge(refreshTokenMaxAge);
         if (isLocal) {
             refreshTokenCookie.domain("localhost");
+        } else {
+            refreshTokenCookie.domain(staticSecurityProperties.getDefaultHost());
         }
         return refreshTokenCookie.build();
     }
