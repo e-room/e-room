@@ -63,7 +63,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
                     .map(Cookie::getValue)
                     .orElse(securityProperties.getDefaultSuccessPath());
 
-            response.addHeader("test", "test");
+            response.setHeader("test", "test");
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("accessToken", accessToken);
             params.add("refreshToken", refreshToken);
