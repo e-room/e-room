@@ -10,13 +10,13 @@ import com.project.Project.util.JsonResult;
 import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,11 +43,11 @@ public class TokenController {
             String email = tokenService.getUid(token);
             Token newToken = tokenService.generateToken(email, "USER");
 
-            Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
-            response.addCookie(accessTokenCookie);
+            ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
+            ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
 
-            Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
-            response.addCookie(refreshTokenCookie);
+            response.addHeader("Set-Cookie", accessTokenCookie.toString());
+            response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
             response.setContentType("application/json;charset=UTF-8");
 
@@ -76,11 +76,11 @@ public class TokenController {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
-        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken());
-        response.addCookie(accessTokenCookie);
+        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken());
+        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());
 
-        Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());
-        response.addCookie(refreshTokenCookie);
+        response.addHeader("Set-Cookie", accessTokenCookie.toString());
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
 
         return "FREE TOKEN!";
     }

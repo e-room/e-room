@@ -2,6 +2,7 @@ package com.project.Project.util.component;
 
 import com.project.Project.config.properties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -76,25 +77,56 @@ public class CookieUtil {
         );
     }
 
-    public static Cookie createAccessTokenCookie(String token) {
-        Cookie accessTokenCookie = new Cookie("accessToken", token);
-        accessTokenCookie.setHttpOnly(true);
-        accessTokenCookie.setPath("/");
-        accessTokenCookie.setSecure(true);
-        accessTokenCookie.setMaxAge(accessTokenMaxAge);
-        accessTokenCookie.setDomain(staticSecurityProperties.getDefaultHost());
-
-
+    public static ResponseCookie createAccessTokenCookie(String token) {
+        ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", token)
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(accessTokenMaxAge)
+                .build();
         return accessTokenCookie;
     }
 
-    public static Cookie createRefreshTokenCookie(String token) {
-        Cookie refreshTokenCookie = new Cookie("refreshToken", token);
-        refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setSecure(true);
-        refreshTokenCookie.setMaxAge(refreshTokenMaxAge);
-        refreshTokenCookie.setDomain(staticSecurityProperties.getDefaultHost());
+    public static ResponseCookie createRefreshTokenCookie(String token) {
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", token)
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(refreshTokenMaxAge)
+                .build();
         return refreshTokenCookie;
     }
+
+    public static ResponseCookie createAccessTokenCookie(String token, Boolean isLocal) {
+        ResponseCookie.ResponseCookieBuilder accessTokenCookie = ResponseCookie.from("accessToken", token)
+                .secure(false)
+                .httpOnly(false)
+                .path("/")
+                .sameSite("None")
+                .maxAge(accessTokenMaxAge);
+        if (isLocal) {
+            accessTokenCookie.domain("localhost");
+        } else {
+            accessTokenCookie.domain(staticSecurityProperties.getDefaultHost());
+        }
+        return accessTokenCookie.build();
+    }
+
+    public static ResponseCookie createRefreshTokenCookie(String token, Boolean isLocal) {
+        ResponseCookie.ResponseCookieBuilder refreshTokenCookie = ResponseCookie.from("refreshToken", token)
+                .secure(false)
+                .httpOnly(false)
+                .path("/")
+                .sameSite("None")
+                .maxAge(refreshTokenMaxAge);
+        if (isLocal) {
+            refreshTokenCookie.domain("localhost");
+        } else {
+            refreshTokenCookie.domain(staticSecurityProperties.getDefaultHost());
+        }
+        return refreshTokenCookie.build();
+    }
+
 }
