@@ -12,9 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
     private ResponseCookie createDeleteTokenCookie(String name) {
-        return ResponseCookie.from(name, "")
+        return ResponseCookie.from(name, null)
                 .secure(true)
                 .httpOnly(true)
+                .domain(".e-room.app")
                 .path("/")
                 .sameSite("None")
                 .maxAge(0)
