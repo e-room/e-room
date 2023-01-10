@@ -6,6 +6,7 @@ import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,14 +51,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private void postAuthenticate(HttpServletRequest request, HttpServletResponse response, Authentication authenticationResult) {
         JwtAuthentication jwtAuthenticationResult = (JwtAuthentication) authenticationResult;
-        Cookie accessTokenCookie = CookieUtil.createAccessTokenCookie(jwtAuthenticationResult.getToken().getAccessToken());
-        Cookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken());
-        if (Boolean.valueOf(request.getHeader("isLocal"))) {
-            accessTokenCookie.setDomain("localhost");
-            refreshTokenCookie.setDomain("localhost");
-        }
-        response.addCookie(accessTokenCookie);
-        response.addCookie(refreshTokenCookie);
+        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(jwtAuthenticationResult.getToken().getAccessToken());
+        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken());
+        response.addHeader("Set-Cookie", accessTokenCookie.toString());
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
     }
 
     @Override
@@ -72,10 +69,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 JwtAuthentication authenticationRequest = new JwtAuthentication(jwtToken, request, response);
                 JwtAuthentication authenticationResult = (JwtAuthentication) this.authenticationManager.authenticate(authenticationRequest);
                 SecurityContextHolder.getContext().setAuthentication(authenticationResult);
-        /*
-            authenticate 관련 정책 추가 가능
-            Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
-         */
+            /*
+                authenticate 관련 정책 추가 가능
+                Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
+             */
                 postAuthenticate(request, response, authenticationResult);
             } catch (JwtException ex) {
                 SecurityContextHolder.clearContext();

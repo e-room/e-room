@@ -14,6 +14,7 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
     public final static String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public final static String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     public final static String REFRESH_TOKEN = "refresh_token";
+    public final static String IS_LOCAL = "is_local";
     private final static int cookieExpireSeconds = 180;
 
     @Override
@@ -29,6 +30,7 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
             CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
             CookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
             CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+            CookieUtil.deleteCookie(request, response, IS_LOCAL);
             return;
         }
 
@@ -36,6 +38,10 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
         String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
         if (StringUtils.isNotBlank(redirectUriAfterLogin)) {
             CookieUtil.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
+        }
+        Boolean isLocal = Boolean.parseBoolean(request.getParameter(IS_LOCAL));
+        if (isLocal) {
+            CookieUtil.addCookie(response, IS_LOCAL, String.valueOf(true), cookieExpireSeconds);
         }
     }
 
@@ -53,5 +59,6 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
         CookieUtil.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
         CookieUtil.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
+        CookieUtil.deleteCookie(request, response, IS_LOCAL);
     }
 }
