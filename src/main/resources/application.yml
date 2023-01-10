@@ -2,7 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: localDev
+    active: dev
   task:
     execution:
       pool:
