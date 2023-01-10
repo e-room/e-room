@@ -1,14 +1,11 @@
 package com.project.Project.service.review.impl;
 
 import com.project.Project.controller.review.dto.ReviewRequestDto;
-
-import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.member.Member;
-import com.project.Project.domain.building.Building;
-import com.project.Project.domain.embedded.Address;
-
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.room.Room;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.review.ReviewException;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewCustomRepository;
@@ -63,7 +60,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     public Long deleteById(Long reviewId) {
-        reviewRepository.deleteById(reviewId);
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
+        reviewLoader.loadAllRelations(review);
+        reviewRepository.delete(review);
         return reviewId;
     }
 

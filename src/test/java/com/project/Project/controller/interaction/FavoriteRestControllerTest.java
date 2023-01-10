@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.config.SecurityConfig;
 import com.project.Project.controller.interaction.controller.FavoriteRestController;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
