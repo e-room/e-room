@@ -3,11 +3,13 @@ package com.project.Project.config;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
 import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
+import com.project.Project.auth.handler.CustomLogoutHandler;
 import com.project.Project.auth.handler.OAuth2FailureHandler;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
+import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +45,8 @@ public class AuthConfig {
     private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    private final CustomLogoutHandler customLogoutHandler;
+
     private static CustomOAuth2UserService staticCustomOAuth2UserService;
     private static JwtProvider staticJwtProvider;
     private static JwtAuthFilter staticJwtAuthFilter;
@@ -51,6 +55,7 @@ public class AuthConfig {
     private static OAuth2FailureHandler staticOAuth2FailureHandler;
     private static OAuth2AuthorizationRequestBasedOnCookieRepository staticOAuth2AuthorizationRequestBasedOnCookieRepository;
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
+    private static CustomLogoutHandler staticCustomLogoutHandler;
 
     @PostConstruct
     public void init() {
@@ -62,6 +67,7 @@ public class AuthConfig {
         staticOAuth2FailureHandler = this.oAuth2FailureHandler;
         staticOAuth2AuthorizationRequestBasedOnCookieRepository = this.oAuth2AuthorizationRequestBasedOnCookieRepository;
         staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
+        staticCustomLogoutHandler = this.customLogoutHandler;
     }
 
     @Profile("local")
@@ -191,7 +197,7 @@ public class AuthConfig {
                         .and()
                         .logout().
                         logoutUrl("/logout")
-                            .deleteCookies("refreshToken", "accessToken")
+                            .addLogoutHandler(staticCustomLogoutHandler)
                             .logoutSuccessUrl(logoutSuccessUrlValue)
                         .and()
                         .oauth2Login()
@@ -226,7 +232,7 @@ public class AuthConfig {
                         .and()
                         .logout().
                         logoutUrl("/logout")
-                        .deleteCookies("refreshToken", "accessToken")
+                        .addLogoutHandler(staticCustomLogoutHandler)
                         .logoutSuccessUrl(logoutSuccessUrlValue);
                 return http;
             } catch (Exception e) {

@@ -1,0 +1,353 @@
+2023-01-08 02:06:04.111 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        c.project.Project.ProjectApplication.logStarting - Starting ProjectApplication using Java 11.0.15 on seonghoonui-MacBookPro.local with PID 43640 (/Users/seonghoon/Desktop/프로젝트/team-project/build/classes/java/main started by seonghoon in /Users/seonghoon/Desktop/프로젝트/team-project)
+2023-01-08 02:06:04.118 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        c.project.Project.ProjectApplication.logStartupProfileInfo - The following 2 profiles are active: "aws", "dev"
+2023-01-08 02:06:04.123 [background-preinit] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.validator.internal.util.Version.<clinit> - HV000001: Hibernate Validator 6.2.3.Final
+2023-01-08 02:06:04.178 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/javacv-platform-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/javacv.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/opencv-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/ffmpeg-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/flycapture-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/libdc1394-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/librealsense-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/libfreenect-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/videoinput-platform.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv-platform/1.3/44dc6ce4d81514eb557889ff8028f241aa58928f/artoolkitplus-platform.jar
+2023-01-08 02:06:04.179 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/javacv-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/javacpp-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/opencv-3.1.0-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/ffmpeg-3.2.1-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/flycapture-2.9.3.43-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libdc1394-2.2.4-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libfreenect-0.5.3-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/librealsense-1.9.6-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/videoinput-0.200-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/artoolkitplus-2.3.1-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/flandmark-1.07-1.3.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/android-4.1.1.4.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-main-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-android-aarch64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-android-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-armv6hf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-linux-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-macosx-universal.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-solaris-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-solaris-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-windows-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/gluegen-rt-2.3.1-natives-windows-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-main-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-android-aarch64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-android-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-armv6hf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-linux-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-macosx-universal.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-solaris-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-solaris-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-windows-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jogl-all-2.3.1-natives-windows-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-main-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-android-aarch64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-android-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-armv6.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-armv6hf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-linux-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-macosx-universal.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-solaris-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-solaris-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-windows-amd64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/jocl-2.3.1-natives-windows-i586.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/javacpp.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/opencv.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/ffmpeg.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/flycapture.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libdc1394.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/librealsense.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/libfreenect.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/videoinput.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco/javacv/1.3/ba60e1c2636dacd9f2ed67cb83c948c125dfc9c9/artoolkitplus.jar
+2023-01-08 02:06:04.179 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-platform-1.07-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark-platform/1.07-1.3/2d336c20a66e534f93270a6eecfaa8f9845ae423/flandmark-windows-x86_64.jar
+2023-01-08 02:06:04.180 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-platform-3.1.0-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv-platform/3.1.0-1.3/f61c8d53c5e244e6cf2285125e3344932dc941e7/opencv-windows-x86_64.jar
+2023-01-08 02:06:04.180 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-platform-3.2.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg-platform/3.2.1-1.3/22be9a72bc1928b33af58d508edda98c81d27dd0/ffmpeg-windows-x86_64.jar
+2023-01-08 02:06:04.180 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-platform-2.9.3.43-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture-platform/2.9.3.43-1.3/272d5e7a97b2f076aab7e2d5c774b5ad1a90645e/flycapture-windows-x86_64.jar
+2023-01-08 02:06:04.181 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-platform-2.2.4-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394-platform/2.2.4-1.3/e7af83441980118e41dbbb265a7ddf0087e8dc83/libdc1394-windows-x86_64.jar
+2023-01-08 02:06:04.181 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-platform-0.5.3-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect-platform/0.5.3-1.3/47567d94f4a2660d630dccf75568de651f4c483b/libfreenect-windows-x86_64.jar
+2023-01-08 02:06:04.181 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense-platform-1.9.6-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense-platform/1.9.6-1.3/524209886687e966cee1b78280f6668c9f5e357c/librealsense-linux-x86_64.jar
+2023-01-08 02:06:04.182 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput-platform-0.200-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput-platform/0.200-1.3/c28c1901a4c3414ba96952ea25d2a9489daf8c04/videoinput-windows-x86_64.jar
+2023-01-08 02:06:04.182 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-platform-2.3.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-armhf.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-linux-ppc64le.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-macosx-x86_64.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-windows-x86.jar,file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus-platform/2.3.1-1.3/7fbd6c72f659c0c83613f9c22596a194a8042e76/artoolkitplus-windows-x86_64.jar
+2023-01-08 02:06:04.183 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark/1.07-1.3/e5cd132c846b296edc8eee43c596583adfd151de/flandmark-1.07-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flandmark/1.07-1.3/e5cd132c846b296edc8eee43c596583adfd151de/javacpp.jar
+2023-01-08 02:06:04.183 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv/3.1.0-1.3/ae19e668754f80bc451d28d07c916d55f5d05fd8/opencv-3.1.0-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/opencv/3.1.0-1.3/ae19e668754f80bc451d28d07c916d55f5d05fd8/javacpp.jar
+2023-01-08 02:06:04.183 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg/3.2.1-1.3/2b506fefac100e50800bb1b5908d7588ab21fb45/ffmpeg-3.2.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/ffmpeg/3.2.1-1.3/2b506fefac100e50800bb1b5908d7588ab21fb45/javacpp.jar
+2023-01-08 02:06:04.184 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture/2.9.3.43-1.3/bb48ed01be621b6b38b91d45a96e68e7ad7bf25e/flycapture-2.9.3.43-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/flycapture/2.9.3.43-1.3/bb48ed01be621b6b38b91d45a96e68e7ad7bf25e/javacpp.jar
+2023-01-08 02:06:04.184 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394/2.2.4-1.3/e702de628164ba633e77f3b4a4a16a0c402ce364/libdc1394-2.2.4-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libdc1394/2.2.4-1.3/e702de628164ba633e77f3b4a4a16a0c402ce364/javacpp.jar
+2023-01-08 02:06:04.184 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect/0.5.3-1.3/ea7981fbc3eba3cf3d8c1b8492d1952b85d20068/libfreenect-0.5.3-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/libfreenect/0.5.3-1.3/ea7981fbc3eba3cf3d8c1b8492d1952b85d20068/javacpp.jar
+2023-01-08 02:06:04.184 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense/1.9.6-1.3/a38afba003c895652db9f29f7e014e451a73a0b4/librealsense-1.9.6-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/librealsense/1.9.6-1.3/a38afba003c895652db9f29f7e014e451a73a0b4/javacpp.jar
+2023-01-08 02:06:04.184 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput/0.200-1.3/f30b2cba25b56af3a60a679775016537fda37c41/videoinput-0.200-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/videoinput/0.200-1.3/f30b2cba25b56af3a60a679775016537fda37c41/javacpp.jar
+2023-01-08 02:06:04.184 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.restart.ChangeableUrls.logTo - The Class-Path manifest attribute in /Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus/2.3.1-1.3/543bf47572afc2f02c30f125d77019b1306e82d1/artoolkitplus-2.3.1-1.3.jar referenced one or more files that do not exist: file:/Users/seonghoon/.gradle/caches/modules-2/files-2.1/org.bytedeco.javacpp-presets/artoolkitplus/2.3.1-1.3/543bf47572afc2f02c30f125d77019b1306e82d1/javacpp.jar
+2023-01-08 02:06:04.185 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor.logTo - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-01-08 02:06:08.794 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-01-08 02:06:08.980 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.d.r.c.RepositoryConfigurationDelegate.registerRepositoriesIn - Finished Spring Data repository scanning in 176 ms. Found 16 JPA repository interfaces.
+2023-01-08 02:06:09.480 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization - Bean '(inner bean)#30b3efc6' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-01-08 02:06:09.482 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization - Bean '(inner bean)#9d14f62' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-01-08 02:06:09.492 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker.postProcessAfterInitialization - Bean '(inner bean)#574b57b1' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2023-01-08 02:06:09.993 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.w.e.tomcat.TomcatWebServer.initialize - Tomcat initialized with port(s): 8080 (http)
+2023-01-08 02:06:10.002 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.coyote.http11.Http11NioProtocol.log - Initializing ProtocolHandler ["http-nio-8080"]
+2023-01-08 02:06:10.003 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.catalina.core.StandardService.log - Starting service [Tomcat]
+2023-01-08 02:06:10.003 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.catalina.core.StandardEngine.log - Starting Servlet engine: [Apache Tomcat/9.0.64]
+2023-01-08 02:06:10.177 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.c.c.C.[Tomcat].[localhost].[/].log - Initializing Spring embedded WebApplicationContext
+2023-01-08 02:06:10.178 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.w.s.c.ServletWebServerApplicationContext.prepareWebApplicationContext - Root WebApplicationContext: initialization completed in 5986 ms
+2023-01-08 02:06:10.562 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.jpa.internal.util.LogHelper.logPersistenceUnitInformation - HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-01-08 02:06:10.598 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        org.hibernate.Version.logVersion - HHH000412: Hibernate ORM core version 5.6.9.Final
+2023-01-08 02:06:10.703 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.annotations.common.Version.<clinit> - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2023-01-08 02:06:10.758 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Starting...
+2023-01-08 02:06:11.506 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        com.zaxxer.hikari.HikariDataSource.getConnection - HikariPool-1 - Start completed.
+2023-01-08 02:06:11.525 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        org.hibernate.dialect.Dialect.<init> - HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+2023-01-08 02:06:18.374 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.h.e.t.j.p.i.JtaPlatformInitiator.initiateService - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2023-01-08 02:06:18.383 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.o.j.LocalContainerEntityManagerFactoryBean.buildNativeEntityManagerFactory - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-01-08 02:06:23.294 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.s.web.DefaultSecurityFilterChain.<init> - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@4bfa6dc, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7b0e46c8, org.springframework.security.web.context.SecurityContextPersistenceFilter@dfd49d8, org.springframework.security.web.header.HeaderWriterFilter@1fb37554, org.springframework.web.filter.CorsFilter@3707bcc1, org.springframework.security.web.authentication.logout.LogoutFilter@4dbc42c0, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@665678dd, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@2265b997, com.project.Project.auth.filter.JwtAuthFilter@30657f71, com.project.Project.auth.filter.CustomBasicAuthFilter@6c99a2be, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1bfa4763, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7c2e6e4d, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@30994504, org.springframework.security.web.session.SessionManagementFilter@7f2a12ea, org.springframework.security.web.access.ExceptionTranslationFilter@232538e9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4d039f53]
+2023-01-08 02:06:23.476 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration.openEntityManagerInViewInterceptor - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2023-01-08 02:06:25.100 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.s.s.c.a.web.builders.WebSecurity.performBuild - You are asking Spring Security to ignore Mvc [pattern='/token/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-01-08 02:06:25.102 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.s.web.DefaultSecurityFilterChain.<init> - Will not secure Mvc [pattern='/token/**']
+2023-01-08 02:06:25.102 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.s.s.c.a.web.builders.WebSecurity.performBuild - You are asking Spring Security to ignore Mvc [pattern='api/profile']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-01-08 02:06:25.102 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.s.web.DefaultSecurityFilterChain.<init> - Will not secure Mvc [pattern='api/profile']
+2023-01-08 02:06:25.102 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.s.s.c.a.web.builders.WebSecurity.performBuild - You are asking Spring Security to ignore Mvc [pattern='/']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-01-08 02:06:25.102 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.s.web.DefaultSecurityFilterChain.<init> - Will not secure Mvc [pattern='/']
+2023-01-08 02:06:25.102 [restartedMain] [35m[traceId=][0;39m [31mWARN [0;39m
+                        o.s.s.c.a.web.builders.WebSecurity.performBuild - You are asking Spring Security to ignore Mvc [pattern='/health']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2023-01-08 02:06:25.103 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.s.web.DefaultSecurityFilterChain.<init> - Will not secure Mvc [pattern='/health']
+2023-01-08 02:06:25.965 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.a.s.r.ReactiveUserDetailsServiceAutoConfiguration.getOrDeducePassword - 
+
+Using generated security password: f0867434-b29d-4903-9eba-f66069d5535e
+
+2023-01-08 02:06:26.185 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.coyote.http11.Http11NioProtocol.log - Starting ProtocolHandler ["http-nio-8080"]
+2023-01-08 02:06:26.218 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.b.w.e.tomcat.TomcatWebServer.start - Tomcat started on port(s): 8080 (http) with context path ''
+2023-01-08 02:06:26.240 [restartedMain] [35m[traceId=][0;39m [34mINFO [0;39m
+                        c.project.Project.ProjectApplication.logStarted - Started ProjectApplication in 22.983 seconds (JVM running for 24.281)
+2023-01-08 02:06:36.195 [http-nio-8080-exec-1] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.a.c.c.C.[Tomcat].[localhost].[/].log - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-01-08 02:06:36.197 [http-nio-8080-exec-1] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.web.servlet.DispatcherServlet.initServletBean - Initializing Servlet 'dispatcherServlet'
+2023-01-08 02:06:36.203 [http-nio-8080-exec-1] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.web.servlet.DispatcherServlet.initServletBean - Completed initialization in 6 ms
+2023-01-08 02:06:36.286 [http-nio-8080-exec-2] [35m[traceId=c781c701-4501-4e79-a9f8-bc211c011179][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:38.534 [http-nio-8080-exec-2] [35m[traceId=c781c701-4501-4e79-a9f8-bc211c011179][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:38.583 [http-nio-8080-exec-4] [35m[traceId=0fe608b2-8e58-480d-88b4-ba5ca364475f][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:38.588 [http-nio-8080-exec-4] [35m[traceId=0fe608b2-8e58-480d-88b4-ba5ca364475f][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:44.178 [http-nio-8080-exec-6] [35m[traceId=b808b610-20a9-40cc-91f7-7ddfaa3553a5][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:44.195 [http-nio-8080-exec-6] [35m[traceId=b808b610-20a9-40cc-91f7-7ddfaa3553a5][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:44.238 [http-nio-8080-exec-8] [35m[traceId=6c2e725b-d3da-4c2b-b661-524ba1e49f6d][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:44.243 [http-nio-8080-exec-8] [35m[traceId=6c2e725b-d3da-4c2b-b661-524ba1e49f6d][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:48.812 [http-nio-8080-exec-10] [35m[traceId=69ecbe63-fc33-46a7-b3d6-72b3b6aef43b][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:48.818 [http-nio-8080-exec-10] [35m[traceId=69ecbe63-fc33-46a7-b3d6-72b3b6aef43b][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:48.854 [http-nio-8080-exec-2] [35m[traceId=29796081-1385-4bd0-839a-5df486c8f8dd][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:48.860 [http-nio-8080-exec-2] [35m[traceId=29796081-1385-4bd0-839a-5df486c8f8dd][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:51.670 [http-nio-8080-exec-4] [35m[traceId=98fa004f-e915-4bba-a22d-305bed7ea8d2][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:51.676 [http-nio-8080-exec-4] [35m[traceId=98fa004f-e915-4bba-a22d-305bed7ea8d2][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:06:51.710 [http-nio-8080-exec-6] [35m[traceId=4b79d672-0211-4099-8a9f-d4a58014aea5][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:06:51.713 [http-nio-8080-exec-6] [35m[traceId=4b79d672-0211-4099-8a9f-d4a58014aea5][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:16.116 [http-nio-8080-exec-8] [35m[traceId=c7b034bd-7341-4272-aa97-53a1eb6c67cc][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:07:16.127 [http-nio-8080-exec-8] [35m[traceId=c7b034bd-7341-4272-aa97-53a1eb6c67cc][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:17.042 [http-nio-8080-exec-10] [35m[traceId=5c567a82-0640-4223-9800-34304ee493b7][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:07:17.046 [http-nio-8080-exec-10] [35m[traceId=5c567a82-0640-4223-9800-34304ee493b7][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:18.054 [http-nio-8080-exec-1] [35m[traceId=59c836e9-3fda-471a-af8c-3ba7802403f6][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:07:18.060 [http-nio-8080-exec-1] [35m[traceId=59c836e9-3fda-471a-af8c-3ba7802403f6][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:18.109 [http-nio-8080-exec-3] [35m[traceId=e30c0f08-981d-4a31-974a-2f737dffc337][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:07:18.113 [http-nio-8080-exec-3] [35m[traceId=e30c0f08-981d-4a31-974a-2f737dffc337][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:27.252 [http-nio-8080-exec-5] [35m[traceId=4baa3830-84d5-47cc-9368-3c73103b9a93][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:07:27.262 [http-nio-8080-exec-5] [35m[traceId=4baa3830-84d5-47cc-9368-3c73103b9a93][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:27.293 [http-nio-8080-exec-7] [35m[traceId=253d43df-e20e-40ca-a782-44c0da7c4114][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logRequest - Request : GET uri=[/login] content-type=[null]
+2023-01-08 02:07:27.297 [http-nio-8080-exec-7] [35m[traceId=253d43df-e20e-40ca-a782-44c0da7c4114][0;39m [34mINFO [0;39m
+                        c.p.Project.filter.LoggingFilter.logPayload - Response Payload: <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Oauth 테스트 페이지</title>
+</head>
+<body>
+    <a href="/oauth2/authorization/google">구글로그인</a>
+    <div></div>
+    <a href="/oauth2/authorization/naver">네이버로그인</a>
+    <a href="/oauth2/authorization/kakao">카카오 로그인</a>
+</body>
+</html>
+2023-01-08 02:07:49.532 [SpringApplicationShutdownHook] [35m[traceId=][0;39m [34mINFO [0;39m
+                        o.s.o.j.LocalContainerEntityManagerFactoryBean.destroy - Closing JPA EntityManagerFactory for persistence unit 'default'
+2023-01-08 02:07:49.540 [SpringApplicationShutdownHook] [35m[traceId=][0;39m [34mINFO [0;39m
+                        com.zaxxer.hikari.HikariDataSource.close - HikariPool-1 - Shutdown initiated...
+2023-01-08 02:07:49.801 [SpringApplicationShutdownHook] [35m[traceId=][0;39m [34mINFO [0;39m
+                        com.zaxxer.hikari.HikariDataSource.close - HikariPool-1 - Shutdown completed.
