@@ -29,23 +29,23 @@ public class RoomSerializer {
                 .build();
     }
 
-    public static RoomResponseDto.RoomImageDto toRoomImageDto(ReviewImage reviewImage) {
-        return RoomResponseDto.RoomImageDto.builder()
+    public static RoomResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        return RoomResponseDto.ReviewImageDto.builder()
                 .url(reviewImage.getUrl())
                 .uuid(reviewImage.getUuid().getUuid())
                 .build();
     }
 
-    public static RoomResponseDto.RoomImageListDto toRoomImageListDto(List<ReviewImage> reviewImageList) {
-        List<RoomResponseDto.RoomImageDto> reviewImageDtoList =
+    public static RoomResponseDto.ReviewImageListDto toReviewImageListDto(List<ReviewImage> reviewImageList) {
+        List<RoomResponseDto.ReviewImageDto> reviewImageDtoList =
                 reviewImageList.stream()
-                        .map((reviewImage -> toRoomImageDto(reviewImage)))
+                        .map((reviewImage -> toReviewImageDto(reviewImage)))
                         .collect(Collectors.toList());
         Integer reviewImageCount = reviewImageDtoList.size();
 
-        return RoomResponseDto.RoomImageListDto.builder()
-                .roomImageList(reviewImageDtoList)
-                .roomImageCount(reviewImageCount)
+        return RoomResponseDto.ReviewImageListDto.builder()
+                .reviewImageList(reviewImageDtoList)
+                .reviewImageCount(reviewImageCount)
                 .build();
     }
 }

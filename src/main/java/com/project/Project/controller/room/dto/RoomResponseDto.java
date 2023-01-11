@@ -44,7 +44,7 @@ public class RoomResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class RoomImageDto {
+    public static class ReviewImageDto {
         private String uuid;
         private String url;
     }
@@ -53,8 +53,8 @@ public class RoomResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class RoomImageListDto {
-        private List<RoomImageDto> roomImageList;
-        private Integer roomImageCount;
+    public static class ReviewImageListDto {
+        private List<ReviewImageDto> reviewImageList;
+        private Integer reviewImageCount;
     }
 }

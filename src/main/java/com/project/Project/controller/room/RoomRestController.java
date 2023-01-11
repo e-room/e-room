@@ -7,10 +7,12 @@ import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.validator.ExistRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class RoomRestController {
@@ -30,8 +32,8 @@ public class RoomRestController {
      */
 
     @GetMapping("/room/{roomId}/images")
-    public ResponseEntity<RoomResponseDto.RoomImageListDto> getRoomImageList(@PathVariable("roomId") @ExistRoom Long roomId) {
+    public ResponseEntity<RoomResponseDto.ReviewImageListDto> getRoomImageList(@PathVariable("roomId") @ExistRoom Long roomId) {
         List<ReviewImage> reviewImageList = reviewImageService.findByRoom(roomId);
-        return ResponseEntity.ok(RoomSerializer.toRoomImageListDto(reviewImageList));
+        return ResponseEntity.ok(RoomSerializer.toReviewImageListDto(reviewImageList));
     }
 }

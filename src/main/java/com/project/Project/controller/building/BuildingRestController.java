@@ -4,11 +4,13 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.building.BuildingService;
+import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
@@ -35,6 +37,8 @@ public class BuildingRestController {
     private final BuildingService buildingService;
 
     private final ReviewService reviewService;
+
+    private final ReviewImageService reviewImageService;
 
     /*
     when: 3.0.1
@@ -99,5 +103,11 @@ public class BuildingRestController {
     public ResponseEntity<BuildingResponseDto.BuildingMetaData> createBuilding(@RequestBody BuildingRequestDto.BuildingCreateRequest request) {
         Building building = this.buildingService.createBuilding(AddressDto.toAddress(request.getAddressDto()), request.getBuildingOptionalDto());
         return ResponseEntity.ok(BuildingSerializer.toBuildingMetaData(building));
+    }
+
+    @GetMapping("/{buildingId}/images")
+    public ResponseEntity<BuildingResponseDto.ReviewImageListDto> getBuildingImageList(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
+        List<ReviewImage> reviewImageList = reviewImageService.findByBuilding(buildingId);
+        return ResponseEntity.ok(BuildingSerializer.toReviewImageListDto(reviewImageList));
     }
 }

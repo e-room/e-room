@@ -10,4 +10,6 @@ public interface ReviewImageService {
     void saveImageList(List<MultipartFile> imageFileList, Review review);
 
     List<ReviewImage> findByRoom(Long roomId);
+
+    List<ReviewImage> findByBuilding(Long buildingId);
 }

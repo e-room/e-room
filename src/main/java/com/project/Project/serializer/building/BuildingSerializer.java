@@ -1,11 +1,13 @@
 package com.project.Project.serializer.building;
 
 import com.project.Project.controller.building.dto.BuildingResponseDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
+import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
@@ -89,5 +91,24 @@ public class BuildingSerializer {
                 .build();
     }
 
+    public static BuildingResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        return BuildingResponseDto.ReviewImageDto.builder()
+                .url(reviewImage.getUrl())
+                .uuid(reviewImage.getUuid().getUuid())
+                .build();
+    }
+
+    public static BuildingResponseDto.ReviewImageListDto toReviewImageListDto(List<ReviewImage> reviewImageList) {
+        List<BuildingResponseDto.ReviewImageDto> reviewImageDtoList =
+                reviewImageList.stream()
+                        .map((reviewImage -> toReviewImageDto(reviewImage)))
+                        .collect(Collectors.toList());
+        Integer reviewImageCount = reviewImageDtoList.size();
+
+        return BuildingResponseDto.ReviewImageListDto.builder()
+                .reviewImageList(reviewImageDtoList)
+                .reviewImageCount(reviewImageCount)
+                .build();
+    }
 
 }
