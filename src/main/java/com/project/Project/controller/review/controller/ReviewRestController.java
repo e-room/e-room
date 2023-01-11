@@ -147,7 +147,7 @@ public class ReviewRestController {
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
     @Operation(summary = "리뷰 등록", description = "리뷰 등록 API<br>" +
-            "요청 폼은 <a href='https://e-room.postman.co/workspace/Team-Workspace~86a5982f-98d2-4698-8cf7-b1231d296257/overview'>E-room 포스트맨</a> 참조")
+            "요청 예시는 <a href='https://e-room.postman.co/workspace/Team-Workspace~86a5982f-98d2-4698-8cf7-b1231d296257/overview'>E-room 포스트맨</a> 참조")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewCreateDto.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")

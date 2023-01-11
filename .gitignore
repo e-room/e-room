@@ -50,3 +50,4 @@ eroom-key.pem
 
 ###logs###
 logs/
+/logs

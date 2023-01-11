@@ -11,7 +11,7 @@ public class MemberRequestDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class RecentMapLocationDto {
+    public static class RecentMapLocation {
         private CoordinateDto coordinateDto;
     }
 }
