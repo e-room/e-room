@@ -200,6 +200,14 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
+    @Operation(summary = "리뷰 이미지 조회", description = "리뷰 이미지 조회 API<br>")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "reviewId", description = "이미지를 조회하고자 하는 리뷰의 id")
+    })
     @GetMapping("/review/{reviewId}/images")
     public ResponseEntity<ReviewResponseDto.ReviewImageListDto> getReviewImageList(@PathVariable("reviewId") @ExistReview Long reviewId) {
         List<ReviewImage> reviewImageList = reviewImageService.findByReview(reviewId);
