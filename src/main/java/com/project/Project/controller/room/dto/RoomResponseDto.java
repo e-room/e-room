@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class RoomResponseDto {
 
@@ -37,5 +38,23 @@ public class RoomResponseDto {
         private Long buildingId;
         private LocalDateTime createdAt;
         private Integer roomNumber;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class RoomImageDto {
+        private String uuid;
+        private String url;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class RoomImageListDto {
+        private List<RoomImageDto> roomImageList;
+        private Integer roomImageCount;
     }
 }

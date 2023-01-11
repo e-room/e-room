@@ -6,6 +6,7 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewImageRepository;
+import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.service.fileProcess.ReviewImageProcess;
 import com.project.Project.service.review.ReviewImageService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     private final ReviewImageProcess reviewImageProcess;
     private final ReviewImageRepository reviewImageRepository;
 
+    private final RoomRepository roomRepository;
+
     @Transactional
     public void saveImageList(List<MultipartFile> imageFileList, Review review) {
         Room room = review.getRoom();
@@ -39,5 +42,12 @@ public class ReviewImageServiceImpl implements ReviewImageService {
             reviewImage.setReview(review);
             reviewImageRepository.save(reviewImage);
         }
+    }
+
+    @Override
+    public List<ReviewImage> findByRoom(Long roomId) {
+        // controller 단에서 존재하는 @ExistRoom으로 검증하여 존재하는 reviewId이므로 바로 get
+        Room room = roomRepository.findById(roomId).get();
+        return reviewImageRepository.findByRoom(room);
     }
 }
