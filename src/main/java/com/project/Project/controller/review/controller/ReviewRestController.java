@@ -78,13 +78,16 @@ public class ReviewRestController {
      * @param cursorIds  : 조회해서 받았던 리스트 중에 가장 마지막 원소를 식별하는 cursor| size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
-    @Operation(summary = "리뷰 조회 by 건물", description = "특정 건물에 대한 리뷰 리스트를 반환")
+    @Operation(summary = "리뷰 조회 by 건물", description = "특정 건물에 대한 리뷰 리스트를 반환 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @Parameters({
             @Parameter(name = "buildingId", description = "리뷰를 얻고자 하는 건물의 id", example = "123"),
-            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714")
+            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
+            @Parameter(name = "size", description = "응답 리뷰 개수", example = "4"),
+            @Parameter(name = "sort", description = "정렬 기준", example = "id,DESC"),
+            @Parameter(name = "pageable", hidden = true)
     })
     @GetMapping("/building/{buildingId}/room/review")
     public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
@@ -108,13 +111,17 @@ public class ReviewRestController {
      * @param cursorIds : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 방 id에 해당하는 리뷰 리스트
      */
-    @Operation(summary = "리뷰 조회 by 방", description = "특정 방에 대한 리뷰 리스트를 반환")
+    @Operation(summary = "리뷰 조회 by 방", description = "특정 방에 대한 리뷰 리스트를 반환 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK")
     })
     @Parameters({
-            @Parameter(name = "buildingId", description = "리뷰를 얻고자 하는 방의 id", example = "123"),
-            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714")
+            @Parameter(name = "roomId", description = "리뷰를 얻고자 하는 방의 id", example = "123"),
+            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
+            @Parameter(name = "size", description = "응답 리뷰 개수", example = "4"),
+            @Parameter(name = "sort", description = "정렬 기준", example = "id,likeCnt,DESC"),
+            @Parameter(name = "pageable", hidden = true)
+
     })
     @GetMapping("/building/room/{roomId}/review")
     public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,

@@ -21,20 +21,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class OauthTestController {
 
-    private final HttpSession httpSession;
-
     @GetMapping("/login")
     public String oauthTest(Model model, @AuthenticationPrincipal OAuth2AuthenticationToken auth) {
         return "oauth-test";
-    }
-
-    @GetMapping("/api/profile")
-    @ResponseBody
-    public ResponseEntity<Object> getProfile(@AuthenticationPrincipal MemberDto auth) {
-        //??
-        // auth가 왜 null이지...
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        authentication.getPrincipal();
-        return ResponseEntity.ok(auth);
     }
 }

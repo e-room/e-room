@@ -51,6 +51,9 @@ public class FavoriteRestController {
     })
     @Parameters({
             @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
+            @Parameter(name = "size", description = "응답 건물 개수", example = "4"),
+            @Parameter(name = "sort", description = "정렬 기준", example = "id,DESC"),
+            @Parameter(name = "pageable", hidden = true),
             @Parameter(name = "member", hidden = true)
     })
     @GetMapping("/member/favorite")
