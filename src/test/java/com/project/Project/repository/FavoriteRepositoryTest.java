@@ -1,11 +1,11 @@
 package com.project.Project.repository;
 
-import com.project.Project.domain.member.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.interaction.FavoriteRepository;
 import com.project.Project.repository.member.MemberRepository;

@@ -63,7 +63,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
                     .map(Cookie::getValue)
                     .orElse(securityProperties.getDefaultSuccessPath());
 
-            response.setHeader("test", "test");
+
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("accessToken", accessToken);
             params.add("refreshToken", refreshToken);
@@ -108,8 +108,6 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
         ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken(), isLocal);
         ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken(), isLocal);
-        System.out.println(accessTokenCookie);
-        System.out.println(refreshTokenCookie);
         response.addHeader("Set-Cookie", accessTokenCookie.toString());
         response.addHeader("Set-Cookie", refreshTokenCookie.toString());
         response.addHeader("Set-Cookie", "name=value; path=/; maxAge=12341244; SameSite=Lax");
