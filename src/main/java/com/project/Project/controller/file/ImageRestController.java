@@ -11,6 +11,8 @@ import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.ThumbnailImageService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.validator.ExistReviewImage;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class ImageRestController {
 
     private final ReviewImageService reviewImageService;
 
+    @Operation(summary = "이미지 단건 조회", description = "이미지 단건 조회 by Uuid API")
+    @Parameter(name = "uuid", description = "조회하고자 하는 이미지의 uuid", example = "5c426f33-1845-4088-a90c-c6f37853c4f2")
     @GetMapping("/image")
     public ResponseEntity<ReviewResponseDto.ReviewImageDto> getReviewImageByUuid(@RequestParam("uuid") @ExistReviewImage String uuid) {
         ReviewImage reviewImage = reviewImageService.findByUuid(uuid);
