@@ -14,8 +14,8 @@ public class RoomExistValidator implements ConstraintValidator<ExistRoom, Long> 
     private final RoomRepository roomRepository;
 
     @Override
-    public boolean isValid(Long roomId, ConstraintValidatorContext context) {
-        return roomRepository.existsById(roomId);
+    public boolean isValid(Long value, ConstraintValidatorContext context) {
+        return roomRepository.existsById(value);
     }
 
     @Override
