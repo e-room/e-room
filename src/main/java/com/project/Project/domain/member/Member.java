@@ -1,6 +1,7 @@
 package com.project.Project.domain.member;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
@@ -46,7 +47,6 @@ public class Member extends BaseEntity {
 
     private String name;
 
-    @Column(unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -55,6 +55,10 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProviderType authProviderType;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recent_map_location_id")

@@ -3,8 +3,10 @@ package com.project.Project.auth.provider;
 import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
+import com.project.Project.auth.dto.UidDto;
 import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.service.TokenService;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -76,12 +78,16 @@ public class JwtProvider implements AuthenticationProvider {
 
     @Transactional
     public void setAuthMetadata(Token token, JwtAuthentication authentication) {
-        String email = tokenService.getUid(token.getAccessToken());
-        Member member = memberService.findByEmail(email).get(); // 추후 예외처리
+        UidDto uidDto = tokenService.getUid(token.getAccessToken());
+        String email = uidDto.getEmail();
+        AuthProviderType authProviderType = uidDto.getAuthProviderType();
+        Member member = memberService.findByEmailAndAuthProviderType(email, authProviderType).get(); // 추후 예외처리
         MemberDto memberDto = MemberDto.builder()
                 .email(email)
                 .name(member.getName())
-                .picture(member.getProfileImage().getUrl()).build();
+                .picture(member.getProfileImage().getUrl())
+                .authProviderType(member.getAuthProviderType())
+                .build();
         authentication.setToken(token);
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);

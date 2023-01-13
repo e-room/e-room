@@ -2,6 +2,7 @@ package com.project.Project.util.component;
 
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.service.TokenService;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.repository.member.MemberRepository;
@@ -16,7 +17,7 @@ public class MemberGen {
 
 
     public Member createMember(String name, String email) {
-        Token newToken = tokenService.generateToken(email, "USER");
+        Token newToken = tokenService.generateToken(email, AuthProviderType.KAKAO,"USER");
         Member member = Member.builder()
                 .email(email)
                 .name(name)

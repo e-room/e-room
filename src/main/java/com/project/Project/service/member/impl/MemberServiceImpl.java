@@ -1,5 +1,6 @@
 package com.project.Project.service.member.impl;
 
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.interaction.Favorite;
@@ -47,8 +48,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private final ReviewLikeRepository reviewLikeRepository;
-    public Optional<Member> findByEmail(String email) {
-        return memberRepository.findByEmail(email);
+    public Optional<Member> findByEmailAndAuthProviderType(String email, AuthProviderType authProviderType) {
+        return memberRepository.findByEmailAndAuthProviderType(email, authProviderType);
     }
 
     public Optional<Member> findById(Long id) {
