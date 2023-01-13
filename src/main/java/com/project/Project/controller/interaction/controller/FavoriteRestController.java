@@ -75,6 +75,9 @@ public class FavoriteRestController {
     })
     @PostMapping("/member/favorite/{buildingId}")
     public ResponseEntity<FavoriteResponseDto.FavoriteAddResponse> addFavoriteBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @AuthUser Member member) {
+        if(favoriteExistValidator.exists(member, buildingId))
+            throw new FavoriteException(ErrorCode.FAVORITE_ALREADY_EXISTS);
+
         Long savedFavoriteId = favoriteService.addFavoriteBuilding(buildingId, member);
         return ResponseEntity.ok(FavoriteSerializer.toFavoriteAddResponse(savedFavoriteId));
     }
@@ -90,7 +93,7 @@ public class FavoriteRestController {
     })
     @DeleteMapping("/member/favorite/{buildingId}")
     public ResponseEntity<FavoriteResponseDto.FavoriteDeleteResponse> deleteFavoriteBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @AuthUser Member member) {
-        if (!favoriteExistValidator.isValid(member, buildingId))
+        if (!favoriteExistValidator.exists(member, buildingId))
             throw new FavoriteException(ErrorCode.FAVORITE_NOT_FOUND);
 
         Long deletedFavoriteId = favoriteService.deleteFavoriteBuilding(buildingId, member);
