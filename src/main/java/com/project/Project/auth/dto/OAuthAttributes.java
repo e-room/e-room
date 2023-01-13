@@ -1,6 +1,6 @@
 package com.project.Project.auth.dto;
 
-import com.project.Project.domain.enums.OAuthProviderType;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
 import lombok.Builder;
@@ -15,16 +15,16 @@ public class OAuthAttributes {
     private String name;
     private String email;
     private String picture;
-    private OAuthProviderType oAuthProviderType;
+    private AuthProviderType authProviderType;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture, OAuthProviderType oAuthProviderType) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture, AuthProviderType authProviderType) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.name = name;
         this.email = email;
         this.picture = picture;
-        this.oAuthProviderType = oAuthProviderType;
+        this.authProviderType = authProviderType;
     }
 
     private void setProfileImage(String randomProfileImageUrl) {
@@ -44,7 +44,7 @@ public class OAuthAttributes {
                 .picture((String) attributes.get("picture"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
-                .oAuthProviderType(OAuthProviderType.GOOGLE)
+                .authProviderType(AuthProviderType.GOOGLE)
                 .build();
     }
 
@@ -57,7 +57,7 @@ public class OAuthAttributes {
                 .picture((String) response.get("profile_image"))
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
-                .oAuthProviderType(OAuthProviderType.NAVER)
+                .authProviderType(AuthProviderType.NAVER)
                 .build();
     }
 
@@ -70,7 +70,7 @@ public class OAuthAttributes {
                 .picture((String) profile.get("profile_image_url"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
-                .oAuthProviderType(OAuthProviderType.KAKAO)
+                .authProviderType(AuthProviderType.KAKAO)
                 .build();
     }
 
@@ -79,7 +79,7 @@ public class OAuthAttributes {
                 .name(name)
                 .email(email)
                 .memberRole(MemberRole.USER)
-                .oAuthProviderType(oAuthProviderType)
+                .authProviderType(authProviderType)
                 .build();
     }
 }

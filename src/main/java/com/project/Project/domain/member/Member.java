@@ -1,13 +1,12 @@
 package com.project.Project.domain.member;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.enums.MemberRole;
-import com.project.Project.domain.enums.OAuthProviderType;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import lombok.*;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -46,7 +45,6 @@ public class Member extends BaseEntity {
 
     private String name;
 
-    @Column(unique = true)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -56,7 +54,7 @@ public class Member extends BaseEntity {
     private ProfileImage profileImage;
 
     @Enumerated(EnumType.STRING)
-    private OAuthProviderType oAuthProviderType;
+    private AuthProviderType authProviderType;
 
     public Member update(String name) {
         this.name = name;

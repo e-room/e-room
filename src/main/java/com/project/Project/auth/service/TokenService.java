@@ -1,6 +1,8 @@
 package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.Token;
+import com.project.Project.auth.dto.UidDto;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.service.member.MemberService;
 import io.jsonwebtoken.*;
@@ -44,8 +46,10 @@ public class TokenService {
     }
 
     //    @Override
-    public Token generateToken(String uid, String role) {
-        Claims claims = Jwts.claims().setSubject(uid);
+    public Token generateToken(String email, AuthProviderType authProviderType, String role) {
+        String subject = email + "|" + authProviderType.name();
+
+        Claims claims = Jwts.claims().setSubject(subject);
         claims.put("role", role);
 
         Date now = new Date();
@@ -85,18 +89,29 @@ public class TokenService {
         return JwtCode.DENIED;
     }
 
-    public String getUid(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    /**
+     *
+     * @param token
+     * @return email|authProviderType 형식의 문자열을 반환합니다. ex) hello@naver.com|NAVER
+     */
+    public UidDto getUid(String token) {
+        String subject = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return UidDto.builder()
+                .email(subject.split("|")[0])
+                .authProviderType(AuthProviderType.valueOf(subject.split("|")[1]))
+                .build();
     }
 
     @Transactional
     public Token reissueToken(String refreshToken) throws RuntimeException {
         // refresh token을 디비의 그것과 비교해보기
-        String email = getUid(refreshToken);
-        Member member = memberService.findByEmail(email).get(); // 추후 예외처리
+        UidDto uidDto = getUid(refreshToken);
+        String email = uidDto.getEmail();
+        AuthProviderType authProviderType = uidDto.getAuthProviderType();
+        Member member = memberService.findByEmailAndAuthProviderType(email, authProviderType).get(); // 추후 예외처리
         if (member.getRefreshToken().equals(refreshToken)) {
             // 새로운거 생성
-            Token newToken = generateToken(email, "USER");
+            Token newToken = generateToken(email, authProviderType, "USER");
             member.setRefreshToken(newToken.getRefreshToken());
             return newToken;
         } else {

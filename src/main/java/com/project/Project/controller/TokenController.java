@@ -3,7 +3,9 @@ package com.project.Project.controller;
 import com.project.Project.auth.AuthUser;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
+import com.project.Project.auth.dto.UidDto;
 import com.project.Project.auth.service.TokenService;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.JsonResult;
@@ -40,8 +42,8 @@ public class TokenController {
     public String refreshAuth(@CookieValue("refreshToken") String token, HttpServletRequest request, HttpServletResponse response) {
 
         if (token != null && tokenService.verifyToken(token).equals(TokenService.JwtCode.EXPIRED)) {
-            String email = tokenService.getUid(token);
-            Token newToken = tokenService.generateToken(email, "USER");
+            UidDto uidDto = tokenService.getUid(token);
+            Token newToken = tokenService.generateToken(uidDto.getEmail(), uidDto.getAuthProviderType(), "USER");
 
             ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
             ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
@@ -70,9 +72,10 @@ public class TokenController {
      * @param email : 사용자 이메일
      * @return
      */
+    @Deprecated
     @GetMapping("/token/free")
     public String freeToken(@RequestParam String email, HttpServletResponse response) throws IOException {
-        Token token = tokenService.generateToken(email, "USER");
+        Token token = tokenService.generateToken(email, AuthProviderType.KAKAO,"USER");
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
