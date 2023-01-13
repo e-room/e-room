@@ -24,6 +24,7 @@ public enum ErrorCode {
 
     // Interaction
     FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "찜한 자취방 목록에 해당 건물이 존재하지 않습니다."),
+    FAVORITE_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 찜한 방입니다."),
 
     //Review
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
