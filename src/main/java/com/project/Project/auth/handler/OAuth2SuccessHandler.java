@@ -42,10 +42,13 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         MemberDto memberDto = MemberSerializer.toDto(oAuth2User);
-        Token token = tokenService.generateToken(memberDto.getEmail(), "USER");
-        Member member = memberRepository.findByEmail(memberDto.getEmail()).get();
-        member.setRefreshToken(token.getRefreshToken());
-        memberRepository.save(member);
+        Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(),"USER");
+
+        memberRepository.findByEmailAndAuthProviderType(memberDto.getEmail(), memberDto.getAuthProviderType())
+                        .ifPresent((member -> {
+                            member.setRefreshToken(token.getRefreshToken());
+                            memberRepository.save(member);
+                        }));
         log.info("{}", token);
 
 

@@ -10,4 +10,8 @@ public interface ReviewImageService {
     ReviewImage findByUuid(String uuid);
     List<ReviewImage> findByReview(Long reviewId);
     void saveImageList(List<MultipartFile> imageFileList, Review review);
+
+    List<ReviewImage> findByRoom(Long roomId);
+
+    List<ReviewImage> findByBuilding(Long buildingId);
 }

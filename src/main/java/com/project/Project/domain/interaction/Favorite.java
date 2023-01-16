@@ -24,7 +24,7 @@ public class Favorite extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "building_id")
     private Building building;
 
     public void setBuilding(Building building) {

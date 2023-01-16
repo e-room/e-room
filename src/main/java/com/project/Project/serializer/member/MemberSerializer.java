@@ -4,6 +4,7 @@ import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.OAuthAttributes;
 import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
+import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.exception.ErrorCode;
@@ -43,12 +44,14 @@ public class MemberSerializer {
                 .email(oAuthAttributes.getEmail())
                 .name(oAuthAttributes.getName())
                 .picture(oAuthAttributes.getPicture())
+                .authProviderType(oAuthAttributes.getAuthProviderType())
                 .build();
     }
 
     public static Member toMember(MemberDto memberDto) {
         String email = memberDto.getEmail();
-        Member member = staticMemberRepo.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+        AuthProviderType authProviderType = memberDto.getAuthProviderType();
+        Member member = staticMemberRepo.findByEmailAndAuthProviderType(email, authProviderType).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
         return member;
     }
 
@@ -57,6 +60,7 @@ public class MemberSerializer {
                 .email(member.getEmail())
                 .name(member.getName())
                 .picture(member.getProfileImage().getUrl())
+                .authProviderType(member.getAuthProviderType())
                 .build();
     }
 

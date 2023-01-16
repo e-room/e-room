@@ -43,14 +43,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 modifiableAttributes,
                 attributes.getNameAttributeKey());
     }
+
+    private Member newMember(OAuthAttributes attributes) {
+        Member newMember = attributes.toEntity();
+        newMember.setProfileImage(profileImageService.random());
+        return newMember;
+    }
+
     private Member saveOrUpdate(OAuthAttributes attributes) {
-        Member member = memberRepository.findByEmail(attributes.getEmail())
+        Member member = memberRepository.findByEmailAndAuthProviderType(attributes.getEmail(), attributes.getAuthProviderType())
                 .map(entity -> entity.update(attributes.getName()))
-                .orElseGet(() -> {
-                    Member newMember = attributes.toEntity();
-                    newMember.setProfileImage(profileImageService.random());
-                    return newMember;
-                });
+                .orElseGet(() -> newMember(attributes));
 
         return memberRepository.save(member);
     }
