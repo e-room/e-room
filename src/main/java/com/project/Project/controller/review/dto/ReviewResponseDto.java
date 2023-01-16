@@ -2,6 +2,7 @@ package com.project.Project.controller.review.dto;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.room.dto.RoomResponseDto;
+import com.project.Project.domain.Uuid;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,5 +80,23 @@ public class ReviewResponseDto {
     public static class ReviewDeleteDto {
         private Long reviewId;
         private LocalDateTime deletedAt;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewImageDto {
+        private String uuid;
+        private String url;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewImageListDto {
+        private List<ReviewImageDto> reviewImageList;
+        private Integer reviewImageCount;
     }
 }

@@ -2,9 +2,11 @@ package com.project.Project.serializer.member;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.OAuthAttributes;
+import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
+import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.member.MemberException;
 import com.project.Project.repository.member.MemberRepository;
@@ -74,6 +76,18 @@ public class MemberSerializer {
         return MemberResponseDto.MemberDeleteDto.builder()
                 .memberId(deletedMemberId)
                 .deletedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static MemberResponseDto.RecentMapLocationDto toRecentMapLocationDto(RecentMapLocation recentMapLocation) {
+        return MemberResponseDto.RecentMapLocationDto.builder()
+                .updatedAt(LocalDateTime.now())
+                .coordinateDto(
+                        CoordinateDto.builder()
+                                .latitude(recentMapLocation.getCoordinate().getLatitude())
+                                .longitude(recentMapLocation.getCoordinate().getLongitude())
+                                .build()
+                )
                 .build();
     }
 }

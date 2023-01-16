@@ -1,9 +1,12 @@
 package com.project.Project.service.member.impl;
 
 import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.controller.building.dto.CoordinateDto;
+import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
+import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.domain.review.Review;
 import com.project.Project.repository.interaction.FavoriteRepository;
 import com.project.Project.repository.interaction.ReviewLikeRepository;
@@ -24,6 +27,28 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
     private final ReviewLikeRepository reviewLikeRepository;
+
+    @Transactional
+    public RecentMapLocation updateRecentMapLocation(CoordinateDto coordinateDto, Member member) {
+        Coordinate coordinate = Coordinate.builder()
+                .latitude(coordinateDto.getLatitude())
+                .longitude(coordinateDto.getLongitude())
+                .build();
+
+        RecentMapLocation recentMapLocation;
+        if(member.getRecentMapLocation() == null) {
+            recentMapLocation = RecentMapLocation.builder()
+                    .coordinate(coordinate)
+                    .build();
+            member.setRecentMapLocation(recentMapLocation);
+        } else {
+            recentMapLocation = member.getRecentMapLocation();
+            recentMapLocation.setCoordinate(coordinate);
+        }
+        return recentMapLocation;
+    }
+
+
     public Optional<Member> findByEmailAndAuthProviderType(String email, AuthProviderType authProviderType) {
         return memberRepository.findByEmailAndAuthProviderType(email, authProviderType);
     }

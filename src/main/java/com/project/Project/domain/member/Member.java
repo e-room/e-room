@@ -7,8 +7,10 @@ import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import lombok.*;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,17 @@ public class Member extends BaseEntity {
     private MemberRole memberRole;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recent_map_location_id")
+    private RecentMapLocation recentMapLocation;
+
+    public void setRecentMapLocation(RecentMapLocation recentMapLocation) {
+        this.recentMapLocation = recentMapLocation;
+    }
+
 
     @Enumerated(EnumType.STRING)
     private AuthProviderType authProviderType;

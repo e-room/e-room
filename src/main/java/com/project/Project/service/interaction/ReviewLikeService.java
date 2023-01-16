@@ -1,7 +1,8 @@
 package com.project.Project.service.interaction;
 
+import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
 
 public interface ReviewLikeService {
-    Long updateReviewLike(Long reviewId, Member member);
+    ReviewLike updateReviewLike(Long reviewId, Member member);
 }

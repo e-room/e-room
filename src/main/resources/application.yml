@@ -19,6 +19,9 @@ spring:
       enabled: off
     restart:
       exclude: thumbnail
+  security:
+    logoutSuccessUrlValue: https://e-room.app/login
+
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app,https://e-room.app'
@@ -36,6 +39,9 @@ login:
   default-host: 'e-room.app'
   default-failure-path: '/login'
   default-success-path: '/'
+springdoc:
+  cache:
+    disabled: true
 ---
 spring:
   config:

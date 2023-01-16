@@ -23,7 +23,7 @@ public class ReviewImage extends BaseEntity {
 
     private String url;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "uuid_id")
     private Uuid uuid;
 
