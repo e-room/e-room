@@ -12,6 +12,11 @@ import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Building API", description = "건물 조회, 추가")
 @Validated
 @RequiredArgsConstructor
 @RestController
@@ -44,6 +50,7 @@ public class BuildingRestController {
         - 건물 list를 바탕으로 response 객체를 만들어서 전달.
     return: buildingId와 위치를 return
      */
+    @Operation(summary = "지도 마킹을 위한 건물 목록", description = "건물들의 좌표 목록 조회 API")
     @GetMapping("/marking")
     public ResponseEntity<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
         List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
@@ -56,6 +63,14 @@ public class BuildingRestController {
     request: buildingId list
     return: 해당하는 건물 list
      */
+    @Operation(summary = "건물 목록 조회 by buildingId 리스트", description = "buildingId의 리스트로 건물들을 조회하는 API")
+    @Parameters({
+            @Parameter(name = "buildingIds", description = "buildingId 리스트", example = "4126,4128,4130,4132,4134"),
+            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
+            @Parameter(name = "size", description = "응답 건물 개수", example = "4"),
+            @Parameter(name = "sort", description = "정렬 기준", example = "avgScore,id,DESC"),
+            @Parameter(name = "pageable", hidden = true)
+    })
     @GetMapping("")
     public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<@ExistBuilding Long> buildingIds, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = {"id", "reviewCnt", "avgScore"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
@@ -69,6 +84,8 @@ public class BuildingRestController {
     request: buildingId
     return: 단일 건물 BuildingResponse
      */
+    @Operation(summary = "건물 단건 조회", description = "buildingId로 건물 하나를 조회하는 API")
+    @Parameter(name = "buildingId", description = "조회하고자 하는 건물의 id", example = "4454")
     @GetMapping("/{buildingId}")
     public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
         Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
@@ -84,6 +101,14 @@ public class BuildingRestController {
         - 검색 코드를 바탕으로 동적으로 각자 다른 클래스를 호출하도록 동적으로 처리
     return: 건물 정보
      */
+    @Operation(summary = "건물 검색 조회", description = "건물명 또는 주소로 검색하여 조회하는 API")
+    @Parameters({
+            @Parameter(name = "params", description = "검색 내용", example = "영통"),
+            @Parameter(name = "cursorIds", description = "커서 id", example = "4314"),
+            @Parameter(name = "size", description = "응답 건물 개수", example = "4"),
+            @Parameter(name = "sort", description = "정렬 기준", example = "id,DESC"),
+            @Parameter(name = "pageable", hidden = true)
+    })
     @GetMapping("/search")
     public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
@@ -95,7 +120,8 @@ public class BuildingRestController {
     /*
     building set generator for test
      */
-    @PostMapping("/")
+    @Operation(summary = "건물 생성", description = "테스트를 위한 건물 생성 API")
+    @PostMapping("")
     public ResponseEntity<BuildingResponseDto.BuildingMetaData> createBuilding(@RequestBody BuildingRequestDto.BuildingCreateRequest request) {
         Building building = this.buildingService.createBuilding(AddressDto.toAddress(request.getAddressDto()), request.getBuildingOptionalDto());
         return ResponseEntity.ok(BuildingSerializer.toBuildingMetaData(building));

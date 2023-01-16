@@ -1,6 +1,7 @@
 package com.project.Project.controller;
 
 import com.project.Project.auth.dto.MemberDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,24 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpSession;
 
 
+@Tag(name = "Oauth Test API", description = "테스트용 API (호출X)")
 @RequiredArgsConstructor
 @Controller
 public class OauthTestController {
 
-    private final HttpSession httpSession;
-
     @GetMapping("/login")
     public String oauthTest(Model model, @AuthenticationPrincipal OAuth2AuthenticationToken auth) {
         return "oauth-test";
-    }
-
-    @GetMapping("/api/profile")
-    @ResponseBody
-    public ResponseEntity<Object> getProfile(@AuthenticationPrincipal MemberDto auth) {
-        //??
-        // auth가 왜 null이지...
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        authentication.getPrincipal();
-        return ResponseEntity.ok(auth);
     }
 }

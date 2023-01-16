@@ -21,7 +21,7 @@ public class ReviewLikeServiceImpl implements ReviewLikeService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Long updateReviewLike(Long reviewId, Member member) {
+    public ReviewLike updateReviewLike(Long reviewId, Member member) {
         Optional<ReviewLike> optionalReviewLike = reviewLikeRepository.findByMemberAndReview_Id(member, reviewId);
         ReviewLike reviewLike;
         if(optionalReviewLike.isPresent()) {
@@ -35,6 +35,6 @@ public class ReviewLikeServiceImpl implements ReviewLikeService {
             reviewLike.setMember(member);
             reviewLike = reviewLikeRepository.save(reviewLike);
         }
-        return reviewLike.getId();
+        return reviewLike;
     }
 }

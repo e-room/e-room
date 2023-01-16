@@ -5,6 +5,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
+import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
@@ -37,7 +38,7 @@ public class BuildingSerializer {
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
-                .isDirectDeal(false)
+                .directDealType(DirectDealType.IMPOSSIBLE)
                 .rooms(building.getRoomList().stream().map(RoomSerializer::toRoomListResponse).collect(Collectors.toList()))
                 .buildingSummaries(buildingSummary)
                 .build();
@@ -52,7 +53,7 @@ public class BuildingSerializer {
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
-                .isDirectDeal(false)
+                .directDealType(DirectDealType.IMPOSSIBLE)
                 .reviewCnt(Building.reviewCntOrZero.apply(building))
                 .avgScore(Building.avgScoreOrNull.apply(building))
                 .bestCategory(BuildingToReviewCategory.bestCategoryOrNull.apply(maxScoreCategory))
@@ -84,7 +85,7 @@ public class BuildingSerializer {
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
-                .isDirectDeal(false)
+                .directDealType(DirectDealType.IMPOSSIBLE)
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .build();
     }
