@@ -26,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
+    private final ReviewLikeRepository reviewLikeRepository;
 
     @Transactional
     public RecentMapLocation updateRecentMapLocation(CoordinateDto coordinateDto, Member member) {
@@ -47,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
         return recentMapLocation;
     }
 
-    private final ReviewLikeRepository reviewLikeRepository;
+
     public Optional<Member> findByEmailAndAuthProviderType(String email, AuthProviderType authProviderType) {
         return memberRepository.findByEmailAndAuthProviderType(email, authProviderType);
     }

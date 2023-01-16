@@ -56,10 +56,6 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
 
-    @Enumerated(EnumType.STRING)
-    private AuthProviderType authProviderType;
-
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "recent_map_location_id")
     private RecentMapLocation recentMapLocation;
@@ -67,6 +63,10 @@ public class Member extends BaseEntity {
     public void setRecentMapLocation(RecentMapLocation recentMapLocation) {
         this.recentMapLocation = recentMapLocation;
     }
+
+
+    @Enumerated(EnumType.STRING)
+    private AuthProviderType authProviderType;
 
     public Member update(String name) {
         this.name = name;

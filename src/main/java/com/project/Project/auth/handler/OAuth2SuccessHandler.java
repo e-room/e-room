@@ -43,9 +43,12 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         MemberDto memberDto = MemberSerializer.toDto(oAuth2User);
         Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(),"USER");
-        Member member = memberRepository.findByEmailAndAuthProviderType(memberDto.getEmail(), memberDto.getAuthProviderType()).get();
-        member.setRefreshToken(token.getRefreshToken());
-        memberRepository.save(member);
+
+        memberRepository.findByEmailAndAuthProviderType(memberDto.getEmail(), memberDto.getAuthProviderType())
+                        .ifPresent((member -> {
+                            member.setRefreshToken(token.getRefreshToken());
+                            memberRepository.save(member);
+                        }));
         log.info("{}", token);
 
 

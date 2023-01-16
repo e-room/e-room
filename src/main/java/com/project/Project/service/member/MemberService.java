@@ -8,10 +8,9 @@ import com.project.Project.domain.member.RecentMapLocation;
 import java.util.Optional;
 
 public interface MemberService {
+    Optional<Member> findByEmailAndAuthProviderType(String email, AuthProviderType authProviderType);
 
     RecentMapLocation updateRecentMapLocation(CoordinateDto coordinateDto, Member member);
-
-    Optional<Member> findByEmailAndAuthProviderType(String email, AuthProviderType authProviderType);
 
     Optional<Member> findById(Long id);
 

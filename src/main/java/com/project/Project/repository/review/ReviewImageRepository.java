@@ -1,7 +1,7 @@
 package com.project.Project.repository.review;
 
-import com.project.Project.domain.review.Review;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
