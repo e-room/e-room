@@ -101,8 +101,8 @@ public class CookieUtil {
 
     public static ResponseCookie createAccessTokenCookie(String token, Boolean isLocal) {
         ResponseCookie.ResponseCookieBuilder accessTokenCookie = ResponseCookie.from("accessToken", token)
-                .secure(false)
-                .httpOnly(false)
+                .secure(true)
+                .httpOnly(true)
                 .path("/")
                 .sameSite("None")
                 .maxAge(accessTokenMaxAge);
@@ -116,8 +116,8 @@ public class CookieUtil {
 
     public static ResponseCookie createRefreshTokenCookie(String token, Boolean isLocal) {
         ResponseCookie.ResponseCookieBuilder refreshTokenCookie = ResponseCookie.from("refreshToken", token)
-                .secure(false)
-                .httpOnly(false)
+                .secure(true)
+                .httpOnly(true)
                 .path("/")
                 .sameSite("None")
                 .maxAge(refreshTokenMaxAge);
