@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
+
 /**
  * 발급받은 토큰을 이용하여 security 인증을 처리하는 필터
  */
@@ -50,9 +52,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 //    }
 
     private void postAuthenticate(HttpServletRequest request, HttpServletResponse response, Authentication authenticationResult) {
+        Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
+                .map(Cookie::getValue)
+                .map(Boolean::parseBoolean).orElse(false);
         JwtAuthentication jwtAuthenticationResult = (JwtAuthentication) authenticationResult;
-        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(jwtAuthenticationResult.getToken().getAccessToken());
-        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken());
+        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(jwtAuthenticationResult.getToken().getAccessToken(), isLocal);
+        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken(), isLocal);
         response.addHeader("Set-Cookie", accessTokenCookie.toString());
         response.addHeader("Set-Cookie", refreshTokenCookie.toString());
     }
