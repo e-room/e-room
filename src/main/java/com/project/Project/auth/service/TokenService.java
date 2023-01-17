@@ -47,7 +47,7 @@ public class TokenService {
 
     //    @Override
     public Token generateToken(String email, AuthProviderType authProviderType, String role) {
-        String subject = email + "|" + authProviderType.name();
+        String subject = email + "," + authProviderType.name();
 
         Claims claims = Jwts.claims().setSubject(subject);
         claims.put("role", role);
@@ -97,8 +97,8 @@ public class TokenService {
     public UidDto getUid(String token) {
         String subject = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
         return UidDto.builder()
-                .email(subject.split("|")[0])
-                .authProviderType(AuthProviderType.valueOf(subject.split("|")[1]))
+                .email(subject.split(",")[0])
+                .authProviderType(AuthProviderType.valueOf(subject.split(",")[1]))
                 .build();
     }
 
