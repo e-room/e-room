@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ReviewLikeRestController {
     private final ReviewLikeService reviewLikeService;
-    @Operation(summary = "리뷰 좋아요/취소", description = "리뷰 좋아요/취소")
+    @Operation(summary = "리뷰 좋아요/취소 [3.2]", description = "리뷰 좋아요/취소")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewLikeResponseDto.ReviewLikeUpdateResponse.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
