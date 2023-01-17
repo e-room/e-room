@@ -44,7 +44,7 @@ public class FavoriteRestController {
     private final FavoriteService favoriteService;
     private final FavoriteExistValidator favoriteExistValidator;
 
-    @Operation(summary = "사용자의 찜 목록 조회", description = "찜 목록 조회 API<br>")
+    @Operation(summary = "사용자의 찜 목록 조회 [5]", description = "찜 목록 조회 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
@@ -64,7 +64,7 @@ public class FavoriteRestController {
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
 
-    @Operation(summary = "건물 찜하기", description = "건물 찜하기 API<br>")
+    @Operation(summary = "건물 찜하기 [3.2]", description = "건물 찜하기 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = FavoriteResponseDto.FavoriteAddResponse.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
@@ -82,7 +82,7 @@ public class FavoriteRestController {
         return ResponseEntity.ok(FavoriteSerializer.toFavoriteAddResponse(savedFavoriteId));
     }
 
-    @Operation(summary = "건물 찜 삭제", description = "건물 찜 삭제 API<br>")
+    @Operation(summary = "건물 찜 삭제 [3.2]", description = "건물 찜 삭제 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = FavoriteResponseDto.FavoriteDeleteResponse.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
