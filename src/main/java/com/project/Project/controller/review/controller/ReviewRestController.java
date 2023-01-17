@@ -78,7 +78,7 @@ public class ReviewRestController {
      * @param cursorIds  : 조회해서 받았던 리스트 중에 가장 마지막 원소를 식별하는 cursor| size : 한 번에 받고자 하는 원소의 개수
      * @return 건물 id에 해당하는 리뷰 리스트
      */
-    @Operation(summary = "리뷰 조회 by 건물", description = "특정 건물에 대한 리뷰 리스트를 반환 API")
+    @Operation(summary = "리뷰 조회 by 건물 [3.2]", description = "특정 건물에 대한 리뷰 리스트를 반환 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK")
     })
@@ -111,7 +111,7 @@ public class ReviewRestController {
      * @param cursorIds : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
      * @return 방 id에 해당하는 리뷰 리스트
      */
-    @Operation(summary = "리뷰 조회 by 방", description = "특정 방에 대한 리뷰 리스트를 반환 API")
+    @Operation(summary = "리뷰 조회 by 방 [3.2]", description = "특정 방에 대한 리뷰 리스트를 반환 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK")
     })
@@ -153,7 +153,7 @@ public class ReviewRestController {
      * @param request 등록할 리뷰
      * @return 등록된 리뷰의 id, 등록일시, affected row의 개수
      */
-    @Operation(summary = "리뷰 등록", description = "리뷰 등록 API<br>" +
+    @Operation(summary = "리뷰 등록 [7.4]", description = "리뷰 등록 API<br>" +
             "요청 예시는 <a href='https://e-room.postman.co/workspace/Team-Workspace~86a5982f-98d2-4698-8cf7-b1231d296257/overview'>E-room 포스트맨</a> 참조")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewCreateDto.class))),
@@ -192,7 +192,7 @@ public class ReviewRestController {
      * @param reviewId 삭제할 리뷰 id
      * @return 삭제된 리뷰의 id, 등록일시, affected row의 개수
      */
-    @Operation(summary = "리뷰 삭제", description = "리뷰 삭제 API<br>")
+    @Operation(summary = "리뷰 삭제 [3.2.2]", description = "리뷰 삭제 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewDeleteDto.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
@@ -207,7 +207,7 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
-    @Operation(summary = "리뷰 이미지 조회", description = "리뷰 이미지 조회 API<br>")
+    @Operation(summary = "리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")

@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 public class MemberRestController {
     private final MemberService memberService;
 
-    @Operation(summary = "내 정보 조회", description = "내 정보 조회 API")
+    @Operation(summary = "내 정보 조회 [6]", description = "내 정보 조회 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberResponseDto.MemberProfileDto.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
@@ -41,7 +41,7 @@ public class MemberRestController {
         return ResponseEntity.ok(MemberSerializer.toMemberProfileDto(loginMember));
     }
 
-    @Operation(summary = "회원 탈퇴", description = "탈퇴하기 API")
+    @Operation(summary = "회원 탈퇴 [6]", description = "탈퇴하기 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberResponseDto.MemberDeleteDto.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
@@ -55,7 +55,7 @@ public class MemberRestController {
         return ResponseEntity.ok(MemberSerializer.toMemberDeleteDto(deletedMemberId));
     }
 
-    @Operation(summary = "마지막 지도 위치 저장", description = "마지막으로 조회한 지도의 중심 저장 API")
+    @Operation(summary = "마지막 지도 위치 저장 [3.0.1]", description = "마지막으로 조회한 지도의 중심 저장 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberResponseDto.RecentMapLocationDto.class))),
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")

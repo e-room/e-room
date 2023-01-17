@@ -3,6 +3,7 @@ package com.project.Project.controller.building;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
+import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
@@ -17,7 +18,10 @@ import com.project.Project.validator.ExistBuilding;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
@@ -54,7 +58,7 @@ public class BuildingRestController {
         - 건물 list를 바탕으로 response 객체를 만들어서 전달.
     return: buildingId와 위치를 return
      */
-    @Operation(summary = "지도 마킹을 위한 건물 목록", description = "건물들의 좌표 목록 조회 API")
+    @Operation(summary = "지도 마킹을 위한 건물 목록 [3.0.1]", description = "건물들의 좌표 목록 조회 API")
     @GetMapping("/marking")
     public ResponseEntity<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
         List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
@@ -67,7 +71,7 @@ public class BuildingRestController {
     request: buildingId list
     return: 해당하는 건물 list
      */
-    @Operation(summary = "건물 목록 조회 by buildingId 리스트", description = "buildingId의 리스트로 건물들을 조회하는 API")
+    @Operation(summary = "건물 목록 조회 by buildingId 리스트 [3.0.2]", description = "buildingId의 리스트로 건물들을 조회하는 API")
     @Parameters({
             @Parameter(name = "buildingIds", description = "buildingId 리스트", example = "4126,4128,4130,4132,4134"),
             @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
@@ -88,7 +92,7 @@ public class BuildingRestController {
     request: buildingId
     return: 단일 건물 BuildingResponse
      */
-    @Operation(summary = "건물 단건 조회", description = "buildingId로 건물 하나를 조회하는 API")
+    @Operation(summary = "건물 단건 조회 [3.2]", description = "buildingId로 건물 하나를 조회하는 API")
     @Parameter(name = "buildingId", description = "조회하고자 하는 건물의 id", example = "4454")
     @GetMapping("/{buildingId}")
     public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
@@ -105,7 +109,7 @@ public class BuildingRestController {
         - 검색 코드를 바탕으로 동적으로 각자 다른 클래스를 호출하도록 동적으로 처리
     return: 건물 정보
      */
-    @Operation(summary = "건물 검색 조회", description = "건물명 또는 주소로 검색하여 조회하는 API")
+    @Operation(summary = "건물 검색 조회 [8.1]", description = "건물명 또는 주소로 검색하여 조회하는 API")
     @Parameters({
             @Parameter(name = "params", description = "검색 내용", example = "영통"),
             @Parameter(name = "cursorIds", description = "커서 id", example = "4314"),
@@ -131,6 +135,15 @@ public class BuildingRestController {
         return ResponseEntity.ok(BuildingSerializer.toBuildingMetaData(building));
     }
 
+
+    @Operation(summary = "건물에 대한 리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 by buildingId API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = BuildingResponseDto.ReviewImageListDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "buildingId", description = "이미지를 조회하고자하는 건물의 id", example = "1004")
+    })
     @GetMapping("/{buildingId}/images")
     public ResponseEntity<BuildingResponseDto.ReviewImageListDto> getBuildingImageList(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
         List<ReviewImage> reviewImageList = reviewImageService.findByBuilding(buildingId);
