@@ -56,7 +56,13 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ExceptionHandler(CustomException.class)
     public <T extends ApiErrorResult> ResponseEntity<T> customExceptionHandler(CustomException ex, WebRequest request) {
-        ResponseEntity response = handleExceptionInternal(ex, null, null, ex.getErrorCode().getStatus(), request);
+
+        ApiErrorResult apiErrorResult = ApiErrorResult.builder()
+                .errorCode(ex.getErrorCode())
+                .message(ex.getMessage())
+                .cause(ex.getClass().getName())
+                .build();
+        ResponseEntity response = super.handleExceptionInternal(ex, apiErrorResult, new HttpHeaders(), ex.getErrorCode().getStatus(), request);
         return response;
     }
 

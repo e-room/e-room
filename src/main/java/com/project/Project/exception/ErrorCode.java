@@ -28,6 +28,7 @@ public enum ErrorCode {
 
     //Review
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
+    REVIEW_DUPLICATED(HttpStatus.BAD_REQUEST, "하나의 방에는 하나의 리뷰만 작성할 수 있습니다."),
 
     //etc
     UUID_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당하는 UUID가 존재하지 않습니다."),
