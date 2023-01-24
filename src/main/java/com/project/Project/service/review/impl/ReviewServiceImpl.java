@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -75,11 +76,16 @@ public class ReviewServiceImpl implements ReviewService {
             3. room을 toReview로 넘겨서 review 생성
             4. 저장 후 응답
          */
-        Review review = reviewRepository.findReviewByAuthorAndRoom(author.getId(), room.getId())
-                .orElseGet(() -> ReviewGenerator.createReview(request, author, room));
-        Review savedReview = reviewRepository.save(review);
-        eventListener.updateOthers(savedReview);
-        return savedReview;
+        Optional<Review> review = reviewRepository.findReviewByAuthorAndRoom(author.getId(), room.getId());
+        if (review.isPresent()) {
+            throw new ReviewException(ErrorCode.REVIEW_DUPLICATED);
+        } else {
+            Review createdReview = ReviewGenerator.createReview(request, author, room);
+            Review savedReview = reviewRepository.save(createdReview);
+            eventListener.updateOthers(savedReview);
+            return savedReview;
+        }
+
     }
 
     @Transactional
