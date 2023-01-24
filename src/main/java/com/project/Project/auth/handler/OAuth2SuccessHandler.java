@@ -5,7 +5,6 @@ import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.config.properties.SecurityProperties;
-import com.project.Project.domain.member.Member;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.component.CookieUtil;
@@ -42,13 +41,13 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         MemberDto memberDto = MemberSerializer.toDto(oAuth2User);
-        Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(),"USER");
+        Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(), "USER");
 
         memberRepository.findByEmailAndAuthProviderType(memberDto.getEmail(), memberDto.getAuthProviderType())
-                        .ifPresent((member -> {
-                            member.setRefreshToken(token.getRefreshToken());
-                            memberRepository.save(member);
-                        }));
+                .ifPresent((member -> {
+                    member.setRefreshToken(token.getRefreshToken());
+                    memberRepository.save(member);
+                }));
         log.info("{}", token);
 
 
@@ -65,7 +64,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
             String redirectPath = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                     .map(Cookie::getValue)
                     .orElse(securityProperties.getDefaultSuccessPath());
-
+            writeTokenResponse(request, response, token);
 
             MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
             params.add("accessToken", accessToken);
@@ -106,8 +105,6 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
                 .map(Cookie::getValue)
                 .map(Boolean::parseBoolean).orElse(false);
-        if (isLocal) {
-        }
 
         ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken(), isLocal);
         ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken(), isLocal);
