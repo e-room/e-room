@@ -71,6 +71,7 @@ public class ReviewRequestDto {
         @Size(min = 50, max = 500)
         private String disadvantageDescription;
 
+        @Size(min = 0, max = 5)
         List<MultipartFile> reviewImageList = new ArrayList<>();
     }
 }

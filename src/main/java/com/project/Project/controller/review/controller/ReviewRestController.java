@@ -172,7 +172,7 @@ public class ReviewRestController {
         Building building = buildingService.createBuilding(address, buildingOptionalDto);// 빌딩이 없는 경우 생성
 
         RoomBaseDto roomBaseDto = request.getRoomBaseDto();
-        Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
+        Room room = roomService.createRoom(building, roomBaseDto.getLineNumber(), roomBaseDto.getRoomNumber());
 
         if (!(reviewImageList == null || reviewImageList.isEmpty())) {
             request.setReviewImageList(reviewImageList);
