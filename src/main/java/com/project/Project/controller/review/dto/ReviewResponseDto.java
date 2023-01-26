@@ -33,7 +33,7 @@ public class ReviewResponseDto {
         private Long reviewId;
         private LocalDateTime createdAt;
         private Double score;
-        private Integer residencePeriod;
+        private Integer residenceStartYear;
         private Integer residenceDuration;
         private Double netLeasableArea;
         private Integer deposit;
