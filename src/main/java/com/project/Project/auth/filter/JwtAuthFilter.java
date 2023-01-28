@@ -31,13 +31,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final AuthenticationManager authenticationManager;
     private final JWTFailureHandler failureHandler;
 
-//    public JwtAuthFilter(AuthenticationManager authenticationManager) {
-//
-////        super(new AntPathRequestMatcher("/api/**"));
-////        this.setAuthenticationFailureHandler(new JWTFailureHandler());
-////        super.setAuthenticationManager(authenticationManager);
-//    }
-
     private String getCookieValue(HttpServletRequest req, String cookieName) {
         if (req.getCookies() == null) return null;
         return Arrays.stream(req.getCookies())
@@ -47,9 +40,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 .orElse(null);
     }
 
-//    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
-//
-//    }
 
     private void postAuthenticate(HttpServletRequest request, HttpServletResponse response, Authentication authenticationResult) {
         Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
@@ -77,7 +67,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             /*
                 authenticate 관련 정책 추가 가능
                 Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
-             */
+            */
                 postAuthenticate(request, response, authenticationResult);
             } catch (JwtException ex) {
                 SecurityContextHolder.clearContext();
