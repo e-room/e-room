@@ -1,6 +1,5 @@
 package com.project.Project.auth.handler;
 
-import com.project.Project.auth.exception.JwtException;
 import com.project.Project.exception.ApiErrorResult;
 import com.project.Project.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
@@ -20,14 +19,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         //response에 넣기
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.setContentType("application/json");
-        ErrorCode errorCode = null;
-        if (authException instanceof JwtException) {
-            errorCode = ((JwtException) authException).getErrorCode();
-        }
+        response.setContentType("application/json; charset=UTF-8");
 
         ApiErrorResult errorResponse = ApiErrorResult.builder()
-                .errorCode(errorCode)
+                .errorCode(ErrorCode.INTERNAL_SERVER_ERROR)
                 .cause(authException.getClass().getName())
                 .message(authException.getMessage()).build();
         try {
