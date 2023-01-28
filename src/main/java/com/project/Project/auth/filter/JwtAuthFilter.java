@@ -2,8 +2,9 @@ package com.project.Project.auth.filter;
 
 import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.Token;
-import com.project.Project.auth.exception.JwtException;
+import com.project.Project.auth.exception.JwtAuthenctionException;
 import com.project.Project.auth.handler.JWTFailureHandler;
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -69,11 +70,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 Ex) 초기 유저이기 때문에 실명인증이 필요하다, 개인정보 동의 체크, 알림 수신 체크 등등
             */
                 postAuthenticate(request, response, authenticationResult);
-            } catch (JwtException ex) {
+            } catch (JwtAuthenctionException ex) {
                 SecurityContextHolder.clearContext();
                 this.failureHandler.onAuthenticationFailure(request, response, ex);
+                throw ex;
+            } catch (Exception ex) {
+                SecurityContextHolder.clearContext();
+                JwtAuthenctionException authenticationException = new JwtAuthenctionException("jwt인증에 실패했습니다", ex.getCause(), ErrorCode.JWT_BAD_REQUEST);
+                this.failureHandler.onAuthenticationFailure(request, response, authenticationException);
+                throw authenticationException;
             }
-
             filterChain.doFilter(request, response);
         }
     }

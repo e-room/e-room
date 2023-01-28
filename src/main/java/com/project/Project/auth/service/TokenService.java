@@ -2,8 +2,10 @@ package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.dto.UidDto;
+import com.project.Project.auth.exception.JwtAuthenctionException;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.service.member.MemberService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -73,8 +75,6 @@ public class TokenService {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
-            System.out.println(new Date().getTime());
-            System.out.println(claims.getBody().getExpiration().getTime());
             if (claims.getBody()
                     .getExpiration()
                     .before(new Date())) {
@@ -83,14 +83,12 @@ public class TokenService {
             return JwtCode.ACCESS;
         } catch (ExpiredJwtException e) {
             return JwtCode.EXPIRED;
-        } catch (JwtException | IllegalArgumentException e) {
-            log.info("jwt Error: {}", e);
+        } catch (Exception e) {
+            return JwtCode.DENIED;
         }
-        return JwtCode.DENIED;
     }
 
     /**
-     *
      * @param token
      * @return email|authProviderType 형식의 문자열을 반환합니다. ex) hello@naver.com|NAVER
      */
@@ -115,8 +113,7 @@ public class TokenService {
             member.setRefreshToken(newToken.getRefreshToken());
             return newToken;
         } else {
-            log.info("refresh 토큰이 일치하지 않습니다. ");
-            return null;
+            throw new JwtAuthenctionException("토큰 재발급에 실패했습니다.", ErrorCode.JWT_BAD_REQUEST);
         }
     }
 }

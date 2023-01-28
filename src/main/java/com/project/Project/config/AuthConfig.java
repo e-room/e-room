@@ -2,6 +2,7 @@ package com.project.Project.config;
 
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
+import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
 import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
 import com.project.Project.auth.handler.CustomLogoutHandler;
 import com.project.Project.auth.handler.OAuth2FailureHandler;
@@ -43,8 +44,8 @@ public class AuthConfig {
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
     private final CustomLogoutHandler customLogoutHandler;
+    private final JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter;
 
     private static CustomOAuth2UserService staticCustomOAuth2UserService;
     private static JwtProvider staticJwtProvider;
@@ -55,6 +56,7 @@ public class AuthConfig {
     private static OAuth2AuthorizationRequestBasedOnCookieRepository staticOAuth2AuthorizationRequestBasedOnCookieRepository;
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
     private static CustomLogoutHandler staticCustomLogoutHandler;
+    private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
 
     @PostConstruct
     public void init() {
@@ -67,6 +69,7 @@ public class AuthConfig {
         staticOAuth2AuthorizationRequestBasedOnCookieRepository = this.oAuth2AuthorizationRequestBasedOnCookieRepository;
         staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
         staticCustomLogoutHandler = this.customLogoutHandler;
+        staticJwtExceptionInterceptorFilter = this.jwtExceptionInterceptorFilter;
     }
 
     @Profile("local")
@@ -232,7 +235,8 @@ public class AuthConfig {
 
                 // 인증을 처리하는 기본필터 대신 별도의 인증로직을 가진 JwtAuthFilter 추가
                 // 가능하다면 JwtLoginConfigurer를 만들어보는 것도 좋을 듯
-                http.addFilterBefore(staticJwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterAt(staticJwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterBefore(staticJwtExceptionInterceptorFilter, JwtAuthFilter.class);
                 http.authenticationProvider(staticJwtProvider);
                 http.httpBasic().disable();
                 return http;
