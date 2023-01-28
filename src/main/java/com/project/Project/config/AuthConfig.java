@@ -9,7 +9,6 @@ import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
-import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -87,7 +86,8 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication())
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
                     .andThen(headerMockingAuthentication())
                     .andThen(exceptionHandler())
                     .andThen(permitAllList())
@@ -113,7 +113,13 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(headerMockingAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
     }
 
@@ -129,7 +135,13 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(headerMockingAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
     }
 
@@ -145,7 +157,12 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return oAuthAndJwtAuthentication().andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
     }
 
@@ -201,14 +218,14 @@ public class AuthConfig {
                         .and()
                         .logout().
                         logoutUrl("/logout")
-                            .addLogoutHandler(staticCustomLogoutHandler)
-                            .logoutSuccessUrl(logoutSuccessUrlValue)
+                        .addLogoutHandler(staticCustomLogoutHandler)
+                        .logoutSuccessUrl(logoutSuccessUrlValue)
                         .and()
                         .oauth2Login()
                         .authorizationEndpoint()
                         .authorizationRequestRepository(staticOAuth2AuthorizationRequestBasedOnCookieRepository)
                         .and()
-                        .loginPage("/login")
+//                        .loginPage("/login")
                         .successHandler(staticOAuth2SuccessHandler) // 성공시
                         .failureHandler(staticOAuth2FailureHandler)
                         .userInfoEndpoint().userService(staticCustomOAuth2UserService);
