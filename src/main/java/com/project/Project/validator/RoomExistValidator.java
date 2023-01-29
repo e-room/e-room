@@ -1,5 +1,7 @@
 package com.project.Project.validator;
 
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.room.RoomException;
 import com.project.Project.repository.room.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,12 @@ public class RoomExistValidator implements ConstraintValidator<ExistRoom, Long> 
 
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
-        return roomRepository.existsById(value);
+        if(!roomRepository.existsById(value)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorCode.ROOM_NOT_FOUND.toString()).addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 
     @Override

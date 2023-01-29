@@ -11,8 +11,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -40,10 +42,12 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
 
     @ExceptionHandler
     public ResponseEntity<ApiErrorResult> ConstraintViolationExceptionHandler(ConstraintViolationException e) {
-        String message = "request가 Validate 하지 않습니다. :" + e.getConstraintViolations().getClass().getName();
+        ConstraintViolation constraintViolation = e.getConstraintViolations().stream().collect(Collectors.toList()).get(0);
+        String errorCodeString = constraintViolation.getMessageTemplate();
+        ErrorCode errorCode = ErrorCode.valueOf(errorCodeString);
         String cause = e.getClass().getName();
         return ResponseEntity.badRequest()
-                .body(ApiErrorResult.builder().message(message).cause(cause).build());
+                .body(ApiErrorResult.builder().errorCode(errorCode).message(errorCode.getMessage()).cause(cause).build());
     }
 
     @Override
