@@ -1,17 +1,15 @@
 package com.project.Project.domain.member;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.auth.Role;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import lombok.*;
-import org.hibernate.annotations.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +38,9 @@ public class Member extends BaseEntity {
     @Builder.Default
     private List<ReviewLike> reviewLikeList = new ArrayList<>();
 
-//    // Oauth 회원번호
-//    private Long userId;
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Role> roles = new ArrayList<>();
 
     private String refreshToken;
 
@@ -77,6 +76,7 @@ public class Member extends BaseEntity {
     public void setProfileImage(ProfileImage profileImage) {
         this.profileImage = profileImage;
     }
+
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
@@ -86,7 +86,7 @@ public class Member extends BaseEntity {
     }
 
     @PreRemove
-    public void deleteHandler(){
+    public void deleteHandler() {
         super.setDeleted(true);
     }
 }
