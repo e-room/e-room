@@ -55,6 +55,7 @@ public class MemberRestController {
         return ResponseEntity.ok(MemberSerializer.toMemberDeleteDto(deletedMemberId));
     }
 
+    @Deprecated
     @Operation(summary = "마지막 지도 위치 저장 [3.0.1]", description = "마지막으로 조회한 지도의 중심 저장 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberResponseDto.RecentMapLocationDto.class))),

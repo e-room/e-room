@@ -30,14 +30,10 @@ import java.util.function.Function;
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "UniqueAddress",
+                        name = "UniqueCoordinate",
                         columnNames = {
-                                "siDo",
-                                "siGunGu",
-                                "eupMyeon",
-                                "roadName",
-                                "buildingNumber"
-                                // 상세주소와 참고항목은 같은 건물내에서도 다르므로 제외
+                                "longitude",
+                                "latitude"
                         }
                 )
         }
