@@ -10,6 +10,7 @@ import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -174,7 +175,6 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
-                        .antMatchers("/token/valid").authenticated()
                         .anyRequest().authenticated();
                 return http.build();
             } catch (Exception e) {
