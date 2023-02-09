@@ -5,6 +5,7 @@ import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.exception.JwtException;
 import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.util.component.CookieUtil;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -86,5 +87,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
             filterChain.doFilter(request, response);
         }
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return request.getRequestURI().equals("/token/valid");
     }
 }
