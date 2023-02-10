@@ -6,12 +6,10 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
-
-import com.project.Project.domain.member.Member;
 import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
-
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.domain.room.Room;
@@ -27,10 +25,8 @@ import com.project.Project.validator.ExistRoom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -49,7 +45,6 @@ import reactor.util.annotation.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -163,7 +158,8 @@ public class ReviewRestController {
             @Parameter(name = "authentication", hidden = true),
             @Parameter(name = "loginMember", hidden = true)
     })
-    @PostMapping(value = "/building/room/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // multipart/form-data 형태로 받음
+    @PostMapping(value = "/building/room/review", consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}) // multipart/form-data 형태로 받음
     public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
 
         Address address = AddressDto.toAddress(request.getAddress());
