@@ -159,7 +159,8 @@ public class ReviewRestController {
             @Parameter(name = "loginMember", hidden = true)
     })
     @PostMapping(value = "/building/room/review", consumes = {
-            MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}) // multipart/form-data 형태로 받음
+            MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    // multipart/form-data 형태로 받음
     public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
 
         Address address = AddressDto.toAddress(request.getAddress());
