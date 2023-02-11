@@ -20,6 +20,4 @@ public interface ReviewCustomRepository {
     List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable);
 
 
-    List<Review> findReviewsByRoomId(Long roomId, List<Double> cursorIds, Pageable pageable);
-
 }

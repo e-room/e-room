@@ -28,7 +28,7 @@ public class ReviewImage extends BaseEntity {
     private Uuid uuid;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "review")
+    @JoinColumn(name = "review_id")
     private Review review;
 
     @PreRemove

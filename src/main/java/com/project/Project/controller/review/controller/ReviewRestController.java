@@ -6,22 +6,21 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
-import com.project.Project.controller.room.dto.RoomBaseDto;
+
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.domain.room.Room;
+
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
-import com.project.Project.service.room.RoomService;
+
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
-import com.project.Project.validator.ExistRoom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -57,7 +56,6 @@ public class ReviewRestController {
 
     private final ReviewService reviewService;
     private final BuildingService buildingService;
-    private final RoomService roomService;
     private final ReviewImageService reviewImageService;
 
     /* todo
@@ -97,39 +95,6 @@ public class ReviewRestController {
         return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
     }
 
-    /**
-     * 3.2 리뷰_상세페이지<br>
-     * - 특정 방에 대한 리뷰 리스트를 반환<br>
-     * - 3.2 리뷰_상세페이지에서 <strong>방(ex.102호)</strong>버튼을 눌렀을 때 사용
-     *
-     * @param roomId    방의 id
-     * @param cursorIds : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
-     * @return 방 id에 해당하는 리뷰 리스트
-     */
-    @Operation(summary = "리뷰 조회 by 방 [3.2]", description = "특정 방에 대한 리뷰 리스트를 반환 API")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK")
-    })
-    @Parameters({
-            @Parameter(name = "roomId", description = "리뷰를 얻고자 하는 방의 id", example = "123"),
-            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
-            @Parameter(name = "size", description = "응답 리뷰 개수", example = "4"),
-            @Parameter(name = "sort", description = "정렬 기준", example = "id,likeCnt,DESC"),
-            @Parameter(name = "pageable", hidden = true)
-
-    })
-    @GetMapping("/building/room/{roomId}/review")
-    public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
-                                                                                      @RequestParam(required = false) List<Double> cursorIds,
-                                                                                      @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
-        if (cursorIds == null) cursorIds = new ArrayList<>();
-        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorIds, pageable);
-        List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
-                reviewList.parallelStream()
-                        .map(ReviewSerializer::toReviewListDto)
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
-    }
     /* todo
         @GetMapping("/building/room/review/{reviewId}")
     */
@@ -168,13 +133,10 @@ public class ReviewRestController {
 
         Building building = buildingService.createBuilding(address, buildingOptionalDto);// 빌딩이 없는 경우 생성
 
-        RoomBaseDto roomBaseDto = request.getRoomBaseDto();
-        Room room = roomService.createRoom(building, roomBaseDto.getLineNumber(), roomBaseDto.getRoomNumber());
-
         if (!(reviewImageList == null || reviewImageList.isEmpty())) {
             request.setReviewImageList(reviewImageList);
         }
-        Review review = reviewService.saveReview(request, loginMember, room);
+        Review review = reviewService.saveReview(request, loginMember, building);
 
         return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
     }

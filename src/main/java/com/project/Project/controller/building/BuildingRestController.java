@@ -3,7 +3,7 @@ package com.project.Project.controller.building;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
-import com.project.Project.controller.room.dto.RoomResponseDto;
+
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
@@ -97,7 +97,6 @@ public class BuildingRestController {
     @GetMapping("/{buildingId}")
     public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
         Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
-        building.getRoomList().stream().forEach(Hibernate::initialize);
         building.getBuildingToReviewCategoryList().stream().forEach(Hibernate::initialize);
         return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building));
     }

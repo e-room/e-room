@@ -1,7 +1,6 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.auth.dto.MemberDto;
-import com.project.Project.controller.room.dto.RoomResponseDto;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,6 @@ public class ReviewResponseDto {
     @Builder
     public static class ReviewListDto {
         private BaseReviewDto baseReviewDto;
-        private RoomResponseDto.BaseRoomDto baseRoomDto;
         private ReviewScoreDto reviewScoreDto;
         private MemberDto authorDto;
     }
