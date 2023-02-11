@@ -1,7 +1,6 @@
 package com.project.Project.repository.review;
 
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.room.Room;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    List<Review> findByRoom(Room room);
 
     // 초기 조회 메서드 만들기
     List<Review> findByIdInOrderByCreatedAtDesc(List<Long> ids, Pageable pageable);
@@ -22,15 +20,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByIdInAndIdLessThanOrderByCreatedAtDesc(List<Long> ids, Long id, Pageable pageable);
 
     @EntityGraph(value = "Review.withRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
-    @Query("select review from Review review where review.room.building.id = :id")
-    List<Review> findReviewsWithRoomAndBuilding(@Param("id") Long id);
+    @Query("select review from Review review where review.building.id = :id")
+    List<Review> findReviewsWithBuilding(@Param("id") Long id);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @EntityGraph(value = "Review.withRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
-    @Query("select review from Review review where review.room.building.id = :id")
-    List<Review> findReviewsWithRoomAndBuildingAndLock(@Param("id") Long buildingId);
+    @EntityGraph(value = "Review.withBuilding", type = EntityGraph.EntityGraphType.FETCH)
+    @Query("select review from Review review where review.building.id = :id")
+    List<Review> findReviewsWithBuildingAndLock(@Param("id") Long buildingId);
 
-    @Query("select review from Review review where review.room.id = :roomId and review.author.id = :memberId")
-    Optional<Review> findReviewByAuthorAndRoom(@Param("memberId") Long memberId, @Param("roomId") Long roomId);
+    @Query("select review from Review review where review.author.id = :memberId and review.building.id = :buildingId")
+    Optional<Review> findReviewByAuthorAndBuilding(@Param("memberId") Long memberId,  @Param("buildingId") Long buildingId);
 
 }

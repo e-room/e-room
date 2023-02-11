@@ -8,15 +8,13 @@ import lombok.Getter;
 public class ReviewImagePackageMetaMeta extends FilePackageMeta {
 
     private Long buildingId;
-    private Long roomId;
     private Uuid uuidEntity;
 
 
     @Builder
-    public ReviewImagePackageMetaMeta(String uuid, Long buildingId, Long roomId, Uuid uuidEntity) {
+    public ReviewImagePackageMetaMeta(String uuid, Long buildingId, Uuid uuidEntity) {
         super(uuid);
         this.buildingId = buildingId;
-        this.roomId = roomId;
         this.uuidEntity = uuidEntity;
     }
 

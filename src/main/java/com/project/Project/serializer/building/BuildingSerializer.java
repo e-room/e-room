@@ -1,7 +1,7 @@
 package com.project.Project.serializer.building;
 
 import com.project.Project.controller.building.dto.BuildingResponseDto;
-import com.project.Project.controller.room.dto.RoomResponseDto;
+
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
@@ -12,7 +12,6 @@ import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
-import com.project.Project.serializer.room.RoomSerializer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -41,7 +40,6 @@ public class BuildingSerializer {
                 .address(Address.toAddressDto(building.getAddress()))
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .directDealType(DirectDealType.IMPOSSIBLE)
-                .rooms(building.getRoomList().stream().map(RoomSerializer::toRoomListResponse).collect(Collectors.toList()))
                 .buildingSummaries(buildingSummary)
                 .build();
     }

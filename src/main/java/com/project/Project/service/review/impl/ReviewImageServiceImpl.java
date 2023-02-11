@@ -4,10 +4,10 @@ import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.domain.room.Room;
+
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewImageRepository;
-import com.project.Project.repository.room.RoomRepository;
+
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.fileProcess.ReviewImageProcess;
 import com.project.Project.service.review.ReviewImageService;
@@ -26,8 +26,6 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     private final ReviewImageProcess reviewImageProcess;
 
     private final ReviewImageRepository reviewImageRepository;
-    private final RoomRepository roomRepository;
-
     private final BuildingRepository buildingRepository;
     private final ReviewRepository reviewRepository;
 
@@ -45,12 +43,10 @@ public class ReviewImageServiceImpl implements ReviewImageService {
 
     @Transactional
     public void saveImageList(List<MultipartFile> imageFileList, Review review) {
-        Room room = review.getRoom();
-        Building building = room.getBuilding();
+        Building building = review.getBuilding();
         String uuid = "asdfa";
         ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
                 .buildingId(building.getId())
-                .roomId(room.getId())
                 .uuid(uuid)
                 .build();
         for (MultipartFile multipartFile : imageFileList) {
@@ -59,13 +55,6 @@ public class ReviewImageServiceImpl implements ReviewImageService {
             reviewImage.setReview(review);
             reviewImageRepository.save(reviewImage);
         }
-    }
-
-    @Override
-    public List<ReviewImage> findByRoom(Long roomId) {
-        // controller 단에서 존재하는 @ExistRoom으로 검증하여 존재하는 roomId이므로 바로 get
-        Room room = roomRepository.findById(roomId).get();
-        return reviewImageRepository.findByRoom(room);
     }
 
     @Override

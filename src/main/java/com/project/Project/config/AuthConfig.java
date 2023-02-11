@@ -123,7 +123,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+                    "/token/**", "api/profile", "/", "/health",
+                    "/swagger-ui.html",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**"
             );
         }
 

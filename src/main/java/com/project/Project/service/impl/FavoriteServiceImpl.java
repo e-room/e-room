@@ -51,7 +51,6 @@ public class FavoriteServiceImpl implements FavoriteService {
                 .map(favorite -> favorite.getBuilding().getId())
                 .collect(Collectors.toList());
         List<Building> buildingList = buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorIds, pageable);
-        buildingList.stream().map(Building::getRoomList).forEach(Hibernate::initialize);
         buildingList.stream().map(Building::getBuildingSummary).forEach(Hibernate::initialize);
         buildingList.stream().map(Building::getBuildingToReviewCategoryList).forEach(Hibernate::initialize);
 
