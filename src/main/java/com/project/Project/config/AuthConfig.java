@@ -3,10 +3,7 @@ package com.project.Project.config;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
 import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
-import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
-import com.project.Project.auth.handler.CustomLogoutHandler;
-import com.project.Project.auth.handler.OAuth2FailureHandler;
-import com.project.Project.auth.handler.OAuth2SuccessHandler;
+import com.project.Project.auth.handler.*;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
@@ -30,13 +27,6 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class AuthConfig {
 
-    private static String logoutSuccessUrlValue;
-
-    @Value("${spring.security.logoutSuccessUrlValue}")
-    public void setDistributionDomain(String value) {
-        logoutSuccessUrlValue = value;
-    }
-
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtProvider jwtProvider;
     private final JwtAuthFilter jwtAuthFilter;
@@ -48,6 +38,8 @@ public class AuthConfig {
     private final CustomLogoutHandler customLogoutHandler;
     private final JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter;
 
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+
     private static CustomOAuth2UserService staticCustomOAuth2UserService;
     private static JwtProvider staticJwtProvider;
     private static JwtAuthFilter staticJwtAuthFilter;
@@ -58,6 +50,7 @@ public class AuthConfig {
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
     private static CustomLogoutHandler staticCustomLogoutHandler;
     private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
+    private static CustomLogoutSuccessHandler staticCustomLogoutSuccessHandler;
 
     @PostConstruct
     public void init() {
@@ -71,6 +64,7 @@ public class AuthConfig {
         staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
         staticCustomLogoutHandler = this.customLogoutHandler;
         staticJwtExceptionInterceptorFilter = this.jwtExceptionInterceptorFilter;
+        staticCustomLogoutSuccessHandler = this.customLogoutSuccessHandler;
     }
 
     @Profile("local")
@@ -223,10 +217,10 @@ public class AuthConfig {
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .logout().
-                        logoutUrl("/logout")
-                        .addLogoutHandler(staticCustomLogoutHandler)
-                        .logoutSuccessUrl(logoutSuccessUrlValue)
+                        .logout()
+                            .logoutUrl("/logout")
+                            .addLogoutHandler(staticCustomLogoutHandler)
+                            .logoutSuccessHandler(staticCustomLogoutSuccessHandler)
                         .and()
                         .oauth2Login()
                         .authorizationEndpoint()
@@ -259,10 +253,10 @@ public class AuthConfig {
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .logout().
-                        logoutUrl("/logout")
+                        .logout()
+                        .logoutUrl("/logout")
                         .addLogoutHandler(staticCustomLogoutHandler)
-                        .logoutSuccessUrl(logoutSuccessUrlValue);
+                        .logoutSuccessHandler(staticCustomLogoutSuccessHandler);
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);
