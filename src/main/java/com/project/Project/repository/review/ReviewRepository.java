@@ -1,5 +1,6 @@
 package com.project.Project.repository.review;
 
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -13,6 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+
+    void deleteAllByAuthor(Member member);
 
     // 초기 조회 메서드 만들기
     List<Review> findByIdInOrderByCreatedAtDesc(List<Long> ids, Pageable pageable);
@@ -31,4 +34,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("select review from Review review where review.author.id = :memberId and review.building.id = :buildingId")
     Optional<Review> findReviewByAuthorAndBuilding(@Param("memberId") Long memberId,  @Param("buildingId") Long buildingId);
 
+    boolean existsByAuthor(Member member);
 }

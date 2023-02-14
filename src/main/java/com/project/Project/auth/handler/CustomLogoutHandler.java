@@ -14,16 +14,6 @@ import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBase
 
 @Component
 public class CustomLogoutHandler implements LogoutHandler {
-    private ResponseCookie createDeleteTokenCookie(String name, Boolean isLocal) {
-        return ResponseCookie.from(name, null)
-                .secure(true)
-                .httpOnly(true)
-                .domain(isLocal ? "localhost" : ".e-room.app")
-                .path("/")
-                .sameSite("None")
-                .maxAge(0)
-                .build();
-    }
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -31,8 +21,8 @@ public class CustomLogoutHandler implements LogoutHandler {
                 .map(Cookie::getValue)
                 .map(Boolean::parseBoolean).orElse(false);
 
-        ResponseCookie accessTokenCookie = createDeleteTokenCookie("accessToken", isLocal);
-        ResponseCookie refreshTokenCookie = createDeleteTokenCookie("refreshToken", isLocal);
+        ResponseCookie accessTokenCookie = CookieUtil.createDeleteTokenCookie("accessToken", isLocal);
+        ResponseCookie refreshTokenCookie = CookieUtil.createDeleteTokenCookie("refreshToken", isLocal);
 
         response.addHeader("Set-Cookie", accessTokenCookie.toString());
         response.addHeader("Set-Cookie", refreshTokenCookie.toString());
