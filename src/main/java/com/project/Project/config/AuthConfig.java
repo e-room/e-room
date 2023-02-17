@@ -105,7 +105,8 @@ public class AuthConfig {
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**"
+                    "/swagger-ui/**",
+                    "/building"
             );
         }
 
@@ -131,7 +132,8 @@ public class AuthConfig {
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**"
+                    "/swagger-ui/**",
+                    "/building"
             );
         }
 
@@ -187,7 +189,7 @@ public class AuthConfig {
                 http
                         .authorizeRequests()
                         .antMatchers("/token/**", "/login", "api/profile", "/", "/health").permitAll()
-                        .antMatchers("/building/marking").permitAll();
+                        .antMatchers("/building/marking", "/building").permitAll();
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);

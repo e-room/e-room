@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
@@ -32,6 +34,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTFailureHandler failureHandler;
+
+    private static final List<String> EXCLUDE_URL =
+            Collections.unmodifiableList(
+                    Arrays.asList(
+                            "/token/valid", "api/profile", "/", "/health",
+                            "/swagger-ui.html",
+                            "/v3/api-docs",
+                            "/swagger-ui/index.html",
+                            "/building/marking",
+                            "/building"
+                    ));
+
+
+//    public JwtAuthFilter(AuthenticationManager authenticationManager) {
+//
+////        super(new AntPathRequestMatcher("/api/**"));
+////        this.setAuthenticationFailureHandler(new JWTFailureHandler());
+////        super.setAuthenticationManager(authenticationManager);
+//    }
 
     private String getCookieValue(HttpServletRequest req, String cookieName) {
         if (req.getCookies() == null) return null;
@@ -87,6 +108,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return request.getRequestURI().equals("/token/valid");
+        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
     }
 }
