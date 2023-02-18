@@ -20,6 +20,7 @@ import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,6 @@ import static com.project.Project.domain.building.QBuildingToReviewCategory.buil
 import static com.project.Project.domain.review.QReview.review;
 import static com.project.Project.domain.review.QReviewCategory.reviewCategory;
 import static com.project.Project.domain.review.QReviewToReviewCategory.reviewToReviewCategory;
-
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -47,7 +47,15 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .where(cursorId(pageable, cursorIds, 0), review.building.id.eq(buildingId));
     }
 
-//    public Function<Long, JPAQuery<Review>> findReviewQueryByRoomId(List<Double> cursorIds, Pageable pageable) {
+    @Override
+    public Optional<Review> findById(Long reviewId) {
+        Review result = factory.selectFrom(review)
+                .where(review.id.eq(reviewId))
+                .fetchOne();
+        return Optional.ofNullable(result);
+    }
+
+    //    public Function<Long, JPAQuery<Review>> findReviewQueryByRoomId(List<Double> cursorIds, Pageable pageable) {
 //        return (roomId) -> factory.selectFrom(review)
 //                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
 //                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
