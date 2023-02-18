@@ -6,12 +6,15 @@ import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 public interface ReviewCustomRepository {
     long updateReview(Review review);
 
     long softDeleteReview(Review review);
+
+    Optional<Review> findById(Long reviewId);
 
     List<Review> findReviewsByBuildingId(Long buildingId, List<Double> cursorIds, Pageable pageable);
 

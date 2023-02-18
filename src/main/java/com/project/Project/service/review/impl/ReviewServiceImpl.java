@@ -50,11 +50,10 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewList;
     }
 
-//    public List<Review> getReviewListByRoomId(Long roomId, List<Double> cursorIds, Pageable page) {
-//        List<Review> reviewList = reviewCustomRepository.findReviewsByRoomId(roomId, cursorIds, page);
-//        reviewList = reviewLoader.loadAllScores(reviewList);
-//        return reviewList;
-//    }
+
+    public Review getReviewById(Long reviewId) {
+        return reviewCustomRepository.findById(reviewId).orElseThrow(() -> new ReviewException("id에 해당하는 review가 없습니다.", ErrorCode.REVIEW_NOT_FOUND));
+    }
 
     @Transactional
     public Long deleteById(Long reviewId) {
