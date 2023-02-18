@@ -4,8 +4,8 @@ import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.exception.BasicAuthException;
 import com.project.Project.auth.handler.BasicAuthFailureHandler;
-import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.ProfileImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.serializer.member.MemberSerializer;
@@ -30,7 +30,6 @@ public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
 
     private MemberService memberService;
 
-    private BasicAuthFailureHandler basicAuthFailureHandler;
 
     private boolean ignoreFailure;
     private AuthenticationEntryPoint authenticationEntryPoint;
@@ -38,14 +37,12 @@ public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
     public CustomBasicAuthFilter(AuthenticationManager authenticationManager, MemberService memberService, BasicAuthFailureHandler basicAuthFailureHandler) {
         super(authenticationManager);
         this.memberService = memberService;
-        this.basicAuthFailureHandler = basicAuthFailureHandler;
     }
 
     public CustomBasicAuthFilter(AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint, MemberService memberService, BasicAuthFailureHandler basicAuthFailureHandler) {
         super(authenticationManager, authenticationEntryPoint);
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.memberService = memberService;
-        this.basicAuthFailureHandler = basicAuthFailureHandler;
     }
 
     private Member mockMember(Long id) {

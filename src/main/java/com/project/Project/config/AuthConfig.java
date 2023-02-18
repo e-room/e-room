@@ -3,10 +3,14 @@ package com.project.Project.config;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
 import com.project.Project.auth.handler.*;
+import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
+import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
+import com.project.Project.auth.handler.CustomLogoutHandler;
+import com.project.Project.auth.handler.OAuth2FailureHandler;
+import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
-import com.project.Project.util.component.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,8 +38,8 @@ public class AuthConfig {
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-
     private final CustomLogoutHandler customLogoutHandler;
+    private final JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter;
 
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
@@ -49,6 +53,7 @@ public class AuthConfig {
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
     private static CustomLogoutHandler staticCustomLogoutHandler;
     private static CustomLogoutSuccessHandler staticCustomLogoutSuccessHandler;
+    private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
 
     @PostConstruct
     public void init() {
@@ -61,6 +66,7 @@ public class AuthConfig {
         staticOAuth2AuthorizationRequestBasedOnCookieRepository = this.oAuth2AuthorizationRequestBasedOnCookieRepository;
         staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
         staticCustomLogoutHandler = this.customLogoutHandler;
+        staticJwtExceptionInterceptorFilter = this.jwtExceptionInterceptorFilter;
         staticCustomLogoutSuccessHandler = this.customLogoutSuccessHandler;
     }
 
@@ -81,7 +87,8 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication())
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
                     .andThen(headerMockingAuthentication())
                     .andThen(exceptionHandler())
                     .andThen(permitAllList())
@@ -107,7 +114,13 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(headerMockingAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
     }
 
@@ -127,7 +140,13 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return defaultAuthentication().andThen(oAuthAndJwtAuthentication()).andThen(headerMockingAuthentication()).andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(headerMockingAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
     }
 
@@ -143,7 +162,12 @@ public class AuthConfig {
 
         @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            return oAuthAndJwtAuthentication().andThen(permitAllList()).andThen(defaultAuthorization()).apply(http);
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
         }
     }
 
@@ -206,14 +230,15 @@ public class AuthConfig {
                         .authorizationEndpoint()
                         .authorizationRequestRepository(staticOAuth2AuthorizationRequestBasedOnCookieRepository)
                         .and()
-                        .loginPage("/login")
+//                        .loginPage("/login")
                         .successHandler(staticOAuth2SuccessHandler) // 성공시
                         .failureHandler(staticOAuth2FailureHandler)
                         .userInfoEndpoint().userService(staticCustomOAuth2UserService);
 
                 // 인증을 처리하는 기본필터 대신 별도의 인증로직을 가진 JwtAuthFilter 추가
                 // 가능하다면 JwtLoginConfigurer를 만들어보는 것도 좋을 듯
-                http.addFilterBefore(staticJwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterAt(staticJwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterBefore(staticJwtExceptionInterceptorFilter, JwtAuthFilter.class);
                 http.authenticationProvider(staticJwtProvider);
                 http.httpBasic().disable();
                 return http;
