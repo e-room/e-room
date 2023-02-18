@@ -6,12 +6,12 @@ import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.*;
-import com.project.Project.domain.room.Room;
+
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
 import com.project.Project.serializer.member.MemberSerializer;
-import com.project.Project.serializer.room.RoomSerializer;
+
 import com.project.Project.service.fileProcess.ReviewImageProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -99,7 +99,6 @@ public class ReviewSerializer {
         OSIV가 있으니까 들고올 때 한방 쿼리로 들고오고 객체 탐색하는 걸로
          */
 
-        Room room = review.getRoom();
         MemberDto authorDto = null;
         if (review.getAnonymousStatus().getIsAnonymous()) {
             authorDto = MemberDto.builder().name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(null).build();
@@ -107,7 +106,7 @@ public class ReviewSerializer {
             authorDto = MemberSerializer.toDto(review.getAuthor());
         }
 
-        return ReviewResponseDto.ReviewListDto.builder().baseRoomDto(RoomSerializer.toBaseRoomResponse(room))
+        return ReviewResponseDto.ReviewListDto.builder()
                 .baseReviewDto(toBaseReviewDto(review))
                 .reviewScoreDto(toReviewScoreDto(review))
                 .authorDto(authorDto).build();

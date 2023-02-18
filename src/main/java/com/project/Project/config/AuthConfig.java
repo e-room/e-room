@@ -2,10 +2,7 @@ package com.project.Project.config;
 
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
-import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
-import com.project.Project.auth.handler.CustomLogoutHandler;
-import com.project.Project.auth.handler.OAuth2FailureHandler;
-import com.project.Project.auth.handler.OAuth2SuccessHandler;
+import com.project.Project.auth.handler.*;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
@@ -29,13 +26,6 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class AuthConfig {
 
-    private static String logoutSuccessUrlValue;
-
-    @Value("${spring.security.logoutSuccessUrlValue}")
-    public void setDistributionDomain(String value) {
-        logoutSuccessUrlValue = value;
-    }
-
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtProvider jwtProvider;
     private final JwtAuthFilter jwtAuthFilter;
@@ -47,6 +37,8 @@ public class AuthConfig {
 
     private final CustomLogoutHandler customLogoutHandler;
 
+    private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
+
     private static CustomOAuth2UserService staticCustomOAuth2UserService;
     private static JwtProvider staticJwtProvider;
     private static JwtAuthFilter staticJwtAuthFilter;
@@ -56,6 +48,7 @@ public class AuthConfig {
     private static OAuth2AuthorizationRequestBasedOnCookieRepository staticOAuth2AuthorizationRequestBasedOnCookieRepository;
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
     private static CustomLogoutHandler staticCustomLogoutHandler;
+    private static CustomLogoutSuccessHandler staticCustomLogoutSuccessHandler;
 
     @PostConstruct
     public void init() {
@@ -68,6 +61,7 @@ public class AuthConfig {
         staticOAuth2AuthorizationRequestBasedOnCookieRepository = this.oAuth2AuthorizationRequestBasedOnCookieRepository;
         staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
         staticCustomLogoutHandler = this.customLogoutHandler;
+        staticCustomLogoutSuccessHandler = this.customLogoutSuccessHandler;
     }
 
     @Profile("local")
@@ -123,7 +117,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+                    "/token/**", "api/profile", "/", "/health",
+                    "/swagger-ui.html",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**"
             );
         }
 
@@ -199,10 +197,10 @@ public class AuthConfig {
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .logout().
-                        logoutUrl("/logout")
+                        .logout()
+                            .logoutUrl("/logout")
                             .addLogoutHandler(staticCustomLogoutHandler)
-                            .logoutSuccessUrl(logoutSuccessUrlValue)
+                            .logoutSuccessHandler(staticCustomLogoutSuccessHandler)
                         .and()
                         .oauth2Login()
                         .authorizationEndpoint()
@@ -234,10 +232,10 @@ public class AuthConfig {
                         .csrf().disable()
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
-                        .logout().
-                        logoutUrl("/logout")
+                        .logout()
+                        .logoutUrl("/logout")
                         .addLogoutHandler(staticCustomLogoutHandler)
-                        .logoutSuccessUrl(logoutSuccessUrlValue);
+                        .logoutSuccessHandler(staticCustomLogoutSuccessHandler);
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);

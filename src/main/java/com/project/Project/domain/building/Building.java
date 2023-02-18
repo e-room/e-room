@@ -7,7 +7,7 @@ import com.project.Project.domain.member.Member;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.interaction.Favorite;
-import com.project.Project.domain.room.Room;
+
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
@@ -61,10 +61,6 @@ public class Building extends BaseEntity {
 
     private Boolean hasElevator;
 
-    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Room> roomList = new ArrayList<>();
-
     @OneToMany(mappedBy = "building")
     @Builder.Default
     private List<Favorite> favoriteList = new ArrayList<>();
@@ -84,18 +80,6 @@ public class Building extends BaseEntity {
     @PreRemove
     public void deleteHandler() {
         super.setDeleted(true);
-    }
-
-    public void addRoom(Room room) {
-        this.roomList.add(room);
-        room.setBuilding(this);
-    }
-
-    public void addRooms(List<Room> rooms) {
-        this.roomList.addAll(rooms);
-        for (Room room : rooms) {
-            room.setBuilding(this);
-        }
     }
 
     public Building setOptions(BuildingOptionalDto dto) {

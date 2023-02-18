@@ -18,17 +18,13 @@ public enum ErrorCode {
     ADDRESS_BAD_REQUEST(HttpStatus.BAD_REQUEST, "주소 값이 올바르지 않습니다."),
     COORDINATE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "좌표 값이 올바르지 않습니다."),
 
-    //Room
-    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 방이 존재하지 않습니다."),
-    ROOM_NPE(HttpStatus.INTERNAL_SERVER_ERROR, "방 참조가 Null입니다"),
-
     // Interaction
     FAVORITE_NOT_FOUND(HttpStatus.NOT_FOUND, "찜한 자취방 목록에 해당 건물이 존재하지 않습니다."),
     FAVORITE_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 찜한 방입니다."),
 
     //Review
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
-    REVIEW_DUPLICATED(HttpStatus.BAD_REQUEST, "하나의 방에는 하나의 리뷰만 작성할 수 있습니다."),
+    REVIEW_DUPLICATED(HttpStatus.BAD_REQUEST, "하나의 건물에는 하나의 리뷰만 작성할 수 있습니다."),
 
     //etc
     UUID_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당하는 UUID가 존재하지 않습니다."),
