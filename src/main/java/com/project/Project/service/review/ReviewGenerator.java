@@ -153,7 +153,7 @@ public class ReviewGenerator {
     }
 
     private static Review createReviewEntity(ReviewRequestDto.ReviewCreateDto request, Member member, Building building, ReviewSummary reviewSummary, AnonymousStatus status) {
-        return Review.builder()
+        Review review = Review.builder()
                 .residenceStartYear(request.getReviewResidencePeriodDto().getResidenceStartYear())
                 .residenceDuration(request.getReviewResidencePeriodDto().getResidenceDuration())
                 .deposit(request.getReviewBaseDto().getDeposit())
@@ -166,11 +166,12 @@ public class ReviewGenerator {
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
-                .author(member) // todo : 이렇게 하면 Member쪽 reviewList에는 없지 않나??
                 .reviewSummary(reviewSummary)
                 .anonymousStatus(status)
                 .building(building)
                 .build();
+        review.setAuthor(member);
+        return review;
     }
 
     private static ReviewSummary initialReviewSummary() {

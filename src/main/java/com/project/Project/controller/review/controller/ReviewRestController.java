@@ -13,6 +13,8 @@ import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.review.ReviewException;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
@@ -21,6 +23,7 @@ import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
+import com.project.Project.validator.ReviewExistValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -160,8 +163,8 @@ public class ReviewRestController {
             @Parameter(name = "reviewId", description = "삭제하고자 하는 리뷰의 id")
     })
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
-        // todo : 멤버 본인이 쓴 리뷰인지 검증하는 로직이 없음..
+    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member member) {
+        if(!ReviewExistValidator.hasReview(member.getId(), reviewId)) throw new ReviewException(ErrorCode.REVIEW_FORBIDDEN);
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
