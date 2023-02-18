@@ -7,12 +7,11 @@ import com.project.Project.auth.handler.*;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -49,8 +48,8 @@ public class AuthConfig {
     private static OAuth2AuthorizationRequestBasedOnCookieRepository staticOAuth2AuthorizationRequestBasedOnCookieRepository;
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
     private static CustomLogoutHandler staticCustomLogoutHandler;
-    private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
     private static CustomLogoutSuccessHandler staticCustomLogoutSuccessHandler;
+    private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
 
     @PostConstruct
     public void init() {
@@ -105,8 +104,7 @@ public class AuthConfig {
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/building"
+                    "/swagger-ui/**"
             );
         }
 
@@ -132,8 +130,7 @@ public class AuthConfig {
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/building"
+                    "/swagger-ui/**"
             );
         }
 
@@ -175,6 +172,7 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
+                        .antMatchers().authenticated()
                         .anyRequest().authenticated();
                 return http.build();
             } catch (Exception e) {
@@ -189,7 +187,8 @@ public class AuthConfig {
                 http
                         .authorizeRequests()
                         .antMatchers("/token/**", "/login", "api/profile", "/", "/health").permitAll()
-                        .antMatchers("/building/marking", "/building").permitAll();
+                        .antMatchers(HttpMethod.GET, "/building/marking", "/building/search", "/building/*/images", "/building/{buildingId}").permitAll()
+                        .antMatchers(HttpMethod.GET, "/token/valid").permitAll();
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -220,9 +219,9 @@ public class AuthConfig {
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
                         .logout()
-                            .logoutUrl("/logout")
-                            .addLogoutHandler(staticCustomLogoutHandler)
-                            .logoutSuccessHandler(staticCustomLogoutSuccessHandler)
+                        .logoutUrl("/logout")
+                        .addLogoutHandler(staticCustomLogoutHandler)
+                        .logoutSuccessHandler(staticCustomLogoutSuccessHandler)
                         .and()
                         .oauth2Login()
                         .authorizationEndpoint()
