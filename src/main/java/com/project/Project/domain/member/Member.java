@@ -1,24 +1,24 @@
 package com.project.Project.domain.member;
 
+import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.auth.Role;
 import com.project.Project.domain.enums.AuthProviderType;
-import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
+import com.project.Project.repository.member.RoleRepository;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@Where(clause = "deleted=false")
-//@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id=?")
 @Entity
 public class Member extends BaseEntity {
 
@@ -38,7 +38,7 @@ public class Member extends BaseEntity {
     @Builder.Default
     private List<ReviewLike> reviewLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
@@ -47,9 +47,6 @@ public class Member extends BaseEntity {
     private String name;
 
     private String email;
-
-    @Enumerated(EnumType.STRING)
-    private MemberRole memberRole;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "profile_image_id", nullable = false)
@@ -81,8 +78,13 @@ public class Member extends BaseEntity {
         this.refreshToken = refreshToken;
     }
 
-    public String getRoleKey() {
-        return this.memberRole.getKey();
+    public void setRoles(List<MemberRole> roleEnums, RoleRepository roleRepository) {
+        List<Role> roleOfMembers = roleRepository.findRoleByMember(this);
+        roleRepository.deleteAll(roleOfMembers);
+        List<Role> newRoles = roleEnums.stream().map((roleEnum) -> Role.builder()
+                .memberRole(roleEnum).member(this).build()).collect(Collectors.toList());
+        List<Role> savedRoles = roleRepository.saveAll(newRoles);
+        this.roles = savedRoles;
     }
 
     @PreRemove

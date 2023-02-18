@@ -1,6 +1,6 @@
 package com.project.Project.domain.auth;
 
-import com.project.Project.auth.enums.RoleEnum;
+import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.domain.member.Member;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,13 +26,11 @@ public class Role implements GrantedAuthority {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private RoleEnum roleEnum;
-
-    private String description;
-
+    private MemberRole memberRole;
+    
     @Override
     public String getAuthority() {
-        return "ROLE_" + this.roleEnum.name().toUpperCase();
+        return "ROLE_" + this.memberRole.name().toUpperCase();
     }
 
     @ManyToOne(fetch = FetchType.LAZY)

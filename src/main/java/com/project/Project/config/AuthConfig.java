@@ -2,20 +2,16 @@ package com.project.Project.config;
 
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
-import com.project.Project.auth.handler.*;
 import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
-import com.project.Project.auth.handler.CustomAuthenticationEntryPoint;
-import com.project.Project.auth.handler.CustomLogoutHandler;
-import com.project.Project.auth.handler.OAuth2FailureHandler;
-import com.project.Project.auth.handler.OAuth2SuccessHandler;
+import com.project.Project.auth.handler.*;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -176,7 +172,7 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
-                        .antMatchers("/token/valid").authenticated()
+                        .antMatchers().authenticated()
                         .anyRequest().authenticated();
                 return http.build();
             } catch (Exception e) {
@@ -191,7 +187,8 @@ public class AuthConfig {
                 http
                         .authorizeRequests()
                         .antMatchers("/token/**", "/login", "api/profile", "/", "/health").permitAll()
-                        .antMatchers("/building/marking").permitAll();
+                        .antMatchers(HttpMethod.GET, "/building/marking", "/building/search", "/building/*/images", "/building/{buildingId}").permitAll()
+                        .antMatchers(HttpMethod.GET, "/token/valid").permitAll();
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -222,7 +219,7 @@ public class AuthConfig {
                         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                         .and()
                         .logout()
-                            .logoutUrl("/logout")
+                        .logoutUrl("/logout")
                         .addLogoutHandler(staticCustomLogoutHandler)
                         .logoutSuccessHandler(staticCustomLogoutSuccessHandler)
                         .and()

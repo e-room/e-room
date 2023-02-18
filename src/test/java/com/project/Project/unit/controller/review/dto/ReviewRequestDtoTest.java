@@ -5,7 +5,6 @@ import com.project.Project.controller.review.dto.ReviewBaseDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResidencePeriodDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
-import com.project.Project.controller.room.dto.RoomBaseDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,7 +47,6 @@ public class ReviewRequestDtoTest {
                                 .buildingNumber("4")
                                 .build()
                 )
-                .roomBaseDto(RoomBaseDto.builder().roomNumber(103).lineNumber(101).build())
                 .reviewResidencePeriodDto(ReviewResidencePeriodDto.builder().residenceStartYear(2020).residenceDuration(12).build())
                 .reviewBaseDto(ReviewBaseDto.builder().deposit(800).monthlyRent(50).managementFee(10).netLeasableArea(13.0).build())
                 .reviewScoreDto(ReviewScoreDto.builder().traffic(3.0).buildingComplex(4.0).surrounding(1.0).internal(5.0).livingLocation(3.0)
@@ -135,7 +133,7 @@ public class ReviewRequestDtoTest {
                                 .roadName("매영로425번길")
                                 .buildingNumber("4")
                                 .build()
-                ).roomBaseDto(RoomBaseDto.builder().roomNumber(-103).lineNumber(-101).build())
+                )
                 .reviewResidencePeriodDto(ReviewResidencePeriodDto.builder().residenceStartYear(2045).residenceDuration(-1).build())
                 .reviewBaseDto(ReviewBaseDto.builder().deposit(-800).monthlyRent(-50).managementFee(-10).netLeasableArea(-13.0).build())
                 .reviewScoreDto(ReviewScoreDto.builder().traffic(5.5).buildingComplex(-1.0).surrounding(6.6).internal(5.1).livingLocation(-1.0)

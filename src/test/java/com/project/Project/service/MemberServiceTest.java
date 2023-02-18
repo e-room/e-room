@@ -1,7 +1,6 @@
 package com.project.Project.service;
 
 import com.project.Project.domain.building.Building;
-import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
@@ -11,20 +10,15 @@ import com.project.Project.repository.interaction.ReviewLikeRepository;
 import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.member.impl.MemberServiceImpl;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
+import static org.junit.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest {
@@ -56,9 +50,13 @@ public class MemberServiceTest {
 
         memberRepository.save(member);
 
-        Review review = Review.builder().author(member).build(); member.getReviewList().add(review);
-        ReviewLike reviewLike = ReviewLike.builder().member(member).build(); reviewLike.setMember(member); reviewLike.setReview(review);
-        Favorite favorite = Favorite.builder().member(member).building(Building.builder().build()).build(); member.getFavoriteBuildingList().add(favorite);
+        Review review = Review.builder().author(member).build();
+        member.getReviewList().add(review);
+        ReviewLike reviewLike = ReviewLike.builder().member(member).build();
+        reviewLike.setMember(member);
+        reviewLike.setReview(review);
+        Favorite favorite = Favorite.builder().member(member).building(Building.builder().build()).build();
+        member.getFavoriteBuildingList().add(favorite);
 
         reviewRepository.save(review);
         reviewLikeRepository.save(reviewLike);
