@@ -5,11 +5,12 @@ import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.dto.UidDto;
-import com.project.Project.auth.exception.JwtException;
+import com.project.Project.auth.exception.JwtAuthenctionException;
 import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.util.JsonResult;
 import com.project.Project.util.component.CookieUtil;
@@ -124,9 +125,15 @@ public class TokenController {
                 JwtAuthentication authenticationResult = (JwtAuthentication) this.authenticationManager.authenticate(authenticationRequest);
                 SecurityContextHolder.getContext().setAuthentication(authenticationResult);
                 postAuthenticate(request, response, authenticationResult);
-            } catch (JwtException ex) {
+            } catch (JwtAuthenctionException ex) {
                 SecurityContextHolder.clearContext();
                 this.failureHandler.onAuthenticationFailure(request, response, ex);
+                throw ex;
+            } catch (Exception ex) {
+                SecurityContextHolder.clearContext();
+                JwtAuthenctionException authenticationException = new JwtAuthenctionException("jwt인증에 실패했습니다", ex.getCause(), ErrorCode.JWT_BAD_REQUEST);
+                this.failureHandler.onAuthenticationFailure(request, response, authenticationException);
+                throw authenticationException;
             }
         }
         else isValid = false;
