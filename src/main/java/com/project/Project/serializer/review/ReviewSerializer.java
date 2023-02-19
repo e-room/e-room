@@ -113,9 +113,10 @@ public class ReviewSerializer {
                 .reviewImageListDto(toReviewImageListDto(review.getReviewImageList())).build();
     }
 
-    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId) {
+    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId) {
         return ReviewResponseDto.ReviewCreateDto.builder()
                 .reviewId(createdReviewId)
+                .buildingId(buildingId)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
