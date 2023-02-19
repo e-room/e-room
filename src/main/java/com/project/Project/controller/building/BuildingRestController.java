@@ -60,7 +60,7 @@ public class BuildingRestController {
     @Operation(summary = "지도 마킹을 위한 건물 목록 [3.0.1]", description = "건물들의 좌표 목록 조회 API")
     @GetMapping("/marking")
     public ResponseEntity<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
-        List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
+        List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getBuildingMarking();
         BuildingResponseDto.BuildingCountResponse response = BuildingSerializer.toBuildingCountResponse(buildingList);
         return ResponseEntity.ok(response);
     }
