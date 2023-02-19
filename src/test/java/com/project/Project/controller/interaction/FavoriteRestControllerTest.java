@@ -27,7 +27,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -87,8 +88,7 @@ public class FavoriteRestControllerTest {
         // given
         given(favoriteService.deleteFavoriteBuilding(any(), any(Member.class)))
                 .willReturn(10L);
-        given(favoriteExistValidator.isValid(any(Member.class), any()))
-                .willReturn(true);
+
         given(buildingRepository.existsById(any()))
                 .willReturn(true);
 
@@ -106,10 +106,6 @@ public class FavoriteRestControllerTest {
         // given
         given(favoriteService.deleteFavoriteBuilding(any(), any(Member.class)))
                 .willReturn(10L);
-
-        given(favoriteExistValidator.isValid(any(Member.class), any()))
-                .willReturn(true);
-
         given(buildingRepository.existsById(any()))
                 .willReturn(true);
 
@@ -128,8 +124,6 @@ public class FavoriteRestControllerTest {
         given(favoriteService.deleteFavoriteBuilding(any(), any(Member.class)))
                 .willReturn(10L);
 
-        given(favoriteExistValidator.isValid(any(Member.class), eq(11L)))
-                .willReturn(false);
 
         given(buildingRepository.existsById(any()))
                 .willReturn(true);

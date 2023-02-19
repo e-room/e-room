@@ -15,11 +15,13 @@ public interface ReviewService {
 
     Long deleteById(Long reviewId);
 
-    /*
-    if the review exists, return review
-    else create review
+    /**
+     * if the review exists, throw error
+     * else create review
      */
     Review saveReview(ReviewRequestDto.ReviewCreateDto request, Member author, Building building);
+
+    public Review getReviewById(Long reviewId);
 
     Long save(Review review);
 }
