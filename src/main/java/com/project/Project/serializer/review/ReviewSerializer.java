@@ -109,7 +109,8 @@ public class ReviewSerializer {
         return ReviewResponseDto.ReviewListDto.builder()
                 .baseReviewDto(toBaseReviewDto(review))
                 .reviewScoreDto(toReviewScoreDto(review))
-                .authorDto(authorDto).build();
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList())).build();
     }
 
     public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId) {

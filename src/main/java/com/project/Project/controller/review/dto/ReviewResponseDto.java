@@ -21,6 +21,7 @@ public class ReviewResponseDto {
         private BaseReviewDto baseReviewDto;
         private ReviewScoreDto reviewScoreDto;
         private MemberDto authorDto;
+        private ReviewImageListDto reviewImageListDto;
     }
 
     @NoArgsConstructor
