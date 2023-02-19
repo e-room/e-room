@@ -165,6 +165,7 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
+    @Deprecated
     @Operation(summary = "리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),
