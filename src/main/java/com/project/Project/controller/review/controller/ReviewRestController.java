@@ -137,7 +137,7 @@ public class ReviewRestController {
         }
         Review review = reviewService.saveReview(request, loginMember, building);
 
-        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId()));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")

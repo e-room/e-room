@@ -69,6 +69,7 @@ public class ReviewResponseDto {
     @Builder
     public static class ReviewCreateDto {
         private Long reviewId;
+        private Long buildingId;
         private LocalDateTime createdAt;
     }
 
