@@ -78,7 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             Review createdReview = ReviewGenerator.createReview(request, author, building);
             Review savedReview = reviewRepository.save(createdReview);
-            eventListener.updateOthers(savedReview);
+            eventListener.listenToCreateReview(savedReview);
             return savedReview;
         }
 

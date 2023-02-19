@@ -25,8 +25,18 @@ public class ReviewEventListener implements EventListener {
     private final ReviewToReviewCategoryRepository reviewToReviewCategoryRepository;
     private final ReviewCategoryRepository reviewCategoryRepository;
 
-    public void updateOthers(Review review) {
+
+    public void listenToCreateReview(Review review) {
         Building building = review.getBuilding();
+        this.updateBuildingInfo(building);
+    }
+
+    public void listenToDeleteReview(Review deletedReview) {
+        Building building = deletedReview.getBuilding();
+        this.updateBuildingInfo(building);
+    }
+
+    private void updateBuildingInfo(Building building) {
         Long buildingId = building.getId();
 
         //Building Summary
@@ -64,4 +74,6 @@ public class ReviewEventListener implements EventListener {
         }
         this.buildingToReviewCategoryRepository.saveAll(buildingToReviewCategoryList);
     }
+
+
 }

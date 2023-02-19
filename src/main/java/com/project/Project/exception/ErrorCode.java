@@ -29,6 +29,7 @@ public enum ErrorCode {
     //Review
     REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰가 존재하지 않습니다."),
     REVIEW_DUPLICATED(HttpStatus.BAD_REQUEST, "하나의 건물에는 하나의 리뷰만 작성할 수 있습니다."),
+    REVIEW_ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "해당 리뷰에 접근할 수 없습니다."),
     REVIEW_FORBIDDEN(HttpStatus.FORBIDDEN, "본인이 작성한 리뷰만 삭제할 수 있습니다."),
 
     //etc

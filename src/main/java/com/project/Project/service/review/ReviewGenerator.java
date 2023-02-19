@@ -126,17 +126,6 @@ public class ReviewGenerator {
         List<Void> blockingList = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                 .thenApply(Void -> futures.stream().map(CompletableFuture::join).collect(Collectors.toList()))
                 .join();
-
-//        imageFileList.parallelStream().forEach((image) -> {
-//            Uuid uuid = staticReviewImageProcess.createUUID();
-//            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
-//                    .buildingId(room.getBuilding().getId())
-//                    .roomId(room.getId())
-//                    .uuid(uuid.getUuid())
-//                    .uuidEntity(uuid)
-//                    .build();
-//            staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
-//        });
     }
 
     private static void mappingEntities(List<ReviewToReviewCategory> reviewToReviewCategoryList, ReviewSummary reviewSummary, List<ReviewToReviewKeyword> selectedReviewAdvantageKeywordList, List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList, Review review) {
@@ -229,23 +218,5 @@ public class ReviewGenerator {
                 .anonymousName(nickName)
                 .isAnonymous(Boolean.TRUE)
                 .build();
-    }
-
-    private static class ImageThumbnailMap {
-        private MultipartFile image;
-        private Long UuidId;
-
-        public ImageThumbnailMap(MultipartFile image, Long UuidId) {
-            this.image = image;
-            this.UuidId = UuidId;
-        }
-
-        public MultipartFile getImage() {
-            return image;
-        }
-
-        public Long getUuidId() {
-            return UuidId;
-        }
     }
 }
