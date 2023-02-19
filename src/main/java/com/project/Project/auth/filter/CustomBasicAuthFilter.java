@@ -2,9 +2,10 @@ package com.project.Project.auth.filter;
 
 import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.auth.exception.BasicAuthException;
 import com.project.Project.auth.handler.BasicAuthFailureHandler;
-import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.domain.auth.Role;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.ProfileImage;
 import com.project.Project.exception.ErrorCode;
@@ -13,7 +14,6 @@ import com.project.Project.service.member.MemberService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -52,7 +52,8 @@ public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
                 .reviewLikeList(new ArrayList<>())
                 .name("하품하는 망아지")
                 .email("swa07016@khu.ac.kr")
-                .memberRole(MemberRole.USER)
+                .roles(Arrays.asList(Role.builder()
+                        .memberRole(MemberRole.USER).build()))
                 .refreshToken("mockingMember")
                 .profileImage(ProfileImage.builder().url("https://d2ykyi5jl9muoc.cloudfront.net/profile-images/blue-smile_eyes-d_mouth.png").build())
                 .build()
@@ -92,7 +93,7 @@ public class CustomBasicAuthFilter extends BasicAuthenticationFilter {
 
     private Authentication getAuthentication(MemberDto memberDto, Member member, HttpServletRequest request, HttpServletResponse response) {
         return new JwtAuthentication(
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")),
+                member.getRoles(),
                 memberDto, member,
                 member.getRefreshToken(),
                 request, response);

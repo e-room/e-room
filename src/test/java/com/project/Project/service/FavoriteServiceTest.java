@@ -1,9 +1,9 @@
 package com.project.Project.service;
 
+import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
-import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingCustomRepository;
@@ -44,7 +44,6 @@ public class FavoriteServiceTest {
                 .reviewLikeList(new ArrayList<>())
                 .name("하품하는 망아지")
                 .email("swa07016@khu.ac.kr")
-                .memberRole(MemberRole.USER)
                 .refreshToken("mockingMember")
                 .build();
     }

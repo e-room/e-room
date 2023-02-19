@@ -5,7 +5,6 @@ import com.project.Project.controller.review.dto.ReviewBaseDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResidencePeriodDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
-import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.enums.KeywordEnum;
@@ -37,7 +36,6 @@ public class ReviewCreateConfigurer {
 
     private Building building;
     private BuildingOptionalDto buildingOptionalDto;
-    private RoomBaseDto roomBaseDto;
     private ReviewBaseDto reviewBaseDto;
     private ReviewScoreDto reviewScoreDto;
     private ReviewResidencePeriodDto reviewResidencePeriodDto;
@@ -50,7 +48,6 @@ public class ReviewCreateConfigurer {
     public ReviewCreateConfigurer setBasics(Long buildingId) throws IOException {
         setBuilding(buildingId)
                 .setBuildingOptionalBasic()
-                .setRoomBaseBasic()
                 .setReviewBaseDtoBasic()
                 .setReviewScoreBasic()
                 .setReviewResidencePeriodBasic()
@@ -82,17 +79,16 @@ public class ReviewCreateConfigurer {
     }
 
     public ReviewCreateConfigurer setRoomBaseDto(Integer lineNumber, Integer roomNumber) {
-        this.roomBaseDto = new RoomBaseDto(lineNumber, roomNumber);
         return this;
     }
 
-    private ReviewCreateConfigurer setRoomBaseBasic() {
-        this.roomBaseDto = RoomBaseDto.builder()
-                .lineNumber((int) Math.random() * 100 + 100)
-                .roomNumber((int) Math.random() * 400 + 100)
-                .build();
-        return this;
-    }
+//    private ReviewCreateConfigurer setRoomBaseBasic() {
+//        this.roomBaseDto = RoomBaseDto.builder()
+//                .lineNumber((int) Math.random() * 100 + 100)
+//                .roomNumber((int) Math.random() * 400 + 100)
+//                .build();
+//        return this;
+//    }
 
     public ReviewCreateConfigurer setReviewBaseDto(Boolean isAnonymous) {
         //다른 값들은 전부 랜덤한 값 생성
@@ -247,7 +243,6 @@ public class ReviewCreateConfigurer {
         return ReviewRequestDto.ReviewCreateDto.builder()
                 .address(Address.toAddressDto(this.building.getAddress()))
                 .buildingOptionalDto(this.buildingOptionalDto)
-                .roomBaseDto(this.roomBaseDto)
                 .reviewBaseDto(this.reviewBaseDto)
                 .reviewScoreDto(this.reviewScoreDto)
                 .reviewResidencePeriodDto(this.reviewResidencePeriodDto)

@@ -15,12 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
-import java.util.Collections;
 
 @Component
 @Slf4j
@@ -99,7 +97,7 @@ public class JwtProvider implements AuthenticationProvider {
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);
         authentication.setPrincipalDetails(member);
-        authentication.setAuthorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        authentication.setAuthorities(member.getRoles());
 
     }
 

@@ -20,7 +20,6 @@ import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewGenerator;
 import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.service.review.ReviewService;
-import com.project.Project.service.room.RoomService;
 import com.project.Project.unit.repository.RepositoryTestConfig;
 import com.project.Project.util.ApplicationContextServe;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +48,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ReviewGenerator.class, ReviewCategoryService.class, ReviewKeywordService.class, MemberService.class, ReviewService.class, RoomService.class, ReviewImageProcess.class, FileService.class, BuildingService.class, BuildingCustomRepository.class, BuildingGenerator.class, ApplicationContextServe.class
+@WebMvcTest(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {ReviewGenerator.class, ReviewCategoryService.class, ReviewKeywordService.class, MemberService.class, ReviewService.class, ReviewImageProcess.class, FileService.class, BuildingService.class, BuildingCustomRepository.class, BuildingGenerator.class, ApplicationContextServe.class
         , ReviewEventListener.class,
 }))
 @ActiveProfiles("local")

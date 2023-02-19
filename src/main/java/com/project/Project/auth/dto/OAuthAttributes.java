@@ -2,7 +2,6 @@ package com.project.Project.auth.dto;
 
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
-import com.project.Project.domain.enums.MemberRole;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -30,6 +29,7 @@ public class OAuthAttributes {
     private void setProfileImage(String randomProfileImageUrl) {
         picture = randomProfileImageUrl;
     }
+
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if ("naver".equals(registrationId)) return ofNaver("id", attributes);
         if ("kakao".equals(registrationId)) return ofKakao("id", attributes);
@@ -78,7 +78,6 @@ public class OAuthAttributes {
         return Member.builder()
                 .name(name)
                 .email(email)
-                .memberRole(MemberRole.USER)
                 .authProviderType(authProviderType)
                 .build();
     }
