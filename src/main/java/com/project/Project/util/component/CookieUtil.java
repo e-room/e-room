@@ -129,4 +129,14 @@ public class CookieUtil {
         return refreshTokenCookie.build();
     }
 
+    public static ResponseCookie createDeleteTokenCookie(String name, Boolean isLocal) {
+        return ResponseCookie.from(name, null)
+                .secure(true)
+                .httpOnly(true)
+                .domain(isLocal ? "localhost" : ".e-room.app")
+                .path("/")
+                .sameSite("None")
+                .maxAge(0)
+                .build();
+    }
 }

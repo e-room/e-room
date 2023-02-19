@@ -35,6 +35,10 @@ public class JwtAuthentication implements Authentication {
         this.details = authenticationDetails;
     }
 
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = (Collection<GrantedAuthority>) authorities;
+    }
+
     public JwtAuthentication(Collection<? extends GrantedAuthority> authorities, MemberDto principal, Member details, String refreshToken, HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;

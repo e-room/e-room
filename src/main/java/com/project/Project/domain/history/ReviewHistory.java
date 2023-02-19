@@ -26,7 +26,7 @@ public class ReviewHistory extends BaseEntity {
 
     private Long memberId;
 
-    private Long roomId;
+    private Long buildingId;
 
     @Embedded
     private AnonymousStatus anonymousStatus;
@@ -77,8 +77,8 @@ public class ReviewHistory extends BaseEntity {
     public static ReviewHistory toReviewHistory(Review review) {
         return ReviewHistory.builder()
                 .reviewId(review.getId())
+                .buildingId(review.getBuilding().getId())
                 .memberId(review.getAuthor().getId())
-                .roomId(review.getRoom().getId())
                 .anonymousStatus(review.getAnonymousStatus())
                 .residenceStartYear(review.getResidenceStartYear())
                 .residenceDuration(review.getResidenceDuration())

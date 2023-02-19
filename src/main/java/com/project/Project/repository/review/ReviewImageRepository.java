@@ -3,7 +3,7 @@ package com.project.Project.repository.review;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.domain.room.Room;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,9 +19,6 @@ public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> 
     Optional<ReviewImage> findByUuid(@Param(value = "uuid") String uuid);
     List<ReviewImage> findByReview(Review review);
 
-    @Query("select r from ReviewImage r where r.review.room = :room")
-    List<ReviewImage> findByRoom(@Param(value = "room") Room room);
-
-    @Query("select r from ReviewImage  r where r.review.room.building = :building")
+    @Query("select r from ReviewImage  r where r.review.building = :building")
     List<ReviewImage> findByBuilding(@Param(value = "building")Building building);
 }

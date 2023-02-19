@@ -25,6 +25,9 @@ public class BuildingSummary extends BaseEntity {
     @JoinColumn(name = "building_id")
     private Building building;
 
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    @Builder.Default
     private Double avgScore;
 
     @Column(nullable = false)

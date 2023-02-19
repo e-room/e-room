@@ -15,6 +15,7 @@ public class MemberResponseDto {
     @AllArgsConstructor
     @Builder
     public static class MemberProfileDto {
+        private Long id;
         private String name;
         private String email;
         private String profileImageUrl;

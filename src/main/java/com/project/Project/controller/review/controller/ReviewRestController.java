@@ -1,36 +1,31 @@
 package com.project.Project.controller.review.controller;
 
 import com.project.Project.auth.AuthUser;
-import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
-
-import com.project.Project.domain.member.Member;
-import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
-
+import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.domain.room.Room;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.review.ReviewException;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
+import com.project.Project.service.member.MemberService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
-import com.project.Project.service.room.RoomService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
-import com.project.Project.validator.ExistRoom;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,7 +36,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,7 +43,6 @@ import reactor.util.annotation.Nullable;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,8 +55,8 @@ public class ReviewRestController {
 
     private final ReviewService reviewService;
     private final BuildingService buildingService;
-    private final RoomService roomService;
     private final ReviewImageService reviewImageService;
+    private final MemberService memberService;
 
     /* todo
         @GetMapping("/building/room/review")
@@ -90,51 +83,29 @@ public class ReviewRestController {
             @Parameter(name = "pageable", hidden = true)
     })
     @GetMapping("/building/{buildingId}/room/review")
-    public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
-                                                                                          @RequestParam(required = false) List<Double> cursorIds,
-                                                                                          @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<ReviewResponseDto.ReviewSliceDto> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
+                                                                                    @RequestParam(required = false) List<Double> cursorIds,
+                                                                                    @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable,
+                                                                                    @AuthUser Member member) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorIds, pageable);
-        List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
+        List<ReviewLike> reviewLikeList = memberService.getReviewLikeList(member);
+        List<ReviewResponseDto.ReviewDto> reviewListResponseList =
                 reviewList.stream()
-                        .map(ReviewSerializer::toReviewListDto)
+                        .map(ReviewSerializer::toReviewDto)
+                        .map((dto) -> ReviewSerializer.setIsLiked(dto, reviewLikeList))
                         .collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
+        Boolean needToBlur = false;
+        if (member == null || memberService.getReviewCnt(member) < 1) {
+            needToBlur = true;
+            reviewListResponseList = reviewListResponseList.subList(0, 1);
+        }
+        Slice<ReviewResponseDto.ReviewDto> slicedReviewList = QueryDslUtil.toSlice(reviewListResponseList, pageable);
+
+        ReviewResponseDto.ReviewSliceDto responseBody = ReviewResponseDto.ReviewSliceDto.builder().reviewSlicedList(slicedReviewList).needToBlur(needToBlur).build();
+        return ResponseEntity.ok(responseBody);
     }
 
-    /**
-     * 3.2 리뷰_상세페이지<br>
-     * - 특정 방에 대한 리뷰 리스트를 반환<br>
-     * - 3.2 리뷰_상세페이지에서 <strong>방(ex.102호)</strong>버튼을 눌렀을 때 사용
-     *
-     * @param roomId    방의 id
-     * @param cursorIds : 조회해서 받았던 리스트 중에 가장 마지막 원소의 Id | size : 한 번에 받고자 하는 원소의 개수
-     * @return 방 id에 해당하는 리뷰 리스트
-     */
-    @Operation(summary = "리뷰 조회 by 방 [3.2]", description = "특정 방에 대한 리뷰 리스트를 반환 API")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK")
-    })
-    @Parameters({
-            @Parameter(name = "roomId", description = "리뷰를 얻고자 하는 방의 id", example = "123"),
-            @Parameter(name = "cursorIds", description = "커서 id", example = "2.4,8714"),
-            @Parameter(name = "size", description = "응답 리뷰 개수", example = "4"),
-            @Parameter(name = "sort", description = "정렬 기준", example = "id,likeCnt,DESC"),
-            @Parameter(name = "pageable", hidden = true)
-
-    })
-    @GetMapping("/building/room/{roomId}/review")
-    public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByRoom(@PathVariable("roomId") @ExistRoom Long roomId,
-                                                                                      @RequestParam(required = false) List<Double> cursorIds,
-                                                                                      @PageableDefault(size = 10, sort = {"id", "likeCnt"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
-        if (cursorIds == null) cursorIds = new ArrayList<>();
-        List<Review> reviewList = reviewService.getReviewListByRoomId(roomId, cursorIds, pageable);
-        List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
-                reviewList.parallelStream()
-                        .map(ReviewSerializer::toReviewListDto)
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
-    }
     /* todo
         @GetMapping("/building/room/review/{reviewId}")
     */
@@ -163,21 +134,20 @@ public class ReviewRestController {
             @Parameter(name = "authentication", hidden = true),
             @Parameter(name = "loginMember", hidden = true)
     })
-    @PostMapping(value = "/building/room/review", consumes = MediaType.MULTIPART_FORM_DATA_VALUE) // multipart/form-data 형태로 받음
-    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthenticationPrincipal MemberDto authentication, @AuthUser Member loginMember) {
+    @PostMapping(value = "/building/room/review", consumes = {
+            MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE})
+    // multipart/form-data 형태로 받음
+    public ResponseEntity<ReviewResponseDto.ReviewCreateDto> createReview(@RequestPart @Valid ReviewRequestDto.ReviewCreateDto request, @RequestPart @Size(max = 5) @Nullable List<MultipartFile> reviewImageList, @AuthUser Member loginMember) {
 
         Address address = AddressDto.toAddress(request.getAddress());
         BuildingOptionalDto buildingOptionalDto = request.getBuildingOptionalDto();
 
         Building building = buildingService.createBuilding(address, buildingOptionalDto);// 빌딩이 없는 경우 생성
 
-        RoomBaseDto roomBaseDto = request.getRoomBaseDto();
-        Room room = roomService.createRoom(building, roomBaseDto.getRoomNumber(), roomBaseDto.getLineNumber());
-
         if (!(reviewImageList == null || reviewImageList.isEmpty())) {
             request.setReviewImageList(reviewImageList);
         }
-        Review review = reviewService.saveReview(request, loginMember, room);
+        Review review = reviewService.saveReview(request, loginMember, building);
 
         return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
     }
@@ -201,8 +171,11 @@ public class ReviewRestController {
             @Parameter(name = "reviewId", description = "삭제하고자 하는 리뷰의 id")
     })
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId) {
-        // todo : 멤버 본인이 쓴 리뷰인지 검증하는 로직이 없음..
+    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
+        Review target = reviewService.getReviewById(reviewId);
+        if (target.getAuthor().getId().equals(loginMember.getId())) {
+            throw new ReviewException("다른 사람의 review를 삭제할 수 없습니다.", ErrorCode.REVIEW_ACCESS_DENIED);
+        }
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }

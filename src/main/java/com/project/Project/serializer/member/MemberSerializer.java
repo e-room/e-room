@@ -57,6 +57,7 @@ public class MemberSerializer {
 
     public static MemberDto toDto(Member member) {
         return MemberDto.builder()
+                .id(member.getId())
                 .email(member.getEmail())
                 .name(member.getName())
                 .picture(member.getProfileImage().getUrl())
@@ -66,6 +67,7 @@ public class MemberSerializer {
 
     public static MemberResponseDto.MemberProfileDto toMemberProfileDto(Member member) {
         return MemberResponseDto.MemberProfileDto.builder()
+                .id(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())
                 .profileImageUrl(member.getProfileImage().getUrl())

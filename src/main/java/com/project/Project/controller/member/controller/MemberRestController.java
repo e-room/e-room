@@ -1,5 +1,6 @@
 package com.project.Project.controller.member.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.member.dto.MemberRequestDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
@@ -8,6 +9,7 @@ import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.service.member.MemberService;
+import com.project.Project.util.component.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -17,16 +19,26 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
+
+import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
 @Tag(name = "Member API", description = "내 정보 조회, 회원 탈퇴")
 @RestController
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MemberService memberService;
+    private final ObjectMapper mapper;
 
     @Operation(summary = "내 정보 조회 [6]", description = "내 정보 조회 API")
     @ApiResponses({
@@ -47,12 +59,27 @@ public class MemberRestController {
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
     @Parameters({
-            @Parameter(name = "loginMember", hidden = true)
+            @Parameter(name = "loginMember", hidden = true),
+            @Parameter(name = "request", hidden = true),
+            @Parameter(name = "response", hidden = true)
     })
     @DeleteMapping("/member/exit")
-    public ResponseEntity<MemberResponseDto.MemberDeleteDto> exitMember(@AuthUser Member loginMember) {
+    public void exitMember(@AuthUser Member loginMember, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
+                .map(Cookie::getValue)
+                .map(Boolean::parseBoolean).orElse(false);
+
+        ResponseCookie accessTokenCookie = CookieUtil.createDeleteTokenCookie("accessToken", isLocal);
+        ResponseCookie refreshTokenCookie = CookieUtil.createDeleteTokenCookie("refreshToken", isLocal);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        response.addHeader("Set-Cookie", accessTokenCookie.toString());
+        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
+
         Long deletedMemberId = memberService.delete(loginMember);
-        return ResponseEntity.ok(MemberSerializer.toMemberDeleteDto(deletedMemberId));
+        response.setStatus(HttpStatus.OK.value());
+        response.getWriter().write(mapper.writeValueAsString(MemberSerializer.toMemberDeleteDto(deletedMemberId)));
     }
 
     @Operation(summary = "마지막 지도 위치 저장 [3.0.1]", description = "마지막으로 조회한 지도의 중심 저장 API")

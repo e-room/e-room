@@ -1,8 +1,7 @@
-package com.project.Project;
+package com.project.Project.bootstrap;
 
 import com.project.Project.domain.member.ProfileImage;
 import com.project.Project.repository.member.ProfileImageRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -42,15 +41,15 @@ public class ProfileImageGenerator implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         long totalCount = profileImageRepository.count();
-        if(totalCount > 0) return;
+        if (totalCount > 0) return;
 
         List<ProfileImage> profileImageList = new ArrayList<>();
 
-        for(int i=0; i < colorType.size(); i++)
-            for(int j=0; j <eyeType.size(); j++)
-                for(int k=0; k < mouthType.size(); k++) {
+        for (int i = 0; i < colorType.size(); i++)
+            for (int j = 0; j < eyeType.size(); j++)
+                for (int k = 0; k < mouthType.size(); k++) {
                     String profileImageFile = String.format(profileImageFileFormat, colorType.get(i), eyeType.get(j), mouthType.get(k));
-                    String profileImageUrl = distributionDomain + "/" + profileImagesFolder +  "/" + profileImageFile;
+                    String profileImageUrl = distributionDomain + "/" + profileImagesFolder + "/" + profileImageFile;
                     profileImageList.add(ProfileImage.builder()
                             .url(profileImageUrl)
                             .build());

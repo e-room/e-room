@@ -1,7 +1,6 @@
 package com.project.Project.unit.controller.review.controller;
 
 
-import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
 import com.project.Project.config.SecurityConfig;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.review.controller.ReviewRestController;
@@ -9,13 +8,11 @@ import com.project.Project.controller.review.dto.ReviewBaseDto;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResidencePeriodDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
-import com.project.Project.controller.room.dto.RoomBaseDto;
 import com.project.Project.domain.building.Building;
-import com.project.Project.domain.room.Room;
 import com.project.Project.service.building.impl.BuildingServiceImpl;
 import com.project.Project.service.review.impl.ReviewImageServiceImpl;
 import com.project.Project.service.review.impl.ReviewServiceImpl;
-import com.project.Project.service.room.impl.RoomServiceImpl;
+import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -52,8 +49,7 @@ public class ReviewRestControllerTest {
     private ReviewServiceImpl reviewService;
     @MockBean
     private BuildingServiceImpl buildingService;
-    @MockBean
-    private RoomServiceImpl roomService;
+
 
     @MockBean
     private ReviewImageServiceImpl reviewImageService;
@@ -71,7 +67,6 @@ public class ReviewRestControllerTest {
                             .buildingNumber("4")
                             .build()
             )
-            .roomBaseDto(RoomBaseDto.builder().roomNumber(103).lineNumber(101).build())
             .reviewResidencePeriodDto(ReviewResidencePeriodDto.builder().residenceStartYear(2020).residenceDuration(12).build())
             .reviewBaseDto(ReviewBaseDto.builder().deposit(800).monthlyRent(50).managementFee(10).netLeasableArea(13.0).build())
             .reviewScoreDto(ReviewScoreDto.builder().traffic(3.0).buildingComplex(4.0).surrounding(1.0).internal(5.0).livingLocation(3.0)
@@ -89,11 +84,8 @@ public class ReviewRestControllerTest {
     public void createReview_Test() throws Exception {
         // given
         Building building = Building.builder().build();
-        Room room = Room.builder().build();
         given(buildingService.findByAddress(any()))
                 .willReturn(Optional.ofNullable(building));
-        given(roomService.findByBuildingAndLineNumberAndRoomNumber(building, 101, 103))
-                .willReturn(Optional.ofNullable(room));
         // reviewSerializer를 모킹, 관련 의존성 모킹 후 돌려보기
 
 

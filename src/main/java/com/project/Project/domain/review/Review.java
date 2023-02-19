@@ -1,12 +1,13 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.eventListener.ReviewListener;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
-import com.project.Project.domain.room.Room;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +20,10 @@ import java.util.Optional;
 
 
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "Review.withRoomAndBuilding", attributeNodes = {
-                @NamedAttributeNode(value = "room", subgraph = "room")
-        },
-                subgraphs = @NamedSubgraph(name = "room", attributeNodes = {
-                        @NamedAttributeNode("building")
-                })),
+        @NamedEntityGraph(name = "Review.withBuilding", attributeNodes = {
+                @NamedAttributeNode(value = "building")
+        }
+                ),
         @NamedEntityGraph(name = "Review.withReviewCategory", attributeNodes = {
                 @NamedAttributeNode(value = "reviewToReviewCategoryList", subgraph = "reviewCategory")
         },
@@ -40,7 +39,7 @@ import java.util.Optional;
 @Entity
 @Table(
         uniqueConstraints = {
-                @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
+                @UniqueConstraint(name = "UniqueMemberAndBuilding", columnNames = {"member_id", "building_id"})
         }
 )
 public class Review extends BaseEntity {
@@ -54,8 +53,8 @@ public class Review extends BaseEntity {
     private Member author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JoinColumn(name = "building_id")
+    private Building building;
 
     @OneToMany(mappedBy = "review")
     @Builder.Default

@@ -1,35 +1,47 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.auth.dto.MemberDto;
-import com.project.Project.controller.room.dto.RoomResponseDto;
-import com.project.Project.domain.Uuid;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.domain.Slice;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReviewResponseDto {
-
     @NoArgsConstructor
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class ReviewListDto {
-        private BaseReviewDto baseReviewDto;
-        private RoomResponseDto.BaseRoomDto baseRoomDto;
-        private ReviewScoreDto reviewScoreDto;
-        private MemberDto authorDto;
+    public static class ReviewSliceDto {
+        private Slice<ReviewDto> reviewSlicedList;
+        private Boolean needToBlur;
     }
 
     @NoArgsConstructor
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class BaseReviewDto {
+    public static class ReviewDto {
+        private ReviewBaseDto reviewBaseDto;
+        private ReviewScoreDto reviewScoreDto;
+        private MemberDto authorDto;
+        @Builder.Default
+        private Boolean isLiked = false;
+
+        public void setIsLiked(Boolean recommended) {
+            this.isLiked = recommended;
+        }
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewBaseDto {
         private Long reviewId;
         private LocalDateTime createdAt;
         private Double score;

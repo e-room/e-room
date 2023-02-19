@@ -3,10 +3,8 @@ package com.project.Project.unit.repository;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
-import com.project.Project.domain.room.Room;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
-import com.project.Project.repository.room.RoomRepository;
 import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewKeywordService;
 import org.junit.jupiter.api.AfterEach;
@@ -43,22 +41,15 @@ public class BuildingRepositoryTest {
     ReviewKeywordService reviewKeywordService;
 
     BuildingRepository buildingRepository;
-    RoomRepository roomRepository;
 
     Building testBuilding1;
     Building saveBuilding1;
     Building testBuilding2;
     Building saveBuilding2;
 
-    Room testRoom1;
-    Room testRoom2;
-    Room testRoom3;
-    Room testRoom4;
-
     @Autowired
-    public BuildingRepositoryTest(BuildingRepository buildingRepository, RoomRepository roomRepository) {
+    public BuildingRepositoryTest(BuildingRepository buildingRepository) {
         this.buildingRepository = buildingRepository;
-        this.roomRepository = roomRepository;
     }
 
     @BeforeEach
@@ -67,16 +58,6 @@ public class BuildingRepositoryTest {
         testBuilding2 = Building.builder().hasElevator(false).address(Address.builder().siDo("서울특별시").siGunGu("관악구").roadName("덕영대로").buildingNumber("47").build()).buildingName("휴먼라이트 빌").coordinate(new Coordinate(45.2321, 50.1)).build();
         buildingRepository.save(testBuilding1);
         buildingRepository.save(testBuilding2);
-        testRoom1 = Room.builder()
-                .roomNumber(101).lineNumber(1).build();
-        testRoom2 = Room.builder()
-                .roomNumber(102).lineNumber(1).build();
-        testRoom3 = Room.builder()
-                .roomNumber(101).lineNumber(1).build();
-        testRoom4 = Room.builder()
-                .roomNumber(102).lineNumber(1).build();
-        testBuilding1.addRooms(Arrays.asList(testRoom1, testRoom2));
-        testBuilding2.addRooms(Arrays.asList(testRoom3, testRoom4));
         saveBuilding1 = buildingRepository.save(testBuilding1);
         saveBuilding2 = buildingRepository.save(testBuilding2);
     }
@@ -84,7 +65,6 @@ public class BuildingRepositoryTest {
     @AfterEach
     void cleanup() {
         this.buildingRepository.deleteAll();
-        this.roomRepository.deleteAll();
     }
 
     @Test

@@ -32,7 +32,6 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<Building> getBuildingListByBuildingIds(List<Long> buildingIds, List<Double> cursorIds, Pageable pageable) {
         List<Building> buildingList = buildingCustomRepo.findBuildingsByIdIn(buildingIds, cursorIds, pageable);
-        buildingList.stream().map(Building::getRoomList).forEach(Hibernate::initialize);
         buildingList.stream().map(Building::getBuildingSummary).forEach(Hibernate::initialize);
         buildingList.stream().map(Building::getBuildingToReviewCategoryList).forEach(Hibernate::initialize);
 

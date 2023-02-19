@@ -4,13 +4,13 @@ import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
 import com.project.Project.domain.Uuid;
+import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.*;
-import com.project.Project.domain.room.Room;
 import com.project.Project.repository.ThumbnailRepository;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
@@ -63,7 +63,7 @@ public class ReviewGenerator {
         staticUuidRepository = this.uuidRepository;
     }
 
-    public static Review createReview(ReviewRequestDto.ReviewCreateDto request, Member member, Room room) {
+    public static Review createReview(ReviewRequestDto.ReviewCreateDto request, Member member, Building building) {
 
         //reviewToReviewCategoryList 생성
         List<ReviewToReviewCategory> reviewToReviewCategoryList = createReviewToReviewCategoryList(request);
@@ -79,14 +79,14 @@ public class ReviewGenerator {
         AnonymousStatus status = createAnonymousStatus(request.getReviewBaseDto().getIsAnonymous());
 
         //Review Entity
-        Review review = createReviewEntity(request, member, room, reviewSummary, status);
+        Review review = createReviewEntity(request, member, building, reviewSummary, status);
 
 
         mappingEntities(reviewToReviewCategoryList, reviewSummary, selectedReviewAdvantageKeywordList, selectedReviewDisadvantageKeywordList, review);
 
         if (!request.getReviewImageList().isEmpty()) {
             // ReviewImageList 생성
-            createAndMapReviewImage(request, room, review);
+            createAndMapReviewImage(request, review);
         }
         return review;
     }
@@ -102,7 +102,7 @@ public class ReviewGenerator {
         }
     }
 
-    private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Room room, Review review) {
+    private static void createAndMapReviewImage(ReviewRequestDto.ReviewCreateDto request, Review review) {
         List<MultipartFile> imageFileList = request.getReviewImageList();
         System.out.println(imageFileList.size());
         /*
@@ -114,8 +114,7 @@ public class ReviewGenerator {
         List<CompletableFuture<Void>> futures = imageFileList.stream().map((image) -> CompletableFuture.runAsync(() -> {
                     Uuid uuid = staticReviewImageProcess.createUUID();
                     ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
-                            .buildingId(room.getBuilding().getId())
-                            .roomId(room.getId())
+                            .buildingId(review.getBuilding().getId())
                             .uuid(uuid.getUuid())
                             .uuidEntity(uuid)
                             .build();
@@ -153,7 +152,7 @@ public class ReviewGenerator {
 
     }
 
-    private static Review createReviewEntity(ReviewRequestDto.ReviewCreateDto request, Member member, Room room, ReviewSummary reviewSummary, AnonymousStatus status) {
+    private static Review createReviewEntity(ReviewRequestDto.ReviewCreateDto request, Member member, Building building, ReviewSummary reviewSummary, AnonymousStatus status) {
         return Review.builder()
                 .residenceStartYear(request.getReviewResidencePeriodDto().getResidenceStartYear())
                 .residenceDuration(request.getReviewResidencePeriodDto().getResidenceDuration())
@@ -168,9 +167,9 @@ public class ReviewGenerator {
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
                 .author(member) // todo : 이렇게 하면 Member쪽 reviewList에는 없지 않나??
-                .room(room)
                 .reviewSummary(reviewSummary)
                 .anonymousStatus(status)
+                .building(building)
                 .build();
     }
 
