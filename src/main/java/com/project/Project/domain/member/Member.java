@@ -79,12 +79,9 @@ public class Member extends BaseEntity {
     }
 
     public void setRoles(List<MemberRole> roleEnums, RoleRepository roleRepository) {
-        List<Role> roleOfMembers = roleRepository.findRoleByMember(this);
-        roleRepository.deleteAll(roleOfMembers);
         List<Role> newRoles = roleEnums.stream().map((roleEnum) -> Role.builder()
                 .memberRole(roleEnum).member(this).build()).collect(Collectors.toList());
-        List<Role> savedRoles = roleRepository.saveAll(newRoles);
-        this.roles = savedRoles;
+        this.roles = newRoles;
     }
 
     @PreRemove

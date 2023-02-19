@@ -8,13 +8,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MemberDto {
+    private Long id;
     private String email;
     private String name;
     private String picture;
     private AuthProviderType authProviderType;
 
     @Builder
-    public MemberDto(String email, String name, String picture, AuthProviderType authProviderType) {
+    public MemberDto(Long id, String email, String name, String picture, AuthProviderType authProviderType) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.picture = picture;

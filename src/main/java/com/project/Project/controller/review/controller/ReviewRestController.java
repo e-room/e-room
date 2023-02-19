@@ -7,6 +7,7 @@ import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
+import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
@@ -15,6 +16,7 @@ import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.review.ReviewException;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
+import com.project.Project.service.member.MemberService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
@@ -56,6 +58,7 @@ public class ReviewRestController {
     private final ReviewService reviewService;
     private final BuildingService buildingService;
     private final ReviewImageService reviewImageService;
+    private final MemberService memberService;
 
     /* todo
         @GetMapping("/building/room/review")
@@ -82,16 +85,27 @@ public class ReviewRestController {
             @Parameter(name = "pageable", hidden = true)
     })
     @GetMapping("/building/{buildingId}/room/review")
-    public ResponseEntity<Slice<ReviewResponseDto.ReviewListDto>> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
-                                                                                          @RequestParam(required = false) List<Double> cursorIds,
-                                                                                          @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<ReviewResponseDto.ReviewSliceDto> getReviewListByBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId,
+                                                                                    @RequestParam(required = false) List<Double> cursorIds,
+                                                                                    @PageableDefault(size = 10, sort = {"id"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable,
+                                                                                    @AuthUser Member member) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Review> reviewList = reviewService.getReviewListByBuildingId(buildingId, cursorIds, pageable);
-        List<ReviewResponseDto.ReviewListDto> reviewListResponseList =
+        List<ReviewLike> reviewLikeList = memberService.getReviewLikeList(member);
+        List<ReviewResponseDto.ReviewDto> reviewListResponseList =
                 reviewList.stream()
-                        .map(ReviewSerializer::toReviewListDto)
+                        .map(ReviewSerializer::toReviewDto)
+                        .map((dto) -> ReviewSerializer.setIsLiked(dto, reviewLikeList))
                         .collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(reviewListResponseList, pageable));
+        Boolean needToBlur = false;
+        if (member == null || memberService.getReviewCnt(member) < 1) {
+            needToBlur = true;
+            reviewListResponseList = reviewListResponseList.subList(0, 1);
+        }
+        Slice<ReviewResponseDto.ReviewDto> slicedReviewList = QueryDslUtil.toSlice(reviewListResponseList, pageable);
+
+        ReviewResponseDto.ReviewSliceDto responseBody = ReviewResponseDto.ReviewSliceDto.builder().reviewSlicedList(slicedReviewList).needToBlur(needToBlur).build();
+        return ResponseEntity.ok(responseBody);
     }
 
     /* todo
