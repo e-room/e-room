@@ -1,5 +1,6 @@
 package com.project.Project.loader.review;
 
+import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewToReviewCategory;
 import com.project.Project.repository.review.ReviewCategoryRepository;
@@ -48,6 +49,11 @@ public class ReviewLoader {
         review.getReviewToReviewCategoryList().forEach(Hibernate::initialize);
         review.getReviewLikeList().forEach(Hibernate::initialize);
         Hibernate.initialize(review.getReviewSummary());
+        return review;
+    }
+
+    public Review loadBuilding(Review review) {
+        Building building = review.getBuilding();
         return review;
     }
 

@@ -3,6 +3,7 @@ package com.project.Project.service.member.impl;
 import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
@@ -92,6 +93,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<ReviewLike> getReviewLikeList(Member member) {
-        return reviewLikeRepository.findByMember(member);
+        return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
     }
 }

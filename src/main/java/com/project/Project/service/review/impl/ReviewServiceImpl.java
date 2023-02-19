@@ -59,7 +59,9 @@ public class ReviewServiceImpl implements ReviewService {
     public Long deleteById(Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
         reviewLoader.loadAllRelations(review);
+        reviewLoader.loadBuilding(review);
         reviewRepository.delete(review);
+        eventListener.listenToDeleteReview(review);
         return reviewId;
     }
 
