@@ -1,13 +1,10 @@
 package com.project.Project.config;
 
-import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
-import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
 import com.project.Project.auth.handler.*;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.CustomOAuth2UserService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,42 +26,46 @@ public class AuthConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtProvider jwtProvider;
-    private final JwtAuthFilter jwtAuthFilter;
-    private final CustomBasicAuthFilter customBasicAuthFilter;
+    //    private final JwtAuthFilter jwtAuthFilter;
+//    private final CustomBasicAuthFilter customBasicAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
     private final OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomLogoutHandler customLogoutHandler;
-    private final JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter;
+//    private final JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter;
+
+    private final SecurityConfig securityConfig;
 
     private final CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
     private static CustomOAuth2UserService staticCustomOAuth2UserService;
     private static JwtProvider staticJwtProvider;
-    private static JwtAuthFilter staticJwtAuthFilter;
-    private static CustomBasicAuthFilter staticCustomBasicAuthFilter;
+    //    private static JwtAuthFilter staticJwtAuthFilter;
+//    private static CustomBasicAuthFilter staticCustomBasicAuthFilter;
     private static OAuth2SuccessHandler staticOAuth2SuccessHandler;
     private static OAuth2FailureHandler staticOAuth2FailureHandler;
     private static OAuth2AuthorizationRequestBasedOnCookieRepository staticOAuth2AuthorizationRequestBasedOnCookieRepository;
     private static CustomAuthenticationEntryPoint staticCustomAuthenticationEntryPoint;
     private static CustomLogoutHandler staticCustomLogoutHandler;
     private static CustomLogoutSuccessHandler staticCustomLogoutSuccessHandler;
-    private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
+    //    private static JwtExceptionInterceptorFilter staticJwtExceptionInterceptorFilter;
+    private static SecurityConfig staticSecurityConfig;
 
     @PostConstruct
     public void init() {
         staticCustomOAuth2UserService = this.customOAuth2UserService;
         staticJwtProvider = this.jwtProvider;
-        staticJwtAuthFilter = this.jwtAuthFilter;
-        staticCustomBasicAuthFilter = this.customBasicAuthFilter;
+//        staticJwtAuthFilter = this.jwtAuthFilter;
+//        staticCustomBasicAuthFilter = this.customBasicAuthFilter;
         staticOAuth2SuccessHandler = this.oAuth2SuccessHandler;
         staticOAuth2FailureHandler = this.oAuth2FailureHandler;
         staticOAuth2AuthorizationRequestBasedOnCookieRepository = this.oAuth2AuthorizationRequestBasedOnCookieRepository;
         staticCustomAuthenticationEntryPoint = this.customAuthenticationEntryPoint;
         staticCustomLogoutHandler = this.customLogoutHandler;
-        staticJwtExceptionInterceptorFilter = this.jwtExceptionInterceptorFilter;
+//        staticJwtExceptionInterceptorFilter = this.jwtExceptionInterceptorFilter;
         staticCustomLogoutSuccessHandler = this.customLogoutSuccessHandler;
+        staticSecurityConfig = this.securityConfig;
     }
 
     @Profile("local")
@@ -74,7 +75,7 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health",
+                    "/token/valid", "api/profile", "/", "/health",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
@@ -101,7 +102,7 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health",
+                    "/token/valid", "api/profile", "/", "/health",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
@@ -127,7 +128,7 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health",
+                    "/token/valid", "api/profile", "/", "/health",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
@@ -153,7 +154,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/**", "api/profile", "/", "/health"
+                    "/token/valid", "api/profile", "/", "/health",
+                    "/swagger-ui.html",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**"
             );
         }
 
@@ -173,7 +178,6 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
-                        .antMatchers().authenticated()
                         .anyRequest().authenticated();
                 return http.build();
             } catch (Exception e) {
@@ -187,7 +191,7 @@ public class AuthConfig {
             try {
                 http
                         .authorizeRequests()
-                        .antMatchers("/token/**", "/login", "api/profile", "/", "/health").permitAll()
+                        .antMatchers("/login", "api/profile", "/", "/health").permitAll()
                         .antMatchers(HttpMethod.GET, "/building/marking", "/building/search", "/building/{buildingId}/images", "/building/{buildingId}", "/building", "/building/${buildingId}/room/review").permitAll()
                         .antMatchers(HttpMethod.GET, "/token/valid").permitAll();
                 return http;
@@ -235,8 +239,8 @@ public class AuthConfig {
 
                 // 인증을 처리하는 기본필터 대신 별도의 인증로직을 가진 JwtAuthFilter 추가
                 // 가능하다면 JwtLoginConfigurer를 만들어보는 것도 좋을 듯
-                http.addFilterAt(staticJwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-                http.addFilterBefore(staticJwtExceptionInterceptorFilter, JwtAuthFilter.class);
+                http.addFilterAt(staticSecurityConfig.jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
+                http.addFilterBefore(staticSecurityConfig.jwtExceptionInterceptorFilter(), JwtAuthFilter.class);
                 http.authenticationProvider(staticJwtProvider);
                 http.httpBasic().disable();
                 return http;
@@ -270,7 +274,7 @@ public class AuthConfig {
         return (http) -> {
             try {
                 http.httpBasic().disable();
-                http.addFilterAfter(staticCustomBasicAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterAfter(staticSecurityConfig.customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -288,7 +292,7 @@ public class AuthConfig {
                         .authorizeRequests()
                         .antMatchers("/**").permitAll();
 
-                http.addFilterAfter(staticCustomBasicAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                http.addFilterAfter(staticSecurityConfig.customBasicAuthFilter(), UsernamePasswordAuthenticationFilter.class);
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);

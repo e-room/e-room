@@ -27,7 +27,6 @@ public class SecurityConfig {
     private final SecurityProperties securityProperties;
     private final AuthenticationConfiguration authenticationConfiguration;
 
-    @Bean
     JwtAuthFilter jwtAuthFilter() throws Exception {
         return new JwtAuthFilter(authenticationManager(authenticationConfiguration), new JWTFailureHandler());
     }
@@ -37,7 +36,6 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
     CustomBasicAuthFilter customBasicAuthFilter() throws Exception {
         return new CustomBasicAuthFilter(authenticationManager(authenticationConfiguration), customAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
     }
@@ -66,7 +64,6 @@ public class SecurityConfig {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
 
-    @Bean
     JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter() {
         return new JwtExceptionInterceptorFilter(customAuthenticationEntryPoint());
     }
