@@ -56,7 +56,7 @@ public class BuildingResponseDto {
         private AddressDto address;
         private CoordinateDto coordinate;
         private DirectDealType directDealType;
-
+        private Boolean isFavorite;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
     }
 
