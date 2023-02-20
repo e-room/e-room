@@ -6,7 +6,7 @@ import com.project.Project.auth.exception.JwtAuthenctionException;
 import com.project.Project.auth.handler.JWTFailureHandler;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.util.component.CookieUtil;
-import io.netty.util.internal.StringUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
@@ -34,18 +32,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTFailureHandler failureHandler;
-
-    private static final List<String> EXCLUDE_URL =
-            Collections.unmodifiableList(
-                    Arrays.asList(
-                            "/token/valid", "api/profile", "/", "/health",
-                            "/swagger-ui.html",
-                            "/v3/api-docs",
-                            "/swagger-ui/index.html",
-                            "/building/marking",
-                            "/building"
-                    ));
-
 
 //    public JwtAuthFilter(AuthenticationManager authenticationManager) {
 //
@@ -104,10 +90,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }
-    }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
     }
 }
