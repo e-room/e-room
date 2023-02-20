@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class BuildingSerializer {
 
-    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building) {
+    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building, Boolean isFavorite) {
 
         List<BuildingToReviewCategory> buildingToReviewCategoryList = building.getBuildingToReviewCategoryList();
         Map<ReviewCategoryEnum, Double> buildingSummary = new HashMap<>();
@@ -40,6 +40,7 @@ public class BuildingSerializer {
                 .address(Address.toAddressDto(building.getAddress()))
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .directDealType(DirectDealType.IMPOSSIBLE)
+                .isFavorite(isFavorite)
                 .buildingSummaries(buildingSummary)
                 .build();
     }

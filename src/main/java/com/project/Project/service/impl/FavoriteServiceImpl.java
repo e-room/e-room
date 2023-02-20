@@ -56,4 +56,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 
         return buildingList;
     }
+
+    @Override
+    public Boolean existsByBuildingAndMember(Building building, Member member) {
+        return favoriteRepository.existsByBuildingAndMember(building, member);
+    }
 }

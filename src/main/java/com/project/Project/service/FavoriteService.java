@@ -12,4 +12,6 @@ public interface FavoriteService {
     Long deleteFavoriteBuilding(Long buildingId, Member member);
 
     List<Building> getBuildingListByMember(Member member, List<Double> cursorIds, Pageable pageable);
+
+    Boolean existsByBuildingAndMember(Building building, Member member);
 }
