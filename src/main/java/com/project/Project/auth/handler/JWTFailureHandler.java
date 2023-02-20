@@ -1,6 +1,6 @@
 package com.project.Project.auth.handler;
 
-import com.project.Project.auth.exception.JwtAuthenctionException;
+import com.project.Project.auth.exception.JwtAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -18,8 +18,8 @@ public class JWTFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        JwtAuthenctionException jwtAuthenctionException = (JwtAuthenctionException) exception;
-        response.setStatus(jwtAuthenctionException.getErrorCode().getStatus().value());
+        JwtAuthenticationException jwtAuthenticationException = (JwtAuthenticationException) exception;
+        response.setStatus(jwtAuthenticationException.getErrorCode().getStatus().value());
         response.setContentType("application/json");
         Cookie accessToken = getCookieValue(request, "accessToken").orElse(new Cookie("accessToken", null));
         Cookie refreshToken = getCookieValue(request, "refreshToken").orElse(new Cookie("refreshToken", null));

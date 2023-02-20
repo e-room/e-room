@@ -2,7 +2,7 @@ package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.dto.UidDto;
-import com.project.Project.auth.exception.JwtAuthenctionException;
+import com.project.Project.auth.exception.JwtAuthenticationException;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.exception.ErrorCode;
@@ -113,7 +113,7 @@ public class TokenService {
             member.setRefreshToken(newToken.getRefreshToken());
             return newToken;
         } else {
-            throw new JwtAuthenctionException("토큰 재발급에 실패했습니다.", ErrorCode.JWT_BAD_REQUEST);
+            throw new JwtAuthenticationException("토큰 재발급에 실패했습니다.", ErrorCode.JWT_BAD_REQUEST);
         }
     }
 }

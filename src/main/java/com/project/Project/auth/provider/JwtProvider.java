@@ -4,7 +4,7 @@ import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.dto.UidDto;
-import com.project.Project.auth.exception.JwtAuthenctionException;
+import com.project.Project.auth.exception.JwtAuthenticationException;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
@@ -65,20 +65,20 @@ public class JwtProvider implements AuthenticationProvider {
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
             // refresh token 가지고 access token 발급
             if (refreshToken == null)
-                throw new JwtAuthenctionException("토큰 재발급을 위해선 refreshToken이 필요합니다.", ErrorCode.JWT_BAD_REQUEST);
+                throw new JwtAuthenticationException("토큰 재발급을 위해선 refreshToken이 필요합니다.", ErrorCode.JWT_BAD_REQUEST);
             TokenService.JwtCode code = validateToken(refreshToken);
-            if (code == TokenService.JwtCode.DENIED) throw new JwtAuthenctionException(ErrorCode.JWT_BAD_REQUEST);
+            if (code == TokenService.JwtCode.DENIED) throw new JwtAuthenticationException(ErrorCode.JWT_BAD_REQUEST);
             if (code == TokenService.JwtCode.EXPIRED)
-                throw new JwtAuthenctionException(ErrorCode.JWT_ALL_TOKEN_EXPIRED);
-            if (validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
+                throw new JwtAuthenticationException(ErrorCode.JWT_ALL_TOKEN_EXPIRED);
+            if (code == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
                 setAuthMetadata(newToken, jwtAuthenticationToken);
                 return jwtAuthenticationToken;
             }
         } else {
-            throw new JwtAuthenctionException(ErrorCode.JWT_DENIED);
+            throw new JwtAuthenticationException(ErrorCode.JWT_DENIED);
         }
-        throw new JwtAuthenctionException(ErrorCode.JWT_BAD_REQUEST);
+        throw new JwtAuthenticationException(ErrorCode.JWT_BAD_REQUEST);
     }
 
     @Transactional
