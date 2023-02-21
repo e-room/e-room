@@ -35,6 +35,7 @@ public class ReviewResponseDto {
         public void setIsLiked(Boolean recommended) {
             this.isLiked = recommended;
         }
+        private ReviewImageListDto reviewImageListDto;
     }
 
     @NoArgsConstructor
@@ -82,6 +83,7 @@ public class ReviewResponseDto {
     @Builder
     public static class ReviewCreateDto {
         private Long reviewId;
+        private Long buildingId;
         private LocalDateTime createdAt;
     }
 

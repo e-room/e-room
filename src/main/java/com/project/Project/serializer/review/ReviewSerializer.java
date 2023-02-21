@@ -100,7 +100,8 @@ public class ReviewSerializer {
         return ReviewResponseDto.ReviewDto.builder()
                 .reviewBaseDto(toBaseReviewDto(review))
                 .reviewScoreDto(toReviewScoreDto(review))
-                .authorDto(authorDto).build();
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList())).build();
     }
 
     public static ReviewResponseDto.ReviewDto setIsLiked(ReviewResponseDto.ReviewDto reviewDto, List<ReviewLike> reviewLikeList) {
@@ -110,8 +111,10 @@ public class ReviewSerializer {
     }
 
     public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId) {
+    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId) {
         return ReviewResponseDto.ReviewCreateDto.builder()
                 .reviewId(createdReviewId)
+                .buildingId(buildingId)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

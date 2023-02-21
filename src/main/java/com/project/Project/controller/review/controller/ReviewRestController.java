@@ -13,6 +13,7 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.review.ReviewException;
+
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.member.MemberService;
@@ -149,7 +150,7 @@ public class ReviewRestController {
         }
         Review review = reviewService.saveReview(request, loginMember, building);
 
-        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId()));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -180,6 +181,7 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
+    @Deprecated
     @Operation(summary = "리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),
