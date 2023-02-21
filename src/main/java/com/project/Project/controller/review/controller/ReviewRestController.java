@@ -14,6 +14,7 @@ import com.project.Project.domain.review.ReviewImage;
 
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.review.ReviewException;
+
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.member.MemberService;
@@ -150,8 +151,8 @@ public class ReviewRestController {
             request.setReviewImageList(reviewImageList);
         }
         Review review = reviewService.saveReview(request, loginMember, building);
-
-        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId()));
+        Boolean isFirstReview = loginMember.getReviewList().size() >= 2 ? false : true;
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId(), isFirstReview));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -173,8 +174,11 @@ public class ReviewRestController {
             @Parameter(name = "reviewId", description = "삭제하고자 하는 리뷰의 id")
     })
     @DeleteMapping("/building/room/review/{reviewId}")
-    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member member) {
-        if(!ReviewExistValidator.hasReview(member.getId(), reviewId)) throw new ReviewException(ErrorCode.REVIEW_FORBIDDEN);
+    public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
+        Review target = reviewService.getReviewById(reviewId);
+        if (target.getAuthor().getId().equals(loginMember.getId())) {
+            throw new ReviewException("다른 사람의 review를 삭제할 수 없습니다.", ErrorCode.REVIEW_ACCESS_DENIED);
+        }
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }

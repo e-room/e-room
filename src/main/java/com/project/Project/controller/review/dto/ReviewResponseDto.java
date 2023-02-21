@@ -84,6 +84,7 @@ public class ReviewResponseDto {
     public static class ReviewCreateDto {
         private Long reviewId;
         private Long buildingId;
+        private Boolean isFirstReview;
         private LocalDateTime createdAt;
     }
 
