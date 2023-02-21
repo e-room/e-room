@@ -149,8 +149,8 @@ public class ReviewRestController {
             request.setReviewImageList(reviewImageList);
         }
         Review review = reviewService.saveReview(request, loginMember, building);
-
-        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId()));
+        Boolean isFirstReview = loginMember.getReviewList().size() >= 2 ? false : true;
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId(), isFirstReview));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")

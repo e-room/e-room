@@ -110,11 +110,11 @@ public class ReviewSerializer {
         return reviewDto;
     }
 
-    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId) {
-    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId) {
+    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId, Boolean isFirstReview) {
         return ReviewResponseDto.ReviewCreateDto.builder()
                 .reviewId(createdReviewId)
                 .buildingId(buildingId)
+                .isFirstReview(isFirstReview)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
