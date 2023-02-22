@@ -93,7 +93,7 @@ public class ReviewSerializer {
     public static ReviewResponseDto.ReviewDto toReviewDto(Review review) {
         MemberDto authorDto = null;
         if (review.getAnonymousStatus().getIsAnonymous()) {
-            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(null).build();
+            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
         } else {
             authorDto = MemberSerializer.toDto(review.getAuthor());
         }
