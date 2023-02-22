@@ -99,7 +99,7 @@ public class ReviewRestController {
         Boolean needToBlur = false;
         if (member == null || memberService.getReviewCnt(member) < 1) {
             needToBlur = true;
-            reviewListResponseList = reviewListResponseList.subList(0, 1);
+            if(reviewList.size() >= 1) reviewListResponseList = reviewListResponseList.subList(0, 1);
         }
         Slice<ReviewResponseDto.ReviewDto> slicedReviewList = QueryDslUtil.toSlice(reviewListResponseList, pageable);
 
