@@ -7,9 +7,6 @@ def getSplitBranchName(branchName) {
 }
 
 def getStageName(branchName) {
-    script {
-        echo "branchName ${branchName}"
-    }
     if ("master".equals(branchName)) {
         return "production";
     }
@@ -35,7 +32,7 @@ pipeline {
                 script {
                     branchName = env.GIT_BRANCH.split("/")[1]
                     deployStage = getStageName("${branchName}")
-                    imagename = "larrykwon/eroom-api-" + "${deployStage}"
+                    imageName = "larrykwon/eroom-api-" + "${deployStage}"
                 }
             }
             post {
