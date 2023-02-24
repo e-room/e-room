@@ -33,7 +33,7 @@ pipeline {
             steps {
                 checkout scm
                 script {
-                    branchName = env.GIT_BRANCH.split("/")
+                    branchName = env.GIT_BRANCH.split("/")[1]
                     deployStage = getStageName("${branchName}")
                     imagename = "larrykwon/eroom-api-" + "${deployStage}"
                 }
