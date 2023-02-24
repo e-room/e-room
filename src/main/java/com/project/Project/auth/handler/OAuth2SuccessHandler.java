@@ -2,6 +2,7 @@ package com.project.Project.auth.handler;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
+import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.config.properties.SecurityProperties;
@@ -41,7 +42,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         MemberDto memberDto = MemberSerializer.toDto(oAuth2User);
-        Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(), "USER");
+        Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(), MemberRole.USER);
 
         memberRepository.findByEmailAndAuthProviderType(memberDto.getEmail(), memberDto.getAuthProviderType())
                 .ifPresent((member -> {
