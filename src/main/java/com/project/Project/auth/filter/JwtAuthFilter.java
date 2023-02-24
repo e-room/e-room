@@ -58,6 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(jwtAuthenticationResult.getToken().getRefreshToken(), isLocal);
         response.addHeader("Set-Cookie", accessTokenCookie.toString());
         response.addHeader("Set-Cookie", refreshTokenCookie.toString());
+        response.addHeader("Set-Cookie", String.valueOf(isLocal));
     }
 
     @Override
