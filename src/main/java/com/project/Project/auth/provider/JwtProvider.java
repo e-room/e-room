@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -53,12 +54,9 @@ public class JwtProvider implements AuthenticationProvider {
         Token token = ((JwtAuthentication) authentication).getToken();
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
-        TokenService.JwtCode status;
-        if (accessToken != null) {
-            status = validateToken(accessToken);
-        } else {
-            status = TokenService.JwtCode.EXPIRED;
-        }
+
+        Optional<String> optionalAccessToken = Optional.ofNullable(accessToken);
+        TokenService.JwtCode status = optionalAccessToken.map((elem) -> validateToken(elem)).orElse(TokenService.JwtCode.EXPIRED);
         if (status.equals(TokenService.JwtCode.ACCESS)) {
             setAuthMetadata(token, jwtAuthenticationToken);
             return jwtAuthenticationToken;
@@ -67,18 +65,12 @@ public class JwtProvider implements AuthenticationProvider {
             if (refreshToken == null)
                 throw new JwtAuthenticationException("토큰 재발급을 위해선 refreshToken이 필요합니다.", ErrorCode.JWT_BAD_REQUEST);
             TokenService.JwtCode code = validateToken(refreshToken);
-            if (code == TokenService.JwtCode.DENIED) throw new JwtAuthenticationException(ErrorCode.JWT_BAD_REQUEST);
-            if (code == TokenService.JwtCode.EXPIRED)
-                throw new JwtAuthenticationException(ErrorCode.JWT_ALL_TOKEN_EXPIRED);
-            if (code == TokenService.JwtCode.ACCESS) {
-                Token newToken = tokenService.reissueToken(refreshToken);
-                setAuthMetadata(newToken, jwtAuthenticationToken);
-                return jwtAuthenticationToken;
-            }
+            Token newToken = tokenService.reissueToken(refreshToken, code);
+            setAuthMetadata(newToken, jwtAuthenticationToken);
+            return jwtAuthenticationToken;
         } else {
             throw new JwtAuthenticationException(ErrorCode.JWT_DENIED);
         }
-        throw new JwtAuthenticationException(ErrorCode.JWT_BAD_REQUEST);
     }
 
     @Transactional
