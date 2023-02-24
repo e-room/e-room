@@ -83,19 +83,21 @@ pipeline {
         stage('Docker Run') {
             steps {
                 echo 'Pull Docker Image & Docker Image Run'
-                if (stage == 'production') {
-                    sshagent(credentials: ['ssh']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker pull larrykwon/eroom-api-production:latest'"
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker ps -aq --filter name=eroom-api-production | grep . && docker rm -f \$(docker ps -aq --filter name=eroom-api-production)'"
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker run -d --name eroom-api-production -p 8080:8080 larrykwon/eroom-api-production:latest'"
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'yes y | docker image prune'"
-                    }
-                } else {
-                    sshagent(credentials: ['ssh']) {
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'docker pull larrykwon/eroom-api-develop:latest'"
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'docker ps -aq --filter name=eroom-api-develop | grep . && docker rm -f \$(docker ps -aq --filter name=eroom-api-develop)'"
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'docker run -d --name eroom-api-develop -p 8080:8080 larrykwon/eroom-api-develop:latest'"
-                        sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'yes y | docker image prune'"
+                script {
+                    if (stage == 'production') {
+                        sshagent(credentials: ['ssh']) {
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker pull larrykwon/eroom-api-production:latest'"
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker ps -aq --filter name=eroom-api-production | grep . && docker rm -f \$(docker ps -aq --filter name=eroom-api-production)'"
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker run -d --name eroom-api-production -p 8080:8080 larrykwon/eroom-api-production:latest'"
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'yes y | docker image prune'"
+                        }
+                    } else {
+                        sshagent(credentials: ['ssh']) {
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'docker pull larrykwon/eroom-api-develop:latest'"
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'docker ps -aq --filter name=eroom-api-develop | grep . && docker rm -f \$(docker ps -aq --filter name=eroom-api-develop)'"
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'docker run -d --name eroom-api-develop -p 8080:8080 larrykwon/eroom-api-develop:latest'"
+                            sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_DEV} 'yes y | docker image prune'"
+                        }
                     }
                 }
             }
