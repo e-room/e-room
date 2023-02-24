@@ -88,7 +88,7 @@ pipeline {
                 echo 'Bulid Docker'
                 sh 'pwd'
                 script {
-                    dockerImage = docker.build imagename
+                    dockerImage = docker.build imageName
                 }
             }
             post {
