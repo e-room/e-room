@@ -1,21 +1,62 @@
+def getSplitBranchName(branchName) {
+    def branchArray = env.GIT_BRANCH.split("/")
+    script {
+        echo "branchName ${branchArray[1]}"
+    }
+    return branchArray[1]
+}
+
+def getStageName(branchName) {
+    script {
+        echo "branchName ${branchName}"
+    }
+    if ("master".equals(branchName)) {
+        return "production";
+    }
+    return "develop";
+}
+
+def branchName
+def deployStage
+def imageName
+
 pipeline {
     agent any
 
     environment {
-        stage = getStageName(env.BRANCH_NAME)
-        imagename = "larrykwon/eroom-api-" + "${stage}"
         registryCredential = 'docker-hub'
         dockerImage = ''
     }
 
     stages {
+        stage('initialize variables') {
+            steps {
+                script {
+                    branchName = scm.branches[0].name
+                    deployStage = getStageName("${branchName}")
+                    imagename = "larrykwon/eroom-api-" + "${deployStage}"
+                }
+            }
+            post {
+                success {
+                    echo "${branchName}"
+                    echo "${deployStage}"
+                    echo "${imageName}"
+                }
+                failure {
+                    error "fail while initializing"
+                }
+            }
+        }
+
+
         stage('Prepare') {
             steps {
                 echo 'Clonning Repository'
                 sh 'pwd'
-                echo 'Pulling...' + stage
+                echo 'Pulling...' + deployStage
                 git url: 'https://github.com/e-room/e-room.git',
-                        branch: env.BRANCH_NAME,
+                        branch: branchName,
                         credentialsId: 'github'
                 sh 'ls -al'
             }
@@ -61,7 +102,7 @@ pipeline {
 
         stage('Push Docker') {
             steps {
-                echo 'Push Docker' + 'stage: ' + env.BRANCH_NAME
+                echo 'Push Docker' + 'stage: ' + "${deployStage}"
                 sh 'ls -al'
                 script {
                     docker.withRegistry('', registryCredential) {
@@ -84,7 +125,7 @@ pipeline {
             steps {
                 echo 'Pull Docker Image & Docker Image Run'
                 script {
-                    if (stage == 'production') {
+                    if (deployStage == 'production') {
                         sshagent(credentials: ['ssh']) {
                             sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker pull larrykwon/eroom-api-production:latest'"
                             sh "ssh -o StrictHostKeyChecking=no ${env.EROOM_API_PROD} 'docker ps -aq --filter name=eroom-api-production | grep . && docker rm -f \$(docker ps -aq --filter name=eroom-api-production)'"
@@ -111,12 +152,4 @@ pipeline {
             slackSend(channel: '#tech-deploy', color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
         }
     }
-}
-
-
-def getStageName(branchName) {
-    if ("master".equals(branchName)) {
-        return "production";
-    }
-    return "develop";
 }
