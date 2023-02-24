@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         stage = getStageName(env.BRANCH_NAME)
-        imagename = "larrykwon/eroom-api-" + stage
+        imagename = "larrykwon/eroom-api-" + "${stage}"
         registryCredential = 'docker-hub'
         dockerImage = ''
     }
