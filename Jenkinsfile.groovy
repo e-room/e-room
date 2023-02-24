@@ -31,8 +31,9 @@ pipeline {
     stages {
         stage('initialize variables') {
             steps {
+                checkout scm
                 script {
-                    branchName = scm.branches[0].name
+                    branchName = env.GIT_BRANCH.split("/")
                     deployStage = getStageName("${branchName}")
                     imagename = "larrykwon/eroom-api-" + "${deployStage}"
                 }
