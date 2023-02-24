@@ -145,13 +145,13 @@ public class TokenService {
         Member member = memberService.findByEmailAndAuthProviderType(email, authProviderType).get(); // 추후 예외처리
 
         if (status.equals(JwtCode.ACCESS)) {
-            if (!member.getRefreshToken().equals(refreshToken))
+            if (!member.equals(email, authProviderType))
                 throw new JwtAuthenticationException("요청한 refreshToken이 멤버 정보와 일치하지 않습니다.", ErrorCode.JWT_BAD_REQUEST);
             String accessToken = this.generateAccessToken(email, authProviderType, MemberRole.USER);
             return new Token(accessToken, refreshToken);
         } else if (status.equals(JwtCode.EXPIRED)) {
             // 멤버 정보를 비교해서 해당하는 멤버에 대해 새롭게 발급하기
-            if (!member.getRefreshToken().equals(refreshToken))
+            if (!member.equals(email, authProviderType))
                 throw new JwtAuthenticationException("요청한 refreshToken이 멤버 정보와 일치하지 않습니다.", ErrorCode.JWT_BAD_REQUEST);
             Token newToken = this.generateToken(email, authProviderType, MemberRole.USER);
             member.setRefreshToken(newToken.getRefreshToken());
