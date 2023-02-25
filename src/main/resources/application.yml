@@ -397,7 +397,7 @@ jwt:
 spring:
   config:
     activate:
-      on-profile: localDev
+      on-profile: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${AWS_USERNAME}

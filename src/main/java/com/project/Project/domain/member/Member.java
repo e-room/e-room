@@ -26,15 +26,15 @@ public class Member extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Favorite> favoriteBuildingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default
     private List<ReviewLike> reviewLikeList = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class Member extends BaseEntity {
     private String email;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "profile_image_id", nullable = false)
+    @JoinColumn(name = "profile_image_id")
     private ProfileImage profileImage;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -84,8 +84,8 @@ public class Member extends BaseEntity {
         this.roles = newRoles;
     }
 
-    @PreRemove
-    public void deleteHandler() {
-        super.setDeleted(true);
-    }
+//    @PreRemove
+//    public void deleteHandler() {
+//        super.setDeleted(true);
+//    }
 }
