@@ -27,15 +27,15 @@ public class Member extends BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Review> reviewList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Favorite> favoriteBuildingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default
     private List<ReviewLike> reviewLikeList = new ArrayList<>();
 
@@ -103,8 +103,8 @@ public class Member extends BaseEntity {
         return Objects.hash(email, authProviderType);
     }
 
-    @PreRemove
-    public void deleteHandler() {
-        super.setDeleted(true);
-    }
+//    @PreRemove
+//    public void deleteHandler() {
+//        super.setDeleted(true);
+//    }
 }

@@ -67,21 +67,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public Long delete(Member member) {
         Long memberId = member.getId();
-        /*
-         * Review : Hard delete
-         * Favorite(찜한방) : Hard delete
-         * ReviewLike : Hard delete
-         * */
-        for (Review review : member.getReviewList()) review.deleteAuthor();
-        reviewRepository.deleteAllByAuthor(member);
-
-        for (Favorite favorite : member.getFavoriteBuildingList()) favorite.deleteMemberAndBuilding();
-        favoriteRepository.deleteAllByMember(member);
-
-        for (ReviewLike reviewLike : member.getReviewLikeList()) reviewLike.deleteMemberAndReview();
-        reviewLikeRepository.deleteAllByMember(member);
-
-        memberRepository.deleteById(member.getId());
+        memberRepository.deleteById(memberId);
         return memberId;
     }
 
