@@ -49,7 +49,7 @@ public class Member extends BaseEntity {
     private String email;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "profile_image_id")
+    @JoinColumn(name = "profile_image_id", nullable = false)
     private ProfileImage profileImage;
 
     @OneToOne(cascade = CascadeType.ALL)
