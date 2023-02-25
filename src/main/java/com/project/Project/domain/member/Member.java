@@ -38,7 +38,7 @@ public class Member extends BaseEntity {
     @Builder.Default
     private List<ReviewLike> reviewLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
