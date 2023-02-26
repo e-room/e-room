@@ -176,7 +176,7 @@ public class ReviewRestController {
     @DeleteMapping("/building/room/review/{reviewId}")
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
         Review target = reviewService.getReviewById(reviewId);
-        if (target.getAuthor().getId().equals(loginMember.getId())) {
+        if (!target.getAuthor().getId().equals(loginMember.getId())) {
             throw new ReviewException("다른 사람의 review를 삭제할 수 없습니다.", ErrorCode.REVIEW_ACCESS_DENIED);
         }
         Long deletedReviewId = reviewService.deleteById(reviewId);

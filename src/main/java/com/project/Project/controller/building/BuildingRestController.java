@@ -102,7 +102,7 @@ public class BuildingRestController {
         Boolean isFavorite = Boolean.FALSE;
         Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
         building.getBuildingToReviewCategoryList().stream().forEach(Hibernate::initialize);
-        if(member != null) isFavorite = favoriteService.existsByBuildingAndMember(building, member);
+        if (member != null) isFavorite = favoriteService.existsByBuildingAndMember(building, member);
         return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building, isFavorite));
     }
 
