@@ -35,9 +35,6 @@ public enum ErrorCode {
     //ReviewImage
     NO_REVIEW_IN_REVIEW_IMAGE(HttpStatus.BAD_REQUEST, "리뷰 이미지에 리뷰가 할당되어있지 않습니다."),
 
-    //ReviewImage
-    NO_REVIEW_IN_REVIEW_IMAGE(HttpStatus.BAD_REQUEST, "리뷰 이미지에 리뷰가 할당되어있지 않습니다."),
-
     //etc
     UUID_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당하는 UUID가 존재하지 않습니다."),
     EVENT_LISTENER_INJECTION(HttpStatus.INTERNAL_SERVER_ERROR, "의존성 주입에 실패했습니다."),
