@@ -13,6 +13,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Builder
@@ -84,8 +85,21 @@ public class Member extends BaseEntity {
         this.roles = newRoles;
     }
 
-//    @PreRemove
-//    public void deleteHandler() {
-//        super.setDeleted(true);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return email.equals(member.email) && authProviderType == member.authProviderType;
+    }
+
+    public boolean equals(String email, AuthProviderType providerType) {
+        if (this.getEmail().equals(email) && this.getAuthProviderType().equals(providerType)) return true;
+        else return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, authProviderType);
+    }
 }

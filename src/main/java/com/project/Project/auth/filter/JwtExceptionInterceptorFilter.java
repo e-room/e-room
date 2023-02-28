@@ -1,6 +1,6 @@
 package com.project.Project.auth.filter;
 
-import com.project.Project.auth.exception.JwtAuthenctionException;
+import com.project.Project.auth.exception.JwtAuthenticationException;
 import com.project.Project.exception.ErrorCode;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -29,10 +29,10 @@ public class JwtExceptionInterceptorFilter extends ExceptionTranslationFilter {
     private void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtAuthenctionException ex) {
+        } catch (JwtAuthenticationException ex) {
             this.sendStartAuthentication(request, response, filterChain, ex);
         } catch (JwtException ex) {
-            JwtAuthenctionException authenticationException = new JwtAuthenctionException(ErrorCode.JWT_SERVER_ERROR.getMessage(), ex, ErrorCode.JWT_SERVER_ERROR);
+            JwtAuthenticationException authenticationException = new JwtAuthenticationException(ErrorCode.JWT_SERVER_ERROR.getMessage(), ex, ErrorCode.JWT_SERVER_ERROR);
             this.sendStartAuthentication(request, response, filterChain, authenticationException);
         }
     }

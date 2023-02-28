@@ -20,7 +20,7 @@ public class MemberGen {
 
 
     public Member createMember(String name, String email) {
-        Token newToken = tokenService.generateToken(email, AuthProviderType.KAKAO, "USER");
+        Token newToken = tokenService.generateToken(email, AuthProviderType.KAKAO, MemberRole.USER);
         Member member = Member.builder()
                 .email(email)
                 .name(name)
