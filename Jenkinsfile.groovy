@@ -94,6 +94,7 @@ pipeline {
                         dir('./env/prod') {
                             sh 'pwd'
                             sh 'cp -r ../../build ./'
+                            sh 'ls'
                             script {
                                 dockerImage = docker.build imageName
                             }
@@ -103,6 +104,7 @@ pipeline {
                         dir('./env/dev') {
                             sh 'pwd'
                             sh 'cp -r ../../build ./'
+                            sh 'ls'
                             script {
                                 dockerImage = docker.build imageName
                             }
