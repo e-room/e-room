@@ -6,8 +6,9 @@ def getSplitBranchName(branchName) {
     return branchArray[1]
 }
 
-def getStageName(branchName) {
-    if ("master".equals(branchName)) {
+def getStageName(String branchName) {
+    def master = "master"
+    if (master == branchName) {
         return "production";
     }
     return "develop";
