@@ -28,7 +28,7 @@ public class BuildingSummary extends BaseEntity {
     @Column(nullable = false)
     @ColumnDefault("0")
     @Builder.Default
-    private Double avgScore;
+    private Double avgScore = 0D;
 
     @Column(nullable = false)
     @ColumnDefault("0")
@@ -37,7 +37,7 @@ public class BuildingSummary extends BaseEntity {
 
     public BuildingSummary() {
         this.building = null;
-        this.avgScore = null;
+        this.avgScore = 0D;
         this.reviewCnt = 0L;
     }
 
