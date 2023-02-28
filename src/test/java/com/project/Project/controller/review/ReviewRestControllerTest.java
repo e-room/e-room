@@ -17,9 +17,7 @@ import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.service.review.impl.ReviewImageServiceImpl;
 import com.project.Project.service.review.impl.ReviewServiceImpl;
-import com.project.Project.service.room.impl.RoomServiceImpl;
 import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
-import com.project.Project.validator.BuildingExistValidator;
 import com.project.Project.validator.ReviewExistValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,9 +33,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.List;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,8 +66,7 @@ public class ReviewRestControllerTest {
     private ReviewServiceImpl reviewService;
     @MockBean
     private BuildingServiceImpl buildingService;
-    @MockBean
-    private RoomServiceImpl roomService;
+
     @MockBean
     private ReviewImageServiceImpl reviewImageService;
 
@@ -79,11 +75,11 @@ public class ReviewRestControllerTest {
             .build();
 
     ReviewImage reviewImage1 = ReviewImage.builder()
-                    .review(review)
-                    .id(2L)
-                    .uuid(Uuid.builder().uuid("uuid1").build())
-                    .url("https://d2ykyi5jl9muoc.cloudfront.net/profile-images/blue-smile_eyes-d_mouth.png")
-                    .build();
+            .review(review)
+            .id(2L)
+            .uuid(Uuid.builder().uuid("uuid1").build())
+            .url("https://d2ykyi5jl9muoc.cloudfront.net/profile-images/blue-smile_eyes-d_mouth.png")
+            .build();
 
     ReviewImage reviewImage2 = ReviewImage.builder()
             .review(review)

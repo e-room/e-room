@@ -25,24 +25,34 @@ public class ReviewEventListener implements EventListener {
     private final ReviewToReviewCategoryRepository reviewToReviewCategoryRepository;
     private final ReviewCategoryRepository reviewCategoryRepository;
 
-    public void updateOthers(Review review) {
-        Building building = review.getRoom().getBuilding();
+
+    public void listenToCreateReview(Review review) {
+        Building building = review.getBuilding();
+        this.updateBuildingInfo(building);
+    }
+
+    public void listenToDeleteReview(Review deletedReview) {
+        Building building = deletedReview.getBuilding();
+        this.updateBuildingInfo(building);
+    }
+
+    private void updateBuildingInfo(Building building) {
         Long buildingId = building.getId();
 
         //Building Summary
         BuildingSummary buildingSummary = building.getBuildingSummary();
 
-        Double avgScore = this.reviewRepository.findReviewsWithRoomAndBuildingAndLock(buildingId).stream()
+        Double avgScore = this.reviewRepository.findReviewsWithBuildingAndLock(buildingId).stream()
                 .map(Review::getReviewToReviewCategoryList).flatMap(inner -> inner.stream())
                 .filter(elem -> elem.getReviewCategory().getType().equals(ReviewCategoryEnum.RESIDENCESATISFACTION))
                 .mapToDouble(ReviewToReviewCategory::getScore)
                 .average().orElse(0.0);
-        Integer reviewCnt = this.reviewRepository.findReviewsWithRoomAndBuildingAndLock(buildingId).size();
+        Integer reviewCnt = this.reviewRepository.findReviewsWithBuildingAndLock(buildingId).size();
         buildingSummary.updateBuildingSummary(avgScore, Long.valueOf(reviewCnt));
         this.buildingSummaryRepository.save(buildingSummary);
 
         //BuildingToReviewCategory
-        List<ReviewToReviewCategory> reviewToReviewCategoryList = this.reviewToReviewCategoryRepository.findReviewToCategoriesWithReviewAndRoomAndBuildingAndLock(buildingId);
+        List<ReviewToReviewCategory> reviewToReviewCategoryList = this.reviewToReviewCategoryRepository.findReviewToCategoriesWithReviewAndBuildingAndLock(buildingId);
         List<ReviewCategoryEnum> values = List.of(ReviewCategoryEnum.values());
         List<BuildingToReviewCategory> buildingToReviewCategoryList = this.buildingToReviewCategoryRepository.findBuildingToReviewCategoriesByBuilding_Id(buildingId);
         for (ReviewCategoryEnum value : values) {
@@ -64,4 +74,6 @@ public class ReviewEventListener implements EventListener {
         }
         this.buildingToReviewCategoryRepository.saveAll(buildingToReviewCategoryList);
     }
+
+
 }

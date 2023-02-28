@@ -2,7 +2,7 @@ package com.project.Project.controller.review.dto;
 
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
-import com.project.Project.controller.room.dto.RoomBaseDto;
+
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.validator.ValidEnum;
 import lombok.*;
@@ -33,9 +33,6 @@ public class ReviewRequestDto {
 
         @Valid
         private BuildingOptionalDto buildingOptionalDto;
-
-        @Valid
-        private RoomBaseDto roomBaseDto;
 
         @Valid
         private ReviewBaseDto reviewBaseDto;

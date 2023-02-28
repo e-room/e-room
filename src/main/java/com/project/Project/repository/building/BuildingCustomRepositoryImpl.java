@@ -1,10 +1,12 @@
 package com.project.Project.repository.building;
 
 import com.project.Project.domain.building.Building;
+import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.util.component.QueryDslUtil;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,6 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.project.Project.domain.building.QBuilding.building;
+import static com.project.Project.domain.building.QBuildingSummary.buildingSummary;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -30,6 +33,18 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     private final EntityManager em;
     private final JPAQueryFactory factory;
+
+    @Override
+    public List<OnlyBuildingIdAndCoord> getBuildingMarking() {
+        return factory.select(Projections.constructor(OnlyBuildingIdAndCoord.class,
+                        building.coordinate,
+                        building.id
+                )).
+                from(building)
+                .innerJoin(building.buildingSummary, buildingSummary)
+                .where(buildingSummary.reviewCnt.gt(0))
+                .fetch();
+    }
 
     @Override
     public List<Building> searchBuildings(String params, List<Double> cursorIds, Pageable pageable) {

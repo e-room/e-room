@@ -19,7 +19,7 @@ public interface BuildingService {
 
     Optional<Building> findByAddress(Address address);
 
-    List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord();
+    List<OnlyBuildingIdAndCoord> getBuildingMarking();
 
     /*
     if the building exists, update with buildingOptionalDto

@@ -10,14 +10,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "RTRC.withReviewAndRoomAndBuilding",
+        @NamedEntityGraph(name = "RTRC.withReviewAndBuilding",
                 attributeNodes = {
                         @NamedAttributeNode(value = "reviewCategory"),
-                        @NamedAttributeNode(value = "review", subgraph = "RTRC.review.room")
+                        @NamedAttributeNode(value = "review", subgraph = "RTRC.review.building")
                 },
                 subgraphs = {
-                        @NamedSubgraph(name = "RTRC.review.room", attributeNodes = @NamedAttributeNode(value = "room", subgraph = "RTRC.room.building")),
-                        @NamedSubgraph(name = "RTRC.room.building", attributeNodes = @NamedAttributeNode(value = "building"))
+                        @NamedSubgraph(name = "RTRC.review.building", attributeNodes = @NamedAttributeNode(value = "building"))
                 }
         )
 })

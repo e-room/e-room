@@ -1,7 +1,6 @@
 package com.project.Project.controller.building.dto;
 
-
-import com.project.Project.controller.room.dto.RoomResponseDto;
+import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import lombok.AllArgsConstructor;
@@ -58,7 +57,7 @@ public class BuildingResponseDto {
         private AddressDto address;
         private CoordinateDto coordinate;
         private DirectDealType directDealType;
-        private List<RoomResponseDto.RoomListDto> rooms;
+        private Boolean isFavorite;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
     }
 
@@ -79,6 +78,7 @@ public class BuildingResponseDto {
     public static class ReviewImageDto {
         private String uuid;
         private String url;
+        private AnonymousStatus anonymousStatus;
     }
 
     @NoArgsConstructor

@@ -2,6 +2,7 @@ package com.project.Project.config;
 
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
+import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
 import com.project.Project.auth.handler.*;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
@@ -63,6 +64,11 @@ public class SecurityConfig {
     @Bean
     OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
+    }
+
+    @Bean
+    JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter() {
+        return new JwtExceptionInterceptorFilter(customAuthenticationEntryPoint());
     }
 
 }

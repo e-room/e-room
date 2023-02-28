@@ -110,6 +110,5 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken(), isLocal);
         response.addHeader("Set-Cookie", accessTokenCookie.toString());
         response.addHeader("Set-Cookie", refreshTokenCookie.toString());
-        response.addHeader("Set-Cookie", "name=value; path=/; maxAge=12341244; SameSite=Lax");
     }
 }

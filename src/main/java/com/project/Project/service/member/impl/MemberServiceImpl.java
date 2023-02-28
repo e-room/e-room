@@ -1,8 +1,9 @@
 package com.project.Project.service.member.impl;
 
-import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.domain.embedded.Coordinate;
+import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
@@ -10,13 +11,16 @@ import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.domain.review.Review;
 import com.project.Project.repository.interaction.FavoriteRepository;
 import com.project.Project.repository.interaction.ReviewLikeRepository;
+import com.project.Project.repository.member.MemberCustomRepository;
 import com.project.Project.repository.member.MemberRepository;
+import com.project.Project.repository.review.ReviewCustomRepository;
+import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,8 +29,11 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final MemberCustomRepository memberCustomRepository;
     private final FavoriteRepository favoriteRepository;
     private final ReviewLikeRepository reviewLikeRepository;
+    private final ReviewRepository reviewRepository;
+    private final ReviewCustomRepository reviewCustomRepository;
 
     @Transactional
     public RecentMapLocation updateRecentMapLocation(CoordinateDto coordinateDto, Member member) {
@@ -36,7 +43,7 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         RecentMapLocation recentMapLocation;
-        if(member.getRecentMapLocation() == null) {
+        if (member.getRecentMapLocation() == null) {
             recentMapLocation = RecentMapLocation.builder()
                     .coordinate(coordinate)
                     .build();
@@ -59,19 +66,19 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     public Long delete(Member member) {
-        /*
-        * 연관관계 끊기 -> 멤버 삭제
-        * Review : 연관관계만 끊어서 남겨둠
-        * Favorite(찜한방) : Hard delete
-        * ReviewLike : Hard delete
-        * */
-        for(Review review : member.getReviewList()) review.deleteAuthor();
-        for(Favorite favorite : member.getFavoriteBuildingList()) favorite.deleteMemberAndBuilding();
-        favoriteRepository.deleteByMember(member);
-        for(ReviewLike reviewLike : member.getReviewLikeList()) reviewLike.deleteMemberAndReview();
-        reviewLikeRepository.deleteByMember(member);
+        Long memberId = member.getId();
+        memberRepository.deleteById(memberId);
+        return memberId;
+    }
 
-        memberRepository.deleteById(member.getId());
-        return member.getId();
+    @Override
+    public Integer getReviewCnt(Member member) {
+        Long count = memberCustomRepository.getReviewCnt(member);
+        return Math.toIntExact(count);
+    }
+
+    @Override
+    public List<ReviewLike> getReviewLikeList(Member member) {
+        return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
     }
 }

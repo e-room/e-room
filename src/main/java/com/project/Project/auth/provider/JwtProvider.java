@@ -4,22 +4,21 @@ import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.dto.UidDto;
-import com.project.Project.auth.exception.JwtException;
+import com.project.Project.auth.exception.JwtAuthenctionException;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
-import java.util.Collections;
 
 @Component
 @Slf4j
@@ -65,15 +64,21 @@ public class JwtProvider implements AuthenticationProvider {
             return jwtAuthenticationToken;
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
             // refresh token 가지고 access token 발급
-            if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
+            if (refreshToken == null)
+                throw new JwtAuthenctionException("토큰 재발급을 위해선 refreshToken이 필요합니다.", ErrorCode.JWT_BAD_REQUEST);
+            TokenService.JwtCode code = validateToken(refreshToken);
+            if (code == TokenService.JwtCode.DENIED) throw new JwtAuthenctionException(ErrorCode.JWT_BAD_REQUEST);
+            if (code == TokenService.JwtCode.EXPIRED)
+                throw new JwtAuthenctionException(ErrorCode.JWT_ALL_TOKEN_EXPIRED);
+            if (validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
                 Token newToken = tokenService.reissueToken(refreshToken);
-                if (newToken != null) {
-                    setAuthMetadata(newToken, jwtAuthenticationToken);
-                    return jwtAuthenticationToken;
-                }
+                setAuthMetadata(newToken, jwtAuthenticationToken);
+                return jwtAuthenticationToken;
             }
+        } else {
+            throw new JwtAuthenctionException(ErrorCode.JWT_DENIED);
         }
-        throw new JwtException("invalid Token");
+        throw new JwtAuthenctionException(ErrorCode.JWT_BAD_REQUEST);
     }
 
     @Transactional
@@ -92,7 +97,7 @@ public class JwtProvider implements AuthenticationProvider {
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);
         authentication.setPrincipalDetails(member);
-        authentication.setAuthorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        authentication.setAuthorities(member.getRoles());
 
     }
 

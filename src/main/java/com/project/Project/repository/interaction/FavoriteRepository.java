@@ -15,4 +15,10 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     boolean existsByMemberAndBuilding_Id(Member member, Long buildingId);
 
     List<Favorite> findByMember(Member member);
+
+    boolean existsByMember(Member member);
+
+    void deleteAllByMember(Member member);
+
+    boolean existsByBuildingAndMember(Building building, Member member);
 }

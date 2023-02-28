@@ -1,6 +1,8 @@
 package com.project.Project.loader.review;
 
+import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
+import com.project.Project.domain.review.ReviewToReviewCategory;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
 import com.project.Project.repository.review.ReviewToReviewCategoryRepository;
@@ -10,7 +12,6 @@ import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.project.Project.domain.review.QReview.review;
 import static com.project.Project.domain.review.QReviewCategory.reviewCategory;
@@ -35,13 +36,12 @@ public class ReviewLoader {
     }
 
     public List<Review> loadAllScores(List<Review> targetList) {
+        targetList.stream().map(Review::getReviewToReviewCategoryList).forEach(Hibernate::initialize);
+        targetList.stream().map(Review::getReviewToReviewCategoryList)
+                .flatMap((list) -> list.stream())
+                .map(ReviewToReviewCategory::getReviewCategory).forEach(Hibernate::initialize);
 
-        List<Long> reviewIds = targetList.stream().map(Review::getId).collect(Collectors.toList());
-
-        return factory.selectFrom(review)
-                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
-                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
-                .where(review.id.in(reviewIds)).fetch();
+        return targetList;
     }
 
     public Review loadAllRelations(Review review) {
@@ -51,4 +51,10 @@ public class ReviewLoader {
         Hibernate.initialize(review.getReviewSummary());
         return review;
     }
+
+    public Review loadBuilding(Review review) {
+        Building building = review.getBuilding();
+        return review;
+    }
+
 }

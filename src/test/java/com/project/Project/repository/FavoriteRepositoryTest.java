@@ -3,7 +3,6 @@ package com.project.Project.repository;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
-import com.project.Project.domain.enums.MemberRole;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingRepository;
@@ -52,7 +51,6 @@ public class FavoriteRepositoryTest {
                 .reviewLikeList(new ArrayList<>())
                 .name("하품하는 망아지")
                 .email("swa07016@khu.ac.kr")
-                .memberRole(MemberRole.USER)
                 .refreshToken("mockingMember")
                 .build();
 
@@ -62,7 +60,6 @@ public class FavoriteRepositoryTest {
                 .reviewLikeList(new ArrayList<>())
                 .name("귀여운 고양이")
                 .email("swa07016@khu.ac.kr")
-                .memberRole(MemberRole.USER)
                 .refreshToken("mockingMember")
                 .build();
 

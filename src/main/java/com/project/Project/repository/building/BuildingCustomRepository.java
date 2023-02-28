@@ -1,6 +1,7 @@
 package com.project.Project.repository.building;
 
 import com.project.Project.domain.building.Building;
+import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -13,6 +14,8 @@ import java.util.function.Function;
 
 public interface BuildingCustomRepository {
     Function<String, JPAQuery<Building>> searchBuildingsQuery(List<Double> cursorIds, Pageable pageable);
+
+    List<OnlyBuildingIdAndCoord> getBuildingMarking();
 
     List<Building> searchBuildings(String params, List<Double> cursorIds, Pageable pageable);
 

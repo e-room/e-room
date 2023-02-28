@@ -2,8 +2,6 @@ package com.project.Project.auth;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.domain.member.Member;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.member.MemberException;
 import com.project.Project.serializer.member.MemberSerializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -37,7 +35,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
             principal = authentication.getPrincipal();
         }
         if (principal == null || principal.getClass() == String.class) {
-            throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
+            return null;
         }
         MemberDto loginMember = (MemberDto) principal;
         Member member = MemberSerializer.toMember(loginMember);
