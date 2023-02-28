@@ -1,12 +1,9 @@
 package com.project.Project.config;
 
-import com.project.Project.auth.CustomAuthenticationEntryPoint;
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
-import com.project.Project.auth.handler.BasicAuthFailureHandler;
-import com.project.Project.auth.handler.JWTFailureHandler;
-import com.project.Project.auth.handler.OAuth2FailureHandler;
-import com.project.Project.auth.handler.OAuth2SuccessHandler;
+import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
+import com.project.Project.auth.handler.*;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.config.properties.SecurityProperties;
@@ -30,7 +27,6 @@ public class SecurityConfig {
     private final SecurityProperties securityProperties;
     private final AuthenticationConfiguration authenticationConfiguration;
 
-    @Bean
     JwtAuthFilter jwtAuthFilter() throws Exception {
         return new JwtAuthFilter(authenticationManager(authenticationConfiguration), new JWTFailureHandler());
     }
@@ -40,9 +36,8 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
     CustomBasicAuthFilter customBasicAuthFilter() throws Exception {
-        return new CustomBasicAuthFilter(authenticationManager(authenticationConfiguration), new CustomAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
+        return new CustomBasicAuthFilter(authenticationManager(authenticationConfiguration), customAuthenticationEntryPoint(), memberService, basicAuthFailureHandler);
     }
 
     @Bean
@@ -55,6 +50,11 @@ public class SecurityConfig {
         return new OAuth2FailureHandler(oAuth2AuthorizationRequestBasedOnCookieRepository(), securityProperties);
     }
 
+    @Bean
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
+
     /*
      * 쿠키 기반 인가 Repository
      * 인가 응답을 연계 하고 검증할 때 사용.
@@ -62,6 +62,10 @@ public class SecurityConfig {
     @Bean
     OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
         return new OAuth2AuthorizationRequestBasedOnCookieRepository();
+    }
+
+    JwtExceptionInterceptorFilter jwtExceptionInterceptorFilter() {
+        return new JwtExceptionInterceptorFilter(customAuthenticationEntryPoint());
     }
 
 }

@@ -32,6 +32,7 @@ public class ReviewImageProcess extends FileProcessServiceImpl<ReviewImagePackag
         Optional.ofNullable(review).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
         String url = this.uploadImage(file, reviewImagePackageMeta);
         ReviewImage reviewImage = ReviewImage.builder().url(url)
+                .uuid(reviewImagePackageMeta.getUuidEntity())
                 .fileName(file.getOriginalFilename()).build();
         reviewImage.setReview(review);
         return review;

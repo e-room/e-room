@@ -1,7 +1,12 @@
 package com.project.Project.auth.service;
 
 import com.project.Project.auth.dto.Token;
-import com.project.Project.domain.Member;
+import com.project.Project.auth.dto.UidDto;
+import com.project.Project.auth.enums.MemberRole;
+import com.project.Project.auth.exception.JwtAuthenticationException;
+import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.member.Member;
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.service.member.MemberService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -44,24 +49,45 @@ public class TokenService {
     }
 
     //    @Override
-    public Token generateToken(String uid, String role) {
-        Claims claims = Jwts.claims().setSubject(uid);
-        claims.put("role", role);
+    public Token generateToken(String email, AuthProviderType authProviderType, MemberRole role) {
+        String subject = email + "," + authProviderType.name();
+
+        Claims claims = Jwts.claims().setSubject(subject);
+        claims.put("role", role.getAuthority());
 
         Date now = new Date();
-        return new Token(
-                Jwts.builder()
-                        .setClaims(claims)
-                        .setIssuedAt(now)
-                        .setExpiration(new Date(now.getTime() + tokenPeriod))
-                        .signWith(SignatureAlgorithm.HS256, secretKey)
-                        .compact(),
-                Jwts.builder()
-                        .setClaims(claims)
-                        .setIssuedAt(now)
-                        .setExpiration(new Date(now.getTime() + refreshPeriod))
-                        .signWith(SignatureAlgorithm.HS256, secretKey)
-                        .compact());
+        return new Token(this.generateAccessToken(email, authProviderType, role),
+                this.generateRefreshToken(email, authProviderType, role));
+    }
+
+    private String generateAccessToken(String email, AuthProviderType authProviderType, MemberRole role) {
+        String subject = email + "," + authProviderType.name();
+
+        Claims claims = Jwts.claims().setSubject(subject);
+        claims.put("role", role.getAuthority());
+
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + tokenPeriod))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    private String generateRefreshToken(String email, AuthProviderType authProviderType, MemberRole role) {
+        String subject = email + "," + authProviderType.name();
+
+        Claims claims = Jwts.claims().setSubject(subject);
+        claims.put("role", role.getAuthority());
+
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + refreshPeriod))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
     public JwtCode verifyToken(String token) {
@@ -69,8 +95,6 @@ public class TokenService {
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(secretKey)
                     .parseClaimsJws(token);
-            System.out.println(new Date().getTime());
-            System.out.println(claims.getBody().getExpiration().getTime());
             if (claims.getBody()
                     .getExpiration()
                     .before(new Date())) {
@@ -79,29 +103,62 @@ public class TokenService {
             return JwtCode.ACCESS;
         } catch (ExpiredJwtException e) {
             return JwtCode.EXPIRED;
-        } catch (JwtException | IllegalArgumentException e) {
-            log.info("jwt Error: {}", e);
+        } catch (Exception e) {
+            return JwtCode.DENIED;
         }
-        return JwtCode.DENIED;
     }
 
-    public String getUid(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    /**
+     * @param token
+     * @return email|authProviderType 형식의 문자열을 반환합니다. ex) hello@naver.com|NAVER
+     */
+    public UidDto getUid(String token) {
+        String subject = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return UidDto.builder()
+                .email(subject.split(",")[0])
+                .authProviderType(AuthProviderType.valueOf(subject.split(",")[1]))
+                .build();
     }
 
     @Transactional
     public Token reissueToken(String refreshToken) throws RuntimeException {
         // refresh token을 디비의 그것과 비교해보기
-        String email = getUid(refreshToken);
-        Member member = memberService.findByEmail(email).get(); // 추후 예외처리
+        UidDto uidDto = getUid(refreshToken);
+        String email = uidDto.getEmail();
+        AuthProviderType authProviderType = uidDto.getAuthProviderType();
+        Member member = memberService.findByEmailAndAuthProviderType(email, authProviderType).get(); // 추후 예외처리
         if (member.getRefreshToken().equals(refreshToken)) {
             // 새로운거 생성
-            Token newToken = generateToken(email, "USER");
+            Token newToken = generateToken(email, authProviderType, MemberRole.USER);
             member.setRefreshToken(newToken.getRefreshToken());
             return newToken;
         } else {
-            log.info("refresh 토큰이 일치하지 않습니다. ");
-            return null;
+            throw new JwtAuthenticationException("토큰 재발급에 실패했습니다.", ErrorCode.JWT_BAD_REQUEST);
         }
     }
+
+    @Transactional
+    public Token reissueToken(String refreshToken, JwtCode status) {
+        UidDto uidDto = getUid(refreshToken);
+        String email = uidDto.getEmail();
+        AuthProviderType authProviderType = uidDto.getAuthProviderType();
+        Member member = memberService.findByEmailAndAuthProviderType(email, authProviderType).get(); // 추후 예외처리
+
+        if (status.equals(JwtCode.ACCESS)) {
+            if (!member.equals(email, authProviderType))
+                throw new JwtAuthenticationException("요청한 refreshToken이 멤버 정보와 일치하지 않습니다.", ErrorCode.JWT_BAD_REQUEST);
+            String accessToken = this.generateAccessToken(email, authProviderType, MemberRole.USER);
+            return new Token(accessToken, refreshToken);
+        } else if (status.equals(JwtCode.EXPIRED)) {
+            // 멤버 정보를 비교해서 해당하는 멤버에 대해 새롭게 발급하기
+            if (!member.equals(email, authProviderType))
+                throw new JwtAuthenticationException("요청한 refreshToken이 멤버 정보와 일치하지 않습니다.", ErrorCode.JWT_BAD_REQUEST);
+            Token newToken = this.generateToken(email, authProviderType, MemberRole.USER);
+            member.setRefreshToken(newToken.getRefreshToken());
+            return newToken;
+        } else {
+            throw new JwtAuthenticationException("토큰 재발급에 실패했습니다.", ErrorCode.JWT_BAD_REQUEST);
+        }
+    }
+
 }

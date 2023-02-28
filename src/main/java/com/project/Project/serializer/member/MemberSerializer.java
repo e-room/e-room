@@ -2,7 +2,11 @@ package com.project.Project.serializer.member;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.OAuthAttributes;
-import com.project.Project.domain.Member;
+import com.project.Project.controller.building.dto.CoordinateDto;
+import com.project.Project.controller.member.dto.MemberResponseDto;
+import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.member.Member;
+import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.member.MemberException;
 import com.project.Project.repository.member.MemberRepository;
@@ -11,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,20 +44,52 @@ public class MemberSerializer {
                 .email(oAuthAttributes.getEmail())
                 .name(oAuthAttributes.getName())
                 .picture(oAuthAttributes.getPicture())
+                .authProviderType(oAuthAttributes.getAuthProviderType())
                 .build();
     }
 
     public static Member toMember(MemberDto memberDto) {
         String email = memberDto.getEmail();
-        Member member = staticMemberRepo.findByEmail(email).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+        AuthProviderType authProviderType = memberDto.getAuthProviderType();
+        Member member = staticMemberRepo.findByEmailAndAuthProviderType(email, authProviderType).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
         return member;
     }
 
     public static MemberDto toDto(Member member) {
         return MemberDto.builder()
+                .id(member.getId())
                 .email(member.getEmail())
                 .name(member.getName())
-                .picture(member.getProfileImageUrl())
+                .picture(member.getProfileImage().getUrl())
+                .authProviderType(member.getAuthProviderType())
+                .build();
+    }
+
+    public static MemberResponseDto.MemberProfileDto toMemberProfileDto(Member member) {
+        return MemberResponseDto.MemberProfileDto.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .profileImageUrl(member.getProfileImage().getUrl())
+                .build();
+    }
+
+    public static MemberResponseDto.MemberDeleteDto toMemberDeleteDto(Long deletedMemberId) {
+        return MemberResponseDto.MemberDeleteDto.builder()
+                .memberId(deletedMemberId)
+                .deletedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static MemberResponseDto.RecentMapLocationDto toRecentMapLocationDto(RecentMapLocation recentMapLocation) {
+        return MemberResponseDto.RecentMapLocationDto.builder()
+                .updatedAt(LocalDateTime.now())
+                .coordinateDto(
+                        CoordinateDto.builder()
+                                .latitude(recentMapLocation.getCoordinate().getLatitude())
+                                .longitude(recentMapLocation.getCoordinate().getLongitude())
+                                .build()
+                )
                 .build();
     }
 }

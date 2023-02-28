@@ -20,6 +20,7 @@ import javax.persistence.LockModeType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,6 @@ import static com.project.Project.domain.building.QBuildingToReviewCategory.buil
 import static com.project.Project.domain.review.QReview.review;
 import static com.project.Project.domain.review.QReviewCategory.reviewCategory;
 import static com.project.Project.domain.review.QReviewToReviewCategory.reviewToReviewCategory;
-import static com.project.Project.domain.room.QRoom.room;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -44,16 +44,24 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
                 .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
                 .on(reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
-                .where(cursorId(pageable, cursorIds, 0), review.room.building.id.eq(buildingId));
+                .where(cursorId(pageable, cursorIds, 0), review.building.id.eq(buildingId));
     }
 
-    public Function<Long, JPAQuery<Review>> findReviewQueryByRoomId(List<Double> cursorIds, Pageable pageable) {
-        return (roomId) -> factory.selectFrom(review)
-                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
-                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
-                .on(reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
-                .where(cursorId(pageable, cursorIds, 0), review.room.id.eq(roomId));
+    @Override
+    public Optional<Review> findById(Long reviewId) {
+        Review result = factory.selectFrom(review)
+                .where(review.id.eq(reviewId))
+                .fetchOne();
+        return Optional.ofNullable(result);
     }
+
+    //    public Function<Long, JPAQuery<Review>> findReviewQueryByRoomId(List<Double> cursorIds, Pageable pageable) {
+//        return (roomId) -> factory.selectFrom(review)
+//                .innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory)
+//                .innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory)
+//                .on(reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION))
+//                .where(cursorId(pageable, cursorIds, 0), review.room.id.eq(roomId));
+//    }
 
     public List<Review> findReviewsByBuildingId(Long buildingId, List<Double> cursorIds, Pageable pageable) {
         List<Review> reviewList = findReviewQueryByBuildingId(cursorIds, pageable).andThen(customOrderBy(pageable)).apply(buildingId).limit(pageable.getPageSize() + 1).fetch();
@@ -61,11 +69,11 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
     }
 
 
-    @Override
-    public List<Review> findReviewsByRoomId(Long roomId, List<Double> cursorIds, Pageable pageable) {
-        List<Review> reviewList = findReviewQueryByRoomId(cursorIds, pageable).andThen(customOrderBy(pageable)).apply(roomId).limit(pageable.getPageSize() + 1).fetch();
-        return reviewList;
-    }
+//    @Override
+//    public List<Review> findReviewsByRoomId(Long roomId, List<Double> cursorIds, Pageable pageable) {
+//        List<Review> reviewList = findReviewQueryByRoomId(cursorIds, pageable).andThen(customOrderBy(pageable)).apply(roomId).limit(pageable.getPageSize() + 1).fetch();
+//        return reviewList;
+//    }
 
     public Function<JPAQuery<Review>, JPAQuery<Review>> customOrderBy(Pageable pageable) {
         List<OrderSpecifier> ORDERS = getAllOrderSpecifiers(pageable);
@@ -137,7 +145,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
     @Transactional
     @Override
     public long updateReview(Review updatedReview) {
-        long affectedRow = factory.update(review).set(review.reviewSummary, updatedReview.getReviewSummary()).set(review.reviewToReviewCategoryList, updatedReview.getReviewToReviewCategoryList()).set(review.anonymousStatus, updatedReview.getAnonymousStatus()).set(review.author, updatedReview.getAuthor()).set(review.room, updatedReview.getRoom()).set(review.advantageDescription, updatedReview.getAdvantageDescription()).set(review.disadvantageDescription, updatedReview.getDisadvantageDescription()).set(review.deposit, updatedReview.getDeposit()).set(review.residenceStartYear, updatedReview.getResidenceStartYear()).set(review.residenceDuration, updatedReview.getResidenceDuration()).set(review.likeMemberList, updatedReview.getLikeMemberList()).set(review.managementFee, updatedReview.getManagementFee()).set(review.monthlyRent, updatedReview.getMonthlyRent()).set(review.netLeasableArea, updatedReview.getNetLeasableArea()).where(review.id.eq(updatedReview.getId())).execute();
+        long affectedRow = factory.update(review).set(review.reviewSummary, updatedReview.getReviewSummary()).set(review.reviewToReviewCategoryList, updatedReview.getReviewToReviewCategoryList()).set(review.anonymousStatus, updatedReview.getAnonymousStatus()).set(review.author, updatedReview.getAuthor()).set(review.advantageDescription, updatedReview.getAdvantageDescription()).set(review.disadvantageDescription, updatedReview.getDisadvantageDescription()).set(review.deposit, updatedReview.getDeposit()).set(review.residenceStartYear, updatedReview.getResidenceStartYear()).set(review.residenceDuration, updatedReview.getResidenceDuration()).set(review.likeMemberList, updatedReview.getLikeMemberList()).set(review.managementFee, updatedReview.getManagementFee()).set(review.monthlyRent, updatedReview.getMonthlyRent()).set(review.netLeasableArea, updatedReview.getNetLeasableArea()).where(review.id.eq(updatedReview.getId())).execute();
         affectedRow += postUpdate(updatedReview);
         //affectedRow must be 1(review) + 1(buildingSummary) + ReviewCategoryEnum.size()
         return affectedRow;
@@ -146,10 +154,10 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
     //postUpdate for QueryDsl Update and delete
     // queryDsl doesn't support insert, it must be done through em or jpaRepository
     private long postUpdate(Review updatedReview) {
-        Long buildingId = updatedReview.getRoom().getBuilding().getId();
+        Long buildingId = updatedReview.getBuilding().getId();
 
         //building Summary
-        Tuple buildingSummaryResults = factory.select(reviewToReviewCategory.score.avg(), review.countDistinct()).from(review).innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory).innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory).innerJoin(review.room, room).innerJoin(room.building, building).where(building.id.eq(buildingId), reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION)).setLockMode(LockModeType.PESSIMISTIC_WRITE).fetchOne();
+        Tuple buildingSummaryResults = factory.select(reviewToReviewCategory.score.avg(), review.countDistinct()).from(review).innerJoin(review.reviewToReviewCategoryList, reviewToReviewCategory).innerJoin(reviewToReviewCategory.reviewCategory, reviewCategory).innerJoin(review.building, building).where(building.id.eq(buildingId), reviewCategory.type.eq(ReviewCategoryEnum.RESIDENCESATISFACTION)).setLockMode(LockModeType.PESSIMISTIC_WRITE).fetchOne();
 
         Double avgScore = buildingSummaryResults.get(reviewToReviewCategory.score.avg());
         Long reviewCnt = buildingSummaryResults.get(review.countDistinct());
@@ -157,7 +165,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
         long affectedRow = factory.update(buildingSummary).set(buildingSummary.avgScore, avgScore).set(buildingSummary.reviewCnt, reviewCnt).where(buildingSummary.building.id.eq(buildingId)).execute();
 
         //buildingToReviewCategory
-        List<ReviewToReviewCategory> buildingToReviewCategoryResults = factory.selectFrom(reviewToReviewCategory).innerJoin(reviewToReviewCategory.review, review).innerJoin(review.room, room).innerJoin(room.building, building).where(building.id.eq(buildingId)).setLockMode(LockModeType.PESSIMISTIC_WRITE).fetch();
+        List<ReviewToReviewCategory> buildingToReviewCategoryResults = factory.selectFrom(reviewToReviewCategory).innerJoin(reviewToReviewCategory.review, review).innerJoin(review.building, building).where(building.id.eq(buildingId)).setLockMode(LockModeType.PESSIMISTIC_WRITE).fetch();
         List<ReviewCategoryEnum> values = List.of(ReviewCategoryEnum.values());
         for (ReviewCategoryEnum value : values) {
             Double avg = buildingToReviewCategoryResults.stream().filter((elem) -> elem.getReviewCategory().getType().equals(value)).mapToDouble(elem -> elem.getScore()).average().orElse(0.0);

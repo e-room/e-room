@@ -3,21 +3,23 @@ package com.project.Project.auth.provider;
 import com.project.Project.auth.authentication.JwtAuthentication;
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
-import com.project.Project.auth.exception.JwtException;
+import com.project.Project.auth.dto.UidDto;
+import com.project.Project.auth.exception.JwtAuthenticationException;
 import com.project.Project.auth.service.TokenService;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.member.Member;
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
-import java.util.Collections;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -52,41 +54,42 @@ public class JwtProvider implements AuthenticationProvider {
         Token token = ((JwtAuthentication) authentication).getToken();
         String accessToken = token.getAccessToken();
         String refreshToken = token.getRefreshToken();
-        TokenService.JwtCode status;
-        if (accessToken != null) {
-            status = validateToken(accessToken);
-        } else {
-            status = TokenService.JwtCode.EXPIRED;
-        }
+
+        Optional<String> optionalAccessToken = Optional.ofNullable(accessToken);
+        TokenService.JwtCode status = optionalAccessToken.map((elem) -> validateToken(elem)).orElse(TokenService.JwtCode.EXPIRED);
         if (status.equals(TokenService.JwtCode.ACCESS)) {
             setAuthMetadata(token, jwtAuthenticationToken);
             return jwtAuthenticationToken;
         } else if (status.equals(TokenService.JwtCode.EXPIRED)) {
             // refresh token 가지고 access token 발급
-            if (refreshToken != null && validateToken(refreshToken) == TokenService.JwtCode.ACCESS) {
-                Token newToken = tokenService.reissueToken(refreshToken);
-                if (newToken != null) {
-                    setAuthMetadata(newToken, jwtAuthenticationToken);
-                    return jwtAuthenticationToken;
-                }
-            }
+            if (refreshToken == null)
+                throw new JwtAuthenticationException("토큰 재발급을 위해선 refreshToken이 필요합니다.", ErrorCode.JWT_BAD_REQUEST);
+            TokenService.JwtCode code = validateToken(refreshToken);
+            Token newToken = tokenService.reissueToken(refreshToken, code);
+            setAuthMetadata(newToken, jwtAuthenticationToken);
+            return jwtAuthenticationToken;
+        } else {
+            throw new JwtAuthenticationException(ErrorCode.JWT_DENIED);
         }
-        throw new JwtException("invalid Token");
     }
 
     @Transactional
     public void setAuthMetadata(Token token, JwtAuthentication authentication) {
-        String email = tokenService.getUid(token.getAccessToken());
-        Member member = memberService.findByEmail(email).get(); // 추후 예외처리
+        UidDto uidDto = tokenService.getUid(token.getAccessToken());
+        String email = uidDto.getEmail();
+        AuthProviderType authProviderType = uidDto.getAuthProviderType();
+        Member member = memberService.findByEmailAndAuthProviderType(email, authProviderType).get(); // 추후 예외처리
         MemberDto memberDto = MemberDto.builder()
                 .email(email)
                 .name(member.getName())
-                .picture(member.getProfileImageUrl()).build();
+                .picture(member.getProfileImage().getUrl())
+                .authProviderType(member.getAuthProviderType())
+                .build();
         authentication.setToken(token);
         authentication.setAuthenticated(true);
         authentication.setPrincipal(memberDto);
         authentication.setPrincipalDetails(member);
-        authentication.setAuthorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+        authentication.setAuthorities(member.getRoles());
 
     }
 

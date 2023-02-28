@@ -1,14 +1,13 @@
 package com.project.Project.domain.interaction;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -40,20 +39,15 @@ public class ReviewLike extends BaseEntity {
     private ReviewLikeStatus reviewLikeStatus = ReviewLikeStatus.LIKED;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id", nullable = false)
+    @JoinColumn(name = "review_id")
     private Review review;
 
     public void setReviewLikeStatus(ReviewLikeStatus reviewLikeStatus) {
         this.reviewLikeStatus = reviewLikeStatus;
-    }
-
-    @PreRemove
-    public void deleteHandler() {
-        super.setDeleted(true);
     }
 
     public void setMember(Member member) {
@@ -70,5 +64,10 @@ public class ReviewLike extends BaseEntity {
         }
         this.review = review;
         review.getReviewLikeList().add(this);
+    }
+
+    public void deleteMemberAndReview() {
+        this.member = null;
+        this.review = null;
     }
 }

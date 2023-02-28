@@ -1,30 +1,35 @@
 package com.project.Project.service;
 
-import com.project.Project.domain.Member;
-import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.auth.enums.MemberRole;
+import com.project.Project.domain.auth.Role;
 import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.repository.interaction.ReviewLikeRepository;
+import com.project.Project.repository.member.RoleRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.interaction.impl.ReviewLikeServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class ReviewLikeServiceTest {
+
+    @Mock
+    private RoleRepository roleRepository;
 
     @Mock
     private ReviewLikeRepository reviewLikeRepository;
@@ -35,17 +40,27 @@ public class ReviewLikeServiceTest {
     @InjectMocks
     private ReviewLikeServiceImpl reviewLikeService;
 
+
+    private void mockRoleRepository() {
+        given(roleRepository.findRoleByMemberRoleIn(any()))
+                .willReturn(Arrays.asList(Role.builder()
+                        .memberRole(MemberRole.USER)
+                        .build()));
+    }
+
     private Member createTestMember() {
-        return  Member.builder()
+        return Member.builder()
                 .id(10L)// temp user
                 .reviewList(new ArrayList<>())
                 .favoriteBuildingList(new ArrayList<>())
                 .reviewLikeList(new ArrayList<>())
                 .name("하품하는 망아지")
                 .email("swa07016@khu.ac.kr")
-                .memberRole(MemberRole.USER)
+                .roles(Arrays.asList(Role.builder()
+                        .memberRole(MemberRole.USER)
+                        .build()))
                 .refreshToken("mockingMember")
-                .profileImageUrl("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
+                // .profileImage("https://lh3.googleusercontent.com/ogw/AOh-ky20QeRrWFPI8l-q3LizWDKqBpsWTIWTcQa_4fh5=s64-c-mo")
                 .build();
     }
 
@@ -84,7 +99,7 @@ public class ReviewLikeServiceTest {
                 .willReturn(reviewLike);
 
         // when
-        Long actual = reviewLikeService.updateReviewLike(5L, createTestMember());
+        ReviewLike actual = reviewLikeService.updateReviewLike(5L, createTestMember());
 
         // then
         assertNotNull(actual);

@@ -1,7 +1,7 @@
 package com.project.Project.auth.dto;
 
-import com.project.Project.domain.Member;
-import com.project.Project.domain.enums.MemberRole;
+import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -14,26 +14,27 @@ public class OAuthAttributes {
     private String name;
     private String email;
     private String picture;
+    private AuthProviderType authProviderType;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
+    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture, AuthProviderType authProviderType) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.name = name;
         this.email = email;
         this.picture = picture;
+        this.authProviderType = authProviderType;
+    }
+
+    private void setProfileImage(String randomProfileImageUrl) {
+        picture = randomProfileImageUrl;
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        if ("naver".equals(registrationId)) {
-            return ofNaver("id", attributes);
-        }
-
-        if ("kakao".equals(registrationId)) {
-            return ofKakao("id", attributes);
-        }
-
+        if ("naver".equals(registrationId)) return ofNaver("id", attributes);
+        if ("kakao".equals(registrationId)) return ofKakao("id", attributes);
         return ofGoogle(userNameAttributeName, attributes);
+        // oAuthAttributes.setProfileImage(ProfileImageSelector.select());
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
@@ -43,6 +44,7 @@ public class OAuthAttributes {
                 .picture((String) attributes.get("picture"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
+                .authProviderType(AuthProviderType.GOOGLE)
                 .build();
     }
 
@@ -55,6 +57,7 @@ public class OAuthAttributes {
                 .picture((String) response.get("profile_image"))
                 .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
+                .authProviderType(AuthProviderType.NAVER)
                 .build();
     }
 
@@ -67,6 +70,7 @@ public class OAuthAttributes {
                 .picture((String) profile.get("profile_image_url"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
+                .authProviderType(AuthProviderType.KAKAO)
                 .build();
     }
 
@@ -74,8 +78,7 @@ public class OAuthAttributes {
         return Member.builder()
                 .name(name)
                 .email(email)
-                .profileImageUrl(picture)
-                .memberRole(MemberRole.USER)
+                .authProviderType(authProviderType)
                 .build();
     }
 }

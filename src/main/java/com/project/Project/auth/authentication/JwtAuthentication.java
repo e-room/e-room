@@ -2,7 +2,7 @@ package com.project.Project.auth.authentication;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.auth.dto.Token;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,6 +33,10 @@ public class JwtAuthentication implements Authentication {
 
     public void setDetails(Object authenticationDetails) {
         this.details = authenticationDetails;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = (Collection<GrantedAuthority>) authorities;
     }
 
     public JwtAuthentication(Collection<? extends GrantedAuthority> authorities, MemberDto principal, Member details, String refreshToken, HttpServletRequest request, HttpServletResponse response) {

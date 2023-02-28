@@ -19,9 +19,12 @@ spring:
       enabled: off
     restart:
       exclude: thumbnail
+  security:
+    logoutSuccessUrlValue: https://e-room.app/login
+
 
 cors:
-  allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app'
+  allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app,https://e-room.app'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
@@ -36,6 +39,9 @@ login:
   default-host: 'e-room.app'
   default-failure-path: '/login'
   default-success-path: '/'
+springdoc:
+  cache:
+    disabled: true
 ---
 spring:
   config:
@@ -107,7 +113,7 @@ server:
     session:
       cookie:
         same-site: none
-        secure: true
+        #        secure: true
         domain: e-room.app
     multipart:
       enabled: true
@@ -401,9 +407,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-        show_sql: false
-        format_sql: false
-        use_sql_comments: false
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
@@ -467,11 +473,11 @@ server:
 
 logging:
   level:
-    #    org:
-    #      hibernate:
-    #        type: trace
+    org:
+      hibernate:
+        type: trace
     root: info
-#    sql: debug
+    sql: debug
 
 jwt:
   secret-key: token-secret-key

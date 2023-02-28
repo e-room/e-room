@@ -5,18 +5,20 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
+import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
+import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
+import com.project.Project.exception.review.ReviewImageException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
-import com.project.Project.serializer.room.RoomSerializer;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class BuildingSerializer {
 
-    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building) {
+    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building, Boolean isFavorite) {
 
         List<BuildingToReviewCategory> buildingToReviewCategoryList = building.getBuildingToReviewCategoryList();
         Map<ReviewCategoryEnum, Double> buildingSummary = new HashMap<>();
@@ -37,8 +39,8 @@ public class BuildingSerializer {
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
-                .isDirectDeal(false)
-                .rooms(building.getRoomList().stream().map(RoomSerializer::toRoomListResponse).collect(Collectors.toList()))
+                .directDealType(DirectDealType.IMPOSSIBLE)
+                .isFavorite(isFavorite)
                 .buildingSummaries(buildingSummary)
                 .build();
     }
@@ -52,7 +54,7 @@ public class BuildingSerializer {
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
-                .isDirectDeal(false)
+                .directDealType(DirectDealType.IMPOSSIBLE)
                 .reviewCnt(Building.reviewCntOrZero.apply(building))
                 .avgScore(Building.avgScoreOrNull.apply(building))
                 .bestCategory(BuildingToReviewCategory.bestCategoryOrNull.apply(maxScoreCategory))
@@ -84,10 +86,31 @@ public class BuildingSerializer {
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
-                .isDirectDeal(false)
+                .directDealType(DirectDealType.IMPOSSIBLE)
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .build();
     }
 
+    public static BuildingResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        if (reviewImage.getReview() == null) throw new ReviewImageException(ErrorCode.NO_REVIEW_IN_REVIEW_IMAGE);
+        return BuildingResponseDto.ReviewImageDto.builder()
+                .url(reviewImage.getUrl())
+                .uuid(reviewImage.getUuid().getUuid())
+                .anonymousStatus(reviewImage.getReview().getAnonymousStatus())
+                .build();
+    }
+
+    public static BuildingResponseDto.ReviewImageListDto toReviewImageListDto(List<ReviewImage> reviewImageList) {
+        List<BuildingResponseDto.ReviewImageDto> reviewImageDtoList =
+                reviewImageList.stream()
+                        .map((reviewImage -> toReviewImageDto(reviewImage)))
+                        .collect(Collectors.toList());
+        Integer reviewImageCount = reviewImageDtoList.size();
+
+        return BuildingResponseDto.ReviewImageListDto.builder()
+                .reviewImageList(reviewImageDtoList)
+                .reviewImageCount(reviewImageCount)
+                .build();
+    }
 
 }

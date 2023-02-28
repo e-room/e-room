@@ -1,5 +1,6 @@
 package com.project.Project.controller.interaction.dto;
 
+import com.project.Project.domain.enums.ReviewLikeStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +16,6 @@ public class ReviewLikeResponseDto {
     public static class ReviewLikeUpdateResponse {
         private Long reviewLikeId;
         private LocalDateTime updatedAt;
+        private ReviewLikeStatus reviewLikeStatus;
     }
 }

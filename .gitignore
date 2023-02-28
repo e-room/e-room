@@ -47,3 +47,5 @@ eroom-key.pem
 
 ###buildingTestdataGen###
 /src/BuildingGen/node_modules/
+
+/logs

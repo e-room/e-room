@@ -13,9 +13,9 @@ import java.util.List;
 public interface ReviewToReviewCategoryRepository extends JpaRepository<ReviewToReviewCategory, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @EntityGraph(value = "RTRC.withReviewAndRoomAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
-    @Query("select rtrc from ReviewToReviewCategory rtrc where rtrc.review.room.building.id = :buildingId")
-    List<ReviewToReviewCategory> findReviewToCategoriesWithReviewAndRoomAndBuildingAndLock(@Param("buildingId") Long buildingId);
+    @EntityGraph(value = "RTRC.withReviewAndBuilding", type = EntityGraph.EntityGraphType.FETCH)
+    @Query("select rtrc from ReviewToReviewCategory rtrc where rtrc.review.building.id = :buildingId")
+    List<ReviewToReviewCategory> findReviewToCategoriesWithReviewAndBuildingAndLock(@Param("buildingId") Long buildingId);
 
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

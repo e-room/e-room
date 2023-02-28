@@ -5,22 +5,19 @@ import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
-import com.project.Project.domain.review.Review;
-import com.project.Project.domain.review.ReviewKeyword;
-import com.project.Project.domain.review.ReviewToReviewCategory;
-import com.project.Project.domain.review.ReviewToReviewKeyword;
-import com.project.Project.domain.room.Room;
+import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.review.*;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
 import com.project.Project.serializer.member.MemberSerializer;
-import com.project.Project.serializer.room.RoomSerializer;
 import com.project.Project.service.fileProcess.ReviewImageProcess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,17 +44,18 @@ public class ReviewSerializer {
         staticReviewLoader = this.reviewLoader;
     }
 
-    public static ReviewResponseDto.BaseReviewDto toBaseReviewDto(Review review) {
+    public static ReviewResponseDto.ReviewBaseDto toBaseReviewDto(Review review) {
         review.getReviewToReviewKeywordList().stream().forEach((reviewToReviewKeyword) -> reviewToReviewKeyword.getReviewKeyword().getDType());
         Double score = review.getReviewCategory(ReviewCategoryEnum.RESIDENCESATISFACTION).map(ReviewToReviewCategory::getScore).orElse(null);
 
         List<KeywordEnum> advantageList = review.getReviewToReviewKeywordList().stream().filter(reviewToReviewKeyword -> reviewToReviewKeyword.getReviewKeyword().getDType().equals(DTypeEnum.ADVANTAGE)).map(ReviewToReviewKeyword::getReviewKeyword).map(ReviewKeyword::getKeywordType).collect(Collectors.toList());
         List<KeywordEnum> disadvantageList = review.getReviewToReviewKeywordList().stream().filter(reviewToReviewKeyword -> reviewToReviewKeyword.getReviewKeyword().getDType().equals(DTypeEnum.DISADVANTAGE)).map(ReviewToReviewKeyword::getReviewKeyword).map(ReviewKeyword::getKeywordType).collect(Collectors.toList());
 
-        return ReviewResponseDto.BaseReviewDto.builder()
+        return ReviewResponseDto.ReviewBaseDto.builder()
                 .reviewId(review.getId())
+                .createdAt(review.getCreatedAt())
                 .score(score)
-                .residencePeriod(review.getResidenceDuration())
+                .residenceStartYear(review.getResidenceStartYear())
                 .residenceDuration(review.getResidenceDuration())
                 .netLeasableArea(review.getNetLeasableArea())
                 .deposit(review.getDeposit())
@@ -92,25 +90,60 @@ public class ReviewSerializer {
         return reviewScoreDto;
     }
 
-    public static ReviewResponseDto.ReviewListDto toReviewListDto(Review review) {
-        /*
-        todo
-        무조건 reviewCategory의 점수를 들고와야하는 입장에서 한 번 더 조회하는게 맞을까?
-        객체 탐색이 나을지 NamedQuery가 나을지
-        OSIV가 있으니까 들고올 때 한방 쿼리로 들고오고 객체 탐색하는 걸로
-         */
-
-        Room room = review.getRoom();
+    public static ReviewResponseDto.ReviewDto toReviewDto(Review review) {
         MemberDto authorDto = null;
         if (review.getAnonymousStatus().getIsAnonymous()) {
-            authorDto = MemberDto.builder().name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(null).build();
+            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
         } else {
             authorDto = MemberSerializer.toDto(review.getAuthor());
         }
 
-        return ReviewResponseDto.ReviewListDto.builder().baseRoomDto(RoomSerializer.toBaseRoomResponse(room))
-                .baseReviewDto(toBaseReviewDto(review))
+        return ReviewResponseDto.ReviewDto.builder()
+                .reviewBaseDto(toBaseReviewDto(review))
                 .reviewScoreDto(toReviewScoreDto(review))
-                .authorDto(authorDto).build();
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList())).build();
+    }
+
+    public static ReviewResponseDto.ReviewDto setIsLiked(ReviewResponseDto.ReviewDto reviewDto, List<ReviewLike> reviewLikeList) {
+        reviewLikeList.stream().filter((reviewLike) -> reviewLike.getReview().getId().equals(reviewDto.getReviewBaseDto().getReviewId()))
+                .findAny().ifPresent((elem) -> reviewDto.setIsLiked(true));
+        return reviewDto;
+    }
+
+    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId, Boolean isFirstReview) {
+        return ReviewResponseDto.ReviewCreateDto.builder()
+                .reviewId(createdReviewId)
+                .buildingId(buildingId)
+                .isFirstReview(isFirstReview)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewDeleteDto toReviewDeleteDto(Long deletedReviewId) {
+        return ReviewResponseDto.ReviewDeleteDto.builder()
+                .reviewId(deletedReviewId)
+                .deletedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        return ReviewResponseDto.ReviewImageDto.builder()
+                .url(reviewImage.getUrl())
+                .uuid(reviewImage.getUuid().getUuid())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewImageListDto toReviewImageListDto(List<ReviewImage> reviewImageList) {
+        List<ReviewResponseDto.ReviewImageDto> reviewImageDtoList =
+                reviewImageList.stream()
+                        .map((reviewImage -> toReviewImageDto(reviewImage)))
+                        .collect(Collectors.toList());
+        Integer reviewImageCount = reviewImageDtoList.size();
+
+        return ReviewResponseDto.ReviewImageListDto.builder()
+                .reviewImageList(reviewImageDtoList)
+                .reviewImageCount(reviewImageCount)
+                .build();
     }
 }

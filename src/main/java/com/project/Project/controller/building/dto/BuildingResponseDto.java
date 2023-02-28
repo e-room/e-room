@@ -1,10 +1,12 @@
 package com.project.Project.controller.building.dto;
 
-
-import com.project.Project.controller.room.dto.RoomResponseDto;
+import com.project.Project.domain.embedded.AnonymousStatus;
+import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public class BuildingResponseDto {
         private Long reviewCnt;
         private Double avgScore;
         private ReviewCategoryEnum bestCategory;
-        private boolean isDirectDeal;
+        private DirectDealType directDealType;
     }
 
     @Builder
@@ -54,8 +56,8 @@ public class BuildingResponseDto {
         private String name;
         private AddressDto address;
         private CoordinateDto coordinate;
-        private Boolean isDirectDeal;
-        private List<RoomResponseDto.RoomListDto> rooms;
+        private DirectDealType directDealType;
+        private Boolean isFavorite;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
     }
 
@@ -66,7 +68,26 @@ public class BuildingResponseDto {
         private String name;
         private AddressDto address;
         private CoordinateDto coordinateDto;
-        private Boolean isDirectDeal;
+        private DirectDealType directDealType;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewImageDto {
+        private String uuid;
+        private String url;
+        private AnonymousStatus anonymousStatus;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ReviewImageListDto {
+        private List<BuildingResponseDto.ReviewImageDto> reviewImageList;
+        private Integer reviewImageCount;
     }
 }
 

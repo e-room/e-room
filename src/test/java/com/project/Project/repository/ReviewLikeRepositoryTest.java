@@ -1,6 +1,6 @@
 package com.project.Project.repository;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
 import com.project.Project.repository.interaction.ReviewLikeRepository;

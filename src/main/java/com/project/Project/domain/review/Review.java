@@ -1,17 +1,17 @@
 package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
+import com.project.Project.domain.eventListener.ReviewListener;
 import com.project.Project.domain.interaction.ReviewLike;
-import com.project.Project.domain.room.Room;
+import com.project.Project.domain.member.Member;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,12 +20,10 @@ import java.util.Optional;
 
 
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "Review.withRoomAndBuilding", attributeNodes = {
-                @NamedAttributeNode(value = "room", subgraph = "room")
-        },
-                subgraphs = @NamedSubgraph(name = "room", attributeNodes = {
-                        @NamedAttributeNode("building")
-                })),
+        @NamedEntityGraph(name = "Review.withBuilding", attributeNodes = {
+                @NamedAttributeNode(value = "building")
+        }
+                ),
         @NamedEntityGraph(name = "Review.withReviewCategory", attributeNodes = {
                 @NamedAttributeNode(value = "reviewToReviewCategoryList", subgraph = "reviewCategory")
         },
@@ -33,16 +31,15 @@ import java.util.Optional;
                         @NamedAttributeNode("reviewCategory")
                 }))
 })
+@EntityListeners(value = ReviewListener.class)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE review SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 @Table(
         uniqueConstraints = {
-                @UniqueConstraint(name = "UniqueMemberAndRoom", columnNames = {"member_id", "room_id"})
+                @UniqueConstraint(name = "UniqueMemberAndBuilding", columnNames = {"member_id", "building_id"})
         }
 )
 public class Review extends BaseEntity {
@@ -56,8 +53,8 @@ public class Review extends BaseEntity {
     private Member author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+    @JoinColumn(name = "building_id")
+    private Building building;
 
     @OneToMany(mappedBy = "review")
     @Builder.Default
@@ -123,11 +120,6 @@ public class Review extends BaseEntity {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImage> reviewImageList = new ArrayList<>();
 
-    @PreRemove
-    public void deleteHandler() {
-        super.setDeleted(true);
-    }
-
     public Optional<ReviewToReviewCategory> getReviewCategory(ReviewCategoryEnum type) {
         return this.reviewToReviewCategoryList.stream()
                 .filter(reviewToReviewCategory -> {
@@ -140,5 +132,20 @@ public class Review extends BaseEntity {
                     return false;
                 })
                 .findFirst();
+    }
+
+    /**
+     * Member 엔티티와의 연관관계를 끊는 메소드
+     */
+    public void deleteAuthor() {
+        this.author = null;
+    }
+
+    public void setAuthor(Member author) {
+        if (this.author != null) { // 기존에 이미 팀이 존재한다면
+            this.author.getReviewList().remove(this); // 관계를 끊는다.
+        }
+        this.author = author;
+        author.getReviewList().add(this);
     }
 }

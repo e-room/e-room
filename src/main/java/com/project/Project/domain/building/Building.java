@@ -2,10 +2,12 @@ package com.project.Project.domain.building;
 
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.BaseEntity;
+import com.project.Project.domain.enums.DirectDealType;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.interaction.Favorite;
-import com.project.Project.domain.room.Room;
+
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
@@ -28,14 +30,10 @@ import java.util.function.Function;
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "UniqueAddress",
+                        name = "UniqueCoordinate",
                         columnNames = {
-                                "siDo",
-                                "siGunGu",
-                                "eupMyeon",
-                                "roadName",
-                                "buildingNumber"
-                                // 상세주소와 참고항목은 같은 건물내에서도 다르므로 제외
+                                "longitude",
+                                "latitude"
                         }
                 )
         }
@@ -59,13 +57,9 @@ public class Building extends BaseEntity {
 
     private Boolean hasElevator;
 
-    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Room> roomList = new ArrayList<>();
-
     @OneToMany(mappedBy = "building")
     @Builder.Default
-    private List<Favorite> memberList = new ArrayList<>();
+    private List<Favorite> favoriteList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "building")
@@ -75,24 +69,13 @@ public class Building extends BaseEntity {
     @OneToOne(mappedBy = "building", cascade = CascadeType.ALL)
     private BuildingSummary buildingSummary;
 
+    @Enumerated(EnumType.STRING)
+    private DirectDealType directDealType;
     // TODO : 이미지 업로드 방법에 따라 추후 필드 추가. ex) S3업로드 or ec2 서버내에 업로드 등
-
 
     @PreRemove
     public void deleteHandler() {
         super.setDeleted(true);
-    }
-
-    public void addRoom(Room room) {
-        this.roomList.add(room);
-        room.setBuilding(this);
-    }
-
-    public void addRooms(List<Room> rooms) {
-        this.roomList.addAll(rooms);
-        for (Room room : rooms) {
-            room.setBuilding(this);
-        }
     }
 
     public Building setOptions(BuildingOptionalDto dto) {

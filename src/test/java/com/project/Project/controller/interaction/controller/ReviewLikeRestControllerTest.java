@@ -2,7 +2,8 @@ package com.project.Project.controller.interaction.controller;
 
 import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.config.SecurityConfig;
-import com.project.Project.domain.Member;
+import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewKeywordRepository;
 import com.project.Project.repository.review.ReviewRepository;
@@ -55,7 +56,7 @@ public class ReviewLikeRestControllerTest {
     void updateReviewLike_Test() throws Exception {
         // given
         given(reviewLikeService.updateReviewLike(any(), any(Member.class)))
-                .willReturn(15L);
+                .willReturn(ReviewLike.builder().build());
         given(reviewRepository.existsById(eq(3L)))
                 .willReturn(true);
 

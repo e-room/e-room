@@ -1,5 +1,6 @@
 package com.project.Project.validator;
 
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.repository.building.BuildingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,11 @@ public class BuildingExistValidator implements ConstraintValidator<ExistBuilding
 
     @Override
     public boolean isValid(Long buildingId, ConstraintValidatorContext context) {
-        return buildingRepository.existsById(buildingId);
+        if(!buildingRepository.existsById(buildingId)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorCode.BUILDING_NOT_FOUND.toString()).addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 }

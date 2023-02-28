@@ -1,8 +1,7 @@
 package com.project.Project.unit.service;
 
-import com.project.Project.domain.Member;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
-import com.project.Project.domain.room.Room;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.review.impl.ReviewServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,6 @@ public class ReviewServiceTest {
         // given
         Review review = Review.builder()
                 .id(1L)
-                .room(Room.builder().build())
                 .author(Member.builder().build())
                 .build();
         given(reviewRepository.save(any()))
