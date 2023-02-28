@@ -92,6 +92,7 @@ pipeline {
                     if (deployStage == 'production') {
                         sh 'pwd'
                         dir('/env/prod') {
+                            sh 'pwd'
                             script {
                                 dockerImage = docker.build imageName
                             }
