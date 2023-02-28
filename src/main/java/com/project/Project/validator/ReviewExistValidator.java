@@ -1,5 +1,6 @@
 package com.project.Project.validator;
 
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.repository.review.ReviewRepository;
@@ -26,7 +27,12 @@ public class ReviewExistValidator implements ConstraintValidator<ExistReview, Lo
 
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
-        return reviewRepository.existsById(value);
+        if(!reviewRepository.existsById(value)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorCode.REVIEW_NOT_FOUND.toString()).addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 
     @Override

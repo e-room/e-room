@@ -1,5 +1,6 @@
 package com.project.Project.validator;
 
+import com.project.Project.exception.ErrorCode;
 import com.project.Project.repository.review.ReviewImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,12 @@ public class ReviewImageExistValidator implements ConstraintValidator<ExistRevie
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return reviewImageRepository.existsByUuid(value);
+        if(!reviewImageRepository.existsByUuid(value)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorCode.UUID_NOT_FOUND.toString()).addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 
     @Override

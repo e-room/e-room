@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewImageRepository extends JpaRepository<ReviewImage, Long> {
+    // @Query("select case when count(c)> 0 then true else false end from Car c where lower(c.model) like lower(:model)")
 
-    @Query("select count(r.uuid) > 0 from ReviewImage r")
+    @Query("select case when count(r) > 0 then true else false end from ReviewImage r where r.uuid.uuid = :uuid") // 이 쿼리가 좀 이상한디??
     boolean existsByUuid(@Param(value = "uuid") String uuid);
     @Query("select r from ReviewImage r where r.uuid.uuid = :uuid")
     Optional<ReviewImage> findByUuid(@Param(value = "uuid") String uuid);

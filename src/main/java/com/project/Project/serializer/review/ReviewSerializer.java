@@ -53,8 +53,9 @@ public class ReviewSerializer {
 
         return ReviewResponseDto.ReviewBaseDto.builder()
                 .reviewId(review.getId())
+                .createdAt(review.getCreatedAt())
                 .score(score)
-                .residencePeriod(review.getResidenceDuration())
+                .residenceStartYear(review.getResidenceStartYear())
                 .residenceDuration(review.getResidenceDuration())
                 .netLeasableArea(review.getNetLeasableArea())
                 .deposit(review.getDeposit())

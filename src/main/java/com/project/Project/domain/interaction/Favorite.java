@@ -14,6 +14,17 @@ import javax.persistence.*;
  */
 @Getter @NoArgsConstructor @AllArgsConstructor @Builder
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "UniqueMemberAndBuilding",
+                        columnNames = {
+                                "member_id",
+                                "building_id"
+                        }
+                )
+        }
+)
 public class Favorite extends BaseEntity {
 
     @Id @GeneratedValue
