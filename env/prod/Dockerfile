@@ -9,4 +9,4 @@ ENV AWS_DEV_DB_URL=jdbc:mysql://e-room-dev.cpghnwiewsdn.ap-northeast-2.rds.amazo
 RUN mkdir /thumbnail
 ARG JAR_FILE=/build/libs/*.jar
 COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=dev", "/app.jar"]
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=prod", "/app.jar"]
