@@ -91,14 +91,18 @@ pipeline {
                 script {
                     if (deployStage == 'production') {
                         sh 'pwd'
-                        dir('/env/prod') {
+                        dir('./env/prod') {
+                            sh 'pwd'
+                            sh 'cp -r ../../build ./'
                             script {
                                 dockerImage = docker.build imageName
                             }
                         }
                     } else {
                         sh 'pwd'
-                        dir('/env/dev') {
+                        dir('./env/dev') {
+                            sh 'pwd'
+                            sh 'cp -r ../../build ./'
                             script {
                                 dockerImage = docker.build imageName
                             }
