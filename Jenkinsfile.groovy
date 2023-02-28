@@ -91,7 +91,7 @@ pipeline {
                 script {
                     if (deployStage == 'production') {
                         sh 'pwd'
-                        dir('/env/prod') {
+                        dir('./env/prod') {
                             sh 'pwd'
                             script {
                                 dockerImage = docker.build imageName
@@ -99,7 +99,7 @@ pipeline {
                         }
                     } else {
                         sh 'pwd'
-                        dir('/env/dev') {
+                        dir('./env/dev') {
                             script {
                                 dockerImage = docker.build imageName
                             }
