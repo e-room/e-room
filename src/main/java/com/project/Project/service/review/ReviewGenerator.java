@@ -126,17 +126,6 @@ public class ReviewGenerator {
         List<Void> blockingList = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                 .thenApply(Void -> futures.stream().map(CompletableFuture::join).collect(Collectors.toList()))
                 .join();
-
-//        imageFileList.parallelStream().forEach((image) -> {
-//            Uuid uuid = staticReviewImageProcess.createUUID();
-//            ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
-//                    .buildingId(room.getBuilding().getId())
-//                    .roomId(room.getId())
-//                    .uuid(uuid.getUuid())
-//                    .uuidEntity(uuid)
-//                    .build();
-//            staticReviewImageProcess.uploadImageAndMapToReview(image, reviewImagePackageMeta, review);
-//        });
     }
 
     private static void mappingEntities(List<ReviewToReviewCategory> reviewToReviewCategoryList, ReviewSummary reviewSummary, List<ReviewToReviewKeyword> selectedReviewAdvantageKeywordList, List<ReviewToReviewKeyword> selectedReviewDisadvantageKeywordList, Review review) {
@@ -153,7 +142,7 @@ public class ReviewGenerator {
     }
 
     private static Review createReviewEntity(ReviewRequestDto.ReviewCreateDto request, Member member, Building building, ReviewSummary reviewSummary, AnonymousStatus status) {
-        return Review.builder()
+        Review review = Review.builder()
                 .residenceStartYear(request.getReviewResidencePeriodDto().getResidenceStartYear())
                 .residenceDuration(request.getReviewResidencePeriodDto().getResidenceDuration())
                 .deposit(request.getReviewBaseDto().getDeposit())
@@ -166,11 +155,12 @@ public class ReviewGenerator {
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
-                .author(member) // todo : 이렇게 하면 Member쪽 reviewList에는 없지 않나??
                 .reviewSummary(reviewSummary)
                 .anonymousStatus(status)
                 .building(building)
                 .build();
+        review.setAuthor(member);
+        return review;
     }
 
     private static ReviewSummary initialReviewSummary() {
@@ -228,23 +218,5 @@ public class ReviewGenerator {
                 .anonymousName(nickName)
                 .isAnonymous(Boolean.TRUE)
                 .build();
-    }
-
-    private static class ImageThumbnailMap {
-        private MultipartFile image;
-        private Long UuidId;
-
-        public ImageThumbnailMap(MultipartFile image, Long UuidId) {
-            this.image = image;
-            this.UuidId = UuidId;
-        }
-
-        public MultipartFile getImage() {
-            return image;
-        }
-
-        public Long getUuidId() {
-            return UuidId;
-        }
     }
 }

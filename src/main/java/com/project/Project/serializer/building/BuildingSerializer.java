@@ -1,7 +1,6 @@
 package com.project.Project.serializer.building;
 
 import com.project.Project.controller.building.dto.BuildingResponseDto;
-
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingToReviewCategory;
 import com.project.Project.domain.embedded.Address;
@@ -11,6 +10,7 @@ import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
+import com.project.Project.exception.review.ReviewImageException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 
 import java.util.*;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class BuildingSerializer {
 
-    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building) {
+    public static BuildingResponseDto.BuildingResponse toBuildingResponse(Building building, Boolean isFavorite) {
 
         List<BuildingToReviewCategory> buildingToReviewCategoryList = building.getBuildingToReviewCategoryList();
         Map<ReviewCategoryEnum, Double> buildingSummary = new HashMap<>();
@@ -40,6 +40,7 @@ public class BuildingSerializer {
                 .address(Address.toAddressDto(building.getAddress()))
                 .coordinate(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .directDealType(DirectDealType.IMPOSSIBLE)
+                .isFavorite(isFavorite)
                 .buildingSummaries(buildingSummary)
                 .build();
     }
@@ -91,9 +92,11 @@ public class BuildingSerializer {
     }
 
     public static BuildingResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        if (reviewImage.getReview() == null) throw new ReviewImageException(ErrorCode.NO_REVIEW_IN_REVIEW_IMAGE);
         return BuildingResponseDto.ReviewImageDto.builder()
                 .url(reviewImage.getUrl())
                 .uuid(reviewImage.getUuid().getUuid())
+                .anonymousStatus(reviewImage.getReview().getAnonymousStatus())
                 .build();
     }
 

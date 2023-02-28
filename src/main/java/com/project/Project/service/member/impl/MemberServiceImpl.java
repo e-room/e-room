@@ -3,6 +3,7 @@ package com.project.Project.service.member.impl;
 import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.AuthProviderType;
+import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
@@ -66,21 +67,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public Long delete(Member member) {
         Long memberId = member.getId();
-        /*
-         * Review : Hard delete
-         * Favorite(찜한방) : Hard delete
-         * ReviewLike : Hard delete
-         * */
-        for (Review review : member.getReviewList()) review.deleteAuthor();
-        reviewRepository.deleteAllByAuthor(member);
-
-        for (Favorite favorite : member.getFavoriteBuildingList()) favorite.deleteMemberAndBuilding();
-        favoriteRepository.deleteAllByMember(member);
-
-        for (ReviewLike reviewLike : member.getReviewLikeList()) reviewLike.deleteMemberAndReview();
-        reviewLikeRepository.deleteAllByMember(member);
-
-        memberRepository.deleteById(member.getId());
+        memberRepository.deleteById(memberId);
         return memberId;
     }
 
@@ -92,6 +79,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<ReviewLike> getReviewLikeList(Member member) {
-        return reviewLikeRepository.findByMember(member);
+        return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
     }
 }

@@ -13,6 +13,7 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.review.ReviewException;
+
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.member.MemberService;
@@ -98,7 +99,7 @@ public class ReviewRestController {
         Boolean needToBlur = false;
         if (member == null || memberService.getReviewCnt(member) < 1) {
             needToBlur = true;
-            reviewListResponseList = reviewListResponseList.subList(0, 1);
+            if(reviewList.size() >= 1) reviewListResponseList = reviewListResponseList.subList(0, 1);
         }
         Slice<ReviewResponseDto.ReviewDto> slicedReviewList = QueryDslUtil.toSlice(reviewListResponseList, pageable);
 
@@ -148,8 +149,8 @@ public class ReviewRestController {
             request.setReviewImageList(reviewImageList);
         }
         Review review = reviewService.saveReview(request, loginMember, building);
-
-        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId()));
+        Boolean isFirstReview = loginMember.getReviewList().size() >= 2 ? false : true;
+        return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId(), isFirstReview));
     }
     /* todo
         @PutMapping("/building/room/review/{reviewId}")
@@ -173,13 +174,14 @@ public class ReviewRestController {
     @DeleteMapping("/building/room/review/{reviewId}")
     public ResponseEntity<ReviewResponseDto.ReviewDeleteDto> deleteReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
         Review target = reviewService.getReviewById(reviewId);
-        if (target.getAuthor().getId().equals(loginMember.getId())) {
+        if (!target.getAuthor().getId().equals(loginMember.getId())) {
             throw new ReviewException("다른 사람의 review를 삭제할 수 없습니다.", ErrorCode.REVIEW_ACCESS_DENIED);
         }
         Long deletedReviewId = reviewService.deleteById(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
+    @Deprecated
     @Operation(summary = "리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),

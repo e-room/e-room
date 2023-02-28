@@ -1,14 +1,17 @@
 package com.project.Project.controller.building;
 
+import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.serializer.building.BuildingSerializer;
+import com.project.Project.service.FavoriteService;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
@@ -48,6 +51,7 @@ public class BuildingRestController {
     private final ReviewService reviewService;
 
     private final ReviewImageService reviewImageService;
+    private final FavoriteService favoriteService;
 
     /*
     when: 3.0.1
@@ -60,7 +64,7 @@ public class BuildingRestController {
     @Operation(summary = "지도 마킹을 위한 건물 목록 [3.0.1]", description = "건물들의 좌표 목록 조회 API")
     @GetMapping("/marking")
     public ResponseEntity<BuildingResponseDto.BuildingCountResponse> getBuildingMarker() {
-        List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getAllBuildingsIdAndCoord();
+        List<OnlyBuildingIdAndCoord> buildingList = this.buildingService.getBuildingMarking();
         BuildingResponseDto.BuildingCountResponse response = BuildingSerializer.toBuildingCountResponse(buildingList);
         return ResponseEntity.ok(response);
     }
@@ -94,10 +98,12 @@ public class BuildingRestController {
     @Operation(summary = "건물 단건 조회 [3.2]", description = "buildingId로 건물 하나를 조회하는 API")
     @Parameter(name = "buildingId", description = "조회하고자 하는 건물의 id", example = "4454")
     @GetMapping("/{buildingId}")
-    public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId) {
+    public ResponseEntity<BuildingResponseDto.BuildingResponse> getBuilding(@PathVariable("buildingId") @ExistBuilding Long buildingId, @AuthUser Member member) {
+        Boolean isFavorite = Boolean.FALSE;
         Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
         building.getBuildingToReviewCategoryList().stream().forEach(Hibernate::initialize);
-        return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building));
+        if (member != null) isFavorite = favoriteService.existsByBuildingAndMember(building, member);
+        return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building, isFavorite));
     }
 
     /* 8.1

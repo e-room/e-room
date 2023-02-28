@@ -4,14 +4,13 @@ import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewImageRepository;
-
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.fileProcess.ReviewImageProcess;
 import com.project.Project.service.review.ReviewImageService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +60,9 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     public List<ReviewImage> findByBuilding(Long buildingId) {
         // controller 단에서 존재하는 @ExistBuilding으로 검증하여 존재하는 buildingId이므로 바로 get
         Building building = buildingRepository.findById(buildingId).get();
-        return reviewImageRepository.findByBuilding(building);
+        List<ReviewImage> reviewImageList = reviewImageRepository.findByBuilding(building);
+        reviewImageList.stream().map(ReviewImage::getReview).forEach(Hibernate::initialize);
+        return reviewImageList;
     }
 
 }

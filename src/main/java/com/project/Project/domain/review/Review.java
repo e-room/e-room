@@ -140,4 +140,12 @@ public class Review extends BaseEntity {
     public void deleteAuthor() {
         this.author = null;
     }
+
+    public void setAuthor(Member author) {
+        if (this.author != null) { // 기존에 이미 팀이 존재한다면
+            this.author.getReviewList().remove(this); // 관계를 끊는다.
+        }
+        this.author = author;
+        author.getReviewList().add(this);
+    }
 }

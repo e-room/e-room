@@ -92,7 +92,7 @@ public class ReviewSerializer {
     public static ReviewResponseDto.ReviewDto toReviewDto(Review review) {
         MemberDto authorDto = null;
         if (review.getAnonymousStatus().getIsAnonymous()) {
-            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(null).build();
+            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
         } else {
             authorDto = MemberSerializer.toDto(review.getAuthor());
         }
@@ -100,7 +100,8 @@ public class ReviewSerializer {
         return ReviewResponseDto.ReviewDto.builder()
                 .reviewBaseDto(toBaseReviewDto(review))
                 .reviewScoreDto(toReviewScoreDto(review))
-                .authorDto(authorDto).build();
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList())).build();
     }
 
     public static ReviewResponseDto.ReviewDto setIsLiked(ReviewResponseDto.ReviewDto reviewDto, List<ReviewLike> reviewLikeList) {
@@ -109,9 +110,11 @@ public class ReviewSerializer {
         return reviewDto;
     }
 
-    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId) {
+    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId, Boolean isFirstReview) {
         return ReviewResponseDto.ReviewCreateDto.builder()
                 .reviewId(createdReviewId)
+                .buildingId(buildingId)
+                .isFirstReview(isFirstReview)
                 .createdAt(LocalDateTime.now())
                 .build();
     }

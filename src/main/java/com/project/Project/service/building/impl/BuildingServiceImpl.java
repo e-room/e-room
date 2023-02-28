@@ -25,8 +25,8 @@ public class BuildingServiceImpl implements BuildingService {
     private final BuildingRepository buildingRepository;
     private final BuildingCustomRepository buildingCustomRepo;
 
-    public List<OnlyBuildingIdAndCoord> getAllBuildingsIdAndCoord() {
-        return buildingRepository.findBy(OnlyBuildingIdAndCoord.class);
+    public List<OnlyBuildingIdAndCoord> getBuildingMarking() {
+        return buildingCustomRepo.getBuildingMarking();
     }
 
     @Override
