@@ -2,7 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: dev
+    active: localProd
   task:
     execution:
       pool:
@@ -492,7 +492,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${AWS_USERNAME}
     password: ${AWS_PASSWORD}
-    url: ${AWS_DEV_DB_URL}
+    url: ${AWS_PROD_DB_URL}
   jpa:
     properties:
       hibernate:
