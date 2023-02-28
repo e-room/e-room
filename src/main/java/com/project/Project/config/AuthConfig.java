@@ -1,8 +1,6 @@
 package com.project.Project.config;
 
-import com.project.Project.auth.filter.CustomBasicAuthFilter;
 import com.project.Project.auth.filter.JwtAuthFilter;
-import com.project.Project.auth.filter.JwtExceptionInterceptorFilter;
 import com.project.Project.auth.handler.*;
 import com.project.Project.auth.provider.JwtProvider;
 import com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;

@@ -102,9 +102,4 @@ public class Member extends BaseEntity {
     public int hashCode() {
         return Objects.hash(email, authProviderType);
     }
-
-//    @PreRemove
-//    public void deleteHandler() {
-//        super.setDeleted(true);
-//    }
 }

@@ -162,7 +162,7 @@ spring:
             scope:
               - profile
               - email
-            redirect-uri: https://dev.e-room.app/login/oauth2/code/google
+            redirect-uri: https://api.e-room.app/login/oauth2/code/google
           naver:
             client-name: Naver
             client-id: zgbCFybgDt7zOQJSuTRZ
@@ -171,7 +171,7 @@ spring:
               - name
               - email
               - profile_image
-            redirect-uri: https://dev.e-room.app/login/oauth2/code/naver
+            redirect-uri: https://api.e-room.app/login/oauth2/code/naver
             authorization-grant-type: authorization_code
           kakao:
             client-name: kakao
@@ -182,7 +182,7 @@ spring:
               - profile_nickname
               - account_email
               - profile_image
-            redirect-uri: https://dev.e-room.app/login/oauth2/code/kakao
+            redirect-uri: https://api.e-room.app/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
         provider:
           naver:
