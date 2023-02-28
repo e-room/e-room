@@ -87,10 +87,25 @@ pipeline {
         stage('Bulid Docker') {
             steps {
                 echo 'Bulid Docker'
-                sh 'pwd'
+
                 script {
-                    dockerImage = docker.build imageName
+                    if (deployStage == 'production') {
+                        sh 'pwd'
+                        dir('/env/prod') {
+                            script {
+                                dockerImage = docker.build imageName
+                            }
+                        }
+                    } else {
+                        sh 'pwd'
+                        dir('/env/dev') {
+                            script {
+                                dockerImage = docker.build imageName
+                            }
+                        }
+                    }
                 }
+
             }
             post {
                 failure {
