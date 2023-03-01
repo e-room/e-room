@@ -173,6 +173,32 @@ public class AuthConfig {
         }
     }
 
+    @Profile("localProd")
+    @EnableWebSecurity
+    public static class SecurityLocalProdConfig {
+        @Bean
+        public WebSecurityCustomizer configure() {
+            return (web) -> web.ignoring().mvcMatchers(
+                    "/token/valid", "api/profile", "/", "/health",
+                    "/swagger-ui.html",
+                    "/v3/api-docs",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**"
+            );
+        }
+
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            return defaultAuthentication()
+                    .andThen(oAuthAndJwtAuthentication())
+                    .andThen(headerMockingAuthentication())
+                    .andThen(exceptionHandler())
+                    .andThen(permitAllList())
+                    .andThen(defaultAuthorization())
+                    .apply(http);
+        }
+    }
+
     private static Function<HttpSecurity, SecurityFilterChain> defaultAuthorization() {
         return (http) -> {
             try {
