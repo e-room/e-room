@@ -56,7 +56,7 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "building_id")
     private Building building;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     @Builder.Default
     private List<ReviewLike> likeMemberList = new ArrayList<>();
 
