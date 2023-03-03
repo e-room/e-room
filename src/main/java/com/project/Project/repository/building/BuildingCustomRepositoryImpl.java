@@ -98,14 +98,20 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     private BooleanBuilder buildingSearchPredicate(String params) {
         return new BooleanBuilder()
                 .and(notDeletedCondition())
-                .andAnyOf(
-                        building.address.siDo.contains(params),
-                        building.address.siGunGu.contains(params),
-                        building.address.eupMyeon.contains(params),
-                        building.address.roadName.contains(params),
-                        building.address.buildingNumber.contains(params),
-                        building.buildingName.contains(params));
-
+                .and(
+                        building.address.siDo
+                                .concat(" ")
+                                .concat(building.address.siGunGu)
+                                .concat(" ")
+                                .concat(building.address.eupMyeon)
+                                .concat(" ")
+                                .concat(building.address.roadName)
+                                .concat(" ")
+                                .concat(building.address.buildingNumber)
+                                .concat(" ")
+                                .concat(building.buildingName)
+                                .like(params)
+                );
     }
 
 
