@@ -2,7 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: localProd
+    active: prod
   task:
     execution:
       pool:
@@ -60,7 +60,7 @@ spring:
         format_sql: false
         use_sql_comments: false
         hbm2ddl:
-          auto: update
+          auto: validate
         default_batch_fetch_size: 1000
   security:
     oauth2:
@@ -150,7 +150,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: update
+          auto: validate
         default_batch_fetch_size: 1000
   security:
     oauth2:
@@ -235,7 +235,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: update
+          auto: validate
         default_batch_fetch_size: 1000
 
   security:
@@ -324,7 +324,7 @@ spring:
         format_sql: false
         use_sql_comments: false
         hbm2ddl:
-          auto: update
+          auto: validate
         default_batch_fetch_size: 1000
   security:
     oauth2:
@@ -411,7 +411,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: update
+          auto: validate
         default_batch_fetch_size: 1000
   security:
     oauth2:
@@ -501,7 +501,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: create
+          auto: validate
         default_batch_fetch_size: 1000
   security:
     oauth2:

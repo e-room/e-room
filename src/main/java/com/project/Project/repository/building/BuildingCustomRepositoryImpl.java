@@ -8,6 +8,7 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -96,16 +97,13 @@ public class BuildingCustomRepositoryImpl implements BuildingCustomRepository {
     }
 
     private BooleanBuilder buildingSearchPredicate(String params) {
-        return new BooleanBuilder()
+        BooleanBuilder builder = new BooleanBuilder()
                 .and(notDeletedCondition())
-                .andAnyOf(
-                        building.address.siDo.contains(params),
-                        building.address.siGunGu.contains(params),
-                        building.address.eupMyeon.contains(params),
-                        building.address.roadName.contains(params),
-                        building.address.buildingNumber.contains(params),
-                        building.buildingName.contains(params));
-
+                .and(
+                        Expressions.stringTemplate("concat_ws(' ',{0}, {1}, {2}, {3}, {4}, {5})", building.address.siDo, building.address.siGunGu, building.address.eupMyeon, building.address.roadName, building.address.buildingNumber, building.buildingName)
+                                .like("%" + params + "%")
+                );
+        return builder;
     }
 
 
