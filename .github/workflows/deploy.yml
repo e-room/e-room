@@ -3,7 +3,7 @@ name: E-room Dev CI/CD
 on:
   push:
     branches:
-      - develop # (1).브랜치 이름
+      - 'develop*' # (1).브랜치 이름
   workflow_dispatch: # (2).수동 실행도 가능하도록
 
 jobs:
