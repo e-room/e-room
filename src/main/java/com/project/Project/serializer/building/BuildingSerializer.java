@@ -45,12 +45,12 @@ public class BuildingSerializer {
                 .build();
     }
 
-    public static BuildingResponseDto.BuildingListResponse toBuildingListResponse(Building building) {
+    public static BuildingResponseDto.BuildingElement toBuildingListResponse(Building building) {
         //protect NPE when building is null
         Optional.ofNullable(building).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NPE));
 
         BuildingToReviewCategory maxScoreCategory = building.getBuildingToReviewCategoryList().stream().max(Comparator.comparing(BuildingToReviewCategory::getAvgScore)).orElse(null);
-        return BuildingResponseDto.BuildingListResponse.builder()
+        return BuildingResponseDto.BuildingElement.builder()
                 .buildingId(building.getId())
                 .name(building.getBuildingName())
                 .address(Address.toAddressDto(building.getAddress()))
@@ -69,6 +69,18 @@ public class BuildingSerializer {
                 .buildingId(building.getId())
                 .coordinateDto(Coordinate.toCoordinateDto(building.getCoordinate()))
                 .build();
+    }
+
+    public static BuildingResponseDto.BuildingMarkingDetailDto toBuildingMarkingDetailResponse(Building building) {
+        Optional.ofNullable(building).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NPE));
+
+        return BuildingResponseDto.BuildingMarkingDetailDto.builder()
+                .name(building.getBuildingName())
+                .buildingId(building.getId())
+                .reviewCnt(Building.reviewCntOrZero.apply(building))
+                .avgScore(Building.avgScoreOrNull.apply(building))
+                .build();
+
     }
 
     public static BuildingResponseDto.BuildingCountResponse toBuildingCountResponse(List<OnlyBuildingIdAndCoord> buildingList) {
