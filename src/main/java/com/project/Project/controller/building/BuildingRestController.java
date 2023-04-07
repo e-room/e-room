@@ -70,6 +70,8 @@ public class BuildingRestController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "지도 마킹 시 건물 detail", description = "Building과 reviewCnt, avgScore를 함께 조회하는 API")
+    @Parameter(name = "buildingId", description = "조회하고자 하는 건물의 id", example = "4454")
     @GetMapping("/marking/detail/{buildingId}")
     public ResponseEntity<BuildingResponseDto.BuildingMarkingDetailDto> getBuildingMarkerDetail(@PathVariable("buildingId") @ExistBuilding Long buildingId, @AuthUser Member member) {
         Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
