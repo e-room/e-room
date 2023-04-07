@@ -1,5 +1,7 @@
 HELP.md
 .gradle
+.DS_Store
+
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -41,6 +43,10 @@ application-datasource.properties
 
 ###docker###
 db
+docker-compose.yml
+
+###env###
+/env/
 
 ###pem###
 eroom-key.pem
