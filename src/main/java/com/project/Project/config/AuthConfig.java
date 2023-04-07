@@ -218,7 +218,7 @@ public class AuthConfig {
                 http
                         .authorizeRequests()
                         .antMatchers("/login", "api/profile", "/", "/health").permitAll()
-                        .antMatchers(HttpMethod.GET, "/building/marking", "/building/search", "/building/{buildingId}/images", "/building/{buildingId}", "/building", "/building/{buildingId}/room/review").permitAll()
+                        .antMatchers(HttpMethod.GET, "/building/marking/**", "/building/search", "/building/{buildingId}/images", "/building/{buildingId}", "/building", "/building/{buildingId}/room/review").permitAll()
                         .antMatchers(HttpMethod.GET, "/token/valid").permitAll();
                 return http;
             } catch (Exception e) {
