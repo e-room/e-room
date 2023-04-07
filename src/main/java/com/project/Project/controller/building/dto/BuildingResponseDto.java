@@ -18,7 +18,7 @@ public class BuildingResponseDto {
      */
     @Builder
     @Getter
-    public static class BuildingListResponse {
+    public static class BuildingElement {
         private Long buildingId;
         private String name;
         private AddressDto address;
@@ -59,6 +59,15 @@ public class BuildingResponseDto {
         private DirectDealType directDealType;
         private Boolean isFavorite;
         private Map<ReviewCategoryEnum, Double> buildingSummaries;
+    }
+
+    @Builder
+    @Getter
+    public static class BuildingMarkingDetailDto {
+        private Long buildingId;
+        private String name;
+        private Long reviewCnt;
+        private Double avgScore;
     }
 
     @Builder
