@@ -114,7 +114,7 @@ server:
       cookie:
         same-site: none
         #        secure: true
-        domain: e-room.app
+        domain: e-room.dev
     multipart:
       enabled: true
       maxFileSize: 20MB
