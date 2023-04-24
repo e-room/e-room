@@ -65,6 +65,7 @@ public class BuildingResponseDto {
     @Getter
     public static class BuildingMarkingDetailDto {
         private Long buildingId;
+        private AddressDto address;
         private String name;
         private Long reviewCnt;
         private Double avgScore;
