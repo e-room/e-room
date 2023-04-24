@@ -76,6 +76,7 @@ public class BuildingSerializer {
 
         return BuildingResponseDto.BuildingMarkingDetailDto.builder()
                 .name(building.getBuildingName())
+                .address(Address.toAddressDto(building.getAddress()))
                 .buildingId(building.getId())
                 .reviewCnt(Building.reviewCntOrZero.apply(building))
                 .avgScore(Building.avgScoreOrNull.apply(building))
