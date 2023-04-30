@@ -2,6 +2,7 @@ cloud:
   aws:
     s3:
       bucket: e-room
+      dev-bucket: e-room-dev
       folder:
         reviewImages: review-images
         profileImages: profile-images
@@ -15,3 +16,4 @@ cloud:
       secretKey: ${AWS_SECRET_ACCESS_KEY}
     cloudFront:
       distributionDomain: https://d2ykyi5jl9muoc.cloudfront.net
+      dev-distributionDomain: cdn.e-room.dev
