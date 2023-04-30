@@ -21,7 +21,9 @@ spring:
       exclude: thumbnail
   security:
     logoutSuccessUrlValue: https://e-room.app/login
-
+  datasource:
+    hikari:
+      maximum-pool-size: 25
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app,https://e-room.app,https://www.e-room.app'
