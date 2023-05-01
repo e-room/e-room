@@ -1,11 +1,13 @@
 package com.project.Project.serializer.review;
 
 import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.member.dto.MemberResponseDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.*;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.review.ReviewCategoryRepository;
@@ -144,6 +146,15 @@ public class ReviewSerializer {
         return ReviewResponseDto.ReviewImageListDto.builder()
                 .reviewImageList(reviewImageDtoList)
                 .reviewImageCount(reviewImageCount)
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewReadByMemberDto toReviewReadDto(Member member, List<ReviewRead> reviewReads) {
+        MemberResponseDto.MemberProfileDto memberProfileDto = MemberSerializer.toMemberProfileDto(member);
+        List<Long> reviewIds = reviewReads.stream().map(ReviewRead::getReview).map(Review::getId).collect(Collectors.toList());
+        return ReviewResponseDto.ReviewReadByMemberDto.builder()
+                .memberProfileDto(memberProfileDto)
+                .reviewIds(reviewIds)
                 .build();
     }
 }

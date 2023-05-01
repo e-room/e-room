@@ -1,6 +1,7 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.member.dto.MemberResponseDto;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -113,5 +114,21 @@ public class ReviewResponseDto {
     public static class ReviewImageListDto {
         private List<ReviewImageDto> reviewImageList;
         private Integer reviewImageCount;
+    }
+
+
+    @NoArgsConstructor
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class ReviewReadByMemberDto {
+        private MemberResponseDto.MemberProfileDto memberProfileDto;
+        private List<Long> reviewIds;
+    }
+
+    public static enum ReviewExposeState {
+        NONE,
+        ONE,
+        ALL
     }
 }

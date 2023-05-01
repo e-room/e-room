@@ -4,13 +4,14 @@ import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
+import com.project.Project.domain.review.ReviewRead;
 import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.member.MemberException;
 import com.project.Project.exception.review.ReviewException;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.building.BuildingRepository;
-import com.project.Project.repository.review.ReviewCustomRepository;
-import com.project.Project.repository.review.ReviewEventListener;
-import com.project.Project.repository.review.ReviewRepository;
+import com.project.Project.repository.member.MemberRepository;
+import com.project.Project.repository.review.*;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewGenerator;
 import com.project.Project.service.review.ReviewService;
@@ -31,10 +32,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final BuildingRepository buildingRepository;
     private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
+    private final ReviewReadRepository reviewReadRepository;
+
     private final BuildingService buildingService;
 
     private final EntityManager entityManager;
     private final ReviewCustomRepository reviewCustomRepository;
+    private final ReviewReadCustomRepository reviewReadCustomRepository;
     private final ReviewEventListener eventListener;
     private final ReviewLoader reviewLoader;
 
@@ -53,6 +58,32 @@ public class ReviewServiceImpl implements ReviewService {
 
     public Review getReviewById(Long reviewId) {
         return reviewCustomRepository.findById(reviewId).orElseThrow(() -> new ReviewException("id에 해당하는 review가 없습니다.", ErrorCode.REVIEW_NOT_FOUND));
+    }
+
+    @Override
+    public ReviewRead readReview(Long reviewId, Long memberId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+        ReviewRead reviewRead = ReviewRead.builder()
+                .review(review)
+                .member(member)
+                .build();
+        return reviewReadRepository.save(reviewRead);
+    }
+
+    @Override
+    public Integer getReviewReadCount(Long memberId) {
+        return reviewReadRepository.countByMemberId(memberId);
+    }
+
+    @Override
+    public List<ReviewRead> getReadReviews(Long memberId) {
+        return reviewReadRepository.findByMemberId(memberId);
+    }
+
+    @Override
+    public List<ReviewRead> getReadReviews(Long memberId, Long buildingId) {
+        return reviewReadCustomRepository.findReviewsByBuildingId(memberId, buildingId);
     }
 
     @Transactional
