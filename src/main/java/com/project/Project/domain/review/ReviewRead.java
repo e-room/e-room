@@ -15,6 +15,17 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "UniqueRead",
+                        columnNames = {
+                                "review_id",
+                                "member_id"
+                        }
+                )
+        }
+)
 public class ReviewRead extends BaseEntity {
 
     @Id

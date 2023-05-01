@@ -61,13 +61,18 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public ReviewRead readReview(Long reviewId, Long memberId) {
-        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
-        ReviewRead reviewRead = ReviewRead.builder()
-                .review(review)
-                .member(member)
-                .build();
+
+        Optional<ReviewRead> optionalReviewRead = reviewReadRepository.findByMemberIdAndReviewId(memberId, reviewId);
+        ReviewRead reviewRead = optionalReviewRead.orElseGet(() -> {
+            Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(ErrorCode.MEMBER_NOT_FOUND));
+            return ReviewRead.builder()
+                    .review(review)
+                    .member(member)
+                    .build();
+        });
         return reviewReadRepository.save(reviewRead);
     }
 
