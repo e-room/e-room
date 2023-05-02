@@ -175,6 +175,14 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewImageListDto(reviewImageList));
     }
 
+    @Operation(summary = "리뷰 읽음 처리 [3.2]", description = "리뷰 읽음 처리 API<br>")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewReadByMemberDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "reviewId", description = "읽음 처리를 하고 싶은 리뷰 id")
+    })
     @PostMapping("/building/room/review/{reviewId}/read")
     public ResponseEntity<ReviewResponseDto.ReviewReadByMemberDto> readReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
         ReviewRead reviewRead = reviewService.readReview(reviewId, loginMember.getId());
