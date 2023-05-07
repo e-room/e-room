@@ -200,7 +200,7 @@ public class ReviewRestController {
     }
 
     private Boolean needToBlur(Member member) {
-        if (member == null) return false;
+        if (member == null) return true;
         Integer reviewWriteCount = memberService.getReviewCnt(member);
         if (reviewWriteCount > 0) return false;
         return true;
