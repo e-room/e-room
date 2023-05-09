@@ -168,18 +168,3 @@ configurations {
 jar {
     enabled = false
 }
-
-project.ext {
-    springProfilesActive = System.getProperty('spring.profiles.active', 'dev')
-}
-
-task copyEbextensions(type: Copy) {
-    if (springProfilesActive == 'dev') {
-        from 'src/main/resources/.ebextensions-dev'
-    } else if (springProfilesActive == 'prod') {
-        from 'src/main/resources/.ebextensions-prod'
-    }
-    into '.'
-}
-
-build.dependsOn copyEbextensions
