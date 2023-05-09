@@ -1,0 +1,14 @@
+service: image-resizer
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: e-room-root
+
+functions:
+  cfLambda:
+    handler: imageResizer.handler
+    events:
+      - cloudFront:
+          eventType: origin-response
+          origin: https://e-room.s3.ap-northeast-2.amazonaws.com/

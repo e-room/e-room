@@ -2,17 +2,19 @@
   "name": "imageresizer",
   "version": "1.0.0",
   "description": "썸네일 생성을 위한 onDemand 방식의 image resizer 입니다.",
-  "main": "imageResizer.ts",
+  "main": "imageResizer.js",
   "scripts": {
+    "build": "",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "권혁태",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.694.0",
-    "sharp": "^0.25.4"
+    "sharp": "^0.32.1"
   },
   "devDependencies": {
+    "serverless-lambda-edge-pre-existing-cloudfront": "^1.2.0",
     "serverless-offline-edge-lambda": "^1.0.2"
   }
 }
