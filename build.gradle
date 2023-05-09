@@ -173,25 +173,13 @@ project.ext {
     springProfilesActive = System.getProperty('spring.profiles.active', 'dev')
 }
 
-task copyDevEbextensions(type: Copy) {
-    from 'src/main/resources/.ebextensions-dev'
-    into '.'
-}
-
-task copyProdEbextensions(type: Copy) {
-    from 'src/main/resources/.ebextensions-prod'
-    into '.'
-}
-
-
-task selectEbextensions {
-    doLast {
-        if (springProfilesActive == 'prod') {
-            dependsOn copyProdEbextensions
-        } else {
-            dependsOn copyDevEbextensions
-        }
+task copyEbextensions(type: Copy) {
+    if (springProfilesActive == 'dev') {
+        from 'src/main/resources/.ebextensions-dev'
+    } else if (springProfilesActive == 'prod') {
+        from 'src/main/resources/.ebextensions-prod'
     }
+    into '.'
 }
 
-build.dependsOn selectEbextensions
+build.dependsOn copyEbextensions
