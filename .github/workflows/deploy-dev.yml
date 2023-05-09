@@ -1,21 +1,14 @@
-name: E-room Prod CI/CD
+name: E-room Dev CI/CD
 
 on:
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - 'develop*' # (1).브랜치 이름
   workflow_dispatch: # (2).수동 실행도 가능하도록
-
-# 배포 테스트용
-#on:
-#  push:
-#    branches:
-#      - issue/139
-#  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest # (3).OS환경
-    if: github.event.pull_request.merged == true
 
     steps:
       - name: Checkout
@@ -32,7 +25,7 @@ jobs:
         shell: bash # (6).권한 부여
 
       - name: Build with Gradle
-        run: ./gradlew clean build -Dspring.profiles.active=prod -x test
+        run: ./gradlew clean build -Dspring.profiles.active=dev -x test
         shell: bash # (7).build 시작
 
       - name: Get current time
@@ -51,7 +44,7 @@ jobs:
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
           cp Procfile deploy/Procfile
-          cp -r .ebextensions-prod deploy/.ebextensions
+          cp -r .ebextensions-dev deploy/.ebextensions
           cp -r .platform deploy/.platform
           cd deploy && zip -r deploy.zip .
 
@@ -60,8 +53,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACTION_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_ACTION_SECRET_ACCESS_KEY }}
-          application_name: E-room Prod
-          environment_name: E-roomProd-env
+          application_name: E-room Dev
+          environment_name: Eroomdev-env
           version_label: github-action-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
