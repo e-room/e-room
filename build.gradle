@@ -169,6 +169,10 @@ jar {
     enabled = false
 }
 
+project.ext {
+    springProfilesActive = System.getProperty('spring.profiles.active', 'dev')
+}
+
 task copyDevEbextensions(type: Copy) {
     from 'src/main/resources/.ebextensions-dev'
     into '.'
@@ -179,18 +183,15 @@ task copyProdEbextensions(type: Copy) {
     into '.'
 }
 
-project.ext {
-    springProfilesActive = System.getProperty('spring.profiles.active', 'dev')
-}
 
 task selectEbextensions {
     doLast {
         if (springProfilesActive == 'prod') {
-            tasks.copyProdEbextensions.execute()
+            dependsOn copyProdEbextensions
         } else {
-            tasks.copyDevEbextensions.execute()
+            dependsOn copyDevEbextensions
         }
     }
 }
 
-bootJar.dependsOn selectEbextensions
+build.dependsOn selectEbextensions

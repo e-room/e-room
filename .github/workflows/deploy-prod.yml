@@ -31,7 +31,7 @@ jobs:
         shell: bash # (6).권한 부여
 
       - name: Build with Gradle
-        run: ./gradlew clean build -x test
+        run: ./gradlew clean build -Dspring.profiles.active=prod -x test
         shell: bash # (7).build 시작
 
       - name: Get current time
