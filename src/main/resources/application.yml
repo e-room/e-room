@@ -21,7 +21,9 @@ spring:
       exclude: thumbnail
   security:
     logoutSuccessUrlValue: https://e-room.app/login
-
+  datasource:
+    hikari:
+      maximum-pool-size: 25
 
 cors:
   allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app,https://e-room.app,https://www.e-room.app'
@@ -139,9 +141,9 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${AWS_USERNAME}
-    password: ${AWS_PASSWORD}
-    url: ${AWS_PROD_DB_URL}
+    username: ${aws.username}
+    password: ${aws.password}
+    url: ${aws.prod.db.url}
   jpa:
     properties:
       hibernate:
