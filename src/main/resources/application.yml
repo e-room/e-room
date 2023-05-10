@@ -141,9 +141,9 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: ${AWS_USERNAME}
-    password: ${AWS_PASSWORD}
-    url: ${AWS_PROD_DB_URL}
+    username: ${aws.username}
+    password: ${aws.password}
+    url: ${aws.prod.db.url}
   jpa:
     properties:
       hibernate:
