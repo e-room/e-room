@@ -78,6 +78,13 @@ dependencies {
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+
+    // Bootstrap & Jquery
+    implementation group: 'org.webjars', name: 'bootstrap', version: '5.0.1'
+    implementation group: 'org.webjars', name: 'jquery', version: '3.5.1'
+
+    // Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 jacoco {
