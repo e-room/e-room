@@ -44,6 +44,8 @@ public class AdminSerializer {
     public static Member toMember(AdminRequestDto.CreateMemberDto request) {
         Token newToken = staticTokenService.generateToken(request.getEmail(), request.getAuthProviderType(), MemberRole.USER);
 
+        Role userRole = Role.builder().memberRole(MemberRole.USER).build();
+
         Member member = Member.builder()
                 .authProviderType(request.getAuthProviderType())
                 .email(request.getEmail())
@@ -53,10 +55,12 @@ public class AdminSerializer {
                 .reviewList(new ArrayList<>())
                 .favoriteBuildingList(new ArrayList<>())
                 .reviewLikeList(new ArrayList<>())
-                .roles(Arrays.asList(Role.builder().memberRole(MemberRole.USER).build()))
+                .roles(new ArrayList<>())
                 .profileImage(staticProfileImageService.random())
                 .recentMapLocation(null)
                 .build();
+
+        userRole.setMember(member);
 
         return member;
     }
