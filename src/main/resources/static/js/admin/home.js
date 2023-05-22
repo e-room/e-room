@@ -26,3 +26,28 @@ const pseudoAccount = (e) => {
         }
     })
 }
+
+const pseudoAccountLogin = (e) => {
+    e.preventDefault();
+
+    let data = {
+        email: $('#login-email').val()
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/admin/member/login',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        cache: false,
+        success: (res) => {
+            if (res.redirectUrl) {
+                window.location.href = res.redirectUrl;
+            }
+        },
+        error: (res) => {
+            const errRes = res.responseJSON;
+            alert(errRes.message);
+        }
+    })
+}

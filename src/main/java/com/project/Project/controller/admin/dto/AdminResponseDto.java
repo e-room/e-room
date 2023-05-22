@@ -17,4 +17,13 @@ public class AdminResponseDto {
         private Long memberId;
         private LocalDateTime createdAt;
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class LoginMemberDto {
+        private String accessToken;
+        private String refreshToken;
+    }
 }

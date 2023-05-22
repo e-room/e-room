@@ -64,4 +64,12 @@ public class AdminSerializer {
 
         return member;
     }
+
+    public static AdminResponseDto.LoginMemberDto toLoginMemberDto(Token token) {
+        return AdminResponseDto.LoginMemberDto.builder()
+                .accessToken(token.getAccessToken())
+                .refreshToken(token.getRefreshToken())
+                .build();
+    }
+
 }

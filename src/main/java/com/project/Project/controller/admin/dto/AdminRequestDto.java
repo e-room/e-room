@@ -11,4 +11,9 @@ public class AdminRequestDto {
         private String email;
         private String name;
     }
+
+    @Getter
+    public static class LoginMemberDto {
+        private String email;
+    }
 }
