@@ -108,7 +108,7 @@ public class AuthConfig {
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/admin/**",
-                    "/css/**", "/img/**", "/js/**", "/webjars/**"
+                    "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
         }
 
@@ -136,7 +136,7 @@ public class AuthConfig {
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/admin/**",
-                    "/css/**", "/img/**", "/js/**", "/webjars/**"
+                    "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
         }
 
@@ -223,8 +223,7 @@ public class AuthConfig {
                         .authorizeRequests()
                         .antMatchers("/login", "api/profile", "/", "/health").permitAll()
                         .antMatchers(HttpMethod.GET, "/building/marking", "/building/search", "/building/{buildingId}/images", "/building/{buildingId}", "/building", "/building/{buildingId}/room/review").permitAll()
-                        .antMatchers(HttpMethod.GET, "/token/valid").permitAll()
-                        .antMatchers("/admin/**", "/js/**", "/img/**", "/css/**", "/webjars/**").permitAll();
+                        .antMatchers(HttpMethod.GET, "/token/valid").permitAll();
                 return http;
             } catch (Exception e) {
                 throw new RuntimeException(e);
