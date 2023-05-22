@@ -37,6 +37,14 @@ public class Role implements GrantedAuthority {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public void setMember(Member member) {
+        if (this.member != null) { // 기존에 이미 팀이 존재한다면
+            this.member.getRoles().remove(this); // 관계를 끊는다.
+        }
+        this.member = member;
+        member.getRoles().add(this);
+    }
+
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "parent_id", referencedColumnName = "id")
 //    public Role parent;

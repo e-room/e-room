@@ -21,4 +21,8 @@ public interface MemberService {
     public List<ReviewLike> getReviewLikeList(Member member);
 
     Long delete(Member member);
+
+    Optional<Member> findByEmail(String email);
+
+    void updateRefreshToken(Member member, String refreshToken);
 }

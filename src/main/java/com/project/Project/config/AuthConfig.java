@@ -106,7 +106,9 @@ public class AuthConfig {
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**"
+                    "/swagger-ui/**",
+                    "/admin/**",
+                    "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
         }
 
@@ -132,7 +134,9 @@ public class AuthConfig {
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**"
+                    "/swagger-ui/**",
+                    "/admin/**",
+                    "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
         }
 
