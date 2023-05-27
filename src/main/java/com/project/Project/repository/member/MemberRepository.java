@@ -14,4 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query(value = "select * from member where deleted = 1", nativeQuery = true)
     List<Member> findAllDeletedMember();
+
+    List<Member> findByNickNameIsNull();
 }
