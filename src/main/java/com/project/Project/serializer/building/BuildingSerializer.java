@@ -109,7 +109,6 @@ public class BuildingSerializer {
         return BuildingResponseDto.ReviewImageDto.builder()
                 .url(reviewImage.getUrl())
                 .uuid(reviewImage.getUuid().getUuid())
-                .anonymousStatus(reviewImage.getReview().getAnonymousStatus())
                 .build();
     }
 

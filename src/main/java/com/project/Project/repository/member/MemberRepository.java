@@ -16,4 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findAllDeletedMember();
 
     Optional<Member> findByEmail(String email);
+
+    List<Member> findByNickNameIsNull();
 }
