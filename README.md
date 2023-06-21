@@ -26,6 +26,7 @@
 ## ERD
 
 ![E-room ERD](https://github.com/e-room/e-room/assets/53550707/fe1e3461-cede-4edb-8336-da38fc614384)
+
 <br>
 
 ## Tech Stack
