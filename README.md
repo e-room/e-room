@@ -11,6 +11,7 @@
 | 🎨 Graphic Designer | 정보광 | [jeongbokoang](https://github.com/jeongbokoang) |
 | 💻 Server Developer | 정성훈 | [SeongHoon Jeong](https://github.com/jeongbokoangswa07016) |
 | 💻 Front-End Developer | 정효진 | [HYOJIN JUNG](https://github.com/injulme) |
+<br>
 
 ## Project Architecture
 
@@ -20,10 +21,12 @@
 - 개발 서버와 운영 서버가 분리되어 있으며 개발 서버는 중단배포, 운영 서버는 무중단배포 채택하고 있습니다.
 - 개발 서버는 develop 브랜치가 push되었을 때, 운영서버는 master 브랜치로 PR이 합쳐졌을 때를 트리거로 배포됩니다.
 - FE Repository : [e-room-web](https://github.com/e-room/e-room-web)
+<br>
 
 ## ERD
 
 ![E-room ERD](https://github.com/e-room/e-room/assets/53550707/fe1e3461-cede-4edb-8336-da38fc614384)
+<br>
 
 ## Tech Stack
 
@@ -34,6 +37,7 @@
 - JPA, QueryDSL
 - AWS - Elastic Beanstalk, RDS, S3, Route53, Certificate Manager, …
 - Github Actions
+<br>
 
 ## Branching Strategy
 
