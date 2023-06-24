@@ -15,6 +15,8 @@ import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
+    List<Review> findByIdIn(List<Long> ids);
+
     void deleteAllByAuthor(Member member);
 
     // 초기 조회 메서드 만들기

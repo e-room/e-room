@@ -25,6 +25,15 @@ public class ReviewResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    public static class ReviewListDto {
+        private List<ReviewDto> reviewDtoList;
+        private Integer size;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class ReviewDto {
         private ReviewBaseDto reviewBaseDto;
         private ReviewScoreDto reviewScoreDto;

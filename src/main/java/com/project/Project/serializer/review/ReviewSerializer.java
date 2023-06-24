@@ -35,6 +35,17 @@ public class ReviewSerializer {
     private static ReviewCategoryRepository staticReviewCategoryRepository;
     private static ReviewLoader staticReviewLoader;
 
+    public static ReviewResponseDto.ReviewListDto toReviewListDto(List<Review> reviewList) {
+        List<ReviewResponseDto.ReviewDto> reviewDtoList = reviewList.stream()
+                .map(review -> toReviewDto(review))
+                .collect(Collectors.toList());
+
+        return ReviewResponseDto.ReviewListDto.builder()
+                .reviewDtoList(reviewDtoList)
+                .size(reviewDtoList.size())
+                .build();
+    }
+
 
     @PostConstruct
     public void init() {

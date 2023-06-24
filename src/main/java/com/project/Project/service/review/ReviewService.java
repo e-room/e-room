@@ -24,4 +24,6 @@ public interface ReviewService {
     public Review getReviewById(Long reviewId);
 
     Long save(Review review);
+
+    List<Review> getBestReviews();
 }

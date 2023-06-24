@@ -38,6 +38,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewEventListener eventListener;
     private final ReviewLoader reviewLoader;
 
+    @Override
+    public List<Review> getBestReviews() {
+        // TODO : 나중에 관리자 페이지가 생기면 관리자가 직접 선택/해제 할 수 있도록 BestReview 테이블을 따로 둘 듯.
+        List<Long> bestReviewIds = List.of(302896L, 303064L, 303100L, 303280L, 303862L);
+        return reviewRepository.findByIdIn(bestReviewIds);
+    }
+
     public List<Review> getReviewListByBuildingId(Long buildingId, List<Double> cursorIds, Pageable pageable) {
 
         /*
