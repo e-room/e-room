@@ -2,6 +2,7 @@ package com.project.Project.serializer.review;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
@@ -36,8 +37,8 @@ public class ReviewSerializer {
     private static ReviewLoader staticReviewLoader;
 
     public static ReviewResponseDto.ReviewListDto toReviewListDto(List<Review> reviewList) {
-        List<ReviewResponseDto.ReviewDto> reviewDtoList = reviewList.stream()
-                .map(review -> toReviewDto(review))
+        List<ReviewResponseDto.BestReviewDto> reviewDtoList = reviewList.stream()
+                .map(review -> toBestReviewDto(review))
                 .collect(Collectors.toList());
 
         return ReviewResponseDto.ReviewListDto.builder()
@@ -53,6 +54,24 @@ public class ReviewSerializer {
         staticReviewKeywordRepository = this.reviewKeywordRepository;
         staticReviewCategoryRepository = this.reviewCategoryRepository;
         staticReviewLoader = this.reviewLoader;
+    }
+
+    public static ReviewResponseDto.BestReviewDto toBestReviewDto(Review review) {
+        MemberDto authorDto = null;
+        if (review.getAnonymousStatus().getIsAnonymous()) {
+            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
+        } else {
+            authorDto = MemberSerializer.toDto(review.getAuthor());
+        }
+
+        return ReviewResponseDto.BestReviewDto.builder()
+                .reviewBaseDto(toBaseReviewDto(review))
+                .reviewScoreDto(toReviewScoreDto(review))
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList()))
+                .address(Address.toAddressDto(review.getBuilding().getAddress()))
+                .buildingName(review.getBuilding().getBuildingName())
+                .build();
     }
 
     public static ReviewResponseDto.ReviewBaseDto toBaseReviewDto(Review review) {

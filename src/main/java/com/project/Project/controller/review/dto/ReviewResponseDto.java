@@ -1,6 +1,7 @@
 package com.project.Project.controller.review.dto;
 
 import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.domain.enums.KeywordEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,8 +27,21 @@ public class ReviewResponseDto {
     @AllArgsConstructor
     @Builder
     public static class ReviewListDto {
-        private List<ReviewDto> reviewDtoList;
+        private List<BestReviewDto> reviewDtoList;
         private Integer size;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class BestReviewDto {
+        private AddressDto address;
+        private String buildingName;
+        private ReviewBaseDto reviewBaseDto;
+        private ReviewScoreDto reviewScoreDto;
+        private MemberDto authorDto;
+        private ReviewImageListDto reviewImageListDto;
     }
 
     @NoArgsConstructor
