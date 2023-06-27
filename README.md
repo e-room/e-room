@@ -15,7 +15,7 @@
 
 ## Project Architecture
 
-![E-room PA](https://github.com/e-room/e-room/assets/53550707/d4a050fd-b22e-4cc1-8902-82526da49a61)
+![E-room PA](https://github.com/e-room/e-room/assets/53550707/60e593f1-2ee2-422e-916d-ca25c4d574be)
 
 - Github Actions & Elastic Beanstalk을 활용해 CI/CD 파이프라인을 구축했습니다.
 - 개발 서버와 운영 서버가 분리되어 있으며 개발 서버는 중단배포, 운영 서버는 무중단배포 채택하고 있습니다.
