@@ -77,8 +77,8 @@ public class Review extends BaseEntity {
     @OneToOne(mappedBy = "review", cascade = CascadeType.ALL)
     private ReviewSummary reviewSummary;
 
-    @Embedded
-    private AnonymousStatus anonymousStatus;
+
+    private Boolean isAnonymous;
 
     /**
      * 거주 시작 년도 : 거주 시작년도

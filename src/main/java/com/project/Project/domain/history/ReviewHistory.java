@@ -28,8 +28,7 @@ public class ReviewHistory extends BaseEntity {
 
     private Long buildingId;
 
-    @Embedded
-    private AnonymousStatus anonymousStatus;
+    private Boolean isAnonymous;
 
     /**
      * 거주 시작 년도 : 거주 시작년도
@@ -79,7 +78,8 @@ public class ReviewHistory extends BaseEntity {
                 .reviewId(review.getId())
                 .buildingId(review.getBuilding().getId())
                 .memberId(review.getAuthor().getId())
-                .anonymousStatus(review.getAnonymousStatus())
+                .isAnonymous(review.getIsAnonymous())
+//                .anonymousStatus(review.getAuthor().getAnonymousStatus())
                 .residenceStartYear(review.getResidenceStartYear())
                 .residenceDuration(review.getResidenceDuration())
                 .deposit(review.getDeposit())
