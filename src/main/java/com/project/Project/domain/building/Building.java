@@ -66,7 +66,7 @@ public class Building extends BaseEntity {
     @Builder.Default
     private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "building", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "building", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private BuildingSummary buildingSummary;
 
     @Enumerated(EnumType.STRING)

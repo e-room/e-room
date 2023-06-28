@@ -66,16 +66,24 @@ public class BuildingGeneratorTest {
     void generateBuilding_Test() {
         Address address = Address.builder()
                 .siDo("경기도")
-                .siGunGu("수원시 영통구")
+                .siGunGu("")
                 .roadName("매영로425번길")
                 .eupMyeon("")
-                .buildingNumber("4")
+                .buildingNumber("")
                 .build();
         Building building = BuildingGenerator.generateBuilding(address);
         Building expected = Building.builder()
                 .address(address).build();
         EqualBuilding(building, expected);
         assertThat(building.getCoordinate()).isNotNull();
+    }
+
+    @Test
+    void generateBuilding_Param_Test() {
+        List<Building> buildingList = BuildingGenerator.generateBuildings("매영로425번길 2");
+        long expected = 1;
+
+        assertThat(buildingList.size()).isEqualTo(expected);
     }
 
     private Boolean EqualBuilding(Building building1, Building building2) {

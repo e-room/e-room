@@ -12,6 +12,7 @@ import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
 import com.project.Project.serializer.building.BuildingSerializer;
 import com.project.Project.service.FavoriteService;
+import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
