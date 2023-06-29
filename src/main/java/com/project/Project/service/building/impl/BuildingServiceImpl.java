@@ -4,6 +4,7 @@ import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
+import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,10 +45,19 @@ public class BuildingServiceImpl implements BuildingService {
         return Optional.ofNullable(buildingRepository.findBuildingById(buildingId));
     }
 
+
     @Override
     public List<Building> getBuildingsBySearch(String params, List<Double> cursorIds, Pageable page) {
-//        return buildingRepository.searchBuildings(params);
-        return buildingCustomRepo.searchBuildings(params, cursorIds, page);
+        List<Building> buildingList;
+        buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
+        if(buildingList.isEmpty()) {
+            try {
+                buildingList = BuildingGenerator.generateBuildings(params);
+            } catch (Exception e) {
+                return buildingList;
+            }
+        }
+        return buildingList;
     }
 
     @Override
