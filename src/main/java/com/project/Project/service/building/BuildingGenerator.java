@@ -60,9 +60,13 @@ public class BuildingGenerator {
                     .coordinate(coordinate)
                     .address(address).build();
 
+            System.out.println("BUILDING ID : " + buildingCreated.getId());
+
             //buildingSummary.create()
             BuildingSummary buildingSummary = new BuildingSummary();
             buildingSummary.setBuilding(buildingCreated);
+
+            System.out.println("GENERATE BUILDING 진입");
 
             return staticBuildingRepository.save(buildingCreated);
         });
