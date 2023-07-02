@@ -40,6 +40,9 @@ file:
 springdoc:
   cache:
     disabled: true
+  swagger-ui:
+    use-forward-headers: true
+
 ---
 spring:
   config:
