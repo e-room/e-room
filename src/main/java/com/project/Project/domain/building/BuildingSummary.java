@@ -13,15 +13,13 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE building_summary SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 public class BuildingSummary extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "building_id")
     private Building building;
 

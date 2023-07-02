@@ -24,8 +24,6 @@ import java.util.function.Function;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE building SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 @Table(
         uniqueConstraints = {

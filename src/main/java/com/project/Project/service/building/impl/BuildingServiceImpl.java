@@ -45,7 +45,7 @@ public class BuildingServiceImpl implements BuildingService {
         return Optional.ofNullable(buildingRepository.findBuildingById(buildingId));
     }
 
-
+    @Transactional
     @Override
     public List<Building> getBuildingsBySearch(String params, List<Double> cursorIds, Pageable page) {
         List<Building> buildingList;
