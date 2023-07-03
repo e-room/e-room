@@ -3,6 +3,7 @@ package com.project.Project.domain.review;
 
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.member.Member;
+import com.querydsl.core.annotations.QueryInit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,6 +35,7 @@ public class ReviewRead extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
+    @QueryInit("building.buildingSummary")
     private Review review;
 
     @ManyToOne(fetch = FetchType.LAZY)

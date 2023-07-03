@@ -201,7 +201,8 @@ public class ReviewRestController {
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
     @Parameters({
-            @Parameter(name = "reviewId", description = "읽음 처리를 하고 싶은 리뷰 id")
+            @Parameter(name = "reviewId", description = "읽음 처리를 하고 싶은 리뷰 id"),
+            @Parameter(name = "loginMember", hidden = true)
     })
     @PostMapping("/building/room/review/{reviewId}/read")
     public ResponseEntity<ReviewResponseDto.ReviewReadByMemberDto> readReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
