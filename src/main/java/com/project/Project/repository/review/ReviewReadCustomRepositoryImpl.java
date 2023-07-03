@@ -20,8 +20,7 @@ public class ReviewReadCustomRepositoryImpl implements ReviewReadCustomRepositor
     public List<ReviewRead> findReviewsByBuildingId(Long memberId, Long buildingId) {
         return factory.selectFrom(reviewRead)
                 .leftJoin(reviewRead.review)
-                .leftJoin(review.building)
-                .where(review.building.id.eq(buildingId))
+                .where(reviewRead.review.building.id.eq(buildingId))
                 .fetch();
     }
 }
