@@ -5,6 +5,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.repository.building.BuildingSummaryRepository;
 import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.util.KakaoAddressAPI;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +36,11 @@ public class BuildingGeneratorTest {
     @MockBean
     private BuildingRepository buildingRepository;
 
+    @MockBean
+    private BuildingSummaryRepository buildingSummaryRepository;
+
     @Autowired
-    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient, buildingCustomRepository, buildingRepository);
+    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient, buildingCustomRepository, buildingRepository, buildingSummaryRepository);
 
     @Test
     public void searchBuildingByKakao() {
