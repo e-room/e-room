@@ -51,13 +51,17 @@ public class BuildingServiceImpl implements BuildingService {
         List<Building> buildingList;
         buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
         if(buildingList.isEmpty()) {
-            try {
-                buildingList = BuildingGenerator.generateBuildings(params);
-            } catch (Exception e) {
-                return buildingList;
-            }
+            buildingList = createBuildingByAddress(params);
         }
         return buildingList;
+    }
+
+    private List<Building> createBuildingByAddress(String address) {
+        try {
+            return BuildingGenerator.generateBuildings(address);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
