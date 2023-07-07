@@ -90,7 +90,7 @@ public class ReviewRestController {
         List<ReviewResponseDto.ReviewDto> reviewListResponseList =
                 reviewList.stream()
                         .map(ReviewSerializer::toReviewDto)
-                        .map((dto) -> ReviewSerializer.setIsLiked(dto, reviewLikeList))
+                        .map(dto -> ReviewSerializer.setIsLiked(dto, reviewLikeList))
                         .collect(Collectors.toList());
 
         //needToBlur
@@ -139,7 +139,7 @@ public class ReviewRestController {
             request.setReviewImageList(reviewImageList);
         }
         Review review = reviewService.saveReview(request, loginMember, building);
-        Boolean isFirstReview = loginMember.getReviewList().size() >= 2 ? false : true;
+        Boolean isFirstReview = loginMember.getReviewList().size() >= 2;
         return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId(), isFirstReview));
     }
 
@@ -168,7 +168,10 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
-    @Deprecated
+    /**
+     * @deprecated
+     */
+    @Deprecated(since = "리뷰 응답에 이미지 포함")
     @Operation(summary = "리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),
@@ -201,8 +204,7 @@ public class ReviewRestController {
     private Boolean needToBlur(Member member) {
         if (member == null) return true;
         Integer reviewWriteCount = memberService.getReviewCnt(member);
-        if (reviewWriteCount > 0) return false;
-        return true;
+        return reviewWriteCount <= 0;
     }
 
     private ReviewResponseDto.ReviewExposeCommand needToExpose(List<ReviewResponseDto.ReviewDto> originalReviewList, Member member, Long buildingId) {
@@ -228,21 +230,4 @@ public class ReviewRestController {
         }
     }
 
-//    private List<ReviewResponseDto.ReviewDto> sliceReviewList(List<ReviewResponseDto.ReviewDto> originReviewList, ReviewResponseDto.ReviewExposeState exposeState) {
-//        switch (exposeState) {
-//            case NONE:
-//                return new ArrayList<>();
-//
-//            case ONE:
-//                return originReviewList.subList(0, 1);
-//
-//            case ONLY_READ:
-//                List<Long> reviewReadIds = this.reviewService.getReadReviews(member.getId(), buildingId).stream().map(reviewRead -> reviewRead.getReview().getId()).collect(Collectors.toList());
-//                List<ReviewResponseDto.ReviewDto> reviewResponseList = originReviewList.stream().filter(originReview -> reviewReadIds.contains(originReview.getReviewBaseDto().getReviewId())).collect(Collectors.toList());
-//                return reviewResponseList;
-//            case ALL:
-//                return originReviewList;
-//        }
-//        return originReviewList;
-//    }
 }
