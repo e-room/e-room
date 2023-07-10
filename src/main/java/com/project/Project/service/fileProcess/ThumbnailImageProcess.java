@@ -96,7 +96,7 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
             String filePath = this.getFilePath(file, thumbnailImagePackageMetadata);
             File thumbNail = new File("./thumbnail", fileName);
             ObjectMetadata objectMetadata = this.generateObjectMetadata(thumbNail);
-            String url = this.uploadImage(new FileInputStream(thumbNail), objectMetadata, filePath, fileName);
+            String url = this.uploadImage(new FileInputStream(thumbNail), objectMetadata, filePath);
             thumbNail.delete();
             return url;
         } catch (FileNotFoundException e) {
