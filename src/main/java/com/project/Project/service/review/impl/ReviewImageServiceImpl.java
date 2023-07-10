@@ -38,7 +38,7 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     }
 
     public ReviewImage findByUuid(String uuid) {
-        return reviewImageRepository.findByUuid(uuid).orElseThrow(() -> new ReviewImageException(ErrorCode.REVIEW_IMAGE_NOT_FOUND));;
+        return reviewImageRepository.findByUuid(uuid).orElseThrow(() -> new ReviewImageException(ErrorCode.REVIEW_IMAGE_NOT_FOUND));
     }
 
     @Transactional
