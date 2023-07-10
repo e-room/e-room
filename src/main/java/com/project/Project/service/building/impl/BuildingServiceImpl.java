@@ -45,7 +45,6 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public List<Building> getBuildingsBySearch(String params, List<Double> cursorIds, Pageable page) {
-//        return buildingRepository.searchBuildings(params);
         return buildingCustomRepo.searchBuildings(params, cursorIds, page);
     }
 
@@ -72,7 +71,4 @@ public class BuildingServiceImpl implements BuildingService {
         return BuildingGenerator.generateBuildings(address);
     }
 
-    public Building updateBuilding(BuildingOptionalDto buildingOptionalDto) {
-        return null;
-    }
 }
