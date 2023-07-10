@@ -4,6 +4,8 @@ import com.project.Project.domain.member.Member;
 import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.review.Review;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.review.ReviewException;
 import com.project.Project.repository.interaction.ReviewLikeRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.service.interaction.ReviewLikeService;
@@ -28,7 +30,7 @@ public class ReviewLikeServiceImpl implements ReviewLikeService {
     public ReviewLike updateReviewLike(Long reviewId, Member member) {
         Optional<ReviewLike> optionalReviewLike = reviewLikeRepository.findByMemberAndReview_Id(member, reviewId);
         ReviewLike reviewLike;
-        Review review = reviewRepository.findById(reviewId).get();
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
 
         if(optionalReviewLike.isPresent()) {
             reviewLike = optionalReviewLike.get();
