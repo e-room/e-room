@@ -139,7 +139,7 @@ public class ReviewRestController {
             request.setReviewImageList(reviewImageList);
         }
         Review review = reviewService.saveReview(request, loginMember, building);
-        Boolean isFirstReview = loginMember.getReviewList().size() >= 2;
+        Boolean isFirstReview = loginMember.getReviewList().size() < 2;
         return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId(), isFirstReview));
     }
 
