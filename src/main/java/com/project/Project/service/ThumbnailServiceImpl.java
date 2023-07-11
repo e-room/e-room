@@ -23,22 +23,7 @@ public class ThumbnailServiceImpl implements ThumbnailImageService {
     @Override
     public List<Thumbnail> saveThumbnailList(List<MultipartFile> imageFileList) {
 
-        /*
-        todo: asynchronously
-         */
-//        List<Thumbnail> thumbnailList = new ArrayList<>();
-//        for (MultipartFile multipartFile : imageFileList) {
-//            Uuid uuid = thumbnailImageProcess.createUUID();
-//            ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
-//                    .createdAt(LocalDateTime.now())
-//                    .fileName(multipartFile.getOriginalFilename())
-//                    .uuid(uuid.getUuid())
-//                    .uuidEntity(uuid)
-//                    .build();
-//            Thumbnail thumbnail = thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
-//            thumbnailList.add(thumbnail);
-//        }
-        List<Thumbnail> thumbnailList = imageFileList.parallelStream().map((multipartFile) -> {
+        List<Thumbnail> thumbnailList = imageFileList.parallelStream().map(multipartFile -> {
             Uuid uuid = thumbnailImageProcess.createUUID();
             ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
                     .createdAt(LocalDateTime.now())
@@ -46,8 +31,7 @@ public class ThumbnailServiceImpl implements ThumbnailImageService {
                     .uuid(uuid.getUuid())
                     .uuidEntity(uuid)
                     .build();
-            Thumbnail thumbnail = thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
-            return thumbnail;
+            return thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
         }).collect(Collectors.toList());
 
         return thumbnailRepository.saveAll(thumbnailList);

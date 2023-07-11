@@ -13,6 +13,7 @@ import com.project.Project.repository.building.BuildingToReviewCategoryRepositor
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 @Component
@@ -43,7 +44,7 @@ public class ReviewEventListener implements EventListener {
         BuildingSummary buildingSummary = building.getBuildingSummary();
 
         Double avgScore = this.reviewRepository.findReviewsWithBuildingAndLock(buildingId).stream()
-                .map(Review::getReviewToReviewCategoryList).flatMap(inner -> inner.stream())
+                .map(Review::getReviewToReviewCategoryList).flatMap(Collection::stream)
                 .filter(elem -> elem.getReviewCategory().getType().equals(ReviewCategoryEnum.RESIDENCESATISFACTION))
                 .mapToDouble(ReviewToReviewCategory::getScore)
                 .average().orElse(0.0);
@@ -67,7 +68,7 @@ public class ReviewEventListener implements EventListener {
                         return buildingToReviewCategory;
                     }
             );
-            Double avg = reviewToReviewCategoryList.stream().filter((elem) -> elem.getReviewCategory().getType().equals(value))
+            Double avg = reviewToReviewCategoryList.stream().filter(elem -> elem.getReviewCategory().getType().equals(value))
                     .mapToDouble(elem -> elem.getScore())
                     .average().orElse(0.0);
             target.setAvgScore(avg);
