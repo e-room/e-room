@@ -32,4 +32,6 @@ public interface ReviewService {
 
 
     Long save(Review review);
+
+    List<Review> getBestReviews();
 }

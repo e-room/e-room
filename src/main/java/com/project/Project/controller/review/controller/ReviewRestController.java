@@ -59,6 +59,16 @@ public class ReviewRestController {
     private final ReviewImageService reviewImageService;
     private final MemberService memberService;
 
+    @Operation(summary = "베스트 리뷰 목록 조회 [1.1.0-4]", description = "베스트 리뷰 목록 조회 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK")
+    })
+    @GetMapping("/building/room/review/bests")
+    public ResponseEntity<ReviewResponseDto.ReviewListDto> getBestReviewList() {
+        List<Review> reviewList = reviewService.getBestReviews();
+        return ResponseEntity.ok(ReviewSerializer.toReviewListDto(reviewList));
+    }
+
     /**
      * 3.2 리뷰_상세페이지<br>
      * - 특정 건물에 대한 리뷰 리스트를 반환<br>

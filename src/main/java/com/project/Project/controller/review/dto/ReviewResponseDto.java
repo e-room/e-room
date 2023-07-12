@@ -2,6 +2,7 @@ package com.project.Project.controller.review.dto;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.service.review.ReviewService;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,28 @@ public class ReviewResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    public static class ReviewListDto {
+        private List<BestReviewDto> reviewDtoList;
+        private Integer size;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class BestReviewDto {
+        private AddressDto address;
+        private String buildingName;
+        private ReviewBaseDto reviewBaseDto;
+        private ReviewScoreDto reviewScoreDto;
+        private MemberDto authorDto;
+        private ReviewImageListDto reviewImageListDto;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class ReviewDto {
         private ReviewBaseDto reviewBaseDto;
         private ReviewScoreDto reviewScoreDto;
@@ -39,7 +62,6 @@ public class ReviewResponseDto {
         public void setIsLiked(Boolean recommended) {
             this.isLiked = recommended;
         }
-
         private ReviewImageListDto reviewImageListDto;
     }
 

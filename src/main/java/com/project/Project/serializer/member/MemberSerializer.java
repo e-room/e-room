@@ -7,6 +7,7 @@ import com.project.Project.controller.member.dto.MemberResponseDto;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
+import com.project.Project.domain.review.Review;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.member.MemberException;
 import com.project.Project.repository.member.MemberRepository;
@@ -32,6 +33,10 @@ public class MemberSerializer {
         this.staticMemberRepo = memberRepository;
     }
 
+    public static MemberDto toAuthorDto(Review review) {
+        if (Boolean.TRUE.equals(review.getIsAnonymous())) return MemberDto.builder().id(review.getAuthor().getId()).name(review.getAuthor().getNickName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
+        return toDto(review.getAuthor());
+    }
 
     public static MemberDto toDto(OAuth2User oAuth2User) {
         var attributes = oAuth2User.getAttributes();
