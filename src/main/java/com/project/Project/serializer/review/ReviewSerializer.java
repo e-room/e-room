@@ -57,12 +57,7 @@ public class ReviewSerializer {
     }
 
     public static ReviewResponseDto.BestReviewDto toBestReviewDto(Review review) {
-        MemberDto authorDto = null;
-        if (review.getIsAnonymous()) {
-            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAuthor().getNickName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
-        } else {
-            authorDto = MemberSerializer.toDto(review.getAuthor());
-        }
+        MemberDto authorDto = MemberSerializer.toAuthorDto(review);
 
         return ReviewResponseDto.BestReviewDto.builder()
                 .reviewBaseDto(toBaseReviewDto(review))
@@ -121,12 +116,7 @@ public class ReviewSerializer {
     }
 
     public static ReviewResponseDto.ReviewDto toReviewDto(Review review) {
-        MemberDto authorDto = null;
-        if (review.getIsAnonymous()) {
-            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAuthor().getNickName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
-        } else {
-            authorDto = MemberSerializer.toDto(review.getAuthor());
-        }
+        MemberDto authorDto = MemberSerializer.toAuthorDto(review);
 
         return ReviewResponseDto.ReviewDto.builder()
                 .reviewBaseDto(toBaseReviewDto(review))
