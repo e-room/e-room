@@ -20,7 +20,7 @@ public interface ReviewCustomRepository {
 
     Function<Long, JPAQuery<Review>> findReviewQueryByBuildingId(List<Double> cursorIds, Pageable pageable);
 
-    List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable);
+    List<OrderSpecifier<?>> getAllOrderSpecifiers(Pageable pageable);
 
 
 }

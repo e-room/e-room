@@ -13,7 +13,6 @@ import javax.persistence.Embeddable;
 @Builder
 @Embeddable
 public class AnonymousStatus {
-    private String anonymousName;
-    private String anonymousProfilePicture;
+
     private Boolean isAnonymous;
 }

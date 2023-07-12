@@ -20,7 +20,7 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
     private final UuidCustomRepositoryImpl uuidCustomRepository;
     private final UuidRepository uuidRepository;
 
-    public FileProcessServiceImpl(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) {
+    protected FileProcessServiceImpl(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) {
         this.amazonS3Service = amazonS3Service;
         this.uuidCustomRepository = uuidCustomRepository;
         this.uuidRepository = uuidRepository;
@@ -38,7 +38,7 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
         return amazonS3Service.getFileUrl(filePath);
     }
 
-    public String uploadImage(InputStream inputStream, ObjectMetadata objectMetadata, String filePath, String fileName) {
+    public String uploadImage(InputStream inputStream, ObjectMetadata objectMetadata, String filePath) {
         amazonS3Service.uploadFile(inputStream, objectMetadata, filePath);
         return amazonS3Service.getFileUrl(filePath);
     }
@@ -46,8 +46,7 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
     public String getFilePath(MultipartFile file, T imagePackage) {
         AmazonS3PackageCommand command = imagePackage.createCommand();
         String uuid = imagePackage.getUuid();
-        String filePath = amazonS3Service.getFileFolder(command) + createFileName(uuid, file.getOriginalFilename());
-        return filePath;
+        return amazonS3Service.getFileFolder(command) + createFileName(uuid, file.getOriginalFilename());
     }
 
     protected ObjectMetadata generateObjectMetadata(MultipartFile file) {
@@ -68,7 +67,8 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
     public Uuid createUUID() {
         Uuid savedUuid = null;
         String candidate = UUID.randomUUID().toString();
-        if (uuidCustomRepository.exist(candidate)) {
+        Boolean doesExist = uuidCustomRepository.exist(candidate);
+        if (Boolean.TRUE.equals(doesExist)) {
             savedUuid = createUUID();
         }
         savedUuid = uuidRepository.save(Uuid.builder().uuid(candidate).build());
@@ -77,16 +77,7 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
 
     protected String createValidOriginFileName(String originalFileName) {
         String trimedString = originalFileName.trim();
-        String result = trimedString.replaceAll(" ", "-");
-        return result;
+        return trimedString.replace(" ", "-");
     }
 
-//    public void deleteImage(String url) {
-//        amazonS3Service.deleteFile(getFileName(url));
-//    }
-//
-//    private String getFileName(String url) {
-//        String[] paths = url.split("/");
-//        return paths[paths.length - 2] + "/" + paths[paths.length - 1];
-//    }
 }

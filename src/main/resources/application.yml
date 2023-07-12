@@ -2,7 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: prod
+    active: localDev
   task:
     execution:
       pool:
@@ -26,7 +26,7 @@ spring:
       maximum-pool-size: 25
 
 cors:
-  allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app,https://e-room.app,https://www.e-room.app'
+  allowed-origins: 'http://localhost:3000,https://localhost:3000,https://e-room-web.vercel.app,https://e-room.app,https://www.e-room.app,https://www.e-room.dev,https://e-room.dev'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
   allowed-headers: '*'
   max-age: 3600
@@ -44,6 +44,7 @@ login:
 springdoc:
   cache:
     disabled: true
+
 ---
 spring:
   config:
@@ -413,7 +414,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: validate
+          auto: update
         default_batch_fetch_size: 1000
   security:
     oauth2:

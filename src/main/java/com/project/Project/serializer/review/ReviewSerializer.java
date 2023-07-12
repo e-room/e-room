@@ -1,11 +1,14 @@
 package com.project.Project.serializer.review;
 
 import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.controller.member.dto.MemberResponseDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
+import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.enums.DTypeEnum;
 import com.project.Project.domain.enums.KeywordEnum;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.*;
 import com.project.Project.loader.review.ReviewLoader;
 import com.project.Project.repository.review.ReviewCategoryRepository;
@@ -35,6 +38,17 @@ public class ReviewSerializer {
     private static ReviewCategoryRepository staticReviewCategoryRepository;
     private static ReviewLoader staticReviewLoader;
 
+    public static ReviewResponseDto.ReviewListDto toReviewListDto(List<Review> reviewList) {
+        List<ReviewResponseDto.BestReviewDto> reviewDtoList = reviewList.stream()
+                .map(review -> toBestReviewDto(review))
+                .collect(Collectors.toList());
+
+        return ReviewResponseDto.ReviewListDto.builder()
+                .reviewDtoList(reviewDtoList)
+                .size(reviewDtoList.size())
+                .build();
+    }
+
 
     @PostConstruct
     public void init() {
@@ -42,6 +56,19 @@ public class ReviewSerializer {
         staticReviewKeywordRepository = this.reviewKeywordRepository;
         staticReviewCategoryRepository = this.reviewCategoryRepository;
         staticReviewLoader = this.reviewLoader;
+    }
+
+    public static ReviewResponseDto.BestReviewDto toBestReviewDto(Review review) {
+        MemberDto authorDto = MemberSerializer.toAuthorDto(review);
+
+        return ReviewResponseDto.BestReviewDto.builder()
+                .reviewBaseDto(toBaseReviewDto(review))
+                .reviewScoreDto(toReviewScoreDto(review))
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList()))
+                .address(Address.toAddressDto(review.getBuilding().getAddress()))
+                .buildingName(review.getBuilding().getBuildingName())
+                .build();
     }
 
     public static ReviewResponseDto.ReviewBaseDto toBaseReviewDto(Review review) {
@@ -91,12 +118,7 @@ public class ReviewSerializer {
     }
 
     public static ReviewResponseDto.ReviewDto toReviewDto(Review review) {
-        MemberDto authorDto = null;
-        if (review.getAnonymousStatus().getIsAnonymous()) {
-            authorDto = MemberDto.builder().id(review.getAuthor().getId()).name(review.getAnonymousStatus().getAnonymousName()).email(null).picture(review.getAuthor().getProfileImage().getUrl()).build();
-        } else {
-            authorDto = MemberSerializer.toDto(review.getAuthor());
-        }
+        MemberDto authorDto = MemberSerializer.toAuthorDto(review);
 
         return ReviewResponseDto.ReviewDto.builder()
                 .reviewBaseDto(toBaseReviewDto(review))
@@ -144,6 +166,15 @@ public class ReviewSerializer {
         return ReviewResponseDto.ReviewImageListDto.builder()
                 .reviewImageList(reviewImageDtoList)
                 .reviewImageCount(reviewImageCount)
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewReadByMemberDto toReviewReadDto(Member member, List<ReviewRead> reviewReads) {
+        MemberResponseDto.MemberProfileDto memberProfileDto = MemberSerializer.toMemberProfileDto(member);
+        List<Long> reviewIds = reviewReads.stream().map(ReviewRead::getReview).map(Review::getId).collect(Collectors.toList());
+        return ReviewResponseDto.ReviewReadByMemberDto.builder()
+                .memberProfileDto(memberProfileDto)
+                .reviewIds(reviewIds)
                 .build();
     }
 }
