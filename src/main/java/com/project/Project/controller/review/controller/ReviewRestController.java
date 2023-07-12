@@ -11,9 +11,9 @@ import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
+import com.project.Project.domain.review.ReviewRead;
 import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.review.ReviewException;
-
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.building.BuildingService;
 import com.project.Project.service.member.MemberService;
@@ -59,10 +59,6 @@ public class ReviewRestController {
     private final ReviewImageService reviewImageService;
     private final MemberService memberService;
 
-    /* todo
-        @GetMapping("/building/room/review")
-     */
-
     /**
      * 3.2 리뷰_상세페이지<br>
      * - 특정 건물에 대한 리뷰 리스트를 반환<br>
@@ -94,29 +90,23 @@ public class ReviewRestController {
         List<ReviewResponseDto.ReviewDto> reviewListResponseList =
                 reviewList.stream()
                         .map(ReviewSerializer::toReviewDto)
-                        .map((dto) -> ReviewSerializer.setIsLiked(dto, reviewLikeList))
+                        .map(dto -> ReviewSerializer.setIsLiked(dto, reviewLikeList))
                         .collect(Collectors.toList());
-        Boolean needToBlur = false;
-        if (member == null || memberService.getReviewCnt(member) < 1) {
-            needToBlur = true;
-            if(reviewList.size() >= 1) reviewListResponseList = reviewListResponseList.subList(0, 1);
-        }
+
+        //needToBlur
+        Boolean needToBlur = needToBlur(member);
+
+        //exposeState
+        ReviewResponseDto.ReviewExposeCommand exposeCommand = needToExpose(reviewListResponseList, member, buildingId);
+
+        //slice review
+        reviewListResponseList = exposeCommand.execute();
         Slice<ReviewResponseDto.ReviewDto> slicedReviewList = QueryDslUtil.toSlice(reviewListResponseList, pageable);
 
+        //response
         ReviewResponseDto.ReviewSliceDto responseBody = ReviewResponseDto.ReviewSliceDto.builder().reviewSlicedList(slicedReviewList).needToBlur(needToBlur).build();
         return ResponseEntity.ok(responseBody);
     }
-
-    /* todo
-        @GetMapping("/building/room/review/{reviewId}")
-    */
-
-
-    /* todo
-       등록, 삭제 API 인가 처리
-       등록: 로그인한 사용자만 리뷰 등록 가능
-       삭제: 본인의 리뷰만 삭제 가능
-     */
 
     /**
      * 7.1 ~ 7.5 리뷰쓰기<br>
@@ -149,12 +139,9 @@ public class ReviewRestController {
             request.setReviewImageList(reviewImageList);
         }
         Review review = reviewService.saveReview(request, loginMember, building);
-        Boolean isFirstReview = loginMember.getReviewList().size() >= 2 ? false : true;
+        Boolean isFirstReview = loginMember.getReviewList().size() < 2;
         return ResponseEntity.ok(ReviewSerializer.toReviewCreateDto(review.getId(), review.getBuilding().getId(), isFirstReview));
     }
-    /* todo
-        @PutMapping("/building/room/review/{reviewId}")
-     */
 
     /**
      * 3.2 리뷰_상세페이지<br>
@@ -181,7 +168,10 @@ public class ReviewRestController {
         return ResponseEntity.ok(ReviewSerializer.toReviewDeleteDto(deletedReviewId));
     }
 
-    @Deprecated
+    /**
+     * @deprecated
+     */
+    @Deprecated(since = "리뷰 응답에 이미지 포함")
     @Operation(summary = "리뷰 이미지 조회 [3.2]", description = "리뷰 이미지 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewImageListDto.class))),
@@ -195,4 +185,49 @@ public class ReviewRestController {
         List<ReviewImage> reviewImageList = reviewImageService.findByReview(reviewId);
         return ResponseEntity.ok(ReviewSerializer.toReviewImageListDto(reviewImageList));
     }
+
+    @Operation(summary = "리뷰 읽음 처리 [3.2]", description = "리뷰 읽음 처리 API<br>")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewReadByMemberDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "reviewId", description = "읽음 처리를 하고 싶은 리뷰 id"),
+            @Parameter(name = "loginMember", hidden = true)
+    })
+    @PostMapping("/building/room/review/{reviewId}/read")
+    public ResponseEntity<ReviewResponseDto.ReviewReadByMemberDto> readReview(@PathVariable("reviewId") @ExistReview Long reviewId, @AuthUser Member loginMember) {
+        ReviewRead reviewRead = reviewService.readReview(reviewId, loginMember.getId());
+        return ResponseEntity.ok(ReviewSerializer.toReviewReadDto(loginMember, List.of(reviewRead)));
+    }
+
+    private Boolean needToBlur(Member member) {
+        if (member == null) return true;
+        Integer reviewWriteCount = memberService.getReviewCnt(member);
+        return reviewWriteCount <= 0;
+    }
+
+    private ReviewResponseDto.ReviewExposeCommand needToExpose(List<ReviewResponseDto.ReviewDto> originalReviewList, Member member, Long buildingId) {
+        if (member == null) return new ReviewResponseDto.NoneReviewExposeCommand(originalReviewList);
+        Integer reviewWriteCount = memberService.getReviewCnt(member);
+        // 리뷰를 하나 이상 쓴 경우
+        if (reviewWriteCount > 0) {
+            // 전부 노출
+            return new ReviewResponseDto.AllReviewExposeCommand(originalReviewList);
+        }
+        // 리뷰를 하나도 쓰지 않은 경우
+        else {
+            Integer reviewReadCount = reviewService.getReviewReadCount(member.getId());
+            // 하나도 안 읽은 경우
+            if (reviewReadCount < 1) {
+                // 하나만 노출
+                return new ReviewResponseDto.OneReviewExposeCommand(originalReviewList);
+            }// 하나 이상 읽은 경우
+            else {
+                // 읽은 것만 노출
+                return new ReviewResponseDto.OnlyReadReviewExposeCommand(originalReviewList, member.getId(), buildingId, this.reviewService);
+            }
+        }
+    }
+
 }

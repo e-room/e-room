@@ -25,7 +25,7 @@ public interface BuildingCustomRepository {
 
     Function<JPAQuery<Building>, JPAQuery<Building>> customOrderBy(Pageable pageable);
 
-    List<OrderSpecifier> getAllOrderSpecifiers(Pageable pageable);
+    List<OrderSpecifier<?>> getAllOrderSpecifiers(Pageable pageable);
 
     BooleanExpression cursorId(Pageable pageable, List<Double> cursorIds, Integer index);
 }

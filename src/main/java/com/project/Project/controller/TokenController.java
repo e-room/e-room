@@ -37,39 +37,6 @@ public class TokenController {
     private final AuthenticationManager authenticationManager;
     private final JWTFailureHandler failureHandler;
 
-    // 토큰이 만료되었을 경우 사용자에게 안내해주기
-//    @GetMapping("/token/expired")
-//    public ResponseEntity<JsonResult> auth() {
-//        String message = "로그인이 필요합니다.";
-//        JsonResult jsonResult = new JsonResult(HttpStatus.UNAUTHORIZED, message, "/token/refresh");
-//
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                .body(jsonResult);
-//    }
-
-//    @GetMapping("/token/refresh")
-//    public String refreshAuth(@CookieValue("refreshToken") String token, HttpServletRequest request, HttpServletResponse response) {
-//
-//        if (token != null && tokenService.verifyToken(token).equals(TokenService.JwtCode.EXPIRED)) {
-//            UidDto uidDto = tokenService.getUid(token);
-//            Token newToken = tokenService.generateToken(uidDto.getEmail(), uidDto.getAuthProviderType(), "USER");
-//
-//            ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(newToken.getAccessToken());
-//            ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(newToken.getRefreshToken());
-//
-//            response.addHeader("Set-Cookie", accessTokenCookie.toString());
-//            response.addHeader("Set-Cookie", refreshTokenCookie.toString());
-//
-//            response.setContentType("application/json;charset=UTF-8");
-//
-//            // redirect로 변경
-//            return "HAPPY NEW TOKEN";
-//        }
-//
-//        // refresh 토큰조차 만료된 경우 클라이언트에게 안내해주기.
-//        throw new RuntimeException();
-//    }
-
     private String getCookieValue(HttpServletRequest req, String cookieName) {
         if (req.getCookies() == null) return null;
         return Arrays.stream(req.getCookies())
@@ -127,26 +94,4 @@ public class TokenController {
         } else isValid = false;
         return ResponseEntity.ok(TokenResponseDto.TokenValidDto.builder().isValid(isValid).build());
     }
-
-//    /**
-//     * /token/free?email=abscce@naver.com 등으로 요청
-//     *
-//     * @param email : 사용자 이메일
-//     * @return
-//     */
-//    @Deprecated
-//    @GetMapping("/token/free")
-//    public String freeToken(@RequestParam String email, HttpServletResponse response) throws IOException {
-//        Token token = tokenService.generateToken(email, AuthProviderType.KAKAO, "USER");
-//        response.setContentType("text/html;charset=UTF-8");
-//        response.setContentType("application/json;charset=UTF-8");
-//
-//        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken());
-//        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken());
-//
-//        response.addHeader("Set-Cookie", accessTokenCookie.toString());
-//        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
-//
-//        return "FREE TOKEN!";
-//    }
 }

@@ -4,6 +4,10 @@ import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
+import com.project.Project.exception.ErrorCode;
+import com.project.Project.exception.building.BuildingException;
+import com.project.Project.exception.review.ReviewException;
+import com.project.Project.exception.review.ReviewImageException;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewImageRepository;
 import com.project.Project.repository.review.ReviewRepository;
@@ -29,15 +33,12 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     private final ReviewRepository reviewRepository;
 
     public List<ReviewImage> findByReview(Long reviewId) {
-        // controller 단에서 존재하는 @ExistReview로 검증하여 존재하는 reviewId이므로 바로 get
-        Review review = reviewRepository.findById(reviewId).get();
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
         return reviewImageRepository.findByReview(review);
     }
 
     public ReviewImage findByUuid(String uuid) {
-        // controller 단에서 존재하는 @ExistReviewImage로 검증하여 존재하는 uuid이므로 바로 get
-        ReviewImage reviewImage = reviewImageRepository.findByUuid(uuid).get();
-        return reviewImage;
+        return reviewImageRepository.findByUuid(uuid).orElseThrow(() -> new ReviewImageException(ErrorCode.REVIEW_IMAGE_NOT_FOUND));
     }
 
     @Transactional
@@ -58,8 +59,7 @@ public class ReviewImageServiceImpl implements ReviewImageService {
 
     @Override
     public List<ReviewImage> findByBuilding(Long buildingId) {
-        // controller 단에서 존재하는 @ExistBuilding으로 검증하여 존재하는 buildingId이므로 바로 get
-        Building building = buildingRepository.findById(buildingId).get();
+        Building building = buildingRepository.findById(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
         List<ReviewImage> reviewImageList = reviewImageRepository.findByBuilding(building);
         reviewImageList.stream().map(ReviewImage::getReview).forEach(Hibernate::initialize);
         return reviewImageList;

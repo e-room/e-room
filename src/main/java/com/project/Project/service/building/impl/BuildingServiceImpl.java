@@ -65,7 +65,6 @@ public class BuildingServiceImpl implements BuildingService {
         return buildingList;
     }
 
-
     @Override
     public Optional<Building> findByAddress(Address address) {
         return buildingRepository.findByAddress(address);
