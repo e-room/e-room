@@ -53,7 +53,7 @@ public class BuildingServiceImpl implements BuildingService {
         buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
         if(buildingList.isEmpty()) {
             try {
-                buildingList = createBuildingByAddress(params);
+                buildingList = createBuilding(params);
             } catch (DataIntegrityViolationException e) {
                 // Unique 제약 조건 위반 시, 해당 주소로 빌딩을 다시 검색합니다. (동시에 DB에 없는 같은 주소를 검색한 경우)
                 buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
@@ -65,9 +65,6 @@ public class BuildingServiceImpl implements BuildingService {
         return buildingList;
     }
 
-    private List<Building> createBuildingByAddress(String address) {
-        return BuildingGenerator.generateBuildings(address);
-    }
 
     @Override
     public Optional<Building> findByAddress(Address address) {
