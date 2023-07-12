@@ -2,6 +2,7 @@ package com.project.Project.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +20,13 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI eroomAPI() {
+        Info info = new Info()
+                .title("E-Room API")
+                .description("이룸 API 명세서")
+                .version("0.0.1");
+
         return new OpenAPI()
-                .info(
-                        new Info()
-                                .title("E-Room API")
-                                .description("이룸 API 명세서")
-                                .version("0.0.1")
-                );
+                .addServersItem(new Server().url("/"))
+                .info(info);
     }
 }
