@@ -24,8 +24,6 @@ import java.util.function.Function;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE building SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 @Entity
 @Table(
         uniqueConstraints = {
@@ -66,7 +64,7 @@ public class Building extends BaseEntity {
     @Builder.Default
     private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "building", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "building", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     private BuildingSummary buildingSummary;
 
     @Enumerated(EnumType.STRING)

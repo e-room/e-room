@@ -4,6 +4,7 @@ import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
+import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
@@ -11,10 +12,12 @@ import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.service.building.BuildingService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Hibernate;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,10 +46,23 @@ public class BuildingServiceImpl implements BuildingService {
         return Optional.ofNullable(buildingRepository.findBuildingById(buildingId));
     }
 
+    @Transactional
     @Override
     public List<Building> getBuildingsBySearch(String params, List<Double> cursorIds, Pageable page) {
-//        return buildingRepository.searchBuildings(params);
-        return buildingCustomRepo.searchBuildings(params, cursorIds, page);
+        List<Building> buildingList;
+        buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
+        if(buildingList.isEmpty()) {
+            try {
+                buildingList = createBuilding(params);
+            } catch (DataIntegrityViolationException e) {
+                // Unique 제약 조건 위반 시, 해당 주소로 빌딩을 다시 검색합니다. (동시에 DB에 없는 같은 주소를 검색한 경우)
+                buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
+            } catch (Exception e) {
+                // 예외 응답을 주는 대신, 빈 리스트를 반환합니다. (BuildingException, ...)
+                buildingList = new ArrayList<>();
+            }
+        }
+        return buildingList;
     }
 
     @Override

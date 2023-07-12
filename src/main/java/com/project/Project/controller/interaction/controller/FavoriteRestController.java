@@ -3,7 +3,6 @@ package com.project.Project.controller.interaction.controller;
 import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
 import com.project.Project.controller.interaction.dto.FavoriteResponseDto;
-import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.building.Building;
 import com.project.Project.exception.ErrorCode;
@@ -60,7 +59,7 @@ public class FavoriteRestController {
     public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getFavoriteBuildingList(@RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable, @AuthUser Member member) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Building> buildingList = favoriteService.getBuildingListByMember(member, cursorIds, pageable);
-        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map(BuildingSerializer::toBuildingListResponse).collect(Collectors.toList());
         return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
     }
 

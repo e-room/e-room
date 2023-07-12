@@ -5,6 +5,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.repository.building.BuildingSummaryRepository;
 import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.service.building.impl.BuildingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +26,9 @@ public class BuildingServiceTest {
     @Mock
     private BuildingCustomRepository buildingCustomRepository;
 
+    @Mock
+    private BuildingSummaryRepository buildingSummaryRepository;
+
     @Spy
     private WebClient webClient;
 
@@ -32,9 +36,11 @@ public class BuildingServiceTest {
     @InjectMocks
     private BuildingServiceImpl buildingService;
 
+
+
     @BeforeEach
     public void prepare() {
-        this.buildingGenerator = new BuildingGenerator(webClient, buildingCustomRepository, buildingRepository);
+        this.buildingGenerator = new BuildingGenerator(webClient, buildingCustomRepository, buildingRepository, buildingSummaryRepository);
     }
 
     // todo : createBuilding 구현 후 작성
