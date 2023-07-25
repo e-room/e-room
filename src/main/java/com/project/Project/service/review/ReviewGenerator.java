@@ -154,6 +154,7 @@ public class ReviewGenerator {
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
+                .isAnonymous(status.getIsAnonymous())
                 .reviewSummary(reviewSummary)
                 .building(building)
                 .build();
