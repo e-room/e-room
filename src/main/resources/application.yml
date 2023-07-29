@@ -37,6 +37,10 @@ file:
   origin-max-size: 1500
   thumbnail-location: './resources/thumbnail'
 
+springdoc:
+  cache:
+    disabled: true
+
 ---
 spring:
   config:
@@ -109,7 +113,7 @@ server:
       cookie:
         same-site: none
         #        secure: true
-        domain: e-room.app
+        domain: e-room.dev
     multipart:
       enabled: true
       maxFileSize: 20MB
