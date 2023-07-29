@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "login")
 public class SecurityProperties {
 
+    private String scheme;
     private String defaultHost;
+    private Integer port;
     private String defaultFailurePath;
     private String defaultSuccessPath;
 }

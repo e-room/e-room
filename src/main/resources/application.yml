@@ -132,6 +132,8 @@ jwt:
   refresh-token-validity-in-sec: 2592000  # ???
 
 login:
+  scheme: https
+  port: 443
   default-host: 'e-room.dev'
   default-failure-path: '/login'
   default-success-path: '/'
@@ -222,6 +224,8 @@ jwt:
   refresh-token-validity-in-sec: 2592000  # ???
 
 login:
+  scheme: https
+  port: 443
   default-host: 'e-room.app'
   default-failure-path: '/login'
   default-success-path: '/'
@@ -313,6 +317,8 @@ jwt:
   refresh-token-validity-in-sec: 2592000  # ???
 
 login:
+  scheme: https
+  port: 443
   default-host: 'e-room.dev'
   default-failure-path: '/login'
   default-success-path: '/'
@@ -408,8 +414,10 @@ jwt:
   refresh-token-validity-in-sec: 2592000  # ???
 
 login:
+  scheme: http
+  port: 3000
   default-host: 'localhost'
-  default-failure-path: '/login'
+  default-failure-path: 'api/getToken'
   default-success-path: '/'
 
 ---
@@ -504,10 +512,11 @@ jwt:
   refresh-token-validity-in-sec: 2592000  # ???
 
 login:
+  scheme: http
+  port: 3000
   default-host: 'localhost'
-  default-failure-path: '/login'
+  default-failure-path: 'api/getToken'
   default-success-path: '/'
-
 ---
 spring:
   config:
@@ -600,6 +609,8 @@ jwt:
   refresh-token-validity-in-sec: 2592000  # ???
 
 login:
+  scheme: http
+  port: 3000
   default-host: 'localhost'
-  default-failure-path: '/login'
+  default-failure-path: 'api/getToken'
   default-success-path: '/'
