@@ -103,14 +103,10 @@ public class CookieUtil {
         ResponseCookie.ResponseCookieBuilder accessTokenCookie = ResponseCookie.from("accessToken", token)
                 .secure(true)
                 .httpOnly(true)
+                .domain(isLocal ? "localhost" : staticSecurityProperties.getDefaultHost())
                 .path("/")
                 .sameSite("None")
                 .maxAge(accessTokenMaxAge);
-        if (isLocal) {
-            accessTokenCookie.domain("localhost");
-        } else {
-            accessTokenCookie.domain(staticSecurityProperties.getDefaultHost());
-        }
         return accessTokenCookie.build();
     }
 
@@ -118,14 +114,10 @@ public class CookieUtil {
         ResponseCookie.ResponseCookieBuilder refreshTokenCookie = ResponseCookie.from("refreshToken", token)
                 .secure(true)
                 .httpOnly(true)
+                .domain(isLocal ? "localhost" : staticSecurityProperties.getDefaultHost())
                 .path("/")
                 .sameSite("None")
                 .maxAge(refreshTokenMaxAge);
-        if (isLocal) {
-            refreshTokenCookie.domain("localhost");
-        } else {
-            refreshTokenCookie.domain(staticSecurityProperties.getDefaultHost());
-        }
         return refreshTokenCookie.build();
     }
 
