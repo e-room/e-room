@@ -37,14 +37,6 @@ file:
   origin-max-size: 1500
   thumbnail-location: './resources/thumbnail'
 
-login:
-  default-host: 'e-room.app'
-  default-failure-path: '/login'
-  default-success-path: '/'
-springdoc:
-  cache:
-    disabled: true
-
 ---
 spring:
   config:
@@ -135,6 +127,13 @@ jwt:
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
 
+login:
+  scheme: https
+  port: 443
+  default-host: 'e-room.dev'
+  default-failure-path: '/login'
+  default-success-path: '/'
+
 ---
 spring:
   config:
@@ -219,6 +218,13 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: https
+  port: 443
+  default-host: 'e-room.app'
+  default-failure-path: '/login'
+  default-success-path: '/'
 
 ---
 spring:
@@ -305,6 +311,13 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: https
+  port: 443
+  default-host: 'e-room.dev'
+  default-failure-path: '/login'
+  default-success-path: '/'
 
 ---
 spring:
@@ -396,6 +409,13 @@ jwt:
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
 
+login:
+  scheme: http
+  port: 3000
+  default-host: 'localhost'
+  default-failure-path: 'api/getToken'
+  default-success-path: '/'
+
 ---
 spring:
   config:
@@ -486,6 +506,13 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: http
+  port: 3000
+  default-host: 'localhost'
+  default-failure-path: 'api/getToken'
+  default-success-path: '/'
 ---
 spring:
   config:
@@ -576,3 +603,10 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: http
+  port: 3000
+  default-host: 'localhost'
+  default-failure-path: 'api/getToken'
+  default-success-path: '/'

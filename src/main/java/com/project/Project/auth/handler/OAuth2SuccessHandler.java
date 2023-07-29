@@ -20,7 +20,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +38,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
     private SecurityProperties securityProperties;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         MemberDto memberDto = MemberSerializer.toDto(oAuth2User);
         Token token = tokenService.generateToken(memberDto.getEmail(), memberDto.getAuthProviderType(), MemberRole.USER);
@@ -56,32 +55,10 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
                 .map(Cookie::getValue)
                 .map(Boolean::parseBoolean).orElse(false);
 
-        if (isLocal) {
-
-            String accessToken = token.getAccessToken();
-            String refreshToken = token.getRefreshToken();
-            String defaultUrl = new URIBuilder().setScheme("http").setPort(3000).setHost("localhost").setPath("api/getToken").toString();
-
-            String redirectPath = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
-                    .map(Cookie::getValue)
-                    .orElse(securityProperties.getDefaultSuccessPath());
-            writeTokenResponse(request, response, token);
-
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("accessToken", accessToken);
-            params.add("refreshToken", refreshToken);
-            params.add("redirectPath", redirectPath);
-            String targetUrl = UriComponentsBuilder.newInstance()
-                    .path(defaultUrl)
-                    .queryParams(params).build().toString();
-            this.clearAuthenticationAttributes(request, response);
-            getRedirectStrategy().sendRedirect(request, response, targetUrl);
-        } else {
-            writeTokenResponse(request, response, token);
-            String targetUrl = this.determineTargetUrl(request, response, authentication);
-            this.clearAuthenticationAttributes(request, response);
-            getRedirectStrategy().sendRedirect(request, response, targetUrl);
-        }
+        writeTokenResponse(request, response, token);
+        String targetUrl = this.determineTargetUrlDelegate(request, response, token, isLocal);
+        this.clearAuthenticationAttributes(request, response);
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
@@ -89,12 +66,31 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
 
+    protected String determineTargetUrlDelegate(HttpServletRequest request, HttpServletResponse response, Token token, boolean isLocal) throws IOException {
+        if (isLocal) {
+            String defaultUrl = new URIBuilder().setScheme(securityProperties.getScheme()).setPort(securityProperties.getPort()).setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultSuccessPath()).toString();
+            String redirectPath = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+                    .map(Cookie::getValue)
+                    .orElse(securityProperties.getDefaultSuccessPath());
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("accessToken", token.getAccessToken());
+            params.add("refreshToken", token.getRefreshToken());
+            params.add("redirectPath", redirectPath);
+            String targetUrl = UriComponentsBuilder.newInstance()
+                    .path(defaultUrl)
+                    .queryParams(params).build().toString();
+            return targetUrl;
+        } else {
+            return this.determineTargetUrl(request, response);
+        }
+    }
+
     @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response) {
-        String defaultUrl = new URIBuilder().setScheme("https").setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultSuccessPath()).toString();
+        String defaultUrl = new URIBuilder().setScheme(securityProperties.getScheme()).setPort(securityProperties.getPort()).setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultSuccessPath()).toString();
         Optional<String> redirectUrl = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
-                .map((path) -> new URIBuilder().setScheme("https").setHost(securityProperties.getDefaultHost()).setPath(path).toString());
+                .map((path) -> new URIBuilder().setScheme(securityProperties.getScheme()).setPort(securityProperties.getPort()).setHost(securityProperties.getDefaultHost()).setPath(path).toString());
         String targetUrl = redirectUrl.orElse(defaultUrl);
         return targetUrl;
     }
