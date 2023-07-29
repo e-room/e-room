@@ -70,6 +70,16 @@ public class BuildingRestController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "지도 마킹 시 건물 detail", description = "Building과 reviewCnt, avgScore를 함께 조회하는 API")
+    @Parameter(name = "buildingId", description = "조회하고자 하는 건물의 id", example = "4454")
+    @GetMapping("/marking/detail/{buildingId}")
+    public ResponseEntity<BuildingResponseDto.BuildingMarkingDetailDto> getBuildingMarkerDetail(@PathVariable("buildingId") @ExistBuilding Long buildingId, @AuthUser Member member) {
+        Building building = this.buildingService.getBuildingByBuildingId(buildingId).orElseThrow(() -> new BuildingException(ErrorCode.BUILDING_NOT_FOUND));
+        BuildingResponseDto.BuildingMarkingDetailDto response = BuildingSerializer.toBuildingMarkingDetailResponse(building);
+        return ResponseEntity.ok(response);
+    }
+
+
     /*
     when: 3.0.2
     request: buildingId list
@@ -84,11 +94,11 @@ public class BuildingRestController {
             @Parameter(name = "pageable", hidden = true)
     })
     @GetMapping("")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> getBuildingList(@RequestParam List<Long> buildingIds, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = {"id", "reviewCnt", "avgScore"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingElement>> getBuildingList(@RequestParam List<Long> buildingIds, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = {"id", "reviewCnt", "avgScore"}, page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Building> buildingList = this.buildingService.getBuildingListByBuildingIds(buildingIds, cursorIds, pageable);
-        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map(BuildingSerializer::toBuildingListResponse).collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
+        List<BuildingResponseDto.BuildingElement> buildingElement = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingElement, pageable));
     }
 
     /*
@@ -107,6 +117,7 @@ public class BuildingRestController {
         return ResponseEntity.ok(BuildingSerializer.toBuildingResponse(building, isFavorite));
     }
 
+
     /* 8.1
     when:
     request: 검색 코드(Enum), searchParams(주소,단일 Or 복수, 집 주소 등등)
@@ -123,11 +134,11 @@ public class BuildingRestController {
             @Parameter(name = "pageable", hidden = true)
     })
     @GetMapping("/search")
-    public ResponseEntity<Slice<BuildingResponseDto.BuildingListResponse>> searchBuilding(@RequestParam("params") String params, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
+    public ResponseEntity<Slice<BuildingResponseDto.BuildingElement>> searchBuilding(@RequestParam("params") String params, @RequestParam(required = false) List<Double> cursorIds, @PageableDefault(size = 10, sort = "id", page = 0, direction = Sort.Direction.DESC) Pageable pageable) {
         if (cursorIds == null) cursorIds = new ArrayList<>();
         List<Building> buildingList = this.buildingService.getBuildingsBySearch(params, cursorIds, pageable);
-        List<BuildingResponseDto.BuildingListResponse> buildingListResponse = buildingList.stream().map(BuildingSerializer::toBuildingListResponse).collect(Collectors.toList());
-        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingListResponse, pageable));
+        List<BuildingResponseDto.BuildingElement> buildingElement = buildingList.stream().map((building) -> BuildingSerializer.toBuildingListResponse(building)).collect(Collectors.toList());
+        return ResponseEntity.ok(QueryDslUtil.toSlice(buildingElement, pageable));
     }
 
     /*
