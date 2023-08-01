@@ -68,7 +68,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
 
     protected String determineTargetUrlDelegate(HttpServletRequest request, HttpServletResponse response, Token token, boolean isLocal) throws IOException {
         if (isLocal) {
-            String defaultUrl = new URIBuilder().setScheme(securityProperties.getScheme()).setPort(securityProperties.getPort()).setHost(securityProperties.getDefaultHost()).setPath(securityProperties.getDefaultSuccessPath()).toString();
+            String defaultUrl = new URIBuilder().setScheme("http").setPort(3000).setHost("localhost").setPath("api/getToken").toString();
             String redirectPath = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                     .map(Cookie::getValue)
                     .orElse(securityProperties.getDefaultSuccessPath());
