@@ -7,6 +7,7 @@ import com.project.Project.domain.enums.ReviewLikeStatus;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
+import com.project.Project.domain.review.Review;
 import com.project.Project.repository.interaction.FavoriteRepository;
 import com.project.Project.repository.interaction.ReviewLikeRepository;
 import com.project.Project.repository.member.MemberCustomRepository;
@@ -78,5 +79,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<ReviewLike> getReviewLikeList(Member member) {
         return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
+    }
+
+    @Override
+    public List<Review> getReviewList(Member member) {
+        List<Review> reviewList = reviewRepository.findReviewsByAuthorAndDeleted(member, Boolean.FALSE);
+        return reviewList;
     }
 }
