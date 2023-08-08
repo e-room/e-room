@@ -34,6 +34,7 @@ public enum ErrorCode {
 
     //ReviewImage
     NO_REVIEW_IN_REVIEW_IMAGE(HttpStatus.BAD_REQUEST, "리뷰 이미지에 리뷰가 할당되어있지 않습니다."),
+    REVIEW_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 리뷰 이미지가 없습니다"),
 
     //etc
     UUID_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당하는 UUID가 존재하지 않습니다."),

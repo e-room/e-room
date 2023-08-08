@@ -3,6 +3,7 @@ package com.project.Project.domain.member;
 import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.auth.Role;
+import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
@@ -57,6 +58,8 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "recent_map_location_id")
     private RecentMapLocation recentMapLocation;
 
+    private String nickName;
+
     public void setRecentMapLocation(RecentMapLocation recentMapLocation) {
         this.recentMapLocation = recentMapLocation;
     }
@@ -83,6 +86,10 @@ public class Member extends BaseEntity {
         List<Role> newRoles = roleEnums.stream().map((roleEnum) -> Role.builder()
                 .memberRole(roleEnum).member(this).build()).collect(Collectors.toList());
         this.roles = newRoles;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     @Override

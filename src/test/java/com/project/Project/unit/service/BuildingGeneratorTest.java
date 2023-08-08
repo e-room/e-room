@@ -5,6 +5,7 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.repository.building.BuildingSummaryRepository;
 import com.project.Project.service.building.BuildingGenerator;
 import com.project.Project.util.KakaoAddressAPI;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +36,11 @@ public class BuildingGeneratorTest {
     @MockBean
     private BuildingRepository buildingRepository;
 
+    @MockBean
+    private BuildingSummaryRepository buildingSummaryRepository;
+
     @Autowired
-    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient, buildingCustomRepository, buildingRepository);
+    private BuildingGenerator buildingGenerator = new BuildingGenerator(kakaoMapClient, buildingCustomRepository, buildingRepository, buildingSummaryRepository);
 
     @Test
     public void searchBuildingByKakao() {
@@ -66,16 +70,24 @@ public class BuildingGeneratorTest {
     void generateBuilding_Test() {
         Address address = Address.builder()
                 .siDo("경기도")
-                .siGunGu("수원시 영통구")
+                .siGunGu("")
                 .roadName("매영로425번길")
                 .eupMyeon("")
-                .buildingNumber("4")
+                .buildingNumber("")
                 .build();
         Building building = BuildingGenerator.generateBuilding(address);
         Building expected = Building.builder()
                 .address(address).build();
         EqualBuilding(building, expected);
         assertThat(building.getCoordinate()).isNotNull();
+    }
+
+    @Test
+    void generateBuilding_Param_Test() {
+        List<Building> buildingList = BuildingGenerator.generateBuildings("매영로425번길 2");
+        long expected = 1;
+
+        assertThat(buildingList.size()).isEqualTo(expected);
     }
 
     private Boolean EqualBuilding(Building building1, Building building2) {

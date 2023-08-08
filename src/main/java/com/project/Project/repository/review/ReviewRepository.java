@@ -2,6 +2,7 @@ package com.project.Project.repository.review;
 
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+
+    List<Review> findByIdIn(List<Long> ids);
 
     void deleteAllByAuthor(Member member);
 
@@ -38,4 +41,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("select review from Review review where review.author.id = :memberId and review.id = :reviewId")
     Optional<Review> findReviewByAuthorAndReview(Long memberId, Long reviewId);
+
+    List<Review> findReviewsByAuthorAndDeleted(Member member, Boolean deleted);
 }

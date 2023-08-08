@@ -4,7 +4,6 @@ import com.project.Project.controller.building.dto.CoordinateDto;
 import com.project.Project.domain.embedded.Coordinate;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.enums.ReviewLikeStatus;
-import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
@@ -80,5 +79,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<ReviewLike> getReviewLikeList(Member member) {
         return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
+    }
+
+    @Override
+    public List<Review> getReviewList(Member member) {
+        List<Review> reviewList = reviewRepository.findReviewsByAuthorAndDeleted(member, Boolean.FALSE);
+        return reviewList;
     }
 }

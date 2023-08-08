@@ -8,9 +8,11 @@ import com.project.Project.exception.ErrorCode;
 import com.project.Project.exception.building.BuildingException;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
+import com.project.Project.repository.building.BuildingSummaryRepository;
 import com.project.Project.util.KakaoAddressAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
@@ -28,14 +30,17 @@ public class BuildingGenerator {
     private final WebClient kakaoMapWebClient;
     private final BuildingCustomRepository buildingCustomRepository;
     private final BuildingRepository buildingRepository;
+    private final BuildingSummaryRepository buildingSummaryRepository;
     private static WebClient staticWebClient;
     private static BuildingCustomRepository staticBuildingCustomRepository;
     private static BuildingRepository staticBuildingRepository;
+    private static BuildingSummaryRepository staticBuildingSummaryRepository;
 
     @PostConstruct
     public void init() {
         staticBuildingCustomRepository = this.buildingCustomRepository;
         staticBuildingRepository = this.buildingRepository;
+        staticBuildingSummaryRepository = this.buildingSummaryRepository;
         staticWebClient = this.kakaoMapWebClient;
     }
 
@@ -49,15 +54,21 @@ public class BuildingGenerator {
 
     public static Building generateBuilding(Address address, Coordinate coordinate) {
         return staticBuildingRepository.findByAddress(address).orElseGet(() -> {
+
             // building.create()
             Building buildingCreated = Building.builder()
                     .coordinate(coordinate)
                     .address(address).build();
+
+            System.out.println("BUILDING ID : " + buildingCreated.getId());
+
             //buildingSummary.create()
             BuildingSummary buildingSummary = new BuildingSummary();
             buildingSummary.setBuilding(buildingCreated);
-            staticBuildingRepository.save(buildingCreated);
-            return buildingCreated;
+
+            System.out.println("GENERATE BUILDING 진입");
+
+            return staticBuildingRepository.save(buildingCreated);
         });
     }
 
@@ -108,7 +119,11 @@ public class BuildingGenerator {
                     .siGunGu(document.getRoad_address().getRegion_2depth_name())
                     .eupMyeon(document.getRoad_address().getRegion_3depth_name())
                     .roadName(document.getRoad_address().getRoad_name())
-                    .buildingNumber(document.getRoad_address().getSub_building_no())
+                    .buildingNumber(
+                            document.getRoad_address().getSub_building_no().isEmpty() ?
+                            document.getRoad_address().getMain_building_no() :
+                            document.getRoad_address().getMain_building_no() + "-" + document.getRoad_address().getSub_building_no()
+                            )
                     .build();
             Coordinate coordinate = Coordinate.builder()
                     .longitude(Double.parseDouble(document.getX()))

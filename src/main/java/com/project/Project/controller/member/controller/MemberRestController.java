@@ -5,9 +5,12 @@ import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.member.dto.MemberRequestDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
 
+import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
+import com.project.Project.domain.review.Review;
 import com.project.Project.serializer.member.MemberSerializer;
+import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.member.MemberService;
 import com.project.Project.util.component.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,12 +27,11 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
@@ -64,7 +66,7 @@ public class MemberRestController {
             @Parameter(name = "response", hidden = true)
     })
     @DeleteMapping("/member/exit")
-    public void exitMember(@AuthUser Member loginMember, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void exitMember(@AuthUser Member loginMember, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
                 .map(Cookie::getValue)
                 .map(Boolean::parseBoolean).orElse(false);
@@ -82,7 +84,10 @@ public class MemberRestController {
         response.getWriter().write(mapper.writeValueAsString(MemberSerializer.toMemberDeleteDto(deletedMemberId)));
     }
 
-    @Deprecated
+    /**
+     * @deprecated 마지막 위치 저장을 클라이언트 단에서 저장하면서 쓰이지 않게 되었습니다.
+     */
+    @Deprecated(since = "")
     @Operation(summary = "마지막 지도 위치 저장 [3.0.1]", description = "마지막으로 조회한 지도의 중심 저장 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = MemberResponseDto.RecentMapLocationDto.class))),
@@ -98,5 +103,20 @@ public class MemberRestController {
             @RequestBody MemberRequestDto.RecentMapLocation request, @AuthUser Member loginMember) {
         RecentMapLocation recentMapLocation = memberService.updateRecentMapLocation(request.getCoordinateDto(), loginMember);
         return ResponseEntity.ok(MemberSerializer.toRecentMapLocationDto(recentMapLocation));
+    }
+
+
+    @Operation(summary = "내 리뷰 조회", description = "내가 쓴 리뷰 조회 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewListDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "loginMember", hidden = true)
+    })
+    @GetMapping("/members/reviews")
+    public ResponseEntity<ReviewResponseDto.ReviewListDto> getReviews(@AuthUser Member loginMember) {
+        List<Review> reviews = memberService.getReviewList(loginMember);
+        return ResponseEntity.ok(ReviewSerializer.toReviewListDto(reviews));
     }
 }

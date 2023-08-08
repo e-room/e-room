@@ -1,4 +1,4 @@
-package JPA;
+package jpa;
 
 import com.project.Project.ProjectApplication;
 import com.project.Project.user.entity.UserEntity;

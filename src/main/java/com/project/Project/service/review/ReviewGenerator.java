@@ -96,7 +96,6 @@ public class ReviewGenerator {
             return generateAnonymousStatus();
         } else {
             return AnonymousStatus.builder()
-                    .anonymousName(null)
                     .isAnonymous(Boolean.FALSE)
                     .build();
         }
@@ -155,8 +154,8 @@ public class ReviewGenerator {
                 .likeMemberList(new ArrayList<>())
                 .reviewToReviewCategoryList(new ArrayList<>())
                 .reviewToReviewKeywordList(new ArrayList<>())
+                .isAnonymous(status.getIsAnonymous())
                 .reviewSummary(reviewSummary)
-                .anonymousStatus(status)
                 .building(building)
                 .build();
         review.setAuthor(member);
@@ -215,7 +214,7 @@ public class ReviewGenerator {
                 .bodyToMono(String.class)
                 .block();
         return AnonymousStatus.builder()
-                .anonymousName(nickName)
+//                .anonymousName(nickName)
                 .isAnonymous(Boolean.TRUE)
                 .build();
     }

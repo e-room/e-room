@@ -78,7 +78,6 @@ public class BuildingResponseDto {
     public static class ReviewImageDto {
         private String uuid;
         private String url;
-        private AnonymousStatus anonymousStatus;
     }
 
     @NoArgsConstructor
