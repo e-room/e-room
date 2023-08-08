@@ -3,7 +3,7 @@ package com.project.Project.domain.member;
 import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.auth.Role;
-import com.project.Project.domain.embedded.AnonymousStatus;
+import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.interaction.Favorite;
 import com.project.Project.domain.interaction.ReviewLike;
@@ -43,6 +43,10 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<CheckList> checkLists = new ArrayList<>();
 
     private String refreshToken;
 
