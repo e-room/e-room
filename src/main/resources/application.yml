@@ -37,10 +37,6 @@ file:
   origin-max-size: 1500
   thumbnail-location: './resources/thumbnail'
 
-login:
-  default-host: 'e-room.app'
-  default-failure-path: '/login'
-  default-success-path: '/'
 springdoc:
   cache:
     disabled: true
@@ -75,7 +71,7 @@ spring:
             scope:
               - profile
               - email
-            redirect-uri: https://api-dev.e-room.app/login/oauth2/code/google
+            redirect-uri: https://api.e-room.dev/login/oauth2/code/google
           naver:
             client-name: Naver
             client-id: zgbCFybgDt7zOQJSuTRZ
@@ -84,7 +80,7 @@ spring:
               - name
               - email
               - profile_image
-            redirect-uri: https://api-dev.e-room.app/login/oauth2/code/naver
+            redirect-uri: https://api.e-room.dev/login/oauth2/code/naver
             authorization-grant-type: authorization_code
           kakao:
             client-name: kakao
@@ -95,7 +91,7 @@ spring:
               - profile_nickname
               - account_email
               - profile_image
-            redirect-uri: https://api-dev.e-room.app/login/oauth2/code/kakao
+            redirect-uri: https://api.e-room.dev/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
         provider:
           naver:
@@ -117,7 +113,7 @@ server:
       cookie:
         same-site: none
         #        secure: true
-        domain: e-room.app
+        domain: e-room.dev
     multipart:
       enabled: true
       maxFileSize: 20MB
@@ -134,6 +130,13 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: https
+  port: 443
+  default-host: 'e-room.dev'
+  default-failure-path: '/login'
+  default-success-path: '/'
 
 ---
 spring:
@@ -220,6 +223,13 @@ jwt:
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
 
+login:
+  scheme: https
+  port: 443
+  default-host: 'e-room.app'
+  default-failure-path: '/login'
+  default-success-path: '/'
+
 ---
 spring:
   config:
@@ -251,7 +261,7 @@ spring:
             scope:
               - profile
               - email
-            redirect-uri: https://api-dev.e-room.app/login/oauth2/code/google
+            redirect-uri: https://api.e-room.dev/login/oauth2/code/google
           naver:
             client-name: Naver
             client-id: zgbCFybgDt7zOQJSuTRZ
@@ -260,7 +270,7 @@ spring:
               - name
               - email
               - profile_image
-            redirect-uri: https://api-dev.e-room.app/login/oauth2/code/naver
+            redirect-uri: https://api.e-room.dev/login/oauth2/code/naver
             authorization-grant-type: authorization_code
           kakao:
             client-name: kakao
@@ -271,7 +281,7 @@ spring:
               - profile_nickname
               - account_email
               - profile_image
-            redirect-uri: https://api-dev.e-room.app/login/oauth2/code/kakao
+            redirect-uri: https://api.e-room.dev/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
         provider:
           naver:
@@ -305,6 +315,13 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: https
+  port: 443
+  default-host: 'e-room.dev'
+  default-failure-path: '/login'
+  default-success-path: '/'
 
 ---
 spring:
@@ -396,6 +413,13 @@ jwt:
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
 
+login:
+  scheme: http
+  port: 3000
+  default-host: 'localhost'
+  default-failure-path: 'api/getToken'
+  default-success-path: '/'
+
 ---
 spring:
   config:
@@ -486,6 +510,13 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: http
+  port: 3000
+  default-host: 'localhost'
+  default-failure-path: 'api/getToken'
+  default-success-path: '/'
 ---
 spring:
   config:
@@ -576,3 +607,10 @@ jwt:
   secret-key: token-secret-key
   token-validity-in-sec: 1800 # 1??
   refresh-token-validity-in-sec: 2592000  # ???
+
+login:
+  scheme: http
+  port: 3000
+  default-host: 'localhost'
+  default-failure-path: 'api/getToken'
+  default-success-path: '/'
