@@ -133,7 +133,7 @@ public class CookieUtil {
         return ResponseCookie.from(name, null)
                 .secure(true)
                 .httpOnly(true)
-                .domain(isLocal ? "localhost" : ".e-room.app")
+                .domain(isLocal ? "localhost" : staticSecurityProperties.getDefaultHost())
                 .path("/")
                 .sameSite("None")
                 .maxAge(0)
