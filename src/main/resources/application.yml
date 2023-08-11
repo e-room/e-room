@@ -2,7 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: localDev
+    active: local
   task:
     execution:
       pool:
@@ -344,7 +344,7 @@ spring:
         format_sql: false
         use_sql_comments: false
         hbm2ddl:
-          auto: validate
+          auto: create
         default_batch_fetch_size: 1000
   security:
     oauth2:

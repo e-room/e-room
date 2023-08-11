@@ -3,13 +3,12 @@ package com.project.Project.controller.checklist;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.domain.checklist.CheckList;
+import com.project.Project.domain.checklist.CheckListImage;
 import com.project.Project.service.checklist.ChecklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +21,12 @@ public class CheckListRestController {
     public ResponseEntity<ChecklistResponseDto.ChecklistElement> getChecklistAssessment(@PathVariable("checklistId") CheckList checklist) {
         ChecklistResponseDto.ChecklistElement checklistElement = ChecklistSerializer.toChecklistElement(checklist);
         return ResponseEntity.ok(checklistElement);
+    }
+
+    @PostMapping("/{checklistId}/checklistImages")
+    public ResponseEntity<ChecklistResponseDto.ChecklistImageDto> postChecklistImage(@PathVariable("checklistId") CheckList checklist, @RequestPart MultipartFile checklistImage) {
+
+        CheckListImage checkListImage = checklistService.saveChecklistImage(checklist, checklistImage);
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDto(checkListImage));
     }
 }

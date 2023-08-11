@@ -1,7 +1,7 @@
 package com.project.Project.service.fileProcess;
 
 import com.project.Project.common.aws.s3.FileService;
-import com.project.Project.common.aws.s3.ReviewImagePackageMetaMeta;
+import com.project.Project.common.aws.s3.metadata.ReviewImageMetadata;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.common.exception.ErrorCode;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 
 @Service
-public class ReviewImageProcess extends FileProcessServiceImpl<ReviewImagePackageMetaMeta> {
+public class ReviewImageProcess extends FileProcessServiceImpl<ReviewImageMetadata> {
 
     @Autowired
     public ReviewImageProcess(FileService amazonS3Service, UuidCustomRepositoryImpl uuidCustomRepository, UuidRepository uuidRepository) {
@@ -28,7 +28,7 @@ public class ReviewImageProcess extends FileProcessServiceImpl<ReviewImagePackag
     ref: https://www.code4copy.com/java/spring-boot-upload-s3/
      */
     //setImage to entity
-    public Review uploadImageAndMapToReview(MultipartFile file, ReviewImagePackageMetaMeta reviewImagePackageMeta, Review review) {
+    public Review uploadImageAndMapToReview(MultipartFile file, ReviewImageMetadata reviewImagePackageMeta, Review review) {
         Optional.ofNullable(review).orElseThrow(() -> new ReviewException(ErrorCode.REVIEW_NOT_FOUND));
         String url = this.uploadImage(file, reviewImagePackageMeta);
         ReviewImage reviewImage = ReviewImage.builder().url(url)

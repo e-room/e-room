@@ -37,7 +37,7 @@ public class CheckListImage extends BaseEntity {
         super.setDeleted(true);
     }
 
-    public void setReview(CheckList checkList) {
+    public void setChecklist(CheckList checkList) {
         if (this.checkList != null) { // 기존에 이미 팀이 존재한다면
             this.checkList.getCheckListImageList().remove(this); // 관계를 끊는다.
         }

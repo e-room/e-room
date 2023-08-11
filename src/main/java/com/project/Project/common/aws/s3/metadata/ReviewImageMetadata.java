@@ -1,18 +1,19 @@
-package com.project.Project.common.aws.s3;
+package com.project.Project.common.aws.s3.metadata;
 
+import com.project.Project.common.aws.s3.command.ReviewImagePackageCommand;
 import com.project.Project.domain.Uuid;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ReviewImagePackageMetaMeta extends FilePackageMeta {
+public class ReviewImageMetadata extends FileMetadata {
 
     private Long buildingId;
     private Uuid uuidEntity;
 
 
     @Builder
-    public ReviewImagePackageMetaMeta(String uuid, Long buildingId, Uuid uuidEntity) {
+    public ReviewImageMetadata(String uuid, Long buildingId, Uuid uuidEntity) {
         super(uuid);
         this.buildingId = buildingId;
         this.uuidEntity = uuidEntity;

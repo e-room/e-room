@@ -3,7 +3,6 @@ package com.project.Project.controller.checklist.dto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.controller.room.dto.RoomDto;
-import com.project.Project.domain.checklist.CheckListImage;
 import com.project.Project.domain.checklist.CheckListQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +22,7 @@ public class ChecklistResponseDto {
     public static class ChecklistAssessment {
         private ReviewResponseDto.BasicAssessmentDto basicAssessment;
         private List<CheckListQuestion> checkListResponses;
-        private String memo;
         private Double score;
-        private List<CheckListImage> checkListImages;
     }
 
     @NoArgsConstructor
@@ -37,7 +34,27 @@ public class ChecklistResponseDto {
         private AddressDto address;
         private RoomDto.RoomBaseDto room;
         private ChecklistAssessment assessment;
+        private String memo;
+        private ChecklistImageListDto checklistImageListDto;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistImageDto {
+        private String uuid;
+        private String url;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistImageListDto {
+        private List<ChecklistImageDto> reviewImageList;
+        private Integer reviewImageCount;
     }
 }

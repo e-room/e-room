@@ -2,7 +2,7 @@ package com.project.Project.service.fileProcess;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.project.Project.common.aws.s3.FileService;
-import com.project.Project.common.aws.s3.ThumbnailImagePackageMetadata;
+import com.project.Project.common.aws.s3.metadata.ThumbnailMetadata;
 import com.project.Project.config.properties.FileProperties;
 import com.project.Project.domain.Thumbnail;
 import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImagePackageMetadata> {
+public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailMetadata> {
 
     private FileProperties fileProperties;
 
@@ -31,24 +31,24 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
         this.fileProperties = fileProperties;
     }
 
-    public Thumbnail makeThumbnailAndUpload(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
-        String fileName = createThumbnail(file, thumbnailImagePackageMetadata);
-        String url = this.uploadThumbnail(file, thumbnailImagePackageMetadata, fileName);
+    public Thumbnail makeThumbnailAndUpload(MultipartFile file, ThumbnailMetadata thumbnailMetadata) {
+        String fileName = createThumbnail(file, thumbnailMetadata);
+        String url = this.uploadThumbnail(file, thumbnailMetadata, fileName);
         return Thumbnail.builder()
                 .url(url)
                 .fileName(fileName)
-                .uuid(thumbnailImagePackageMetadata.getUuidEntity())
+                .uuid(thumbnailMetadata.getUuidEntity())
                 .build();
     }
 
-    private String createThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata) {
+    private String createThumbnail(MultipartFile file, ThumbnailMetadata thumbnailMetadata) {
         try {
             BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
             int width = bufferedImage.getWidth();
             int height = bufferedImage.getHeight();
 
             String thumbnailSavePath = "./thumbnail";
-            String fileName = this.createFileName(thumbnailImagePackageMetadata.getUuid(), file.getOriginalFilename());
+            String fileName = this.createFileName(thumbnailMetadata.getUuid(), file.getOriginalFilename());
             File thumbnailImage = new File(thumbnailSavePath, fileName);
             thumbnailImage.createNewFile();
             FileOutputStream thumbnail = new FileOutputStream(thumbnailImage);
@@ -91,9 +91,9 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
         return false;
     }
 
-    private String uploadThumbnail(MultipartFile file, ThumbnailImagePackageMetadata thumbnailImagePackageMetadata, String fileName) {
+    private String uploadThumbnail(MultipartFile file, ThumbnailMetadata thumbnailMetadata, String fileName) {
         try {
-            String filePath = this.getFilePath(file, thumbnailImagePackageMetadata);
+            String filePath = this.getFilePath(file, thumbnailMetadata);
             File thumbNail = new File("./thumbnail", fileName);
             ObjectMetadata objectMetadata = this.generateObjectMetadata(thumbNail);
             String url = this.uploadImage(new FileInputStream(thumbNail), objectMetadata, filePath);
@@ -124,7 +124,7 @@ public class ThumbnailImageProcess extends FileProcessServiceImpl<ThumbnailImage
     }
 
     @Override
-    public String getFilePath(MultipartFile file, ThumbnailImagePackageMetadata imagePackage) {
+    public String getFilePath(MultipartFile file, ThumbnailMetadata imagePackage) {
         return super.getFilePath(file, imagePackage);
     }
 
