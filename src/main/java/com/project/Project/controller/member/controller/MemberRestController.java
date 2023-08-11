@@ -7,9 +7,9 @@ import com.project.Project.controller.member.dto.MemberResponseDto;
 
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
-import com.project.Project.serializer.member.MemberSerializer;
+import com.project.Project.common.serializer.member.MemberSerializer;
 import com.project.Project.service.member.MemberService;
-import com.project.Project.util.component.CookieUtil;
+import com.project.Project.common.util.component.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

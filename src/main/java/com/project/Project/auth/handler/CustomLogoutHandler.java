@@ -1,6 +1,6 @@
 package com.project.Project.auth.handler;
 
-import com.project.Project.util.component.CookieUtil;
+import com.project.Project.common.util.component.CookieUtil;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;

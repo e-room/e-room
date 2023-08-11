@@ -18,7 +18,7 @@ import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.service.review.impl.ReviewImageServiceImpl;
 import com.project.Project.service.review.impl.ReviewServiceImpl;
 import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
-import com.project.Project.validator.ReviewExistValidator;
+import com.project.Project.common.validator.ReviewExistValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

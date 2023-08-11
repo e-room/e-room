@@ -1,6 +1,6 @@
 package com.project.Project.service.review;
 
-import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
+import com.project.Project.common.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
 import com.project.Project.controller.review.dto.ReviewScoreDto;
 import com.project.Project.domain.Uuid;

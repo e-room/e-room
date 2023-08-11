@@ -8,7 +8,7 @@ import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.repository.building.BuildingRepository;
-import com.project.Project.validator.BuildingExistValidator;
+import com.project.Project.common.validator.BuildingExistValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

@@ -11,7 +11,7 @@ import com.project.Project.service.interaction.impl.ReviewLikeServiceImpl;
 import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.util.annotation.WithMockCustomOAuth2Account;
-import com.project.Project.validator.ReviewExistValidator;
+import com.project.Project.common.validator.ReviewExistValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

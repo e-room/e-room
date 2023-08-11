@@ -1,11 +1,11 @@
 package com.project.Project.service.fileProcess;
 
-import com.project.Project.aws.s3.FileService;
-import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
+import com.project.Project.common.aws.s3.FileService;
+import com.project.Project.common.aws.s3.ReviewImagePackageMetaMeta;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.review.ReviewException;
+import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.review.ReviewException;
 import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
 import com.project.Project.repository.uuid.UuidRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.project.Project.service.fileProcess;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.project.Project.aws.s3.AmazonS3PackageCommand;
-import com.project.Project.aws.s3.FilePackageMeta;
-import com.project.Project.aws.s3.FileService;
+import com.project.Project.common.aws.s3.AmazonS3PackageCommand;
+import com.project.Project.common.aws.s3.FilePackageMeta;
+import com.project.Project.common.aws.s3.FileService;
 import com.project.Project.domain.Uuid;
 import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;
 import com.project.Project.repository.uuid.UuidRepository;

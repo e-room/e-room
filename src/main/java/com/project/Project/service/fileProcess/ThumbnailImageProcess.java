@@ -1,8 +1,8 @@
 package com.project.Project.service.fileProcess;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.project.Project.aws.s3.FileService;
-import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
+import com.project.Project.common.aws.s3.FileService;
+import com.project.Project.common.aws.s3.ThumbnailImagePackageMetadata;
 import com.project.Project.config.properties.FileProperties;
 import com.project.Project.domain.Thumbnail;
 import com.project.Project.repository.uuid.UuidCustomRepositoryImpl;

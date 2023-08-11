@@ -2,7 +2,7 @@ package com.project.Project.util.generator.review;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.Project.aws.s3.FileService;
+import com.project.Project.common.aws.s3.FileService;
 import com.project.Project.config.AmazonConfig;
 import com.project.Project.config.WebClientConfig;
 import com.project.Project.controller.review.dto.ReviewRequestDto;
@@ -21,7 +21,7 @@ import com.project.Project.service.review.ReviewGenerator;
 import com.project.Project.service.review.ReviewKeywordService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.unit.repository.RepositoryTestConfig;
-import com.project.Project.util.ApplicationContextServe;
+import com.project.Project.common.util.ApplicationContextServe;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

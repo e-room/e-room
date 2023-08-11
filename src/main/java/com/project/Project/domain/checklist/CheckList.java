@@ -27,6 +27,9 @@ public class CheckList extends BaseEntity {
     @JoinColumn(name = "building_id")
     private Building building;
 
+    @Column(nullable = true)
+    private String nickname;
+
     @OneToMany(mappedBy = "checkList", cascade = CascadeType.ALL)
     @Builder.Default
     private List<CheckListQuestion> checkListResponses = new ArrayList<>();

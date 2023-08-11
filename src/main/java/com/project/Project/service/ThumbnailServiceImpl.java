@@ -1,6 +1,6 @@
 package com.project.Project.service;
 
-import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
+import com.project.Project.common.aws.s3.ThumbnailImagePackageMetadata;
 import com.project.Project.domain.Thumbnail;
 import com.project.Project.domain.Uuid;
 import com.project.Project.repository.ThumbnailRepository;

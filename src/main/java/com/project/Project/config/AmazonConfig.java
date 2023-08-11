@@ -6,7 +6,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import com.project.Project.util.ProfileConfigurer;
+import com.project.Project.common.util.ProfileConfigurer;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

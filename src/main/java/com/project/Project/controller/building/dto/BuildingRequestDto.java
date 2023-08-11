@@ -1,7 +1,6 @@
 package com.project.Project.controller.building.dto;
 
-import com.project.Project.domain.embedded.Address;
-import com.project.Project.validator.ExistBuilding;
+import com.project.Project.common.validator.ExistBuilding;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
