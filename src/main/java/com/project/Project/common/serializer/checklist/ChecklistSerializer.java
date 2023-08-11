@@ -7,6 +7,7 @@ import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
 import com.project.Project.domain.embedded.Address;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChecklistSerializer {
@@ -18,11 +19,17 @@ public class ChecklistSerializer {
                 .assessment(toChecklistAssessment(checkList))
                 .memo(checkList.getMemo())
                 .checklistImageListDto(ChecklistResponseDto.ChecklistImageListDto.builder()
-                        .reviewImageList(checkList.getCheckListImageList().stream().map(ChecklistSerializer::toChecklistImageDto).collect(Collectors.toList()))
-                        .reviewImageCount(checkList.getCheckListImageList().size()).build())
+                        .checklistImageList(checkList.getCheckListImageList().stream().map(ChecklistSerializer::toChecklistImageDto).collect(Collectors.toList()))
+                        .checklistImageCount(checkList.getCheckListImageList().size()).build())
                 .createdAt(checkList.getCreatedAt())
                 .updatedAt(checkList.getUpdatedAt())
                 .build();
+    }
+
+    public static ChecklistResponseDto.ChecklistImageListDto toChecklistImageListDto(List<CheckListImage> checkListImages) {
+        return ChecklistResponseDto.ChecklistImageListDto.builder()
+                .checklistImageList(checkListImages.stream().map(ChecklistSerializer::toChecklistImageDto).collect(Collectors.toList()))
+                .checklistImageCount(checkListImages.size()).build();
     }
 
     public static ChecklistResponseDto.ChecklistImageDto toChecklistImageDto(CheckListImage checklistImage) {
@@ -42,6 +49,13 @@ public class ChecklistSerializer {
                         .managementFee(checkList.getManagementFee()).build())
                 .checkListResponses(checkList.getCheckListResponses())
                 .score(checkList.getScore())
+                .build();
+    }
+
+    public static ChecklistResponseDto.ChecklistImageDeleteDto toChecklistImageDeleteDto(Long checklistImageId, List<CheckListImage> remainedImages) {
+        return ChecklistResponseDto.ChecklistImageDeleteDto.builder()
+                .deletedImageId(checklistImageId)
+                .remainedImages(toChecklistImageListDto(remainedImages))
                 .build();
     }
 }

@@ -55,7 +55,16 @@ public class ChecklistResponseDto {
     @AllArgsConstructor
     @Builder
     public static class ChecklistImageListDto {
-        private List<ChecklistImageDto> reviewImageList;
-        private Integer reviewImageCount;
+        private List<ChecklistImageDto> checklistImageList;
+        private Integer checklistImageCount;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistImageDeleteDto {
+        private ChecklistImageListDto remainedImages;
+        private Long deletedImageId;
     }
 }

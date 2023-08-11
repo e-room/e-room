@@ -10,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/checklists")
-public class CheckListRestController {
+public class ChecklistRestController {
     private final ChecklistService checklistService;
 
 
@@ -28,5 +30,13 @@ public class CheckListRestController {
 
         CheckListImage checkListImage = checklistService.saveChecklistImage(checklist, checklistImage);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDto(checkListImage));
+    }
+
+    @DeleteMapping("/{checklistId}/checklistImages/{checklistImageId}")
+    public ResponseEntity<ChecklistResponseDto.ChecklistImageDeleteDto> deleteChecklistImage(@PathVariable("checklistId") CheckList checklist, @PathVariable("checklistImageId") CheckListImage checklistImage) {
+        Long checklistImageId = checklistService.deleteChecklistImage(checklist, checklistImage);
+        List<CheckListImage> remainedImages = checklistService.getCheckListImage(checklist);
+
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDeleteDto(checklistImageId, remainedImages));
     }
 }
