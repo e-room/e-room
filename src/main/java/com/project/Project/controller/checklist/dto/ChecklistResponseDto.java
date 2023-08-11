@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ public class ChecklistResponseDto {
     @NoArgsConstructor
     @Getter
     @AllArgsConstructor
-    @Builder
+    @SuperBuilder
     public static class ChecklistElement extends ReviewResponseDto.BasicAssessmentDto {
         @Nullable
         private AddressDto address;
