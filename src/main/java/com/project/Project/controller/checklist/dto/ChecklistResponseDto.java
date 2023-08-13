@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -66,5 +67,14 @@ public class ChecklistResponseDto {
     public static class ChecklistImageDeleteDto {
         private ChecklistImageListDto remainedImages;
         private Long deletedImageId;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistCreateDto {
+        private Long checklistId;
+        private LocalDateTime createdAt;
     }
 }

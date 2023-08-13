@@ -3,9 +3,12 @@ package com.project.Project.service.checklist.impl;
 import com.project.Project.common.aws.s3.metadata.ChecklistImageMetadata;
 import com.project.Project.common.exception.ErrorCode;
 import com.project.Project.common.exception.checklist.ChecklistException;
+import com.project.Project.common.serializer.checklist.ChecklistSerializer;
+import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.member.Member;
 import com.project.Project.repository.checklist.ChecklistCustomRepository;
 import com.project.Project.repository.checklist.ChecklistImageRepository;
 import com.project.Project.repository.checklist.ChecklistRepository;
@@ -61,5 +64,11 @@ public class ChecklistServiceImpl implements ChecklistService {
     @Transactional
     public List<CheckListImage> getCheckListImage(CheckList checklist) {
         return this.checklistCustomRepository.getCheckListImagesWithLock(checklist.getId());
+    }
+
+    @Transactional
+    @Override
+    public CheckList create(ChecklistRequestDto.ChecklistCreateDto request, Member member) {
+        return ChecklistSerializer.toChecklist(request, member);
     }
 }

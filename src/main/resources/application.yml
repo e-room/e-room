@@ -2,7 +2,7 @@ spring:
   profiles:
     include:
       - aws
-    active: local
+    active: localDev
   task:
     execution:
       pool:
@@ -40,6 +40,7 @@ file:
 springdoc:
   cache:
     disabled: true
+  use-fqn: true
 
 ---
 spring:
