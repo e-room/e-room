@@ -25,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/checklists")
-public class CheckListRestController {
+public class ChecklistRestController {
     private final ChecklistService checklistService;
 
 
