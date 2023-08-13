@@ -5,4 +5,7 @@ public class ChecklistRequestDto {
     public static class ChecklistDto {
         
     }
+
+    public class ChecklistCreateDto {
+    }
 }

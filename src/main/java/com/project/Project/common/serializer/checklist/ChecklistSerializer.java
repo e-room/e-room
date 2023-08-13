@@ -44,4 +44,8 @@ public class ChecklistSerializer {
                 .score(checkList.getScore())
                 .build();
     }
+
+    public static ChecklistResponseDto.ChecklistCreateDto toChecklistCreateDto(CheckList savedCheckList) {
+        return null;
+    }
 }

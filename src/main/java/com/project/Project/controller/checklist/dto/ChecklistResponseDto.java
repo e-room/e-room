@@ -58,4 +58,7 @@ public class ChecklistResponseDto {
         private List<ChecklistImageDto> reviewImageList;
         private Integer reviewImageCount;
     }
+
+    public static class ChecklistCreateDto {
+    }
 }

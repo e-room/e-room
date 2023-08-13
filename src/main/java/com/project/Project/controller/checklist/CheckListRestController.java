@@ -1,9 +1,12 @@
 package com.project.Project.controller.checklist;
 
+import com.project.Project.auth.AuthUser;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
+import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.member.Member;
 import com.project.Project.service.checklist.ChecklistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,4 +32,11 @@ public class CheckListRestController {
         CheckListImage checkListImage = checklistService.saveChecklistImage(checklist, checklistImage);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDto(checkListImage));
     }
+
+    @PostMapping("/checklists")
+    public ResponseEntity<ChecklistResponseDto.ChecklistCreateDto> createChecklist(@RequestBody ChecklistRequestDto.ChecklistCreateDto request, @AuthUser Member member) {
+        CheckList savedCheckList = checklistService.create(request, member);
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistCreateDto(savedCheckList));
+    }
+
 }
