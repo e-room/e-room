@@ -49,7 +49,7 @@ public class CheckListRestController {
     @Parameters({
             @Parameter(name = "member", hidden = true)
     })
-    @PostMapping("/checklists")
+    @PostMapping("")
     public ResponseEntity<ChecklistResponseDto.ChecklistCreateDto> createChecklist(@RequestBody ChecklistRequestDto.ChecklistCreateDto request, @AuthUser Member member) {
         CheckList savedCheckList = checklistService.create(request, member);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistCreateDto(savedCheckList));

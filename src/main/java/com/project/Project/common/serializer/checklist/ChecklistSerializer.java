@@ -89,7 +89,7 @@ public class ChecklistSerializer {
     public static CheckList toChecklist(ChecklistRequestDto.ChecklistCreateDto request, Member member) {
 
         Building building = request.getHasBuildingAddress() ? staticBuildingRepository.findBuildingById(request.getBuildingId()) : null;
-        String nickname = request.getHasBuildingAddress() ? request.getNickname() : null;
+        String nickname = request.getHasBuildingAddress() ? null : request.getNickname();
 
         CheckList savedChecklist = staticChecklistRepository.save(CheckList.builder()
                 .author(member)
