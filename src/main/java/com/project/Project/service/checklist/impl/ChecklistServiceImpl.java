@@ -8,10 +8,14 @@ import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.checklist.CheckListQuestion;
+import com.project.Project.domain.enums.Expression;
 import com.project.Project.domain.member.Member;
+import com.project.Project.repository.checklist.ChecklistQuestionRepository;
 import com.project.Project.repository.checklist.ChecklistCustomRepository;
 import com.project.Project.repository.checklist.ChecklistImageRepository;
 import com.project.Project.repository.checklist.ChecklistRepository;
+import com.project.Project.repository.checklist.QuestionRepository;
 import com.project.Project.service.checklist.ChecklistService;
 import com.project.Project.service.fileProcess.ChecklistImageProcess;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import java.util.stream.Collectors;
 
 
 @Component
@@ -30,6 +36,8 @@ public class ChecklistServiceImpl implements ChecklistService {
     private final ChecklistCustomRepository checklistCustomRepository;
     private final ChecklistImageRepository checklistImageRepository;
     private final ChecklistImageProcess checklistImageProcess;
+    private final ChecklistQuestionRepository checklistQuestionRepository;
+    private final QuestionRepository questionRepository;
 
     @Override
     @Transactional
@@ -69,6 +77,21 @@ public class ChecklistServiceImpl implements ChecklistService {
     @Transactional
     @Override
     public CheckList create(ChecklistRequestDto.ChecklistCreateDto request, Member member) {
-        return ChecklistSerializer.toChecklist(request, member);
+        CheckList savedCheckList = ChecklistSerializer.toChecklist(request, member);
+
+        List<CheckListQuestion> checkListQuestionList = questionRepository.findAll()
+                .stream()
+                .map(question -> {
+                    CheckListQuestion newCheckListQuestion = CheckListQuestion.builder()
+                            .question(question)
+                            .expression(Expression.NONE)
+                            .build();
+                    newCheckListQuestion.setCheckList(savedCheckList);
+                    return newCheckListQuestion;
+                })
+                .collect(Collectors.toList());
+        checklistQuestionRepository.saveAll(checkListQuestionList);
+
+        return savedCheckList;
     }
 }
