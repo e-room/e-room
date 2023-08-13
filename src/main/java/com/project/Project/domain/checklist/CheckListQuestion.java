@@ -28,6 +28,7 @@ public class CheckListQuestion extends BaseEntity {
     @JoinColumn(name = "checklist_id")
     private CheckList checkList;
 
+    @Enumerated(EnumType.STRING)
     private Expression expression;
 
     public void setCheckList(CheckList checkList) {
