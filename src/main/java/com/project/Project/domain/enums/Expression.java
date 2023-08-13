@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Expression {
 
-    POSITIVE("좋아요"), NEGATIVE("별로에요");
+    POSITIVE("좋아요"), NEGATIVE("별로에요"), NONE("응답안함");
 
     private String description;
 
