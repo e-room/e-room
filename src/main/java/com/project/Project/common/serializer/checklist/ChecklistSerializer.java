@@ -7,20 +7,15 @@ import com.project.Project.controller.room.dto.RoomDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
-import com.project.Project.domain.checklist.CheckListQuestion;
 import com.project.Project.domain.embedded.Address;
-import com.project.Project.domain.enums.Expression;
 import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingRepository;
-import com.project.Project.repository.checklist.ChecklistQuestionRepository;
 import com.project.Project.repository.checklist.ChecklistRepository;
-import com.project.Project.repository.checklist.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,20 +24,14 @@ public class ChecklistSerializer {
 
     private final ChecklistRepository checklistRepository;
     private final BuildingRepository buildingRepository;
-    private final QuestionRepository questionRepository;
-    private final ChecklistQuestionRepository checklistQuestionRepository;
 
     private static ChecklistRepository staticChecklistRepository;
     private static BuildingRepository staticBuildingRepository;
-    private static QuestionRepository staticQuestionRepository;
-    private static ChecklistQuestionRepository staticChecklistQuestionRepository;
 
     @PostConstruct
     public void init() {
         staticChecklistRepository = this.checklistRepository;
         staticBuildingRepository = this.buildingRepository;
-        staticQuestionRepository = this.questionRepository;
-        staticChecklistQuestionRepository = this.checklistQuestionRepository;
     }
 
     public static ChecklistResponseDto.ChecklistElement toChecklistElement(CheckList checkList) {
@@ -91,7 +80,7 @@ public class ChecklistSerializer {
         Building building = request.getHasBuildingAddress() ? staticBuildingRepository.findBuildingById(request.getBuildingId()) : null;
         String nickname = request.getHasBuildingAddress() ? null : request.getNickname();
 
-        CheckList savedChecklist = staticChecklistRepository.save(CheckList.builder()
+        return staticChecklistRepository.save(CheckList.builder()
                 .author(member)
                 .building(building)
                 .nickname(nickname)
@@ -106,20 +95,5 @@ public class ChecklistSerializer {
                 .deposit(request.getDeposit())
                 .netLeasableArea(request.getNetLeasableArea())
                 .build());
-
-        List<CheckListQuestion> checkListQuestionList = staticQuestionRepository.findAll()
-                .stream()
-                .map(question -> {
-                    CheckListQuestion newCheckListQuestion = CheckListQuestion.builder()
-                        .question(question)
-                        .expression(Expression.NONE)
-                        .build();
-                    newCheckListQuestion.setCheckList(savedChecklist);
-                    return newCheckListQuestion;
-                })
-                .collect(Collectors.toList());
-        staticChecklistQuestionRepository.saveAll(checkListQuestionList);
-
-        return savedChecklist;
     }
 }
