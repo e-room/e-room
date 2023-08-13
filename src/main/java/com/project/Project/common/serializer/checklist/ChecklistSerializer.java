@@ -46,6 +46,9 @@ public class ChecklistSerializer {
     }
 
     public static ChecklistResponseDto.ChecklistCreateDto toChecklistCreateDto(CheckList savedCheckList) {
-        return null;
+        return ChecklistResponseDto.ChecklistCreateDto.builder()
+                .checklistId(savedCheckList.getId())
+                .createdAt(savedCheckList.getCreatedAt())
+                .build();
     }
 }
