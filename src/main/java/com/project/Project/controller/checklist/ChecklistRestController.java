@@ -2,6 +2,7 @@ package com.project.Project.controller.checklist;
 
 import com.project.Project.auth.AuthUser;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
+import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
