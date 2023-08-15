@@ -94,4 +94,13 @@ public class ChecklistServiceImpl implements ChecklistService {
 
         return savedCheckList;
     }
+
+    @Transactional
+    @Override
+    public CheckListQuestion updateChecklistQuestion(Long checklistId, Long questionId, ChecklistRequestDto.ChecklistQuestionUpdateDto request) {
+        CheckListQuestion checkListQuestion = checklistQuestionRepository.findByCheckList_IdAndQuestion_Id(checklistId, questionId)
+                .orElseThrow(() -> new ChecklistException(ErrorCode.CHECKLIST_QUESTION_NOT_FOUND));
+        checkListQuestion.setExpression(request.getExpression());
+        return checkListQuestion;
+    }
 }

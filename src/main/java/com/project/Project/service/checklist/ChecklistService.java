@@ -3,6 +3,7 @@ package com.project.Project.service.checklist;
 import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.checklist.CheckListQuestion;
 import com.project.Project.domain.member.Member;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,4 +19,6 @@ public interface ChecklistService {
     List<CheckListImage> getCheckListImage(CheckList checklist);
 
     CheckList create(ChecklistRequestDto.ChecklistCreateDto request, Member member);
+
+    CheckListQuestion updateChecklistQuestion(Long checklistId, Long questionId, ChecklistRequestDto.ChecklistQuestionUpdateDto request);
 }

@@ -6,6 +6,7 @@ import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.checklist.CheckListQuestion;
 import com.project.Project.domain.member.Member;
 import com.project.Project.service.checklist.ChecklistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -94,6 +95,7 @@ public class ChecklistRestController {
     public ResponseEntity<ChecklistResponseDto.ChecklistQuestionUpdateDto> updateChecklistQuestion(@PathVariable("checklistId") Long checklistId,
                                                                                                    @PathVariable("questionId") Long questionId,
                                                                                                    @RequestBody ChecklistRequestDto.ChecklistQuestionUpdateDto request) {
+        CheckListQuestion updatedChecklistQuestion = checklistService.updateChecklistQuestion(checklistId, questionId, request);
         return null;
     }
 }
