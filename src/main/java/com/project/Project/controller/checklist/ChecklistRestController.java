@@ -89,4 +89,11 @@ public class ChecklistRestController {
 
         return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDeleteDto(checklistImageId, remainedImages));
     }
+
+    @PatchMapping("/checklists/{checklistId}/questions/{questionId}")
+    public ResponseEntity<ChecklistResponseDto.ChecklistQuestionUpdateDto> updateChecklistQuestion(@PathVariable("checklistId") Long checklistId,
+                                                                                                   @PathVariable("questionId") Long questionId,
+                                                                                                   @RequestBody ChecklistRequestDto.ChecklistQuestionUpdateDto request) {
+        return null;
+    }
 }

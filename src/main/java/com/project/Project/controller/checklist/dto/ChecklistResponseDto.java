@@ -77,4 +77,14 @@ public class ChecklistResponseDto {
         private Long checklistId;
         private LocalDateTime createdAt;
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistQuestionUpdateDto {
+        private Long checklistId;
+        private Long questionId;
+        private LocalDateTime updatedAt;
+    }
 }
