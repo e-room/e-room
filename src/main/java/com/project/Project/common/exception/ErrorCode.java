@@ -39,6 +39,7 @@ public enum ErrorCode {
     CHECKLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 체크리스트가 존재하지 않습니다."),
     CHECKLIST_IMAGE_COUNT_EXCEEDED(HttpStatus.BAD_REQUEST, "이미지는 최대 5개까지 등록할 수 있습니다."),
     CHECKLIST_IMAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당하는 이미지가 없습니다"),
+    CHECKLIST_ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "해당 체크리스트에 접근할 수 없습니다."),
 
     //etc
     UUID_NOT_FOUND(HttpStatus.BAD_REQUEST, "해당하는 UUID가 존재하지 않습니다."),

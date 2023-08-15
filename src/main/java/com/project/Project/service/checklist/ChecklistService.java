@@ -18,4 +18,6 @@ public interface ChecklistService {
     List<CheckListImage> getCheckListImage(CheckList checklist);
 
     CheckList create(ChecklistRequestDto.ChecklistCreateDto request, Member member);
+
+    Long deleteById(Long checklistId);
 }

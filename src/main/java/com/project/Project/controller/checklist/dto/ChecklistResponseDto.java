@@ -77,4 +77,13 @@ public class ChecklistResponseDto {
         private Long checklistId;
         private LocalDateTime createdAt;
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistDeleteDto {
+        private Long checklistId;
+        private LocalDateTime deletedAt;
+    }
 }
