@@ -7,6 +7,7 @@ import com.project.Project.controller.room.dto.RoomDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.checklist.CheckListQuestion;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.member.Member;
 import com.project.Project.repository.building.BuildingRepository;
@@ -110,4 +111,13 @@ public class ChecklistSerializer {
                 .remainedImages(toChecklistImageListDto(remainedImages))
                 .build();
     }
+
+    public static ChecklistResponseDto.ChecklistQuestionUpdateDto toChecklistQuestionUpdateDto(CheckListQuestion updatedChecklistQuestion) {
+        return ChecklistResponseDto.ChecklistQuestionUpdateDto.builder()
+                .checklistId(updatedChecklistQuestion.getCheckList().getId())
+                .questionId(updatedChecklistQuestion.getQuestion().getId())
+                .updatedAt(updatedChecklistQuestion.getUpdatedAt())
+                .build();
+    }
+
 }

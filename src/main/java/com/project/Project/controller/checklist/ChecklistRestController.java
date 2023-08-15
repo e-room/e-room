@@ -96,6 +96,6 @@ public class ChecklistRestController {
                                                                                                    @PathVariable("questionId") Long questionId,
                                                                                                    @RequestBody ChecklistRequestDto.ChecklistQuestionUpdateDto request) {
         CheckListQuestion updatedChecklistQuestion = checklistService.updateChecklistQuestion(checklistId, questionId, request);
-        return null;
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistQuestionUpdateDto(updatedChecklistQuestion));
     }
 }
