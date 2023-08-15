@@ -103,7 +103,7 @@ public class ChecklistRestController {
                                                                                                    @PathVariable("questionId") Long questionId,
                                                                                                    @RequestBody ChecklistRequestDto.ChecklistQuestionUpdateDto request,
                                                                                                    @AuthUser Member member) {
-        CheckListQuestion updatedChecklistQuestion = checklistService.updateChecklistQuestion(checklistId, questionId, request);
+        CheckListQuestion updatedChecklistQuestion = checklistService.updateChecklistQuestion(checklistId, questionId, request, member);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistQuestionUpdateDto(updatedChecklistQuestion));
     }
 }
