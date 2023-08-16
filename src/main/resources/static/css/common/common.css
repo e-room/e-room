@@ -1,0 +1,78 @@
+.content-container {
+    height: 90%;
+    max-width: 66.8rem;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.content-padding-container {
+    height: 90%;
+    max-width: 66.8rem;
+    padding-top: 6.5rem;
+    margin: 0 auto;
+}
+
+.mypage-padding-container {
+    height: auto;
+    max-width: 66.8rem;
+    padding-top: 2.5rem;
+    margin: 0 auto;
+}
+
+.basic-hr {
+    width: 50px;
+    height: 4px !important;
+    border-radius: 5px;
+    margin: 0 auto;
+    color: black;
+    background-color: black;
+    border-color: black;
+    opacity: 0.6;
+}
+
+.location {
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.form-label-font {
+    font-size: 1.25rem;
+}
+
+.common-line-height {
+    line-height: 1.5;
+}
+@media screen and (max-width:1024px) and (min-width: 600px) {
+    .location {
+        display: none;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .content-container {
+        padding-top: 3.75rem;
+    }
+
+    .location {
+        font-size: 1.125rem;
+    }
+
+    .form-label-font {
+        font-size: 1rem;
+    }
+
+    .content-padding-container {
+        padding-top: 3.75rem;
+    }
+
+    .mypage-padding-container {
+        padding-top: 3.75rem;
+    }
+
+    .w-sm-100 {
+        width: 100% !important;
+    }
+}

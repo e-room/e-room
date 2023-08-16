@@ -22,6 +22,7 @@ import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.QueryDslUtil;
 import com.project.Project.validator.ExistBuilding;
 import com.project.Project.validator.ExistReview;
+import com.project.Project.validator.ReviewExistValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

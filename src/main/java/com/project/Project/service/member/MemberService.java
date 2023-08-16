@@ -27,4 +27,8 @@ public interface MemberService {
 
 
 
+
+    Optional<Member> findByEmail(String email);
+
+    void updateRefreshToken(Member member, String refreshToken);
 }

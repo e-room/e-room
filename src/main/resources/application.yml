@@ -438,7 +438,7 @@ spring:
         format_sql: true
         use_sql_comments: true
         hbm2ddl:
-          auto: update
+          auto: validate
         default_batch_fetch_size: 1000
   security:
     oauth2:

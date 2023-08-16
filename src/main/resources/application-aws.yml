@@ -12,8 +12,10 @@ cloud:
     stack:
       auto: false
     credentials:
-      accessKey: ${AWS_ACCESS_KEY_ID}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
+#      accessKey: ${AWS_ACCESS_KEY_ID}
+#      secretKey: ${AWS_SECRET_ACCESS_KEY}
+      accessKey: ${aws.access.key.id}
+      secretKey: ${aws.secret.access.key}
     cloudFront:
       distributionDomain: https://d2ykyi5jl9muoc.cloudfront.net
       dev-distributionDomain: cdn.e-room.dev

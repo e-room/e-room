@@ -86,4 +86,15 @@ public class MemberServiceImpl implements MemberService {
         List<Review> reviewList = reviewRepository.findReviewsByAuthorAndDeleted(member, Boolean.FALSE);
         return reviewList;
     }
+
+    @Override
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    @Transactional
+    @Override
+    public void updateRefreshToken(Member member, String refreshToken) {
+        member.setRefreshToken(refreshToken);
+    }
 }

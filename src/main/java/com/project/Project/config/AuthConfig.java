@@ -107,7 +107,9 @@ public class AuthConfig {
                     "/v3/api-docs",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/building/room/review/bests"
+                    "/building/room/review/bests",
+                    "/admin/**",
+                    "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
         }
 
@@ -134,7 +136,9 @@ public class AuthConfig {
                     "/v3/api-docs",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/building/room/review/bests"
+                    "/building/room/review/bests",
+                    "/admin/**",
+                    "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
         }
 
