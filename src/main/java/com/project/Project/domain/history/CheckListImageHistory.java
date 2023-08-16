@@ -4,6 +4,7 @@ package com.project.Project.domain.history;
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.checklist.CheckList;
+import com.project.Project.domain.checklist.CheckListImage;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,5 +28,12 @@ public class CheckListImageHistory extends BaseEntity {
 
     private Long checkListId;
 
-
+    public static CheckListImageHistory toCheckListImageHistory(CheckListImage checkListImage) {
+        return CheckListImageHistory.builder()
+                .fileName(checkListImage.getFileName())
+                .url(checkListImage.getUrl())
+                .uuidId(checkListImage.getUuid().getId())
+                .checkListId(checkListImage.getCheckList().getId())
+                .build();
+    }
 }
