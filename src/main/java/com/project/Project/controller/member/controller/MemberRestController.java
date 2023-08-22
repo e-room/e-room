@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.auth.AuthUser;
 import com.project.Project.common.exception.ErrorCode;
 import com.project.Project.common.exception.checklist.ChecklistException;
-import com.project.Project.common.exception.review.ReviewException;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.controller.member.dto.MemberRequestDto;
@@ -35,6 +34,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
@@ -126,5 +126,19 @@ public class MemberRestController {
         }
         Long deletedChecklistId = checklistService.deleteById(checklistId);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistDeletedDto(deletedChecklistId));
+    }
+
+    @Operation(summary = "작성한 체크리스트 조회", description = "작성한 체크리스트 조회 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "memberId", description = "조회하고자 하는 체크리스트 리스트의 유저 id")
+    })
+    @GetMapping("/member/{memberId}/checklists")
+    public ResponseEntity<List<ChecklistResponseDto.CheckListDto>> getCheckList(@PathVariable("memberId") Long memberId) {
+        List<CheckList> userCheckList = checklistService.getUserCheckList(memberId);
+        return ResponseEntity.ok(ChecklistSerializer.toMemberCheckListDto(userCheckList));
     }
 }

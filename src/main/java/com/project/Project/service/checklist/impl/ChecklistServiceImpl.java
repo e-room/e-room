@@ -124,6 +124,11 @@ public class ChecklistServiceImpl implements ChecklistService {
     }
 
     @Override
+    public List<CheckList> getUserCheckList(Long memberId) {
+        return checklistRepository.findAllByAuthorId(memberId);
+    }
+      
+    @Override
     public List<ChecklistResponseDto.QuestionElementDto> getChecklistQuestions(Long checklistId) {
 
         List<CheckListQuestion> checkListQuestionList = checklistQuestionRepository.findAllByCheckListId(checklistId);

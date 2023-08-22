@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -103,6 +102,25 @@ public class ChecklistResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
+
+    public static class CheckListDto {
+        private Long checkListId;
+        private Long authorId;
+        private Long buildingId;
+        private AddressDto address;
+        private String nickname;
+        private Double score;
+        private Double netLeasableArea;
+        private String lineNum;
+        private String roomNum;
+        private Double deposit;
+        private Double monthlyRent;
+        private Double managementFee;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+    }
+
     public static class QuestionElementDto {
         private Long id;
         private String query;
