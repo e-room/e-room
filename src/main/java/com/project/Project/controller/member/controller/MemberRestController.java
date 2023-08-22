@@ -12,6 +12,7 @@ import com.project.Project.domain.review.Review;
 import com.project.Project.serializer.member.MemberSerializer;
 import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.member.MemberService;
+import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,6 +41,7 @@ import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBase
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MemberService memberService;
+    private final ReviewService reviewService;
     private final ObjectMapper mapper;
 
     @Operation(summary = "내 정보 조회 [6]", description = "내 정보 조회 API")
@@ -116,7 +118,7 @@ public class MemberRestController {
     })
     @GetMapping("/members/reviews")
     public ResponseEntity<ReviewResponseDto.ReviewListDto> getReviews(@AuthUser Member loginMember) {
-        List<Review> reviews = memberService.getReviewList(loginMember);
+        List<Review> reviews = reviewService.getReviewList(loginMember);
         return ResponseEntity.ok(ReviewSerializer.toReviewListDto(reviews));
     }
 }

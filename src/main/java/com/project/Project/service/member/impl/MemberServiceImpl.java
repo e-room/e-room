@@ -81,9 +81,5 @@ public class MemberServiceImpl implements MemberService {
         return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
     }
 
-    @Override
-    public List<Review> getReviewList(Member member) {
-        List<Review> reviewList = reviewRepository.findReviewsByAuthorAndDeleted(member, Boolean.FALSE);
-        return reviewList;
-    }
+
 }

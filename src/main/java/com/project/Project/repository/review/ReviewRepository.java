@@ -42,5 +42,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("select review from Review review where review.author.id = :memberId and review.id = :reviewId")
     Optional<Review> findReviewByAuthorAndReview(Long memberId, Long reviewId);
 
-    List<Review> findReviewsByAuthorAndDeleted(Member member, Boolean deleted);
+    List<Review> findReviewsByAuthor(Member member);
 }

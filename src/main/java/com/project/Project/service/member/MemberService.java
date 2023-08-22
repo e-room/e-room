@@ -23,7 +23,7 @@ public interface MemberService {
 
     Long delete(Member member);
 
-    List<Review> getReviewList(Member member);
+
 
 
 

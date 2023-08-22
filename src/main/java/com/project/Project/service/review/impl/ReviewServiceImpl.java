@@ -133,4 +133,10 @@ public class ReviewServiceImpl implements ReviewService {
     public Long save(Review review) {
         return reviewRepository.save(review).getId();
     }
+
+    @Override
+    public List<Review> getReviewList(Member member) {
+        List<Review> reviewList = reviewRepository.findReviewsByAuthor(member);
+        return reviewList;
+    }
 }
