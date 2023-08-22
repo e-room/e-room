@@ -130,8 +130,8 @@ public class ChecklistSerializer {
                 .build();
     }
 
-    public static List<ChecklistResponseDto.MemberCheckListDto> toMemberCheckListDto(List<CheckList> checkLists) {
-        List<ChecklistResponseDto.MemberCheckListDto> memberCheckListDtoList = new ArrayList<>();
+    public static List<ChecklistResponseDto.CheckListDto> toMemberCheckListDto(List<CheckList> checkLists) {
+        List<ChecklistResponseDto.CheckListDto> checkListDtoList = new ArrayList<>();
 
         for(CheckList checkList : checkLists) {
 
@@ -146,7 +146,7 @@ public class ChecklistSerializer {
                         .build();
             }
 
-            ChecklistResponseDto.MemberCheckListDto memberCheckListDto = ChecklistResponseDto.MemberCheckListDto.builder()
+            ChecklistResponseDto.CheckListDto checkListDto = ChecklistResponseDto.CheckListDto.builder()
                     .checkListId(checkList.getId())
                     .authorId(checkList.getAuthor().getId())
                     .buildingId(checkList.getBuilding() == null ? null : checkList.getBuilding().getId())
@@ -163,10 +163,10 @@ public class ChecklistSerializer {
                     .updatedAt(checkList.getUpdatedAt())
                     .build();
 
-            memberCheckListDtoList.add(memberCheckListDto);
+            checkListDtoList.add(checkListDto);
         }
 
-        return memberCheckListDtoList;
+        return checkListDtoList;
     }
 
 }

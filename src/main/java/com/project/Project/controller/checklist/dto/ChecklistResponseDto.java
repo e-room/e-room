@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -102,7 +101,7 @@ public class ChecklistResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class MemberCheckListDto {
+    public static class CheckListDto {
         private Long checkListId;
         private Long authorId;
         private Long buildingId;
