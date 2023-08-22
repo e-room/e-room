@@ -1,6 +1,7 @@
 package com.project.Project.service.checklist;
 
 import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
+import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
 import com.project.Project.domain.checklist.CheckListQuestion;
@@ -25,4 +26,8 @@ public interface ChecklistService {
     CheckListQuestion updateChecklistQuestion(Long checklistId, Long questionId, ChecklistRequestDto.ChecklistQuestionUpdateDto request, Member member);
 
     List<CheckList> getUserCheckList(Long memberId);
+
+    List<ChecklistResponseDto.QuestionElementDto> getChecklistQuestions(Long checklistId);
+
+
 }
