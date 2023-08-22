@@ -5,10 +5,14 @@ import com.project.Project.auth.AuthUser;
 import com.project.Project.controller.member.dto.MemberRequestDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
 
+import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
+import com.project.Project.domain.review.Review;
 import com.project.Project.serializer.member.MemberSerializer;
+import com.project.Project.serializer.review.ReviewSerializer;
 import com.project.Project.service.member.MemberService;
+import com.project.Project.service.review.ReviewService;
 import com.project.Project.util.component.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,6 +32,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
@@ -36,6 +41,7 @@ import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBase
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MemberService memberService;
+    private final ReviewService reviewService;
     private final ObjectMapper mapper;
 
     @Operation(summary = "내 정보 조회 [6]", description = "내 정보 조회 API")
@@ -99,5 +105,20 @@ public class MemberRestController {
             @RequestBody MemberRequestDto.RecentMapLocation request, @AuthUser Member loginMember) {
         RecentMapLocation recentMapLocation = memberService.updateRecentMapLocation(request.getCoordinateDto(), loginMember);
         return ResponseEntity.ok(MemberSerializer.toRecentMapLocationDto(recentMapLocation));
+    }
+
+
+    @Operation(summary = "내 리뷰 조회", description = "내가 쓴 리뷰 조회 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ReviewResponseDto.ReviewListDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "loginMember", hidden = true)
+    })
+    @GetMapping("/members/reviews")
+    public ResponseEntity<ReviewResponseDto.ReviewListDto> getReviews(@AuthUser Member loginMember) {
+        List<Review> reviews = reviewService.getReviewList(loginMember);
+        return ResponseEntity.ok(ReviewSerializer.toReviewListDto(reviews));
     }
 }
