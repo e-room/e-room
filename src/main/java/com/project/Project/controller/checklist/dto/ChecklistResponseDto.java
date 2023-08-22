@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +30,9 @@ public class ChecklistResponseDto {
     @Getter
     @AllArgsConstructor
     @SuperBuilder
-    public static class ChecklistElement extends ReviewResponseDto.BasicAssessmentDto {
+    public static class ChecklistElement {
+        @Nullable
+        private String nickname;
         @Nullable
         private AddressDto address;
         private RoomDto.RoomBaseDto room;
