@@ -3,6 +3,7 @@ package com.project.Project.controller.member.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.auth.AuthUser;
 import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.checklist.ChecklistException;
 import com.project.Project.common.exception.review.ReviewException;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
@@ -121,7 +122,7 @@ public class MemberRestController {
     public ResponseEntity<ChecklistResponseDto.ChecklistDeleteDto> deleteChecklist(@PathVariable("memberId") Long memberId, @PathVariable("checklistId") Long checklistId, @AuthUser Member loginMember) {
         CheckList checklist = checklistService.getChecklist(checklistId);
         if (!checklist.getAuthor().getId().equals(loginMember.getId())) {
-            throw new ReviewException("다른 사람의 체크리스트를 삭제할 수 없습니다.", ErrorCode.CHECKLIST_ACCESS_DENIED);
+            throw new ChecklistException("다른 사람의 체크리스트를 삭제할 수 없습니다.", ErrorCode.CHECKLIST_ACCESS_DENIED);
         }
         Long deletedChecklistId = checklistService.deleteById(checklistId);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistDeletedDto(deletedChecklistId));
