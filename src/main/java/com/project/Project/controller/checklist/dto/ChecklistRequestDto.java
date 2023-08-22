@@ -1,5 +1,6 @@
 package com.project.Project.controller.checklist.dto;
 
+import com.project.Project.domain.enums.Expression;
 import lombok.Getter;
 
 import javax.persistence.Column;
@@ -21,5 +22,10 @@ public class ChecklistRequestDto {
         private Double managementFee;
         private Double deposit;
         private Double netLeasableArea;
+    }
+
+    @Getter
+    public static class ChecklistQuestionUpdateDto {
+        private Expression expression;
     }
 }

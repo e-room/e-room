@@ -11,6 +11,7 @@ import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
+import com.project.Project.domain.checklist.CheckListQuestion;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.Review;
 import com.project.Project.service.checklist.ChecklistService;
@@ -96,6 +97,20 @@ public class ChecklistRestController {
         return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDeleteDto(checklistImageId, remainedImages));
     }
 
-
+    @Operation(summary = "발품기록 단계2: 체크리스트 체킹", description = "체크리스트 질문지 표현(좋아요/별로에요) 업데이트 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistQuestionUpdateDto.class)))
+    })
+    @Parameters({
+            @Parameter(name = "member", hidden = true)
+    })
+    @PatchMapping("/{checklistId}/questions/{questionId}")
+    public ResponseEntity<ChecklistResponseDto.ChecklistQuestionUpdateDto> updateChecklistQuestion(@PathVariable("checklistId") Long checklistId,
+                                                                                                   @PathVariable("questionId") Long questionId,
+                                                                                                   @RequestBody ChecklistRequestDto.ChecklistQuestionUpdateDto request,
+                                                                                                   @AuthUser Member member) {
+        CheckListQuestion updatedChecklistQuestion = checklistService.updateChecklistQuestion(checklistId, questionId, request, member);
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistQuestionUpdateDto(updatedChecklistQuestion));
+    }
 
 }

@@ -38,4 +38,8 @@ public class CheckListQuestion extends BaseEntity {
         this.checkList = checkList;
         checkList.getCheckListResponses().add(this);
     }
+
+    public void setExpression(Expression expression) {
+        this.expression = expression;
+    }
 }
