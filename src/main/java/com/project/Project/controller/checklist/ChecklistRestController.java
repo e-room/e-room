@@ -28,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Tag(name = "Checklist API", description = "체크리스트 등록, 조회, 삭제")
@@ -111,6 +112,20 @@ public class ChecklistRestController {
                                                                                                    @AuthUser Member member) {
         CheckListQuestion updatedChecklistQuestion = checklistService.updateChecklistQuestion(checklistId, questionId, request, member);
         return ResponseEntity.ok(ChecklistSerializer.toChecklistQuestionUpdateDto(updatedChecklistQuestion));
+    }
+
+    @Operation(summary = "체크리스트 질문 리스트 조회", description = "체크리스트 질문 리스트 조회 API<br>")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "checklistId", description = "조회하고자 하는 체크리스트의 id")
+    })
+    @GetMapping("/{checklistId}/questions")
+    public ResponseEntity<List<ChecklistResponseDto.QuestionElementDto>> getChecklistQuestions(@PathVariable("checklistId") Long checklistId) {
+        List<ChecklistResponseDto.QuestionElementDto> checklistQuestions = checklistService.getChecklistQuestions(checklistId);
+        return ResponseEntity.ok(checklistQuestions);
     }
 
 }
