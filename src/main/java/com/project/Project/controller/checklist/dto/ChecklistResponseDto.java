@@ -4,6 +4,7 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.controller.room.dto.RoomDto;
 import com.project.Project.domain.checklist.CheckListQuestion;
+import com.project.Project.domain.checklist.Question;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -97,4 +98,17 @@ public class ChecklistResponseDto {
         private LocalDateTime updatedAt;
 
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class QuestionElementDto {
+        private Long id;
+        private String query;
+        private String description;
+        private String keyword;
+
+    }
+
 }

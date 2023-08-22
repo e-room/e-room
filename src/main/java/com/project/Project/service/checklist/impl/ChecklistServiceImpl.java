@@ -5,6 +5,7 @@ import com.project.Project.common.exception.ErrorCode;
 import com.project.Project.common.exception.checklist.ChecklistException;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
 import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
+import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -105,7 +107,6 @@ public class ChecklistServiceImpl implements ChecklistService {
         CheckList checklist = checklistRepository.findById(checklistId).orElseThrow(() -> new ChecklistException(ErrorCode.CHECKLIST_NOT_FOUND));
         checklistLoader.loadAllRelations(checklist);
         checklistRepository.delete(checklist);
-        // TODO. checklist history save
         return checklistId;
     }
 
@@ -122,4 +123,22 @@ public class ChecklistServiceImpl implements ChecklistService {
         return checkListQuestion;
     }
 
+    @Override
+    public List<ChecklistResponseDto.QuestionElementDto> getChecklistQuestions(Long checklistId) {
+
+        List<CheckListQuestion> checkListQuestionList = checklistQuestionRepository.findAllByCheckListId(checklistId);
+        List<ChecklistResponseDto.QuestionElementDto> questionElementList = new ArrayList<>();
+
+        for(CheckListQuestion checkListQuestion : checkListQuestionList) {
+            ChecklistResponseDto.QuestionElementDto questionElementDto = ChecklistResponseDto.QuestionElementDto.builder()
+                    .id(checkListQuestion.getQuestion().getId())
+                    .query(checkListQuestion.getQuestion().getQuery())
+                    .description(checkListQuestion.getQuestion().getDescription())
+                    .keyword(checkListQuestion.getQuestion().getKeyword())
+                    .build();
+            questionElementList.add(questionElementDto);
+        }
+
+        return questionElementList;
+    }
 }
