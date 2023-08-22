@@ -1,5 +1,6 @@
 package com.project.Project.common.serializer.checklist;
 
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
@@ -127,6 +128,45 @@ public class ChecklistSerializer {
                 .questionId(updatedChecklistQuestion.getQuestion().getId())
                 .updatedAt(updatedChecklistQuestion.getUpdatedAt())
                 .build();
+    }
+
+    public static List<ChecklistResponseDto.MemberCheckListDto> toMemberCheckListDto(List<CheckList> checkLists) {
+        List<ChecklistResponseDto.MemberCheckListDto> memberCheckListDtoList = new ArrayList<>();
+
+        for(CheckList checkList : checkLists) {
+
+            AddressDto addressDto = null;
+            if(checkList.getBuilding() != null) {
+                addressDto = AddressDto.builder()
+                        .siDo(checkList.getBuilding().getAddress().getSiDo())
+                        .siGunGu(checkList.getBuilding().getAddress().getSiGunGu())
+                        .eupMyeon(checkList.getBuilding().getAddress().getEupMyeon())
+                        .roadName(checkList.getBuilding().getAddress().getRoadName())
+                        .buildingNumber(checkList.getBuilding().getAddress().getBuildingNumber())
+                        .build();
+            }
+
+            ChecklistResponseDto.MemberCheckListDto memberCheckListDto = ChecklistResponseDto.MemberCheckListDto.builder()
+                    .checkListId(checkList.getId())
+                    .authorId(checkList.getAuthor().getId())
+                    .buildingId(checkList.getBuilding() == null ? null : checkList.getBuilding().getId())
+                    .address(addressDto)
+                    .nickname(checkList.getNickname())
+                    .score(checkList.getScore())
+                    .netLeasableArea(checkList.getNetLeasableArea())
+                    .lineNum(checkList.getLineNum())
+                    .roomNum(checkList.getRoomNum())
+                    .deposit(checkList.getDeposit())
+                    .monthlyRent(checkList.getMonthlyRent())
+                    .managementFee(checkList.getManagementFee())
+                    .createdAt(checkList.getCreatedAt())
+                    .updatedAt(checkList.getUpdatedAt())
+                    .build();
+
+            memberCheckListDtoList.add(memberCheckListDto);
+        }
+
+        return memberCheckListDtoList;
     }
 
 }

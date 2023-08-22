@@ -122,4 +122,8 @@ public class ChecklistServiceImpl implements ChecklistService {
         return checkListQuestion;
     }
 
+    @Override
+    public List<CheckList> getUserCheckList(Long memberId) {
+        return checklistRepository.findAllByAuthorId(memberId);
+    }
 }

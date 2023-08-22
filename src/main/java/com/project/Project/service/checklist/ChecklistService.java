@@ -24,4 +24,5 @@ public interface ChecklistService {
 
     CheckListQuestion updateChecklistQuestion(Long checklistId, Long questionId, ChecklistRequestDto.ChecklistQuestionUpdateDto request, Member member);
 
+    List<CheckList> getUserCheckList(Long memberId);
 }

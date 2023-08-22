@@ -97,4 +97,26 @@ public class ChecklistResponseDto {
         private LocalDateTime updatedAt;
 
     }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class MemberCheckListDto {
+        private Long checkListId;
+        private Long authorId;
+        private Long buildingId;
+        private AddressDto address;
+        private String nickname;
+        private Double score;
+        private Double netLeasableArea;
+        private String lineNum;
+        private String roomNum;
+        private Double deposit;
+        private Double monthlyRent;
+        private Double managementFee;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+
+    }
 }
