@@ -60,6 +60,7 @@ public class ReviewRestController {
     private final ReviewImageService reviewImageService;
     private final MemberService memberService;
 
+    @CrossOrigin(allowCredentials = "false")
     @Operation(summary = "베스트 리뷰 목록 조회 [1.1.0-4]", description = "베스트 리뷰 목록 조회 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK")
