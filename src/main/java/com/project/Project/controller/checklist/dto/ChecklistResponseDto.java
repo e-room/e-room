@@ -82,9 +82,19 @@ public class ChecklistResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
+    public static class ChecklistDeleteDto {
+        private Long checklistId;
+        private LocalDateTime deletedAt;
+    }
+
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class ChecklistQuestionUpdateDto {
         private Long checklistId;
         private Long questionId;
         private LocalDateTime updatedAt;
+
     }
 }

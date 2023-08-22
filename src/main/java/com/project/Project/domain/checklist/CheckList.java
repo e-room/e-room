@@ -2,6 +2,8 @@ package com.project.Project.domain.checklist;
 
 import com.project.Project.domain.BaseEntity;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.eventListener.ChecklistListener;
+import com.project.Project.domain.eventListener.ReviewListener;
 import com.project.Project.domain.member.Member;
 import lombok.*;
 
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@EntityListeners(value = ChecklistListener.class)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

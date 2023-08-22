@@ -11,6 +11,7 @@ import com.project.Project.domain.checklist.CheckListImage;
 import com.project.Project.domain.checklist.CheckListQuestion;
 import com.project.Project.domain.enums.Expression;
 import com.project.Project.domain.member.Member;
+import com.project.Project.loader.checklist.ChecklistLoader;
 import com.project.Project.repository.checklist.ChecklistQuestionRepository;
 import com.project.Project.repository.checklist.ChecklistCustomRepository;
 import com.project.Project.repository.checklist.ChecklistImageRepository;
@@ -38,6 +39,8 @@ public class ChecklistServiceImpl implements ChecklistService {
     private final ChecklistImageProcess checklistImageProcess;
     private final ChecklistQuestionRepository checklistQuestionRepository;
     private final QuestionRepository questionRepository;
+
+    private final ChecklistLoader checklistLoader;
 
     @Override
     @Transactional
@@ -95,6 +98,17 @@ public class ChecklistServiceImpl implements ChecklistService {
         return savedCheckList;
     }
 
+
+    @Override
+    @Transactional
+    public Long deleteById(Long checklistId) {
+        CheckList checklist = checklistRepository.findById(checklistId).orElseThrow(() -> new ChecklistException(ErrorCode.CHECKLIST_NOT_FOUND));
+        checklistLoader.loadAllRelations(checklist);
+        checklistRepository.delete(checklist);
+        // TODO. checklist history save
+        return checklistId;
+    }
+
     @Transactional
     @Override
     public CheckListQuestion updateChecklistQuestion(Long checklistId, Long questionId, ChecklistRequestDto.ChecklistQuestionUpdateDto request, Member member) {
@@ -107,4 +121,5 @@ public class ChecklistServiceImpl implements ChecklistService {
         checkListQuestion.setExpression(request.getExpression());
         return checkListQuestion;
     }
+
 }

@@ -2,12 +2,19 @@ package com.project.Project.controller.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.Project.auth.AuthUser;
+import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.checklist.ChecklistException;
+import com.project.Project.common.exception.review.ReviewException;
+import com.project.Project.common.serializer.checklist.ChecklistSerializer;
+import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
 import com.project.Project.controller.member.dto.MemberRequestDto;
 import com.project.Project.controller.member.dto.MemberResponseDto;
 
+import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.member.RecentMapLocation;
 import com.project.Project.common.serializer.member.MemberSerializer;
+import com.project.Project.service.checklist.ChecklistService;
 import com.project.Project.service.member.MemberService;
 import com.project.Project.common.util.component.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +43,7 @@ import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBase
 @RequiredArgsConstructor
 public class MemberRestController {
     private final MemberService memberService;
+    private final ChecklistService checklistService;
     private final ObjectMapper mapper;
 
     @Operation(summary = "내 정보 조회 [6]", description = "내 정보 조회 API")
@@ -99,5 +107,24 @@ public class MemberRestController {
             @RequestBody MemberRequestDto.RecentMapLocation request, @AuthUser Member loginMember) {
         RecentMapLocation recentMapLocation = memberService.updateRecentMapLocation(request.getCoordinateDto(), loginMember);
         return ResponseEntity.ok(MemberSerializer.toRecentMapLocationDto(recentMapLocation));
+    }
+
+    @Operation(summary = "체크리스트 삭제", description = "체크리스트 삭제 API<br>")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistDeleteDto.class))),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "memberId", description = "삭제하고자 하는 체크리스트의 유저 id"),
+            @Parameter(name = "checklistId", description = "삭제하고자 하는 체크리스트의 id")
+    })
+    @DeleteMapping("/member/{memberId}/checklists/{checklistId}")
+    public ResponseEntity<ChecklistResponseDto.ChecklistDeleteDto> deleteChecklist(@PathVariable("memberId") Long memberId, @PathVariable("checklistId") Long checklistId, @AuthUser Member loginMember) {
+        CheckList checklist = checklistService.getChecklist(checklistId);
+        if (!checklist.getAuthor().getId().equals(loginMember.getId())) {
+            throw new ChecklistException("다른 사람의 체크리스트를 삭제할 수 없습니다.", ErrorCode.CHECKLIST_ACCESS_DENIED);
+        }
+        Long deletedChecklistId = checklistService.deleteById(checklistId);
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistDeletedDto(deletedChecklistId));
     }
 }

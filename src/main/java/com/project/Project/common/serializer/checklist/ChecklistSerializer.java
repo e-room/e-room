@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -109,6 +110,14 @@ public class ChecklistSerializer {
         return ChecklistResponseDto.ChecklistImageDeleteDto.builder()
                 .deletedImageId(checklistImageId)
                 .remainedImages(toChecklistImageListDto(remainedImages))
+                .build();
+    }
+
+
+    public static ChecklistResponseDto.ChecklistDeleteDto toChecklistDeletedDto(Long deletedChecklistId) {
+        return ChecklistResponseDto.ChecklistDeleteDto.builder()
+                .checklistId(deletedChecklistId)
+                .deletedAt(LocalDateTime.now())
                 .build();
     }
 
