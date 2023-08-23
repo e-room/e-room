@@ -1,5 +1,6 @@
 package com.project.Project.controller.checklist.dto;
 
+import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.controller.room.dto.RoomDto;
@@ -102,10 +103,9 @@ public class ChecklistResponseDto {
     @Getter
     @AllArgsConstructor
     @Builder
-
     public static class CheckListDto {
         private Long checkListId;
-        private Long authorId;
+        private MemberDto author;
         private Long buildingId;
         private AddressDto address;
         private String nickname;
@@ -121,6 +121,10 @@ public class ChecklistResponseDto {
 
     }
 
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
     public static class QuestionElementDto {
         private Long id;
         private String query;

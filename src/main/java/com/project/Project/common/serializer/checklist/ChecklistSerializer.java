@@ -1,5 +1,6 @@
 package com.project.Project.common.serializer.checklist;
 
+import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
@@ -130,7 +131,7 @@ public class ChecklistSerializer {
                 .build();
     }
 
-    public static List<ChecklistResponseDto.CheckListDto> toMemberCheckListDto(List<CheckList> checkLists) {
+    public static List<ChecklistResponseDto.CheckListDto> toCheckListDto(List<CheckList> checkLists) {
         List<ChecklistResponseDto.CheckListDto> checkListDtoList = new ArrayList<>();
 
         for(CheckList checkList : checkLists) {
@@ -146,9 +147,17 @@ public class ChecklistSerializer {
                         .build();
             }
 
+            MemberDto memberDto = MemberDto.builder()
+                    .id(checkList.getAuthor().getId())
+                    .email(checkList.getAuthor().getEmail())
+                    .name(checkList.getAuthor().getNickName())
+                    .picture(checkList.getAuthor().getProfileImage().getUrl())
+                    .authProviderType(checkList.getAuthor().getAuthProviderType())
+                    .build();
+
             ChecklistResponseDto.CheckListDto checkListDto = ChecklistResponseDto.CheckListDto.builder()
                     .checkListId(checkList.getId())
-                    .authorId(checkList.getAuthor().getId())
+                    .author(memberDto)
                     .buildingId(checkList.getBuilding() == null ? null : checkList.getBuilding().getId())
                     .address(addressDto)
                     .nickname(checkList.getNickname())

@@ -134,11 +134,11 @@ public class MemberRestController {
             @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
     })
     @Parameters({
-            @Parameter(name = "memberId", description = "조회하고자 하는 체크리스트 리스트의 유저 id")
+            @Parameter(name = "memberId", description = "체크리스트를 조회하고자 하는 유저 id")
     })
     @GetMapping("/member/{memberId}/checklists")
     public ResponseEntity<List<ChecklistResponseDto.CheckListDto>> getCheckList(@PathVariable("memberId") Long memberId) {
         List<CheckList> userCheckList = checklistService.getUserCheckList(memberId);
-        return ResponseEntity.ok(ChecklistSerializer.toMemberCheckListDto(userCheckList));
+        return ResponseEntity.ok(ChecklistSerializer.toCheckListDto(userCheckList));
     }
 }

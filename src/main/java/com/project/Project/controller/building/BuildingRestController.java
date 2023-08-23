@@ -1,10 +1,13 @@
 package com.project.Project.controller.building;
 
 import com.project.Project.auth.AuthUser;
+import com.project.Project.common.serializer.checklist.ChecklistSerializer;
 import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingRequestDto;
 import com.project.Project.controller.building.dto.BuildingResponseDto;
+import com.project.Project.controller.checklist.dto.ChecklistResponseDto.CheckListDto;
 import com.project.Project.domain.building.Building;
+import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.member.Member;
 import com.project.Project.domain.review.ReviewImage;
 import com.project.Project.common.exception.ErrorCode;
@@ -13,6 +16,7 @@ import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord
 import com.project.Project.common.serializer.building.BuildingSerializer;
 import com.project.Project.service.FavoriteService;
 import com.project.Project.service.building.BuildingService;
+import com.project.Project.service.checklist.ChecklistService;
 import com.project.Project.service.review.ReviewImageService;
 import com.project.Project.service.review.ReviewService;
 import com.project.Project.common.util.component.QueryDslUtil;
@@ -52,6 +56,7 @@ public class BuildingRestController {
 
     private final ReviewImageService reviewImageService;
     private final FavoriteService favoriteService;
+    private final ChecklistService checklistService;
 
     /*
     when: 3.0.1
@@ -164,4 +169,19 @@ public class BuildingRestController {
         List<ReviewImage> reviewImageList = reviewImageService.findByBuilding(buildingId);
         return ResponseEntity.ok(BuildingSerializer.toReviewImageListDto(reviewImageList));
     }
+
+    @Operation(summary = "건물에 대한 체크리스트 모두 조회", description = "건물에 대한 체크리스트 모두 조회 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "UNAUTHORIZED")
+    })
+    @Parameters({
+            @Parameter(name = "buildingId", description = "체크리스트를 조회하고자 하는 건물 id")
+    })
+    @GetMapping("/{buildingId}/room/checklists")
+    public ResponseEntity<List<CheckListDto>> getCheckList(@PathVariable("buildingId") Long buildingId) {
+        List<CheckList> buildingCheckList = checklistService.getBuildingCheckList(buildingId);
+        return ResponseEntity.ok(ChecklistSerializer.toCheckListDto(buildingCheckList));
+    }
+
 }

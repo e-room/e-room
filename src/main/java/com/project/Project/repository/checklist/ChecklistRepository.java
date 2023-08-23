@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ChecklistRepository extends JpaRepository<CheckList, Long> {
     List<CheckList> findAllByAuthorId(Long memberId);
+
+    List<CheckList> findAllByBuildingId(Long building);
 }

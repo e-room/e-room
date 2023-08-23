@@ -27,6 +27,8 @@ public interface ChecklistService {
 
     List<CheckList> getUserCheckList(Long memberId);
 
+    List<CheckList> getBuildingCheckList(Long buildingId);
+
     List<ChecklistResponseDto.QuestionElementDto> getChecklistQuestions(Long checklistId);
 
 

@@ -6,6 +6,7 @@ import com.project.Project.common.exception.checklist.ChecklistException;
 import com.project.Project.common.serializer.checklist.ChecklistSerializer;
 import com.project.Project.controller.checklist.dto.ChecklistRequestDto;
 import com.project.Project.controller.checklist.dto.ChecklistResponseDto;
+import com.project.Project.controller.checklist.dto.ChecklistResponseDto.QuestionElementDto;
 import com.project.Project.domain.Uuid;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
@@ -127,15 +128,20 @@ public class ChecklistServiceImpl implements ChecklistService {
     public List<CheckList> getUserCheckList(Long memberId) {
         return checklistRepository.findAllByAuthorId(memberId);
     }
+
+    @Override
+    public List<CheckList> getBuildingCheckList(Long buildingId) {
+        return checklistRepository.findAllByBuildingId(buildingId);
+    }
       
     @Override
-    public List<ChecklistResponseDto.QuestionElementDto> getChecklistQuestions(Long checklistId) {
+    public List<QuestionElementDto> getChecklistQuestions(Long checklistId) {
 
         List<CheckListQuestion> checkListQuestionList = checklistQuestionRepository.findAllByCheckListId(checklistId);
-        List<ChecklistResponseDto.QuestionElementDto> questionElementList = new ArrayList<>();
+        List<QuestionElementDto> questionElementList = new ArrayList<>();
 
         for(CheckListQuestion checkListQuestion : checkListQuestionList) {
-            ChecklistResponseDto.QuestionElementDto questionElementDto = ChecklistResponseDto.QuestionElementDto.builder()
+            QuestionElementDto questionElementDto = QuestionElementDto.builder()
                     .id(checkListQuestion.getQuestion().getId())
                     .query(checkListQuestion.getQuestion().getQuery())
                     .description(checkListQuestion.getQuestion().getDescription())
