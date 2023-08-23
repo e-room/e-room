@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,6 +59,7 @@ public class TokenController {
         System.out.println("refersh: " + refreshTokenCookie);
     }
 
+    @CrossOrigin(allowCredentials = "false")
     @Operation(summary = "토큰 검증", description = "토큰 유효성 검사 API")
     @GetMapping("/token/valid")
     @Parameters({
