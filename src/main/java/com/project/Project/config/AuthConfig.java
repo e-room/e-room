@@ -75,7 +75,7 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/valid", "api/profile", "/", "/health",
+                    "/",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
@@ -102,12 +102,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/valid", "api/profile", "/", "/health",
+                    "/",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/building/room/review/bests",
                     "/admin/**",
                     "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
@@ -131,12 +130,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/valid", "api/profile", "/", "/health",
+                    "/",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
-                    "/building/room/review/bests",
                     "/admin/**",
                     "/css/**", "/img/**", "/js/**", "/webjars/**", "/favicon.ico"
             );
@@ -159,13 +157,11 @@ public class AuthConfig {
     public static class SecurityProdConfig {
         @Bean
         public WebSecurityCustomizer configure() {
-            return (web) -> web.ignoring().mvcMatchers(
-                    "/token/valid", "api/profile", "/", "/health",
+            return (web) -> web.ignoring().mvcMatchers("/",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/building/room/review/bests"
+                    "/swagger-ui/**"
             );
         }
 
@@ -186,12 +182,11 @@ public class AuthConfig {
         @Bean
         public WebSecurityCustomizer configure() {
             return (web) -> web.ignoring().mvcMatchers(
-                    "/token/valid", "api/profile", "/", "/health",
+                    "/",
                     "/swagger-ui.html",
                     "/v3/api-docs",
                     "/v3/api-docs/**",
-                    "/swagger-ui/**",
-                    "/building/room/review/bests"
+                    "/swagger-ui/**"
             );
         }
 
@@ -226,7 +221,7 @@ public class AuthConfig {
                 http
                         .authorizeRequests()
                         .antMatchers("/login", "api/profile", "/", "/health").permitAll()
-                        .antMatchers(HttpMethod.GET, "/building/marking/**", "/building/search", "/building/{buildingId}/images", "/building/{buildingId}", "/building", "/building/{buildingId}/room/review").permitAll()
+                        .antMatchers(HttpMethod.GET, "/building/marking/**", "/building/search", "/building/{buildingId}/images", "/building/{buildingId}", "/building", "/building/{buildingId}/room/review", "/building/room/review/bests").permitAll()
                         .antMatchers(HttpMethod.GET, "/token/valid").permitAll();
                 return http;
             } catch (Exception e) {
