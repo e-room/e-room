@@ -2,6 +2,7 @@ package com.project.Project.controller.admin.controller;
 
 import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.enums.MemberRole;
+import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.config.properties.SecurityProperties;
 import com.project.Project.controller.admin.dto.AdminRequestDto;
@@ -45,6 +46,7 @@ public class AdminRestController {
     private final AdminService adminService;
     private final MemberService memberService;
     private final TokenService tokenService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     private SecurityProperties securityProperties;
 
@@ -62,13 +64,14 @@ public class AdminRestController {
             Token token = tokenService.generateToken(member.getEmail(), member.getAuthProviderType(), MemberRole.USER);
             memberService.updateRefreshToken(member, token.getRefreshToken());
 
-            response.setContentType("application/json;charset=UTF-8");
+//            response.setContentType("application/json;charset=UTF-8");
+            Boolean isLocal = CookieUtil.getCookie(request, IS_LOCAL)
+                    .map(Cookie::getValue)
+                    .map(Boolean::parseBoolean).orElse(false);
 
-            writeTokenResponse(request, response, token);
 
-            String targetUrl = "https://e-room.dev";
-            System.out.println("TARGET URL : " + targetUrl);
-
+            oAuth2SuccessHandler.writeTokenResponse(request, response, token);
+            String targetUrl = oAuth2SuccessHandler.determineTargetUrlDelegate(request, response, token, isLocal);
             Map<String, String> map = new HashMap<>();
             map.put("redirectUrl", targetUrl);
             return ResponseEntity.ok(map);
@@ -77,13 +80,4 @@ public class AdminRestController {
         throw new MemberException(ErrorCode.MEMBER_NOT_FOUND);
     }
 
-    private void writeTokenResponse(HttpServletRequest request, HttpServletResponse response, Token token) {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
-
-        ResponseCookie accessTokenCookie = CookieUtil.createAccessTokenCookie(token.getAccessToken(), false);
-        ResponseCookie refreshTokenCookie = CookieUtil.createRefreshTokenCookie(token.getRefreshToken(), false);
-        response.addHeader("Set-Cookie", accessTokenCookie.toString());
-        response.addHeader("Set-Cookie", refreshTokenCookie.toString());
-    }
 }
