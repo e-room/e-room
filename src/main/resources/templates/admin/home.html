@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <!-- Bootstrap CSS -->
+    <th:block th:include="common/include/include-link"/>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center mt-5">
+        <h1 class="text-center fw-bold">가짜 계정 만들기</h1>
+        <div class="col-md-6 mt-3">
+            <div class="card">
+                <form id="pseudo-account-form">
+                    <h3 class="card-header text-center">정보를 입력하세요</h3>
+                    <div class="card-body">
+                        <div>
+                            <label for="email" class="form-label">소셜로그인 종류</label>
+                            <select id="authProviderType" name="authProviderType" class="form-select mb-3" aria-label="Default select example">
+                                <option value="KAKAO" selected>KAKAO</option>
+                                <option value="NAVER">NAVER</option>
+                                <option value="GOOGLE">GOOGLE</option>
+                            </select>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">이메일</label>
+                                <input name="email" type="email" class="form-control" id="email" placeholder="name@example.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">이름</label>
+                                <input name="name" class="form-control" id="name" placeholder="정이룸">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" onclick="pseudoAccount(event)" class="btn btn-primary mt-3 w-100">제출</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-5">
+        <h1 class="text-center fw-bold">가짜 계정 로그인</h1>
+        <div class="col-md-6 mt-3">
+            <div class="card">
+                <form id="pseudo-account-login-form">
+                    <h3 class="card-header text-center">이메일을 입력하세요</h3>
+                    <div class="card-body">
+                        <div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">이메일</label>
+                                <input name="loginEmail" type="email" class="form-control" id="login-email" placeholder="name@example.com">
+                            </div>
+<!--                            <div class="mb-3">-->
+<!--                                <label for="name" class="form-label">이름</label>-->
+<!--                                <input name="name" class="form-control" id="name" placeholder="정이룸">-->
+<!--                            </div>-->
+                            <div class="form-group">
+                                <button type="submit" onclick="pseudoAccountLogin(event)" class="btn btn-primary mt-3 w-100">제출</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script th:src="@{/js/admin/home.js}"></script>
+</body>
+</html>
