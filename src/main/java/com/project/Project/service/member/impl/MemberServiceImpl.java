@@ -79,4 +79,15 @@ public class MemberServiceImpl implements MemberService {
     public List<ReviewLike> getReviewLikeList(Member member) {
         return reviewLikeRepository.findByReviewLikeStatusAndMember(ReviewLikeStatus.LIKED, member);
     }
+
+    @Override
+    public Optional<Member> findByEmail(String email) {
+        return memberRepository.findByEmail(email);
+    }
+
+    @Transactional
+    @Override
+    public void updateRefreshToken(Member member, String refreshToken) {
+        member.setRefreshToken(refreshToken);
+    }
 }

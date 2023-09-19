@@ -66,7 +66,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         authorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
     }
 
-    protected String determineTargetUrlDelegate(HttpServletRequest request, HttpServletResponse response, Token token, boolean isLocal) throws IOException {
+    public String determineTargetUrlDelegate(HttpServletRequest request, HttpServletResponse response, Token token, boolean isLocal) throws IOException {
         if (isLocal) {
             String defaultUrl = new URIBuilder().setScheme("http").setPort(3000).setHost("localhost").setPath("api/getToken").toString();
             String redirectPath = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
@@ -95,7 +95,7 @@ public class OAuth2SuccessHandler extends SavedRequestAwareAuthenticationSuccess
         return targetUrl;
     }
 
-    private void writeTokenResponse(HttpServletRequest request, HttpServletResponse response, Token token) throws IOException {
+    public void writeTokenResponse(HttpServletRequest request, HttpServletResponse response, Token token) throws IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
