@@ -15,7 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Validated
-@Tag(name = "Image API", description = "이미지 썸네일 생성, 이미지 단건 조회")
+@Tag(name = "02-Image 🏞️",description = "이미지 썸네일 생성, 이미지 단건 조회")
 @RestController
 @RequiredArgsConstructor
 public class ImageRestController {
