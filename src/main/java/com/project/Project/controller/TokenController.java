@@ -30,7 +30,7 @@ import java.util.Arrays;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
-@Tag(name = "Token API", description = "토큰 만료, 재발급, 검증")
+@Tag(name = "08-Token 📲",description = "토큰 만료, 재발급, 검증")
 @RequiredArgsConstructor
 @RestController
 public class TokenController {

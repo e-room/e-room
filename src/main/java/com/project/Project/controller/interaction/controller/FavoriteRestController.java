@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "Favorite API", description = "찜한 자취방 추가, 삭제, 조회")
+@Tag(name = "04-Favorite 🙌",description = "찜한 자취방 추가, 삭제, 조회")
 @Validated
 @RestController
 @RequiredArgsConstructor
