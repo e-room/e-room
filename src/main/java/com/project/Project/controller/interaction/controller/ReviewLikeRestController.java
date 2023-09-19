@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "ReviewLike API", description = "리뷰 좋아요, 취소")
+@Tag(name = "03-ReviewLike 👍",description = "리뷰 좋아요, 취소")
 @Validated
 @RestController
 @RequiredArgsConstructor
