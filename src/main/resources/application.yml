@@ -40,6 +40,10 @@ file:
 springdoc:
   cache:
     disabled: true
+  swagger-ui:
+    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+    operations-sorter: method      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+  use-fqn: true
 
 ---
 spring:

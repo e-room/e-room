@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "Building API", description = "건물 조회, 추가")
+@Tag(name = "01-Building 🏠",description = "건물 조회, 추가")
 @Validated
 @RequiredArgsConstructor
 @RestController

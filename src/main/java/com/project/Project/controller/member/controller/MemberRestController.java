@@ -31,7 +31,7 @@ import java.io.IOException;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
 
-@Tag(name = "Member API", description = "내 정보 조회, 회원 탈퇴")
+@Tag(name = "05-Member 👤",description = "내 정보 조회, 회원 탈퇴")
 @RestController
 @RequiredArgsConstructor
 public class MemberRestController {
