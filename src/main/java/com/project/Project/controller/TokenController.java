@@ -64,23 +64,30 @@ public class TokenController {
             @Parameter(name = "member", hidden = true)
     })
     public ResponseEntity<TokenResponseDto.TokenValidDto> validUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Boolean isValid = true;
+        Boolean isValid = false;  // 초기값을 false로 설정
+
         String accessToken = getCookieValue(request, "accessToken");
         String refreshToken = getCookieValue(request, "refreshToken");
+
         if (accessToken != null) {
             try {
                 TokenService.JwtCode jwtCode = tokenService.verifyToken(accessToken);
-                if (jwtCode != TokenService.JwtCode.ACCESS) isValid = false;
+                if (jwtCode == TokenService.JwtCode.ACCESS) {
+                    isValid = true;  // 유효한 경우에만 true로 설정
+                }
             } catch (Exception e) {
-                isValid = false;
+                // accessToken 검증에 실패했을 때의 로직은 아래 refreshToken 로직에서 처리
             }
-        } else if (refreshToken != null) {
+        }
+
+        if (!isValid && refreshToken != null) {  // accessToken이 유효하지 않고 refreshToken이 있을 경우
             try {
-                Token jwtToken = new Token(accessToken, refreshToken);
+                Token jwtToken = new Token(null, refreshToken);  // refreshToken만 사용
                 JwtAuthentication authenticationRequest = new JwtAuthentication(jwtToken, request, response);
                 JwtAuthentication authenticationResult = (JwtAuthentication) this.authenticationManager.authenticate(authenticationRequest);
                 SecurityContextHolder.getContext().setAuthentication(authenticationResult);
                 postAuthenticate(request, response, authenticationResult);
+                isValid = true;  // refreshToken을 이용한 인증이 성공한 경우
             } catch (JwtAuthenticationException ex) {
                 SecurityContextHolder.clearContext();
                 this.failureHandler.onAuthenticationFailure(request, response, ex);
@@ -91,7 +98,9 @@ public class TokenController {
                 this.failureHandler.onAuthenticationFailure(request, response, authenticationException);
                 throw authenticationException;
             }
-        } else isValid = false;
+        }
+
         return ResponseEntity.ok(TokenResponseDto.TokenValidDto.builder().isValid(isValid).build());
     }
+
 }
