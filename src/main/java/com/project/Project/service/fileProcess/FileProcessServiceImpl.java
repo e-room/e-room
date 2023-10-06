@@ -70,8 +70,9 @@ public abstract class FileProcessServiceImpl<T extends FilePackageMeta> {
         Boolean doesExist = uuidCustomRepository.exist(candidate);
         if (Boolean.TRUE.equals(doesExist)) {
             savedUuid = createUUID();
+        } else {
+            savedUuid = uuidRepository.save(Uuid.builder().uuid(candidate).build());
         }
-        savedUuid = uuidRepository.save(Uuid.builder().uuid(candidate).build());
         return savedUuid;
     }
 
