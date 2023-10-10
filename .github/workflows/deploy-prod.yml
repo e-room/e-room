@@ -2,7 +2,10 @@ name: E-room Prod CI/CD
 
 on:
   pull_request:
-    types: [closed]
+    branches:
+      - master
+    types:
+      - closed
   workflow_dispatch: # (2).수동 실행도 가능하도록
 
 # 배포 테스트용
@@ -14,8 +17,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest # (3).OS환경
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
 
     steps:
       - name: Checkout
