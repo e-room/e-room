@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 @Tag(name = "Checklist API", description = "체크리스트 등록, 조회, 삭제")
 @RestController
 @RequiredArgsConstructor

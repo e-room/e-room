@@ -31,6 +31,9 @@ public class CheckListQuestion extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Expression expression;
 
+    @Column(length = 200)
+    private String memo;
+
     public void setCheckList(CheckList checkList) {
         if(this.checkList != null) {
             this.checkList.getCheckListResponses().remove(this);

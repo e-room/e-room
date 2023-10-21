@@ -40,7 +40,7 @@ public class CheckList extends BaseEntity {
     @OneToMany(mappedBy = "checkList", cascade = CascadeType.ALL)
     private List<CheckListImage> checkListImageList = new ArrayList<>();
 
-    @Column(nullable = true)
+    @Column(length = 500)
     private String memo;
 
     private Double score;
