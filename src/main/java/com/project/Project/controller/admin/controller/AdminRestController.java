@@ -4,28 +4,27 @@ import com.project.Project.auth.dto.Token;
 import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.auth.handler.OAuth2SuccessHandler;
 import com.project.Project.auth.service.TokenService;
+import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.member.MemberException;
+import com.project.Project.common.util.component.CookieUtil;
 import com.project.Project.config.properties.SecurityProperties;
 import com.project.Project.controller.admin.dto.AdminRequestDto;
 import com.project.Project.controller.admin.dto.AdminResponseDto;
 import com.project.Project.domain.member.Member;
-import com.project.Project.exception.ApiErrorResult;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.member.MemberException;
+
 import com.project.Project.serializer.admin.AdminSerializer;
 import com.project.Project.service.admin.AdminService;
 import com.project.Project.service.member.MemberService;
-import com.project.Project.util.component.CookieUtil;
+
 import lombok.RequiredArgsConstructor;
-import org.apache.http.client.utils.URIBuilder;
-import org.springframework.http.ResponseCookie;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.IS_LOCAL;
-import static com.project.Project.auth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @RestController
 @RequestMapping("/admin")
