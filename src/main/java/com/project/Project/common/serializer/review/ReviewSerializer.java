@@ -1,0 +1,180 @@
+package com.project.Project.common.serializer.review;
+
+import com.project.Project.auth.dto.MemberDto;
+import com.project.Project.common.serializer.member.MemberSerializer;
+import com.project.Project.controller.member.dto.MemberResponseDto;
+import com.project.Project.controller.review.dto.ReviewResponseDto;
+import com.project.Project.domain.embedded.Address;
+import com.project.Project.domain.enums.DTypeEnum;
+import com.project.Project.domain.enums.KeywordEnum;
+import com.project.Project.domain.enums.ReviewCategoryEnum;
+import com.project.Project.domain.interaction.ReviewLike;
+import com.project.Project.domain.member.Member;
+import com.project.Project.domain.review.*;
+import com.project.Project.loader.review.ReviewLoader;
+import com.project.Project.repository.review.ReviewCategoryRepository;
+import com.project.Project.repository.review.ReviewKeywordRepository;
+import com.project.Project.service.fileProcess.ReviewImageProcess;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+@RequiredArgsConstructor
+public class ReviewSerializer {
+    private final ReviewImageProcess reviewImageProcess;
+    private final ReviewKeywordRepository reviewKeywordRepository;
+    private final ReviewCategoryRepository reviewCategoryRepository;
+    private final ReviewLoader reviewLoader;
+
+    private static ReviewImageProcess staticReviewImageProcess;
+    private static ReviewKeywordRepository staticReviewKeywordRepository;
+    private static ReviewCategoryRepository staticReviewCategoryRepository;
+    private static ReviewLoader staticReviewLoader;
+
+    public static ReviewResponseDto.ReviewListDto toReviewListDto(List<Review> reviewList) {
+        List<ReviewResponseDto.BestReviewDto> reviewDtoList = reviewList.stream()
+                .map(review -> toBestReviewDto(review))
+                .collect(Collectors.toList());
+
+        return ReviewResponseDto.ReviewListDto.builder()
+                .reviewDtoList(reviewDtoList)
+                .size(reviewDtoList.size())
+                .build();
+    }
+
+
+    @PostConstruct
+    public void init() {
+        staticReviewImageProcess = this.reviewImageProcess;
+        staticReviewKeywordRepository = this.reviewKeywordRepository;
+        staticReviewCategoryRepository = this.reviewCategoryRepository;
+        staticReviewLoader = this.reviewLoader;
+    }
+
+    public static ReviewResponseDto.BestReviewDto toBestReviewDto(Review review) {
+        MemberDto authorDto = MemberSerializer.toAuthorDto(review);
+
+        return ReviewResponseDto.BestReviewDto.builder()
+                .reviewBaseDto(toBaseReviewDto(review))
+                .reviewScoreDto(toReviewScoreDto(review))
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList()))
+                .address(Address.toAddressDto(review.getBuilding().getAddress()))
+                .buildingName(review.getBuilding().getBuildingName())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewBaseDto toBaseReviewDto(Review review) {
+        review.getReviewToReviewKeywordList().stream().forEach((reviewToReviewKeyword) -> reviewToReviewKeyword.getReviewKeyword().getDType());
+        Double score = review.getReviewCategory(ReviewCategoryEnum.RESIDENCESATISFACTION).map(ReviewToReviewCategory::getScore).orElse(null);
+
+        List<KeywordEnum> advantageList = review.getReviewToReviewKeywordList().stream().filter(reviewToReviewKeyword -> reviewToReviewKeyword.getReviewKeyword().getDType().equals(DTypeEnum.ADVANTAGE)).map(ReviewToReviewKeyword::getReviewKeyword).map(ReviewKeyword::getKeywordType).collect(Collectors.toList());
+        List<KeywordEnum> disadvantageList = review.getReviewToReviewKeywordList().stream().filter(reviewToReviewKeyword -> reviewToReviewKeyword.getReviewKeyword().getDType().equals(DTypeEnum.DISADVANTAGE)).map(ReviewToReviewKeyword::getReviewKeyword).map(ReviewKeyword::getKeywordType).collect(Collectors.toList());
+
+        return ReviewResponseDto.ReviewBaseDto.builder()
+                .reviewId(review.getId())
+                .createdAt(review.getCreatedAt())
+                .score(score)
+                .residenceStartYear(review.getResidenceStartYear())
+                .residenceDuration(review.getResidenceDuration())
+                .netLeasableArea(review.getNetLeasableArea())
+                .deposit(Double.valueOf(review.getDeposit()))
+                .monthlyRent(Double.valueOf(review.getMonthlyRent()))
+                .managementFee(Double.valueOf(review.getManagementFee()))
+                .advantage(advantageList)
+                .advantageDescription(review.getAdvantageDescription())
+                .disadvantage(disadvantageList)
+                .disadvantageDescription(review.getDisadvantageDescription())
+                .reviewLikeCnt(review.getReviewSummary().getLikeCnt())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewScoreDto toReviewScoreDto(Review review) {
+        List<ReviewToReviewCategory> reviewToReviewCategoryList = review.getReviewToReviewCategoryList();
+        if (reviewToReviewCategoryList.isEmpty() || reviewToReviewCategoryList == null) {
+            review = staticReviewLoader.loadAllScores(review);
+            reviewToReviewCategoryList = review.getReviewToReviewCategoryList();
+        }
+        ReviewResponseDto.ReviewScoreDto reviewScoreDto = new ReviewResponseDto.ReviewScoreDto();
+        reviewToReviewCategoryList.stream().filter((rtrc) -> ReviewCategoryEnum.contains(rtrc.getReviewCategory().getType()))
+                .forEach((rtrc) -> {
+                    List<Field> fieldList = Arrays.asList(reviewScoreDto.getClass().getDeclaredFields());
+                    Field targetField = fieldList.stream().filter((field) -> field.getName().equalsIgnoreCase(rtrc.getReviewCategory().getType().name())).findFirst().orElseThrow(() -> new RuntimeException());
+                    targetField.setAccessible(true);
+                    try {
+                        targetField.set(reviewScoreDto, rtrc.getScore());
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+        return reviewScoreDto;
+    }
+
+    public static ReviewResponseDto.ReviewDto toReviewDto(Review review) {
+        MemberDto authorDto = MemberSerializer.toAuthorDto(review);
+
+        return ReviewResponseDto.ReviewDto.builder()
+                .reviewBaseDto(toBaseReviewDto(review))
+                .reviewScoreDto(toReviewScoreDto(review))
+                .authorDto(authorDto)
+                .reviewImageListDto(toReviewImageListDto(review.getReviewImageList())).build();
+    }
+
+    public static ReviewResponseDto.ReviewDto setIsLiked(ReviewResponseDto.ReviewDto reviewDto, List<ReviewLike> reviewLikeList) {
+        reviewLikeList.stream().filter((reviewLike) -> reviewLike.getReview().getId().equals(reviewDto.getReviewBaseDto().getReviewId()))
+                .findAny().ifPresent((elem) -> reviewDto.setIsLiked(true));
+        return reviewDto;
+    }
+
+    public static ReviewResponseDto.ReviewCreateDto toReviewCreateDto(Long createdReviewId, Long buildingId, Boolean isFirstReview) {
+        return ReviewResponseDto.ReviewCreateDto.builder()
+                .reviewId(createdReviewId)
+                .buildingId(buildingId)
+                .isFirstReview(isFirstReview)
+                .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewDeleteDto toReviewDeleteDto(Long deletedReviewId) {
+        return ReviewResponseDto.ReviewDeleteDto.builder()
+                .reviewId(deletedReviewId)
+                .deletedAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewImageDto toReviewImageDto(ReviewImage reviewImage) {
+        return ReviewResponseDto.ReviewImageDto.builder()
+                .url(reviewImage.getUrl())
+                .uuid(reviewImage.getUuid().getUuid())
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewImageListDto toReviewImageListDto(List<ReviewImage> reviewImageList) {
+        List<ReviewResponseDto.ReviewImageDto> reviewImageDtoList =
+                reviewImageList.stream()
+                        .map((reviewImage -> toReviewImageDto(reviewImage)))
+                        .collect(Collectors.toList());
+        Integer reviewImageCount = reviewImageDtoList.size();
+
+        return ReviewResponseDto.ReviewImageListDto.builder()
+                .reviewImageList(reviewImageDtoList)
+                .reviewImageCount(reviewImageCount)
+                .build();
+    }
+
+    public static ReviewResponseDto.ReviewReadByMemberDto toReviewReadDto(Member member, List<ReviewRead> reviewReads) {
+        MemberResponseDto.MemberProfileDto memberProfileDto = MemberSerializer.toMemberProfileDto(member);
+        List<Long> reviewIds = reviewReads.stream().map(ReviewRead::getReview).map(Review::getId).collect(Collectors.toList());
+        return ReviewResponseDto.ReviewReadByMemberDto.builder()
+                .memberProfileDto(memberProfileDto)
+                .reviewIds(reviewIds)
+                .build();
+    }
+}

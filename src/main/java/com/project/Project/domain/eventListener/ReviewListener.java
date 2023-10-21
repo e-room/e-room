@@ -9,7 +9,7 @@ import com.project.Project.repository.history.ReviewHistoryRepository;
 import com.project.Project.repository.review.ReviewCategoryRepository;
 import com.project.Project.repository.review.ReviewRepository;
 import com.project.Project.repository.review.ReviewToReviewCategoryRepository;
-import com.project.Project.util.ApplicationContextServe;
+import com.project.Project.common.util.ApplicationContextServe;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.PreRemove;

@@ -4,7 +4,7 @@ import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 
 import com.project.Project.domain.enums.KeywordEnum;
-import com.project.Project.validator.ValidEnum;
+import com.project.Project.common.validator.ValidEnum;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 

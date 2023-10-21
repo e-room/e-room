@@ -1,6 +1,6 @@
 package com.project.Project.service;
 
-import com.project.Project.aws.s3.ThumbnailImagePackageMetadata;
+import com.project.Project.common.aws.s3.metadata.ThumbnailMetadata;
 import com.project.Project.domain.Thumbnail;
 import com.project.Project.domain.Uuid;
 import com.project.Project.repository.ThumbnailRepository;
@@ -25,13 +25,13 @@ public class ThumbnailServiceImpl implements ThumbnailImageService {
 
         List<Thumbnail> thumbnailList = imageFileList.parallelStream().map(multipartFile -> {
             Uuid uuid = thumbnailImageProcess.createUUID();
-            ThumbnailImagePackageMetadata thumbnailImagePackageMetadata = ThumbnailImagePackageMetadata.builder()
+            ThumbnailMetadata thumbnailMetadata = ThumbnailMetadata.builder()
                     .createdAt(LocalDateTime.now())
                     .fileName(multipartFile.getOriginalFilename())
                     .uuid(uuid.getUuid())
                     .uuidEntity(uuid)
                     .build();
-            return thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailImagePackageMetadata);
+            return thumbnailImageProcess.makeThumbnailAndUpload(multipartFile, thumbnailMetadata);
         }).collect(Collectors.toList());
 
         return thumbnailRepository.saveAll(thumbnailList);

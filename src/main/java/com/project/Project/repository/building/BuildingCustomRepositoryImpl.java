@@ -2,7 +2,7 @@ package com.project.Project.repository.building;
 
 import com.project.Project.domain.building.Building;
 import com.project.Project.repository.projection.building.OnlyBuildingIdAndCoord;
-import com.project.Project.util.component.QueryDslUtil;
+import com.project.Project.common.util.component.QueryDslUtil;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;

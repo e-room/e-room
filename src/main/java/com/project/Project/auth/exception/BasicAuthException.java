@@ -1,6 +1,6 @@
 package com.project.Project.auth.exception;
 
-import com.project.Project.exception.ErrorCode;
+import com.project.Project.common.exception.ErrorCode;
 import lombok.Getter;
 import org.springframework.security.core.AuthenticationException;
 

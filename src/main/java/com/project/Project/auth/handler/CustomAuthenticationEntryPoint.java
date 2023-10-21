@@ -1,7 +1,7 @@
 package com.project.Project.auth.handler;
 
-import com.project.Project.exception.ApiErrorResult;
-import com.project.Project.exception.ErrorCode;
+import com.project.Project.common.exception.ApiErrorResult;
+import com.project.Project.common.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;

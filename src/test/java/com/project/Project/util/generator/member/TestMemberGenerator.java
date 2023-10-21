@@ -10,7 +10,7 @@ import com.project.Project.repository.member.MemberRepository;
 import com.project.Project.service.member.MemberService;
 import com.project.Project.service.review.ReviewCategoryService;
 import com.project.Project.service.review.ReviewKeywordService;
-import com.project.Project.util.component.MemberGen;
+import com.project.Project.common.util.component.MemberGen;
 import org.joda.time.LocalDate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

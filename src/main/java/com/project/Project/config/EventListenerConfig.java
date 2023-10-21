@@ -1,7 +1,7 @@
 package com.project.Project.config;
 
-import com.project.Project.exception.CustomException;
-import com.project.Project.exception.ErrorCode;
+import com.project.Project.common.exception.CustomException;
+import com.project.Project.common.exception.ErrorCode;
 import com.project.Project.repository.EventListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;

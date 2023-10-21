@@ -7,7 +7,7 @@ import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.building.BuildingSummaryRepository;
 import com.project.Project.service.building.BuildingGenerator;
-import com.project.Project.util.KakaoAddressAPI;
+import com.project.Project.common.util.KakaoAddressAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

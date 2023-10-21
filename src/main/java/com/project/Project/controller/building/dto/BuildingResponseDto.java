@@ -1,6 +1,5 @@
 package com.project.Project.controller.building.dto;
 
-import com.project.Project.domain.embedded.AnonymousStatus;
 import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.enums.ReviewCategoryEnum;
 import lombok.AllArgsConstructor;
