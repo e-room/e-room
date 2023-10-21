@@ -1,7 +1,7 @@
 package com.project.Project.auth.repository;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
-import com.project.Project.util.component.CookieUtil;
+import com.project.Project.common.util.component.CookieUtil;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 

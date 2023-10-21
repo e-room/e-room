@@ -2,10 +2,10 @@ package com.project.Project.controller.file;
 
 import com.project.Project.controller.review.dto.ReviewResponseDto;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.serializer.review.ReviewSerializer;
+import com.project.Project.common.serializer.review.ReviewSerializer;
 import com.project.Project.service.ThumbnailImageService;
 import com.project.Project.service.review.ReviewImageService;
-import com.project.Project.validator.ExistReviewImage;
+import com.project.Project.common.validator.ExistReviewImage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

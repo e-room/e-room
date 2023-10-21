@@ -51,6 +51,9 @@ docker-compose.yml
 ###pem###
 eroom-key.pem
 
+###node_modules###
+src/functions/imageResizer/node_modules/
+
 ###buildingTestdataGen###
 /src/BuildingGen/node_modules/
 

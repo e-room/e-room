@@ -8,7 +8,7 @@ import com.project.Project.auth.exception.JwtAuthenticationException;
 import com.project.Project.auth.service.TokenService;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
-import com.project.Project.exception.ErrorCode;
+import com.project.Project.common.exception.ErrorCode;
 import com.project.Project.service.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

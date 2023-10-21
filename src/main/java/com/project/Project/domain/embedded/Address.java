@@ -1,8 +1,8 @@
 package com.project.Project.domain.embedded;
 
+import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.building.BuildingException;
 import com.project.Project.controller.building.dto.AddressDto;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.building.BuildingException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

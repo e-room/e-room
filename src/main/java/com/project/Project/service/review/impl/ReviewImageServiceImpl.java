@@ -1,13 +1,13 @@
 package com.project.Project.service.review.impl;
 
-import com.project.Project.aws.s3.ReviewImagePackageMetaMeta;
+import com.project.Project.common.aws.s3.metadata.ReviewImageMetadata;
+import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.building.BuildingException;
+import com.project.Project.common.exception.review.ReviewException;
+import com.project.Project.common.exception.review.ReviewImageException;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.review.Review;
 import com.project.Project.domain.review.ReviewImage;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.building.BuildingException;
-import com.project.Project.exception.review.ReviewException;
-import com.project.Project.exception.review.ReviewImageException;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.review.ReviewImageRepository;
 import com.project.Project.repository.review.ReviewRepository;
@@ -45,7 +45,7 @@ public class ReviewImageServiceImpl implements ReviewImageService {
     public void saveImageList(List<MultipartFile> imageFileList, Review review) {
         Building building = review.getBuilding();
         String uuid = "asdfa";
-        ReviewImagePackageMetaMeta reviewImagePackageMeta = ReviewImagePackageMetaMeta.builder()
+        ReviewImageMetadata reviewImagePackageMeta = ReviewImageMetadata.builder()
                 .buildingId(building.getId())
                 .uuid(uuid)
                 .build();

@@ -1,5 +1,6 @@
 package com.project.Project.controller.member.dto;
 
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.controller.building.dto.CoordinateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,4 +39,6 @@ public class MemberResponseDto {
         private LocalDateTime updatedAt;
         private CoordinateDto coordinateDto;
     }
+
+
 }

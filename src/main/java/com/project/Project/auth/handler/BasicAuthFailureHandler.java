@@ -1,7 +1,7 @@
 package com.project.Project.auth.handler;
 
 import com.project.Project.auth.exception.BasicAuthException;
-import com.project.Project.exception.ApiErrorResult;
+import com.project.Project.common.exception.ApiErrorResult;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

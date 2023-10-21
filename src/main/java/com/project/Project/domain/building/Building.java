@@ -2,16 +2,13 @@ package com.project.Project.domain.building;
 
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.BaseEntity;
-import com.project.Project.domain.enums.DirectDealType;
-import com.project.Project.domain.member.Member;
+import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
+import com.project.Project.domain.enums.DirectDealType;
 import com.project.Project.domain.interaction.Favorite;
-
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -64,7 +61,11 @@ public class Building extends BaseEntity {
     @Builder.Default
     private List<BuildingToReviewCategory> buildingToReviewCategoryList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "building", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<CheckList> checkLists = new ArrayList<>();
+
+    @OneToOne(mappedBy = "building", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private BuildingSummary buildingSummary;
 
     @Enumerated(EnumType.STRING)

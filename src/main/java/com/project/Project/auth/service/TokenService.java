@@ -6,7 +6,7 @@ import com.project.Project.auth.enums.MemberRole;
 import com.project.Project.auth.exception.JwtAuthenticationException;
 import com.project.Project.domain.enums.AuthProviderType;
 import com.project.Project.domain.member.Member;
-import com.project.Project.exception.ErrorCode;
+import com.project.Project.common.exception.ErrorCode;
 import com.project.Project.service.member.MemberService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;

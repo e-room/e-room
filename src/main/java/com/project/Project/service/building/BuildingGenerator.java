@@ -4,15 +4,14 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.building.BuildingSummary;
 import com.project.Project.domain.embedded.Address;
 import com.project.Project.domain.embedded.Coordinate;
-import com.project.Project.exception.ErrorCode;
-import com.project.Project.exception.building.BuildingException;
+import com.project.Project.common.exception.ErrorCode;
+import com.project.Project.common.exception.building.BuildingException;
 import com.project.Project.repository.building.BuildingCustomRepository;
 import com.project.Project.repository.building.BuildingRepository;
 import com.project.Project.repository.building.BuildingSummaryRepository;
-import com.project.Project.util.KakaoAddressAPI;
+import com.project.Project.common.util.KakaoAddressAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;

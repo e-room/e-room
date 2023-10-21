@@ -1,7 +1,7 @@
 package com.project.Project.auth.filter;
 
 import com.project.Project.auth.exception.JwtAuthenticationException;
-import com.project.Project.exception.ErrorCode;
+import com.project.Project.common.exception.ErrorCode;
 import io.jsonwebtoken.JwtException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.ExceptionTranslationFilter;

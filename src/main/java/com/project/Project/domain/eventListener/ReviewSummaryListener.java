@@ -4,7 +4,7 @@ import com.project.Project.domain.history.ReviewSummaryHistory;
 import com.project.Project.domain.review.ReviewSummary;
 import com.project.Project.repository.EventListener;
 import com.project.Project.repository.history.ReviewSummaryHistoryRepository;
-import com.project.Project.util.ApplicationContextServe;
+import com.project.Project.common.util.ApplicationContextServe;
 
 import javax.persistence.PreRemove;
 

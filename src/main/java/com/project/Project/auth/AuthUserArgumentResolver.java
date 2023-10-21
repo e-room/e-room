@@ -2,7 +2,7 @@ package com.project.Project.auth;
 
 import com.project.Project.auth.dto.MemberDto;
 import com.project.Project.domain.member.Member;
-import com.project.Project.serializer.member.MemberSerializer;
+import com.project.Project.common.serializer.member.MemberSerializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
