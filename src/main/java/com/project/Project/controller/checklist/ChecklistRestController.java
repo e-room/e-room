@@ -31,7 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
-@Deprecated
+
 @Tag(name = "Checklist API", description = "체크리스트 등록, 조회, 삭제")
 @RestController
 @RequiredArgsConstructor
@@ -39,7 +39,7 @@ import java.util.List;
 public class ChecklistRestController {
     private final ChecklistService checklistService;
 
-
+    @Deprecated
     @Operation(summary = "체크리스트 조회", description = "체크리스트 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistElement.class))),
@@ -54,6 +54,7 @@ public class ChecklistRestController {
         return ResponseEntity.ok(checklistElement);
     }
 
+    @Deprecated
     @Operation(summary = "체크리스트 이미지 전송", description = "체크리스트용 이미지 업로드 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistImageDto.class))),
@@ -69,6 +70,7 @@ public class ChecklistRestController {
         return ResponseEntity.ok(ChecklistSerializer.toChecklistImageDto(checkListImage));
     }
 
+    @Deprecated
     @Operation(summary = "발품기록 단계1: 집정보 입력", description = "체크리스트 생성 API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistCreateDto.class)))
@@ -82,6 +84,7 @@ public class ChecklistRestController {
         return ResponseEntity.ok(ChecklistSerializer.toChecklistCreateDto(savedCheckList));
     }
 
+    @Deprecated
     @Operation(summary = "체크리스트 이미지 삭제", description = "체크리스트용 이미지 삭제 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistImageDeleteDto.class))),
@@ -115,6 +118,7 @@ public class ChecklistRestController {
         return ResponseEntity.ok(ChecklistSerializer.toChecklistQuestionUpdateDto(updatedChecklistQuestion));
     }
 
+    @Deprecated
     @Operation(summary = "체크리스트 질문 리스트 조회", description = "체크리스트 질문 리스트 조회 API<br>")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),

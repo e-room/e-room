@@ -27,5 +27,6 @@ public class ChecklistRequestDto {
     @Getter
     public static class ChecklistQuestionUpdateDto {
         private Expression expression;
+        private String memo;
     }
 }

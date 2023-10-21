@@ -45,4 +45,20 @@ public class CheckListQuestion extends BaseEntity {
     public void setExpression(Expression expression) {
         this.expression = expression;
     }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public void updateExpression(Expression expression) {
+        if (expression != null) {
+            this.expression = expression;
+        }
+    }
+
+    public void updateMemo(String memo) {
+        if (memo != null) {
+            this.memo = memo;
+        }
+    }
 }

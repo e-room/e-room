@@ -120,7 +120,15 @@ public class ChecklistServiceImpl implements ChecklistService {
         if(!checkListQuestion.getCheckList().getAuthor().getId().equals(member.getId()))
             throw new ChecklistException(ErrorCode.CHECKLIST_QUESTION_ACCESS_DENIED);
 
-        checkListQuestion.setExpression(request.getExpression());
+
+        /*
+            NOTE
+            PATCH 메소드로 요청으로 넘겨진 필드만 수정합니다.
+            updateX 함수의 내부에서 null 체크를 수행합니다.
+         */
+        checkListQuestion.updateExpression(request.getExpression());
+        checkListQuestion.updateMemo(request.getMemo());
+
         return checkListQuestion;
     }
 
