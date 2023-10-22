@@ -1,5 +1,6 @@
 package com.project.Project.controller.checklist.dto;
 
+import com.project.Project.controller.building.dto.AddressDto;
 import com.project.Project.domain.enums.Expression;
 import lombok.Getter;
 
@@ -14,7 +15,7 @@ public class ChecklistRequestDto {
     @Getter
     public static class ChecklistCreateDto {
         private Boolean hasBuildingAddress;
-        private Long buildingId;
+        private AddressDto address;
         private String nickname;
         private String lineNum;
         private String roomNum;
@@ -28,5 +29,20 @@ public class ChecklistRequestDto {
     public static class ChecklistQuestionUpdateDto {
         private Expression expression;
         private String memo;
+    }
+
+    @Getter
+    public static class ChecklistUpdateDto {
+        private Boolean hasBuildingAddress;
+        private AddressDto addressDto;
+        private String nickname;
+        private String lineNum;
+        private String roomNum;
+        private Double monthlyRent;
+        private Double managementFee;
+        private Double deposit;
+        private Double netLeasableArea;
+        private String memo;
+        private Double score;
     }
 }

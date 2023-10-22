@@ -118,6 +118,19 @@ public class ChecklistRestController {
         return ResponseEntity.ok(ChecklistSerializer.toChecklistQuestionUpdateDto(updatedChecklistQuestion));
     }
 
+    @Operation(summary = "명세하기", description = "...")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ChecklistResponseDto.ChecklistUpdateDto.class)))
+    })
+    @Parameters({
+            @Parameter(name = "member", hidden = true)
+    })
+    @PatchMapping("/checklists/{checklistId}")
+    public ResponseEntity<ChecklistResponseDto.ChecklistUpdateDto> updateChecklist(@PathVariable("checklistId") Long checklistId,
+                                                                                   @RequestBody ChecklistRequestDto.ChecklistUpdateDto request) {
+        return null;
+    }
+
     @Deprecated
     @Operation(summary = "체크리스트 질문 리스트 조회", description = "체크리스트 질문 리스트 조회 API<br>")
     @ApiResponses({

@@ -133,4 +133,12 @@ public class ChecklistResponseDto {
 
     }
 
+    @NoArgsConstructor
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class ChecklistUpdateDto {
+        private Long checkListId;
+        private LocalDateTime updatedAt;
+    }
 }
