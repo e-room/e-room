@@ -32,4 +32,5 @@ public interface ChecklistService {
     List<ChecklistResponseDto.QuestionElementDto> getChecklistQuestions(Long checklistId);
 
 
+    CheckList updateChecklist(Long checklistId, ChecklistRequestDto.ChecklistUpdateDto request, Member member);
 }

@@ -10,33 +10,21 @@ import com.project.Project.domain.building.Building;
 import com.project.Project.domain.checklist.CheckList;
 import com.project.Project.domain.checklist.CheckListImage;
 import com.project.Project.domain.checklist.CheckListQuestion;
+import com.project.Project.domain.checklist.Question;
 import com.project.Project.domain.embedded.Address;
+import com.project.Project.domain.enums.Expression;
 import com.project.Project.domain.member.Member;
-import com.project.Project.repository.building.BuildingRepository;
-import com.project.Project.repository.checklist.ChecklistRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-@RequiredArgsConstructor
 public class ChecklistSerializer {
 
-    private final ChecklistRepository checklistRepository;
-    private final BuildingRepository buildingRepository;
-
-    private static ChecklistRepository staticChecklistRepository;
-    private static BuildingRepository staticBuildingRepository;
-
-    @PostConstruct
-    public void init() {
-        staticChecklistRepository = this.checklistRepository;
-        staticBuildingRepository = this.buildingRepository;
+    private ChecklistSerializer() {
+        throw new IllegalStateException("Utility class");
     }
 
     public static ChecklistResponseDto.ChecklistElement toChecklistElement(CheckList checkList) {
@@ -86,12 +74,9 @@ public class ChecklistSerializer {
                 .build();
     }
 
-    public static CheckList toChecklist(ChecklistRequestDto.ChecklistCreateDto request, Member member) {
+    public static CheckList toChecklist(ChecklistRequestDto.ChecklistCreateDto request, Member member, Building building, String nickname) {
 
-        Building building = request.getHasBuildingAddress() ? staticBuildingRepository.findBuildingById(request.getBuildingId()) : null;
-        String nickname = request.getHasBuildingAddress() ? null : request.getNickname();
-
-        return staticChecklistRepository.save(CheckList.builder()
+        return CheckList.builder()
                 .author(member)
                 .building(building)
                 .nickname(nickname)
@@ -105,7 +90,7 @@ public class ChecklistSerializer {
                 .managementFee(request.getManagementFee())
                 .deposit(request.getDeposit())
                 .netLeasableArea(request.getNetLeasableArea())
-                .build());
+                .build();
     }
 
     public static ChecklistResponseDto.ChecklistImageDeleteDto toChecklistImageDeleteDto(Long checklistImageId, List<CheckListImage> remainedImages) {
@@ -114,7 +99,6 @@ public class ChecklistSerializer {
                 .remainedImages(toChecklistImageListDto(remainedImages))
                 .build();
     }
-
 
     public static ChecklistResponseDto.ChecklistDeleteDto toChecklistDeletedDto(Long deletedChecklistId) {
         return ChecklistResponseDto.ChecklistDeleteDto.builder()
@@ -130,6 +114,14 @@ public class ChecklistSerializer {
                 .updatedAt(updatedChecklistQuestion.getUpdatedAt())
                 .build();
     }
+
+    public static ChecklistResponseDto.ChecklistUpdateDto toChecklistUpdateDto(CheckList updateChecklist) {
+        return ChecklistResponseDto.ChecklistUpdateDto.builder()
+                .checkListId(updateChecklist.getId())
+                .updatedAt(updateChecklist.getUpdatedAt())
+                .build();
+    }
+
 
     public static List<ChecklistResponseDto.CheckListDto> toCheckListDto(List<CheckList> checkLists) {
         List<ChecklistResponseDto.CheckListDto> checkListDtoList = new ArrayList<>();
@@ -178,4 +170,10 @@ public class ChecklistSerializer {
         return checkListDtoList;
     }
 
+    public static CheckListQuestion toCheckListQuestion(Question question, Expression expression) {
+        return CheckListQuestion.builder()
+                .question(question)
+                .expression(expression)
+                .build();
+    }
 }

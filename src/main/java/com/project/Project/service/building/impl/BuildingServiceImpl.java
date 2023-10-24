@@ -1,5 +1,6 @@
 package com.project.Project.service.building.impl;
 
+import com.project.Project.common.util.component.BuildingHelper;
 import com.project.Project.controller.building.dto.BuildingOptionalDto;
 import com.project.Project.domain.building.Building;
 import com.project.Project.domain.embedded.Address;
@@ -26,6 +27,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     private final BuildingRepository buildingRepository;
     private final BuildingCustomRepository buildingCustomRepo;
+    private final BuildingHelper buildingHelper;
 
     public List<OnlyBuildingIdAndCoord> getBuildingMarking() {
         return buildingCustomRepo.getBuildingMarking();
@@ -48,20 +50,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Transactional
     @Override
     public List<Building> getBuildingsBySearch(String params, List<Double> cursorIds, Pageable page) {
-        List<Building> buildingList;
-        buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
-        if(buildingList.isEmpty()) {
-            try {
-                buildingList = createBuilding(params);
-            } catch (DataIntegrityViolationException e) {
-                // Unique 제약 조건 위반 시, 해당 주소로 빌딩을 다시 검색합니다. (동시에 DB에 없는 같은 주소를 검색한 경우)
-                buildingList = buildingCustomRepo.searchBuildings(params, cursorIds, page);
-            } catch (Exception e) {
-                // 예외 응답을 주는 대신, 빈 리스트를 반환합니다. (BuildingException, ...)
-                buildingList = new ArrayList<>();
-            }
-        }
-        return buildingList;
+        return buildingHelper.searchOrCreateBuildings(params, cursorIds, page);
     }
 
     @Override
@@ -85,9 +74,5 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<Building> createBuilding(String address) {
         return BuildingGenerator.generateBuildings(address);
-    }
-
-    public Building updateBuilding(BuildingOptionalDto buildingOptionalDto) {
-        return null;
     }
 }

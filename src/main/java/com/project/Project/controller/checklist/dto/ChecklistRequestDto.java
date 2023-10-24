@@ -34,7 +34,7 @@ public class ChecklistRequestDto {
     @Getter
     public static class ChecklistUpdateDto {
         private Boolean hasBuildingAddress;
-        private AddressDto addressDto;
+        private AddressDto address;
         private String nickname;
         private String lineNum;
         private String roomNum;

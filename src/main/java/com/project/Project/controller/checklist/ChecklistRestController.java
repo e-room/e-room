@@ -127,8 +127,10 @@ public class ChecklistRestController {
     })
     @PatchMapping("/checklists/{checklistId}")
     public ResponseEntity<ChecklistResponseDto.ChecklistUpdateDto> updateChecklist(@PathVariable("checklistId") Long checklistId,
-                                                                                   @RequestBody ChecklistRequestDto.ChecklistUpdateDto request) {
-        return null;
+                                                                                   @RequestBody ChecklistRequestDto.ChecklistUpdateDto request,
+                                                                                   @AuthUser Member member) {
+        CheckList updateChecklist = checklistService.updateChecklist(checklistId, request, member);
+        return ResponseEntity.ok(ChecklistSerializer.toChecklistUpdateDto(updateChecklist));
     }
 
     @Deprecated

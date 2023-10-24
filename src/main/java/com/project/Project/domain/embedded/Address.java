@@ -119,4 +119,8 @@ public class Address {
                 .buildingNumber(address.getBuildingNumber())
                 .build();
     }
+
+    public String toRoadNameAndBuildingNumber() {
+        return roadName + " " + buildingNumber;
+    }
 }

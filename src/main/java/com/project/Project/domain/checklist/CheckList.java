@@ -77,4 +77,63 @@ public class CheckList extends BaseEntity {
         author.getCheckLists().add(this);
     }
 
+    public void updateNickname(String nickname) {
+        if (nickname != null) {
+            this.nickname = nickname;
+        }
+    }
+
+    public void updateLineNum(String lineNum) {
+        if (lineNum != null) {
+            this.lineNum = lineNum;
+        }
+    }
+
+    public void updateRoomNum(String roomNum) {
+        if (roomNum != null) {
+            this.roomNum = roomNum;
+        }
+    }
+
+    public void updateMonthlyRent(Double monthlyRent) {
+        if (monthlyRent != null) {
+            this.monthlyRent = monthlyRent;
+        }
+    }
+
+    public void updateManagementFee(Double managementFee) {
+        if (managementFee != null) {
+            this.managementFee = managementFee;
+        }
+    }
+
+    public void updateDeposit(Double deposit) {
+        if (deposit != null) {
+            this.deposit = deposit;
+        }
+    }
+
+    public void updateNetLeasableArea(Double netLeasableArea) {
+        if (netLeasableArea != null) {
+            this.netLeasableArea = netLeasableArea;
+        }
+    }
+
+    public void updateMemo(String memo) {
+        if (memo != null) {
+            this.memo = memo;
+        }
+    }
+
+    public void updateScore(Double score) {
+        if (score != null) {
+            this.score = score;
+        }
+    }
+
+    public void updateBuilding(Building building) {
+        if(building != null) {
+            this.building = building;
+        }
+    }
 }
